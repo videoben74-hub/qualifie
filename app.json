@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "QualiVérifié",
+    "slug": "qualifier",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "qualiverifie",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "ca.qualiverifie.app"
+    },
+    "ios": {
+      "bundleIdentifier": "ca.qualiverifie.app",
+      "supportsTablet": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a23799a9-262e-41b2-9e5a-6283cd497f80"
+      }
+    },
+    "owner": "bendieu74"
+  }
+}
