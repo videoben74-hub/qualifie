@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
-  Platform,
+  Platform, BackHandler,
 } from 'react-native';
 
 const COLORS = {
@@ -288,7 +288,23 @@ export default function App() {
   const [tab, setTab] = useState('Accueil');
 const [category, setCategory] = useState('');
 const [selectedPro, setSelectedPro] = useState(null);
- 
+ useEffect(() => {
+  const backAction = () => {
+    if (selectedPro) {
+      setSelectedPro(null);
+      setTab('Pros');
+      return true;
+    }
+    if (tab !== 'Accueil') {
+      setTab('Accueil');
+      return true;
+    }
+    return false;
+  };
+
+  const subscription = BackHandler.addEventListener('hardwareBackPress', backAction);
+  return () => subscription.remove();
+}, [tab, selectedPro]);
 
   const navigate = (to, cat='', pro=null) => {
   setCategory(cat);
