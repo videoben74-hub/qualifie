@@ -233,7 +233,25 @@ const [sentMessage, setSentMessage] = useState('');
   );
 }
 
-function Profile() {
+function Profile({ onNavigate }) {
+  const [profileSection, setProfileSection] = useState(null);
+
+  if (profileSection) {
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader />
+      <TouchableOpacity onPress={() => setProfileSection(null)}>
+        <Text style={styles.proTrade}>‹ Retour au profil</Text>
+      </TouchableOpacity>
+      <Text style={styles.screenTitle}>{profileSection}</Text>
+      <View style={styles.profileCard}>
+        <Text style={styles.infoText}>
+          Cette section sera bientôt disponible dans QualiVérifié.
+        </Text>
+      </View>
+    </ScrollView>
+  );
+  }
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
@@ -244,7 +262,7 @@ function Profile() {
         <Text style={styles.infoText}>Gérez vos projets, messages, favoris et avis.</Text>
       </View>
       {['Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
-        <TouchableOpacity key={x} style={styles.menuRow}>
+        <TouchableOpacity key={x} onPress={() => x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
           <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
         </TouchableOpacity>
       ))}
@@ -266,7 +284,7 @@ export default function App() {
     tab === 'Pros' ? <Pros initialCategory={category} onNavigate={navigate} /> :
     tab === 'Projets' ? <Projects /> :
     tab === 'Messages' ? <Messages /> :
-    <Profile />;
+    <Profile onNavigate={navigate} />
 
   return (
     <SafeAreaView style={styles.safe}>
