@@ -126,7 +126,7 @@ function Pros({ initialCategory = '', onNavigate }) {
             <Text style={styles.proTrade}>{p.trade}</Text>
             <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
             <View style={styles.cardActions}>
-              <TouchableOpacity onPress={() => onNavigate('Profil')}style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => onNavigate('Profil','',p)} style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => onNavigate('Projets')} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
             </View>
           </View>
@@ -247,7 +247,7 @@ const [sentMessage, setSentMessage] = useState('');
   );
 }
 
-function Profile({ onNavigate }) {
+function Profile({ onNavigate, selectedPro }) {
   const [profileSection, setProfileSection] = useState(null);
 
   if (profileSection) {
@@ -269,13 +269,13 @@ function Profile({ onNavigate }) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
-      <Text style={styles.screenTitle}>Mon profil</Text>
+      <Text style={styles.screenTitle}>{selectedPro ? 'Profil entrepreneur' : 'Mon profil'}</Text>
       <View style={styles.profileCard}>
-        <View style={styles.avatarLarge}><Text style={styles.avatarText}>B</Text></View>
-        <Text style={styles.profileName}>Compte client</Text>
-        <Text style={styles.infoText}>Gérez vos projets, messages, favoris et avis.</Text>
+        <View style={styles.avatarLarge}><Text style={styles.avatarText}>{selectedPro ? selectedPro.name.slice(0,1) : 'B'}</Text></View>
+        <Text style={styles.profileName}>{selectedPro ? selectedPro.name : 'Compte client'}</Text>
+        <Text style={styles.infoText}>{selectedPro ? `${selectedPro.trade} • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} avis)` : 'Gérez vos projets, messages, favoris et avis.'}</Text>
       </View>
-      {['Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
+      {!selectedPro && ['Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
         <TouchableOpacity key={x} onPress={() => x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
           <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
         </TouchableOpacity>
@@ -286,19 +286,22 @@ function Profile({ onNavigate }) {
 
 export default function App() {
   const [tab, setTab] = useState('Accueil');
-  const [category, setCategory] = useState('');
+const [category, setCategory] = useState('');
+const [selectedPro, setSelectedPro] = useState(null);
+ 
 
-  const navigate = (to, cat='') => {
-    setCategory(cat);
-    setTab(to);
-  };
+  const navigate = (to, cat='', pro=null) => {
+  setCategory(cat);
+  setSelectedPro(pro);
+  setTab(to);
+};
 
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
     tab === 'Pros' ? <Pros initialCategory={category} onNavigate={navigate} /> :
     tab === 'Projets' ? <Projects /> :
     tab === 'Messages' ? <Messages /> :
-    <Profile onNavigate={navigate} />
+    <Profile onNavigate={navigate} selectedPro={selectedPro} />
 
   return (
     <SafeAreaView style={styles.safe}>
