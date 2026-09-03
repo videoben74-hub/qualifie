@@ -167,7 +167,8 @@ function Projects() {
 
 function Messages() {
   const [selectedChat, setSelectedChat] = useState(null);
-
+const [messageText, setMessageText] = useState('');
+const [sentMessage, setSentMessage] = useState('');
   if (selectedChat) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -184,15 +185,30 @@ function Messages() {
           Bonjour! Je peux vous envoyer une estimation ce soir.
         </Text>
       </View>
-
+{sentMessage ? (
+  <View style={styles.messageCard}>
+    <Text style={styles.proName}>Vous</Text>
+    <Text style={styles.infoText}>{sentMessage}</Text>
+  </View>
+) : null}
       <TextInput
-        placeholder="Écrire un message..."
-        style={styles.input}
-      />
+  value={messageText}
+  onChangeText={setMessageText}
+  placeholder="Écrire un message..."
+  style={styles.input}
+/>
 
-      <TouchableOpacity style={styles.primaryBtn}>
-        <Text style={styles.primaryBtnText}>Envoyer</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+  style={styles.primaryBtn}
+  onPress={() => {
+    if (messageText.trim()) {
+      setSentMessage(messageText.trim());
+      setMessageText('');
+    }
+  }}
+>
+  <Text style={styles.primaryBtnText}>Envoyer</Text>
+</TouchableOpacity>
     </ScrollView>
   );
 }
