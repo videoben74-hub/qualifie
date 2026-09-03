@@ -140,6 +140,8 @@ function Projects() {
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
   const [sent, setSent] = useState(false);
+  const [projects, setProjects] = useState([]);
+  
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -156,7 +158,19 @@ function Projects() {
       />
       <TouchableOpacity
         style={styles.primaryBtn}
-        onPress={() => setSent(Boolean(title.trim() && details.trim()))}
+        onPress={() => {
+  if (title.trim() && details.trim()) {
+    setProjects((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        title: title.trim(),
+        details: details.trim(),
+      },
+    ]);
+    setSent(true);
+  }
+}}
       >
         <Text style={styles.primaryBtnText}>Publier le projet</Text>
       </TouchableOpacity>
