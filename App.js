@@ -94,7 +94,7 @@ function Home({ onNavigate }) {
   );
 }
 
-function Pros({ initialCategory = '' }) {
+function Pros({ initialCategory = '', onNavigate }) {
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
 
@@ -126,8 +126,8 @@ function Pros({ initialCategory = '' }) {
             <Text style={styles.proTrade}>{p.trade}</Text>
             <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
             <View style={styles.cardActions}>
-              <TouchableOpacity onPress={() => setScreen('profile')}style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => onNavigate('Profil')}style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => onNavigate('Projets')} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
             </View>
           </View>
         </View>
@@ -216,7 +216,7 @@ export default function App() {
 
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
-    tab === 'Pros' ? <Pros initialCategory={category} /> :
+    tab === 'Pros' ? <Pros initialCategory={category} onNavigate={navigate} /> :
     tab === 'Projets' ? <Projects /> :
     tab === 'Messages' ? <Messages /> :
     <Profile />;
