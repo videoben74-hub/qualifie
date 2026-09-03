@@ -179,7 +179,7 @@ const [sentMessage, setSentMessage] = useState('');
 
       <Text style={styles.screenTitle}>{selectedChat}</Text>
 
-      <View style={styles.messageCard}>
+      <View style={[styles.messageCard, { flexDirection: 'column', alignItems: 'stretch' }]}>
         <Text style={styles.proName}>{selectedChat}</Text>
         <Text style={styles.infoText}>
           Bonjour! Je peux vous envoyer une estimation ce soir.
