@@ -126,7 +126,7 @@ function Pros({ initialCategory = '' }) {
             <Text style={styles.proTrade}>{p.trade}</Text>
             <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
             <View style={styles.cardActions}>
-              <TouchableOpacity style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => setScreen('profile')}style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
               <TouchableOpacity style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
             </View>
           </View>
