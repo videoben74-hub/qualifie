@@ -166,6 +166,36 @@ function Projects() {
 }
 
 function Messages() {
+  const [selectedChat, setSelectedChat] = useState(null);
+
+  if (selectedChat) {
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader />
+      <TouchableOpacity onPress={() => setSelectedChat(null)}>
+        <Text style={styles.proTrade}>‹ Retour aux messages</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.screenTitle}>{selectedChat}</Text>
+
+      <View style={styles.messageCard}>
+        <Text style={styles.proName}>{selectedChat}</Text>
+        <Text style={styles.infoText}>
+          Bonjour! Je peux vous envoyer une estimation ce soir.
+        </Text>
+      </View>
+
+      <TextInput
+        placeholder="Écrire un message..."
+        style={styles.input}
+      />
+
+      <TouchableOpacity style={styles.primaryBtn}>
+        <Text style={styles.primaryBtnText}>Envoyer</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+}
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
@@ -174,13 +204,14 @@ function Messages() {
         ['Finition Expert', 'Bonjour! Je peux vous envoyer une estimation ce soir.', '10:42'],
         ['Constructions RL', 'Merci pour les détails du projet.', 'Hier'],
       ].map(([name,msg,time]) => (
-        <View key={name} style={styles.messageCard}>
+        <TouchableOpacity key={name} onPress={() => setSelectedChat(name)} style={styles.messageCard}>
           <View style={styles.avatarSmall}><Text style={styles.avatarText}>{name[0]}</Text></View>
           <View style={{flex:1}}>
             <View style={styles.rowBetween}><Text style={styles.proName}>{name}</Text><Text style={styles.time}>{time}</Text></View>
             <Text style={styles.infoText}>{msg}</Text>
           </View>
-        </View>
+</TouchableOpacity>
+        
       ))}
     </ScrollView>
   );
