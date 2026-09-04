@@ -269,12 +269,16 @@ function Profile({ onNavigate, selectedPro }) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
-      <Text style={styles.screenTitle}>{selectedPro ? 'Profil entrepreneur' : 'Mon profil'}</Text>
+      <Text style={styles.screenTitle}>{selectedPro ? 'Profil QualiVérifié' : 'Mon profil'}</Text>
       <View style={styles.profileCard}>
         <View style={styles.avatarLarge}><Text style={styles.avatarText}>{selectedPro ? selectedPro.name.slice(0,1) : 'B'}</Text></View>
         <Text style={styles.profileName}>{selectedPro ? selectedPro.name : 'Compte client'}</Text>
         <Text style={styles.infoText}>{selectedPro ? `${selectedPro.trade} • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} avis)` : 'Gérez vos projets, messages, favoris et avis.'}</Text>
       </View>
+{selectedPro && <Text>✓ Entrepreneur vérifié par QualiVérifié</Text>}
+ {selectedPro && <Text>Licence et assurance vérifiées ✓</Text>}
+  {selectedPro && <Text>Services offerts : rénovation intérieure et finition</Text>}
+   {selectedPro && <Text>⭐ 4.9/5 basé sur 42 avis clients</Text>}
       {!selectedPro && ['Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
         <TouchableOpacity key={x} onPress={() => x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
           <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
