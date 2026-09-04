@@ -279,6 +279,10 @@ function Profile({ onNavigate, selectedPro }) {
  {selectedPro && <Text style={styles.profileInfo}>🛡️ Licence et assurance vérifiées</Text>}
   {selectedPro && <Text style={styles.profileInfo}>🛠️ Services offerts : rénovation intérieure et finition</Text>}
    {selectedPro && <Text style={styles.profileInfo}>⭐ 4.9/5 basé sur 42 avis clients</Text>}
+    {selectedPro && <Text style={styles.sectionTitle}>À propos</Text>}
+     {selectedPro && <Text style={styles.profileInfo}>Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.</Text>}
+      {selectedPro && <Text style={styles.profileInfo}>🏆 Plus de 10 ans d’expérience</Text>}
+      
       {!selectedPro && ['Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
         <TouchableOpacity key={x} onPress={() => x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
           <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
