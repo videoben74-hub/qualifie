@@ -282,8 +282,21 @@ function Profile({ onNavigate, selectedPro }) {
     {selectedPro && <Text style={styles.sectionTitle}>À propos</Text>}
      {selectedPro && <Text style={styles.profileInfo}>Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.</Text>}
       {selectedPro && <Text style={styles.profileInfo}>🏆 Plus de 10 ans d’expérience</Text>}
-      
+      {selectedPro && <TouchableOpacity style={styles.quoteBtn}><Text style={styles.quoteBtnText}>📋 Demander une soumission</Text></TouchableOpacity>}
+       {selectedPro && <TouchableOpacity style={styles.contactBtn}><Text style={styles.contactBtnText}>💬 Contacter l’entrepreneur</Text></TouchableOpacity>}
+       {selectedPro && <TouchableOpacity style={styles.contactBtn}><Text style={styles.contactBtnText}>❤️ Ajouter aux favoris</Text></TouchableOpacity>}
+       {selectedPro && <Text style={styles.sectionTitle}>🛡️ Vérifications QualiVérifié</Text>}
+        {selectedPro && <Text style={styles.profileInfo}>✅ Licence RBQ vérifiée</Text>}
+         {selectedPro && <Text style={styles.profileInfo}>✅ Assurance responsabilité vérifiée</Text>}
+          {selectedPro && <Text style={styles.profileInfo}>✅ Identité de l’entreprise vérifiée</Text>}
+           {selectedPro && <Text style={styles.sectionTitle}>📍 Zones desservies</Text>}
+            {selectedPro && <Text style={styles.profileInfo}>Montréal • Laval • Rive-Nord • Rive-Sud</Text>}
+             {selectedPro && <Text style={styles.sectionTitle}>📸 Réalisations</Text>}
+              {selectedPro && <Text style={styles.profileInfo}>📷 Photos des réalisations à venir</Text>}
+               {selectedPro && <Text style={styles.sectionTitle}>⭐ Avis clients</Text>}
+               {selectedPro && <Text style={styles.profileInfo}>⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié</Text>}
       {!selectedPro && ['Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
+        
         <TouchableOpacity key={x} onPress={() => x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
           <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
         </TouchableOpacity>
@@ -390,6 +403,10 @@ const styles = StyleSheet.create({
   badgeText: { color: COLORS.green, fontWeight: '900', fontSize: 10 },
   verifiedBadge: { backgroundColor: '#E6F6EF', padding: 12, borderRadius: 12, marginTop: 14 },
   verifiedBadgeText: { color: COLORS.green, fontWeight: '900', fontSize: 14 },
+          quoteBtn: { backgroundColor: COLORS.gold, padding: 16, borderRadius: 14, marginTop: 14, alignItems: 'center' },
+  quoteBtnText: { color: COLORS.navy, fontWeight: '900', fontSize: 16 },
+  contactBtn: { backgroundColor: COLORS.card, borderWidth: 2, borderColor: COLORS.navy, padding: 14, borderRadius: 14, marginTop: 10, alignItems: 'center' },
+  contactBtnText: { color: COLORS.navy, fontWeight: '900', fontSize: 16 },
   profileInfo: { backgroundColor: COLORS.card, color: COLORS.navy, fontWeight: '700', fontSize: 14, padding: 12, borderRadius: 12, marginTop: 8, borderWidth: 1, borderColor: COLORS.line },
   cardActions: { flexDirection: 'row', gap: 8, marginTop: 10 },
   secondaryBtn: { borderWidth: 1, borderColor: COLORS.navy, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 10 },
