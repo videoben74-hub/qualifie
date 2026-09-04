@@ -275,7 +275,7 @@ function Profile({ onNavigate, selectedPro }) {
         <Text style={styles.profileName}>{selectedPro ? selectedPro.name : 'Compte client'}</Text>
         <Text style={styles.infoText}>{selectedPro ? `${selectedPro.trade} • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} avis)` : 'Gérez vos projets, messages, favoris et avis.'}</Text>
       </View>
-{selectedPro && <Text style={styles.verifiedBadge}>✓ QualiVérifié — Entrepreneur vérifié</Text>}
+{selectedPro && <View style={styles.verifiedBadge}><Text style={styles.verifiedBadgeText}>✓ QualiVérifié — Entrepreneur vérifié</Text></View>}
  {selectedPro && <Text style={styles.profileInfo}>🛡️ Licence et assurance vérifiées</Text>}
   {selectedPro && <Text style={styles.profileInfo}>🛠️ Services offerts : rénovation intérieure et finition</Text>}
    {selectedPro && <Text style={styles.profileInfo}>⭐ 4.9/5 basé sur 42 avis clients</Text>}
@@ -384,6 +384,8 @@ const styles = StyleSheet.create({
   proMeta: { color: COLORS.muted, fontSize: 12, marginTop: 5 },
   badge: { backgroundColor: '#E6F6EF', borderRadius: 999, paddingHorizontal: 8, paddingVertical: 4 },
   badgeText: { color: COLORS.green, fontWeight: '900', fontSize: 10 },
+  verifiedBadge: { backgroundColor: '#E6F6EF', padding: 12, borderRadius: 12, marginTop: 14 },
+  verifiedBadgeText: { color: COLORS.green, fontWeight: '900', fontSize: 14 },
   profileInfo: { backgroundColor: COLORS.card, color: COLORS.navy, fontWeight: '700', fontSize: 14, padding: 12, borderRadius: 12, marginTop: 8, borderWidth: 1, borderColor: COLORS.line },
   cardActions: { flexDirection: 'row', gap: 8, marginTop: 10 },
   secondaryBtn: { borderWidth: 1, borderColor: COLORS.navy, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 10 },
