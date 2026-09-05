@@ -34,6 +34,35 @@ const pros = [
 
 const categories = ['Rénovation', 'Tireur de joint', 'Peinture', 'Plomberie', 'Électricité', 'Menuiserie'];
 
+const allCategories = [
+  'Rénovation générale',
+  'Charpente et menuiserie',
+  'Portes et fenêtres',
+  'Plomberie',
+  'Électricité',
+  'Ventilation',
+  'Chauffage',
+  'Climatisation',
+  'Réfrigération',
+  'Toiture',
+  'Maçonnerie',
+  'Excavation',
+  'Fondation',
+  'Béton',
+  'Isolation',
+  'Peinture',
+  'Tireur de joint et plâtrier',
+  'Céramique',
+  'Revêtement de plancher',
+  'Revêtement extérieur',
+  'Ferblanterie',
+  'Vitrerie',
+  'Soudure et métaux',
+  'Protection incendie',
+  'Drain et égout',
+  'Aménagement extérieur'
+];
+
 function AppHeader() {
   return (
     <View style={styles.header}>
@@ -75,6 +104,12 @@ function Home({ onNavigate }) {
           </TouchableOpacity>
         ))}
       </View>
+        <TouchableOpacity
+  style={styles.allTradesBtn}
+  onPress={() => onNavigate('Metiers')}
+>
+  <Text style={styles.allTradesBtnText}>Voir tous les métiers et services →</Text>
+</TouchableOpacity>
 
       <Text style={styles.sectionTitle}>Pourquoi QualiVérifié?</Text>
       {[
@@ -93,7 +128,31 @@ function Home({ onNavigate }) {
     </ScrollView>
   );
 }
+function Metiers({ onNavigate }) {
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader />
 
+      <Text style={styles.screenTitle}>Tous les métiers et services</Text>
+      <Text style={styles.helper}>
+        Choisissez le type d’entreprise que vous recherchez.
+      </Text>
+
+      <View style={styles.grid}>
+        {allCategories.map((c) => (
+          <TouchableOpacity
+            key={c}
+            style={styles.categoryCard}
+            onPress={() => onNavigate('Pros', c)}
+          >
+            <Text style={styles.categoryIcon}>⌂</Text>
+            <Text style={styles.categoryText}>{c}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
+  );
+}
 function Pros({ initialCategory = '', onNavigate }) {
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
@@ -352,6 +411,7 @@ const [selectedPro, setSelectedPro] = useState(null);
 
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
+    tab === 'Metiers' ? <Metiers onNavigate={navigate} /> :
     tab === 'Pros' ? <Pros initialCategory={category} onNavigate={navigate} /> :
     tab === 'Projets' ? <Projects projects={projects} setProjects={setProjects} /> :
     tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
@@ -375,7 +435,15 @@ const [selectedPro, setSelectedPro] = useState(null);
           </TouchableOpacity>
         ))}
       </View>
-    </SafeAreaView>
+    </View>
+
+<View style={styles.sloganBar}>
+  <Text style={styles.sloganTop}>Des projets aujourd’hui.</Text>
+  <Text style={styles.sloganBottom}>Un meilleur demain.</Text>
+</View>
+
+</SafeAreaView>
+    
   );
 }
 
@@ -444,4 +512,34 @@ const styles = StyleSheet.create({
   navIcon: { color: '#AFB9C8', fontSize: 20, fontWeight: '800' },
   navText: { color: '#AFB9C8', fontSize: 10, marginTop: 2 },
   navActive: { color: COLORS.gold2, fontWeight: '900' },
+  sloganBar: {
+  backgroundColor: COLORS.navy,
+  alignItems: 'center',
+  paddingTop: 10,
+  paddingBottom: Platform.OS === 'android' ? 14 : 18,
+},
+sloganTop: {
+  color: '#FFFFFF',
+  fontSize: 15,
+  fontWeight: '700',
+},
+sloganBottom: {
+  color: COLORS.gold2,
+  fontSize: 18,
+  fontWeight: '900',
+  marginTop: 2,
+},
+  allTradesBtn: {
+  backgroundColor: COLORS.navy,
+  borderRadius: 12,
+  paddingVertical: 14,
+  paddingHorizontal: 16,
+  alignItems: 'center',
+  marginTop: 14,
+},
+allTradesBtnText: {
+  color: COLORS.gold2,
+  fontSize: 15,
+  fontWeight: '900',
+},
 });
