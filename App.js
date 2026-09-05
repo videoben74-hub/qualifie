@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
-  Platform, BackHandler,
+  Platform, BackHandler, Image,
 } from 'react-native';
 
 const COLORS = {
@@ -26,10 +26,10 @@ const COLORS = {
 };
 
 const pros = [
-  { id: '1', name: 'Constructions RL', trade: 'Rénovation intérieure', city: 'Montréal', rating: 4.9, reviews: 42, distance: 12, verified: true },
-  { id: '2', name: 'Finition Expert', trade: 'Tireur de joint', city: 'Laval', rating: 4.8, reviews: 35, distance: 8, verified: true },
-  { id: '3', name: 'Bâtir Plus Inc.', trade: 'Menuiserie', city: 'Longueuil', rating: 4.7, reviews: 28, distance: 15, verified: true },
-  { id: '4', name: 'Électro SécuriPro', trade: 'Électricité', city: 'Montréal', rating: 4.9, reviews: 61, distance: 6, verified: true },
+  { id: '1', name: 'Constructions RL', trade: 'Rénovation intérieure', city: 'Montréal', rating: 4.9, reviews: 42, distance: 12, verified: true, projectTypes: ['Résidentiel', 'Commercial'], workTypes: ['CCQ', 'Hors CCQ'] },
+  { id: '2', name: 'Finition Expert', trade: 'Tireur de joint', city: 'Laval', rating: 4.8, reviews: 35, distance: 8, verified: true, projectTypes: ['Résidentiel'], workTypes: ['Hors CCQ'] },
+  { id: '3', name: 'Bâtir Plus Inc.', trade: 'Menuiserie', city: 'Longueuil', rating: 4.7, reviews: 28, distance: 15, verified: true, projectTypes: ['Résidentiel', 'Commercial'], workTypes: ['CCQ'] },
+  { id: '4', name: 'Électro SécuriPro', trade: 'Électricité', city: 'Montréal', rating: 4.9, reviews: 61, distance: 6, verified: true, projectTypes: ['Commercial'], workTypes: ['CCQ'] },
 ];
 
 const categories = ['Rénovation', 'Tireur de joint', 'Peinture', 'Plomberie', 'Électricité', 'Menuiserie'];
@@ -163,6 +163,8 @@ function Home({ onNavigate }) {
   );
 }
 function Metiers({ onNavigate }) {
+  const [projectType, setProjectType] = useState('');
+const [workType, setWorkType] = useState('');
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
@@ -172,12 +174,37 @@ function Metiers({ onNavigate }) {
         Choisissez le type d’entreprise que vous recherchez.
       </Text>
 
-      <View style={styles.grid}>
-        {allCategories.map((c) => (
+      <Text style={styles.sectionTitle}>Type de projet</Text>
+<View style={styles.grid}>
+  <TouchableOpacity style={styles.categoryCard} onPress={() => setProjectType('Résidentiel')}>
+    <Text style={styles.categoryIcon}>⌂</Text>
+    <Text style={styles.categoryText}>Résidentiel</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity style={styles.categoryCard} onPress={() => setProjectType('Commercial')}>
+    <Text style={styles.categoryIcon}>▦</Text>
+    <Text style={styles.categoryText}>Commercial</Text>
+  </TouchableOpacity>
+</View>
+
+<Text style={styles.sectionTitle}>Type de chantier</Text>
+<View style={styles.grid}>
+  <TouchableOpacity style={styles.categoryCard} onPress={() => setWorkType('CCQ')}>
+    <Text style={styles.categoryIcon}>✓</Text>
+    <Text style={styles.categoryText}>CCQ</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity style={styles.categoryCard} onPress={() => setWorkType('Hors CCQ')}>
+    <Text style={styles.categoryIcon}>✓</Text>
+    <Text style={styles.categoryText}>Hors CCQ</Text>
+  </TouchableOpacity>
+</View>
+        <View style={styles.grid}>
+  {allCategories.map((c) => (
           <TouchableOpacity
             key={c}
             style={styles.categoryCard}
-            onPress={() => onNavigate('Pros', c)}
+            onPress={() => onNavigate('Pros', c, null, { projectType, workType })}
           >
             <Text style={styles.categoryIcon}>⌂</Text>
             <Text style={styles.categoryText}>{c}</Text>
@@ -205,7 +232,7 @@ function Metiers({ onNavigate }) {
     </ScrollView>
   );
 }
-function Pros({ initialCategory = '', onNavigate }) {
+function Pros({ initialCategory = '', initialFilters = {}, onNavigate }) {
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
 
@@ -213,10 +240,12 @@ function Pros({ initialCategory = '', onNavigate }) {
     const q = query.trim().toLowerCase();
     const c = city.trim().toLowerCase();
     return pros.filter((p) =>
-      (!q || p.trade.toLowerCase().includes(q) || p.name.toLowerCase().includes(q)) &&
-      (!c || p.city.toLowerCase().includes(c))
-    );
-  }, [query, city]);
+  (!q || p.trade.toLowerCase().includes(q) || p.name.toLowerCase().includes(q)) &&
+  (!c || p.city.toLowerCase().includes(c)) &&
+  (!initialFilters.projectType || p.projectTypes?.includes(initialFilters.projectType)) &&
+  (!initialFilters.workType || p.workTypes?.includes(initialFilters.workType))
+);
+  }, [query, city, initialFilters]);
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -236,6 +265,19 @@ function Pros({ initialCategory = '', onNavigate }) {
             </View>
             <Text style={styles.proTrade}>{p.trade}</Text>
             <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+  {p.projectTypes?.map((type) => (
+    <Text key={type} style={styles.badgeText}>
+      {type === 'Résidentiel' ? '🏠 ' : '🏢 '}{type}
+    </Text>
+  ))}
+
+  {p.workTypes?.map((type) => (
+    <Text key={type} style={styles.badgeText}>
+      {type === 'CCQ' ? '👷 ' : '🔨 '}{type}
+    </Text>
+  ))}
+</View>
             <View style={styles.cardActions}>
             <TouchableOpacity onPress={() => onNavigate('Profil','',p)} style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
               <TouchableOpacity onPress={() => onNavigate('Projets')} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
@@ -437,7 +479,10 @@ export default function App() {
 const [category, setCategory] = useState('');
 const [selectedPro, setSelectedPro] = useState(null);
   const [projects, setProjects] = useState([]);
- useEffect(() => {
+  const [filters, setFilters] = useState({});
+
+useEffect(() => {
+ 
   const backAction = () => {
     if (selectedPro) {
       setSelectedPro(null);
@@ -455,16 +500,17 @@ const [selectedPro, setSelectedPro] = useState(null);
   return () => subscription.remove();
 }, [tab, selectedPro]);
 
-  const navigate = (to, cat='', pro=null) => {
+  const navigate = (to, cat='', pro=null, newFilters={}) => {
   setCategory(cat);
   setSelectedPro(pro);
+  setFilters(newFilters);
   setTab(to);
 };
 
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
     tab === 'Metiers' ? <Metiers onNavigate={navigate} /> :
-    tab === 'Pros' ? <Pros initialCategory={category} onNavigate={navigate} /> :
+    tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} /> :
     tab === 'Projets' ? <Projects projects={projects} setProjects={setProjects} /> :
     tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
     <Profile onNavigate={navigate} selectedPro={selectedPro} />
