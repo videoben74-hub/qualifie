@@ -174,29 +174,40 @@ const [workType, setWorkType] = useState('');
         Choisissez le type d’entreprise que vous recherchez.
       </Text>
 
-      <Text style={styles.sectionTitle}>Type de projet</Text>
+      <Text style={styles.sectionTitle}>Type de travaux</Text>
+
 <View style={styles.grid}>
-  <TouchableOpacity style={styles.categoryCard} onPress={() => setProjectType('Résidentiel')}>
+  <TouchableOpacity
+    style={styles.categoryCard}
+    onPress={() => {
+      setProjectType('Résidentiel');
+      setWorkType('CCQ');
+    }}
+  >
     <Text style={styles.categoryIcon}>⌂</Text>
-    <Text style={styles.categoryText}>Résidentiel</Text>
+    <Text style={styles.categoryText}>Résidentiel — CCQ</Text>
   </TouchableOpacity>
 
-  <TouchableOpacity style={styles.categoryCard} onPress={() => setProjectType('Commercial')}>
+  <TouchableOpacity
+    style={styles.categoryCard}
+    onPress={() => {
+      setProjectType('Résidentiel');
+      setWorkType('Hors CCQ');
+    }}
+  >
+    <Text style={styles.categoryIcon}>⌂</Text>
+    <Text style={styles.categoryText}>Résidentiel — Hors CCQ</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    style={styles.categoryCard}
+    onPress={() => {
+      setProjectType('Commercial');
+      setWorkType('CCQ');
+    }}
+  >
     <Text style={styles.categoryIcon}>▦</Text>
-    <Text style={styles.categoryText}>Commercial</Text>
-  </TouchableOpacity>
-</View>
-
-<Text style={styles.sectionTitle}>Type de chantier</Text>
-<View style={styles.grid}>
-  <TouchableOpacity style={styles.categoryCard} onPress={() => setWorkType('CCQ')}>
-    <Text style={styles.categoryIcon}>✓</Text>
-    <Text style={styles.categoryText}>CCQ</Text>
-  </TouchableOpacity>
-
-  <TouchableOpacity style={styles.categoryCard} onPress={() => setWorkType('Hors CCQ')}>
-    <Text style={styles.categoryIcon}>✓</Text>
-    <Text style={styles.categoryText}>Hors CCQ</Text>
+    <Text style={styles.categoryText}>Commercial — CCQ</Text>
   </TouchableOpacity>
 </View>
         <View style={styles.grid}>
@@ -418,8 +429,18 @@ const [sentMessage, setSentMessage] = useState('');
 
 function Profile({ onNavigate, selectedPro }) {
   const [profileSection, setProfileSection] = useState(null);
-
+  const [companyName, setCompanyName] = useState('');
+const [neq, setNeq] = useState('');
+const [rbq, setRbq] = useState('');
+const [companyCity, setCompanyCity] = useState('');
+  const [rbqCategories, setRbqCategories] = useState([]);
+const [ccqStatus, setCcqStatus] = useState('');
+const isNeqValid = /^\d{10}$/.test(neq.trim());
+const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
+  const toggleRbqCategory = (category) => setRbqCategories((current) => current.includes(category) ? current.filter((item) => item !== category) : [...current, category]);
   if (profileSection) {
+    
+    
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
@@ -428,10 +449,86 @@ function Profile({ onNavigate, selectedPro }) {
       </TouchableOpacity>
       <Text style={styles.screenTitle}>{profileSection}</Text>
       <View style={styles.profileCard}>
-        <Text style={styles.infoText}>
-          Cette section sera bientôt disponible dans QualiVérifié.
+  {profileSection === '🛡️ Devenir un pro vérifié' ? (
+    <>
+      <Text style={styles.sectionTitle}>Informations de l’entreprise</Text>
+
+      <TextInput
+  value={companyName}
+  onChangeText={setCompanyName}
+  placeholder="Nom de l’entreprise"
+  style={styles.input}
+/>
+
+      <TextInput
+  value={neq}
+  onChangeText={setNeq}
+  placeholder="NEQ"
+  style={styles.input}
+/>
+{neq.trim() !== '' && !isNeqValid && <Text style={styles.infoText}>Le NEQ doit contenir exactement 10 chiffres.</Text>}
+      <TextInput
+  value={rbq}
+  onChangeText={setRbq}
+  placeholder="Numéro de licence RBQ"
+  style={styles.input}
+/>
+{rbq.trim() !== '' && !isRbqValid && <Text style={styles.infoText}>Format RBQ attendu : 1234-5678-01.</Text>}
+      <TextInput
+  value={companyCity}
+  onChangeText={setCompanyCity}
+  placeholder="Ville"
+  style={styles.input}
+/>
+<Text style={styles.sectionTitle}>Sous-catégories RBQ</Text>
+<Text style={styles.infoText}>
+  Sélectionnez les sous-catégories correspondant à votre licence.
+</Text>
+   <View style={styles.grid}>
+  {['Entrepreneur général', 'Charpente et menuiserie', 'Portes et fenêtres', 'Plomberie'].map((category) => (
+    <TouchableOpacity
+      key={category}
+      style={[styles.categoryCard, rbqCategories.includes(category) && { borderColor: COLORS.gold, borderWidth: 2 }]}
+      onPress={() => toggleRbqCategory(category)}
+    >
+      <Text style={styles.categoryText}>{rbqCategories.includes(category) ? '✓ ' : ''}{category}</Text>
+    </TouchableOpacity>
+  ))}
+</View>
+  <Text style={styles.sectionTitle}>Statut CCQ</Text>
+<View style={styles.grid}>
+  <TouchableOpacity style={[styles.categoryCard, ccqStatus === 'CCQ' && { borderColor: COLORS.gold, borderWidth: 2 }]} onPress={() => setCcqStatus('CCQ')}>
+    <Text style={styles.categoryText}>✓ CCQ</Text>
+  </TouchableOpacity>
+  <TouchableOpacity style={[styles.categoryCard, ccqStatus === 'Hors CCQ' && { borderColor: COLORS.gold, borderWidth: 2 }]} onPress={() => setCcqStatus('Hors CCQ')}>
+    <Text style={styles.categoryText}>✓ Hors CCQ</Text>
+  </TouchableOpacity>
+</View>
+      <TouchableOpacity style={[styles.primaryBtn, (!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0 || !ccqStatus.trim()) && { opacity: 0.4 }]} disabled={!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0 || !ccqStatus.trim()} onPress={() => setProfileSection('Vérification en cours')}>
+        <Text style={styles.primaryBtnText}>
+          Commencer la vérification
         </Text>
-      </View>
+      </TouchableOpacity>
+    </>
+  ) : profileSection === 'Vérification en cours' ? (
+  <>
+    <Text style={styles.sectionTitle}>Vérification en cours</Text>
+    <Text style={styles.profileInfo}>Entreprise : {companyName}</Text>
+    <Text style={styles.profileInfo}>NEQ : {neq}</Text>
+    <Text style={styles.profileInfo}>Licence RBQ : {rbq}</Text>
+    <Text style={styles.profileInfo}>Sous-catégories RBQ : {rbqCategories}</Text>
+<Text style={styles.profileInfo}>Statut CCQ : {ccqStatus}</Text>
+    <Text style={styles.profileInfo}>Ville : {companyCity}</Text>
+    <Text style={styles.infoText}>
+      🛡️ Votre demande est prête à être vérifiée par QualiVérifié.
+    </Text>
+  </>
+) : (
+  <Text style={styles.infoText}>
+    Cette section sera bientôt disponible dans QualiVérifié.
+  </Text>
+)}
+</View>
     </ScrollView>
   );
   }
@@ -464,7 +561,7 @@ function Profile({ onNavigate, selectedPro }) {
               {selectedPro && <Text style={styles.profileInfo}>📷 Photos des réalisations à venir</Text>}
                {selectedPro && <Text style={styles.sectionTitle}>⭐ Avis clients</Text>}
                {selectedPro && <Text style={styles.profileInfo}>⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié</Text>}
-      {!selectedPro && ['Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
+      {!selectedPro && ['🛡️ Devenir un pro vérifié', 'Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
         
         <TouchableOpacity key={x} onPress={() => x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
           <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
