@@ -178,24 +178,24 @@ setDetails('');
         <Text style={styles.primaryBtnText}>Publier le projet</Text>
       </TouchableOpacity>
       {sent && <View style={styles.success}><Text style={styles.successText}>✓ Projet prêt à être envoyé aux pros QualiVérifié.</Text></View>}
-        {projects.length > 0 && (
-  <View style={styles.profileCard}>
+     {projects.length > 0 && (
+  <View>
     <Text style={styles.screenTitle}>Mes projets</Text>
     {projects.map((project) => (
-      <View key={project.id} style={styles.messageCard}>
+      <View key={project.id} style={styles.profileCard}>
         <Text style={styles.proName}>{project.title}</Text>
         <Text style={styles.infoText}>{project.details}</Text>
         <Text style={styles.proTrade}>✓ Projet publié</Text>
       </View>
     ))}
   </View>
-)}
+)}   
     </ScrollView>
   );
 }
 
-function Messages() {
-  const [selectedChat, setSelectedChat] = useState(null);
+function Messages({ selectedPro }) {
+  const [selectedChat, setSelectedChat] = useState(selectedPro?.name || null);
 const [messageText, setMessageText] = useState('');
 const [sentMessage, setSentMessage] = useState('');
   if (selectedChat) {
@@ -224,6 +224,7 @@ const [sentMessage, setSentMessage] = useState('');
   value={messageText}
   onChangeText={setMessageText}
   placeholder="Écrire un message..."
+  placeholderTextColor={COLORS.muted}
   style={styles.input}
 />
 
@@ -298,7 +299,7 @@ function Profile({ onNavigate, selectedPro }) {
      {selectedPro && <Text style={styles.profileInfo}>Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.</Text>}
       {selectedPro && <Text style={styles.profileInfo}>🏆 Plus de 10 ans d’expérience</Text>}
       {selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets')}><Text style={styles.quoteBtnText}>📋 Demander une soumission</Text></TouchableOpacity>}
-       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages')}><Text style={styles.contactBtnText}>💬 Contacter l’entrepreneur</Text></TouchableOpacity>}
+       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages', '', selectedPro)}><Text style={styles.contactBtnText}>💬 Contacter l’entrepreneur</Text></TouchableOpacity>}
        {selectedPro && <TouchableOpacity style={styles.contactBtn}><Text style={styles.contactBtnText}>❤️ Ajouter aux favoris</Text></TouchableOpacity>}
        {selectedPro && <Text style={styles.sectionTitle}>🛡️ Vérifications QualiVérifié</Text>}
         {selectedPro && <Text style={styles.profileInfo}>✅ Licence RBQ vérifiée</Text>}
@@ -352,7 +353,7 @@ const [selectedPro, setSelectedPro] = useState(null);
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
     tab === 'Pros' ? <Pros initialCategory={category} onNavigate={navigate} /> :
     tab === 'Projets' ? <Projects /> :
-    tab === 'Messages' ? <Messages /> :
+    tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
     <Profile onNavigate={navigate} selectedPro={selectedPro} />
 
   return (
