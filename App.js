@@ -435,7 +435,7 @@ const [selectedPro, setSelectedPro] = useState(null);
           </TouchableOpacity>
         ))}
       </View>
-    </View>
+    
 
 <View style={styles.sloganBar}>
   <Text style={styles.sloganTop}>Des projets aujourd’hui.</Text>
