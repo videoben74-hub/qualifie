@@ -148,14 +148,15 @@ function Projects() {
       <AppHeader />
       <Text style={styles.screenTitle}>Publier un projet</Text>
       <Text style={styles.helper}>Décrivez votre besoin. Les entrepreneurs pourront ensuite vous proposer une soumission.</Text>
-      <TextInput value={title} onChangeText={setTitle} placeholder="Ex. Rénover ma salle de bain" style={styles.input} />
+      <TextInput value={title} onChangeText={setTitle} placeholder="Ex. Rénover ma salle de bain" placeholderTextColor={COLORS.muted} style={styles.input} />
       <TextInput
-        value={details}
-        onChangeText={setDetails}
-        placeholder="Description, budget, échéancier..."
-        multiline
-        style={[styles.input, styles.textArea]}
-      />
+  value={details}
+  onChangeText={setDetails}
+  placeholder="Description, budget, échéancier..."
+  placeholderTextColor={COLORS.muted}
+  multiline
+  style={[styles.input, styles.textArea]}
+/>
       <TouchableOpacity
         style={styles.primaryBtn}
         onPress={() => {
@@ -169,12 +170,26 @@ function Projects() {
       },
     ]);
     setSent(true);
+    setTitle('');
+setDetails('');
   }
 }}
       >
         <Text style={styles.primaryBtnText}>Publier le projet</Text>
       </TouchableOpacity>
       {sent && <View style={styles.success}><Text style={styles.successText}>✓ Projet prêt à être envoyé aux pros QualiVérifié.</Text></View>}
+        {projects.length > 0 && (
+  <View style={styles.profileCard}>
+    <Text style={styles.screenTitle}>Mes projets</Text>
+    {projects.map((project) => (
+      <View key={project.id} style={styles.messageCard}>
+        <Text style={styles.proName}>{project.title}</Text>
+        <Text style={styles.infoText}>{project.details}</Text>
+        <Text style={styles.proTrade}>✓ Projet publié</Text>
+      </View>
+    ))}
+  </View>
+)}
     </ScrollView>
   );
 }
@@ -282,8 +297,8 @@ function Profile({ onNavigate, selectedPro }) {
     {selectedPro && <Text style={styles.sectionTitle}>À propos</Text>}
      {selectedPro && <Text style={styles.profileInfo}>Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.</Text>}
       {selectedPro && <Text style={styles.profileInfo}>🏆 Plus de 10 ans d’expérience</Text>}
-      {selectedPro && <TouchableOpacity style={styles.quoteBtn}><Text style={styles.quoteBtnText}>📋 Demander une soumission</Text></TouchableOpacity>}
-       {selectedPro && <TouchableOpacity style={styles.contactBtn}><Text style={styles.contactBtnText}>💬 Contacter l’entrepreneur</Text></TouchableOpacity>}
+      {selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets')}><Text style={styles.quoteBtnText}>📋 Demander une soumission</Text></TouchableOpacity>}
+       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages')}><Text style={styles.contactBtnText}>💬 Contacter l’entrepreneur</Text></TouchableOpacity>}
        {selectedPro && <TouchableOpacity style={styles.contactBtn}><Text style={styles.contactBtnText}>❤️ Ajouter aux favoris</Text></TouchableOpacity>}
        {selectedPro && <Text style={styles.sectionTitle}>🛡️ Vérifications QualiVérifié</Text>}
         {selectedPro && <Text style={styles.profileInfo}>✅ Licence RBQ vérifiée</Text>}
