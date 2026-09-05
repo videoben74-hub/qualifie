@@ -38,6 +38,7 @@ const allCategories = [
   'Rénovation générale',
   'Charpente et menuiserie',
   'Portes et fenêtres',
+
   'Plomberie',
   'Électricité',
   'Ventilation',
@@ -62,7 +63,9 @@ const allCategories = [
   'Drain et égout',
   'Aménagement extérieur'
 ];
-
+const professionalServices = [
+  'Inspection préachat'
+];
 function AppHeader() {
   return (
     <View style={styles.header}>
@@ -149,7 +152,25 @@ function Metiers({ onNavigate }) {
             <Text style={styles.categoryText}>{c}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      
+</View>
+
+
+
+<Text style={styles.sectionTitle}>Inspection et services professionnels</Text>
+
+<View style={styles.grid}>
+  {professionalServices.map((c) => (
+    <TouchableOpacity
+      key={c}
+      style={styles.categoryCard}
+      onPress={() => onNavigate('Pros', c)}
+    >
+      <Text style={styles.categoryIcon}>⌂</Text>
+      <Text style={styles.categoryText}>{c}</Text>
+    </TouchableOpacity>
+  ))}
+</View>
     </ScrollView>
   );
 }
@@ -516,7 +537,7 @@ const styles = StyleSheet.create({
   backgroundColor: COLORS.navy,
   alignItems: 'center',
   paddingTop: 10,
-  paddingBottom: Platform.OS === 'android' ? 14 : 18,
+  paddingBottom: Platform.OS === 'android' ? 34 : 18,
 },
 sloganTop: {
   color: '#FFFFFF',
