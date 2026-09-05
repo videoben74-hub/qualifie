@@ -136,11 +136,11 @@ function Pros({ initialCategory = '', onNavigate }) {
   );
 }
 
-function Projects() {
+function Projects({ projects, setProjects }) {
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
   const [sent, setSent] = useState(false);
-  const [projects, setProjects] = useState([]);
+  
   
 
   return (
@@ -325,6 +325,7 @@ export default function App() {
   const [tab, setTab] = useState('Accueil');
 const [category, setCategory] = useState('');
 const [selectedPro, setSelectedPro] = useState(null);
+  const [projects, setProjects] = useState([]);
  useEffect(() => {
   const backAction = () => {
     if (selectedPro) {
@@ -352,7 +353,7 @@ const [selectedPro, setSelectedPro] = useState(null);
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
     tab === 'Pros' ? <Pros initialCategory={category} onNavigate={navigate} /> :
-    tab === 'Projets' ? <Projects /> :
+    tab === 'Projets' ? <Projects projects={projects} setProjects={setProjects} /> :
     tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
     <Profile onNavigate={navigate} selectedPro={selectedPro} />
 
@@ -379,7 +380,7 @@ const [selectedPro, setSelectedPro] = useState(null);
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: COLORS.navy, paddingTop: Platform.OS === 'android' ? 0 : 0 },
+  safe: { flex: 1, backgroundColor: COLORS.navy, paddingTop: Platform.OS === 'android' ? 12 : 0 },
   content: { flex: 1, backgroundColor: COLORS.bg },
   page: { padding: 18, paddingBottom: 30 },
   header: { backgroundColor: COLORS.navy, borderRadius: 18, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 18 },
@@ -438,7 +439,7 @@ const styles = StyleSheet.create({
   menuRow: { backgroundColor: COLORS.card, borderBottomWidth: 1, borderBottomColor: COLORS.line, paddingVertical: 17, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' },
   menuText: { color: COLORS.text, fontWeight: '700' },
   chevron: { color: COLORS.gold, fontSize: 24 },
-  nav: { flexDirection: 'row', backgroundColor: COLORS.navy, paddingVertical: 8, paddingBottom: Platform.OS === 'ios' ? 18 : 9 },
+  nav: { flexDirection: 'row', backgroundColor: COLORS.navy, paddingTop: 8, paddingBottom: Platform.OS === 'ios' ? 18 : 22 },
   navItem: { flex: 1, alignItems: 'center' },
   navIcon: { color: '#AFB9C8', fontSize: 20, fontWeight: '800' },
   navText: { color: '#AFB9C8', fontSize: 10, marginTop: 2 },
