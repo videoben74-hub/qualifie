@@ -64,12 +64,43 @@ const allCategories = [
   'Aménagement extérieur'
 ];
 const professionalServices = [
-  'Inspection préachat'
+  'Inspection préachat',
+'Inspection de bâtiment',
+'Évaluation immobilière',
+'Architecture',
+'Technologue en architecture',
+'Ingénierie',
+'Arpentage',
+'Design intérieur'
 ];
 function AppHeader() {
   return (
     <View style={styles.header}>
-      <View style={styles.logoCircle}><Text style={styles.logoQ}>Q✓</Text></View>
+      <View style={{ width: 68, height: 58, marginRight: 12, alignItems: 'center', justifyContent: 'flex-end' }}>
+  <View style={{
+    position: 'absolute',
+    top: 5,
+    left: 8,
+    width: 34,
+    height: 4,
+    backgroundColor: COLORS.gold2,
+    transform: [{ rotate: '-32deg' }],
+    borderRadius: 2
+  }} />
+  <View style={{
+    position: 'absolute',
+    top: 5,
+    right: 8,
+    width: 34,
+    height: 4,
+    backgroundColor: COLORS.gold2,
+    transform: [{ rotate: '32deg' }],
+    borderRadius: 2
+  }} />
+  <Text style={{ fontSize: 38, fontWeight: '900', color: '#FFFFFF', lineHeight: 45 }}>
+    Q<Text style={{ color: COLORS.gold2 }}>✓</Text>
+  </Text>
+</View>
       <View style={{ flex: 1 }}>
         <Text style={styles.brand}>QualiVérifié</Text>
         <Text style={styles.tagline}>Des pros vérifiés. Des projets en confiance.</Text>
