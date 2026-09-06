@@ -155,21 +155,21 @@ function AppHeader() {
   }} />
   <View style={{ position: 'relative', width: 58, height: 48 }}>
   <Text style={{ fontSize: 38, fontWeight: '900', color: '#FFFFFF', lineHeight: 45 }}>
-    Q<Text style={{ color: COLORS.gold2 }}>✓</Text>
+    Q
   </Text>
 
   <View
     style={{
       position: 'absolute',
-      width: 27,
-      height: 15,
-      right: 0,
-      bottom: 0,
+      width: 22,
+      height: 12,
+      right: 2,
+      bottom: 1,
       borderBottomWidth: 4,
       borderRightWidth: 4,
-      borderColor: '#FFFFFF',
-      borderBottomRightRadius: 14,
-      transform: [{ rotate: '10deg' }],
+      borderColor: COLORS.gold2,
+      borderBottomRightRadius: 12,
+      transform: [{ rotate: '12deg' }],
     }}
   />
 </View>
@@ -346,107 +346,14 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
 </View>
             <View style={styles.cardActions}>
             <TouchableOpacity onPress={() => onNavigate('Profil','',p)} style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
-              <TouchableOpacity onPress={() => onNavigate('Projets')} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
             </View>
           </View>
         </View>
       ))}
     </ScrollView>
   );
-}
 
-function Projects({ projects, setProjects }) {
-  const [title, setTitle] = useState('');
-  const [details, setDetails] = useState('');
-  const [sent, setSent] = useState(false);
-  
-  
-
-  return (
-    <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
-      <Text style={styles.screenTitle}>Publier un projet</Text>
-      <Text style={styles.helper}>Décrivez votre besoin. Les entrepreneurs pourront ensuite vous proposer une soumission.</Text>
-      <TextInput value={title} onChangeText={setTitle} placeholder="Ex. Rénover ma salle de bain" placeholderTextColor={COLORS.muted} style={styles.input} />
-      <TextInput
-  value={details}
-  onChangeText={setDetails}
-  placeholder="Description, budget, échéancier..."
-  placeholderTextColor={COLORS.muted}
-  multiline
-  style={[styles.input, styles.textArea]}
-/>
-      <TouchableOpacity
-        style={styles.primaryBtn}
-        onPress={() => {
-  if (title.trim() && details.trim()) {
-    setProjects((prev) => [
-      ...prev,
-      {
-  id: Date.now(),
-  title: title.trim(),
-  details: details.trim(),
-  status: 'Ouvert',
-},
-    ]);
-    setSent(true);
-    setTitle('');
-setDetails('');
-  }
-}}
-      >
-        <Text style={styles.primaryBtnText}>Publier le projet</Text>
-      </TouchableOpacity>
-      {sent && <View style={styles.success}><Text style={styles.successText}>✓ Projet prêt à être envoyé aux pros QualiVérifié.</Text></View>}
-     {projects.length > 0 && (
-  <View>
-    <Text style={styles.screenTitle}>Mes projets</Text>
-    {projects.map((project) => (
-      <View key={project.id} style={styles.profileCard}>
-        <Text style={styles.proName}>{project.title}</Text>
-        <Text style={styles.infoText}>{project.details}</Text>
-        <Text style={styles.proTrade}>✓ Projet publié</Text>
-      </View>
-    ))}
-  </View>
-)}   
-    </ScrollView>
-  );
-}
-function AvailableProjects({ projects }) {
-  const openProjects = projects.filter((project) => project.status === 'Ouvert');
-
-  return (
-    <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
-
-      <Text style={styles.screenTitle}>Projets disponibles</Text>
-      <Text style={styles.helper}>
-        Découvrez les nouveaux projets publiés par des clients.
-      </Text>
-
-      {openProjects.length === 0 ? (
-        <Text style={styles.infoText}>
-          Aucun projet disponible pour le moment.
-        </Text>
-      ) : (
-        openProjects.map((project) => (
-          <View key={project.id} style={styles.profileCard}>
-            <Text style={styles.proName}>{project.title}</Text>
-            <Text style={styles.infoText}>{project.details}</Text>
-            <Text style={styles.proTrade}>🟢 Projet ouvert</Text>
-        <TouchableOpacity
-  style={styles.primaryBtn}
-  onPress={() => alert(`Intérêt envoyé pour : ${project.title}`)}
->
-  <Text style={styles.primaryBtnText}>Je suis intéressé</Text>
-</TouchableOpacity>
-          </View>
-        ))
-      )}
-    </ScrollView>
-  );
-}
 function Messages({ selectedPro }) {
   const [selectedChat, setSelectedChat] = useState(selectedPro?.name || null);
 const [messageText, setMessageText] = useState('');
@@ -729,8 +636,8 @@ useEffect(() => {
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
     tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
     tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} /> :
-    tab === 'ProjetsDisponibles' ? <AvailableProjects projects={projects} /> :
-    tab === 'Projets' ? <Projects projects={projects} setProjects={setProjects} /> :
+  
+  
     tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
     <Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} />
 
@@ -742,8 +649,9 @@ useEffect(() => {
         {[
           ['Accueil','⌂'],
           ['Pros','⌕'],
-          ['Projets','＋'],
-          ['Messages','✉'],
+          
+['Messages','✉'],
+          
           ['Profil','●'],
         ].map(([label, icon]) => (
           <TouchableOpacity key={label} style={styles.navItem} onPress={() => navigate(label)}>
@@ -767,23 +675,23 @@ useEffect(() => {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.navy, paddingTop: Platform.OS === 'android' ? 12 : 0, paddingBottom: Platform.OS === 'android' ? 28 : 0 },
   content: { flex: 1, backgroundColor: COLORS.bg },
-  page: { padding: 18, paddingBottom: 30 },
+  page: { padding: 12, paddingBottom: 16 },
   header: { backgroundColor: COLORS.navy, borderRadius: 18, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 18 },
   logoCircle: { width: 50, height: 50, borderRadius: 25, backgroundColor: COLORS.gold, alignItems: 'center', justifyContent: 'center' },
   logoQ: { color: COLORS.navy, fontWeight: '900', fontSize: 19 },
   brand: { color: '#fff', fontSize: 24, fontWeight: '900' },
   tagline: { color: '#E9EDF4', fontSize: 11, marginTop: 2 },
-  hero: { backgroundColor: COLORS.card, borderRadius: 20, padding: 22, borderWidth: 1, borderColor: COLORS.line },
+  hero: { backgroundColor: COLORS.card, borderRadius: 18, padding: 14, borderWidth: 1, borderColor: COLORS.line },
   heroTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 28, lineHeight: 33 },
-  heroText: { color: COLORS.muted, fontSize: 15, lineHeight: 22, marginTop: 10, marginBottom: 18 },
+  heroText: { color: COLORS.muted, fontSize: 14, lineHeight: 19, marginTop: 6, marginBottom: 10 },
   primaryBtn: { backgroundColor: COLORS.gold, paddingVertical: 14, paddingHorizontal: 18, borderRadius: 12, alignItems: 'center', marginTop: 8 },
   primaryBtnText: { color: COLORS.navy, fontWeight: '900', fontSize: 15 },
-  sectionTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 19, marginTop: 24, marginBottom: 12 },
+  sectionTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 18, marginTop: 12, marginBottom: 8 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 10 },
-  categoryCard: { width: '48%', backgroundColor: COLORS.card, padding: 16, borderRadius: 14, borderWidth: 1, borderColor: COLORS.line },
-  categoryIcon: { fontSize: 22, color: COLORS.gold, marginBottom: 8 },
+  categoryCard: { width: '48%', backgroundColor: COLORS.card, padding: 10, borderRadius: 12, borderWidth: 1, borderColor: COLORS.line },
+  categoryIcon: { fontSize: 20, color: COLORS.gold, marginBottom: 4 },
   categoryText: { color: COLORS.text, fontWeight: '700' },
-  infoCard: { flexDirection: 'row', gap: 12, alignItems: 'center', backgroundColor: COLORS.card, padding: 16, borderRadius: 14, marginBottom: 10, borderWidth: 1, borderColor: COLORS.line },
+  infoCard: { flexDirection: 'row', gap: 8, alignItems: 'center', backgroundColor: COLORS.card, padding: 10, borderRadius: 12, marginBottom: 6, borderWidth: 1, borderColor: COLORS.line },
   infoIcon: { color: COLORS.gold, fontWeight: '900', fontSize: 22, width: 28, textAlign: 'center' },
   infoTitle: { color: COLORS.text, fontWeight: '800', fontSize: 15 },
   infoText: { color: COLORS.muted, fontSize: 13, lineHeight: 19, marginTop: 2 },
