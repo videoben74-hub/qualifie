@@ -573,14 +573,14 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
           <Text style={styles.proMeta}>★ {fav.rating} • {fav.city}, QC</Text>
 
           <TouchableOpacity
-            style={styles.contactBtn}
+            style={[styles.contactBtn, { alignSelf: 'flex-start', width: '100%', marginTop: 10 }]}
             onPress={() => onNavigate('Profil', '', fav)}
           >
             <Text style={styles.contactBtnText}>Voir le profil</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.contactBtn}
+            style={[styles.contactBtn, { alignSelf: 'flex-start', width: '100%', marginTop: 8 }]}
             onPress={() =>
               setFavorites((prev) =>
                 prev.filter((item) => item.id !== fav.id)
