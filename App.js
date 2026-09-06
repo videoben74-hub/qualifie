@@ -16,7 +16,7 @@ const COLORS = {
   navy2: '#15345D',
   gold: '#D9A441',
   gold2: '#F2C66D',
-  bg: '#E9EDF2',
+  bg: '#DDE2E8',
   card: '#FFFFFF',
   text: '#172033',
   muted: '#6B7280',
@@ -153,9 +153,26 @@ function AppHeader() {
     transform: [{ rotate: '32deg' }],
     borderRadius: 2
   }} />
+  <View style={{ position: 'relative', width: 58, height: 48 }}>
   <Text style={{ fontSize: 38, fontWeight: '900', color: '#FFFFFF', lineHeight: 45 }}>
     Q<Text style={{ color: COLORS.gold2 }}>✓</Text>
   </Text>
+
+  <View
+    style={{
+      position: 'absolute',
+      width: 27,
+      height: 15,
+      right: 0,
+      bottom: 0,
+      borderBottomWidth: 4,
+      borderRightWidth: 4,
+      borderColor: '#FFFFFF',
+      borderBottomRightRadius: 14,
+      transform: [{ rotate: '10deg' }],
+    }}
+  />
+</View>
 </View>
       <View style={{ flex: 1 }}>
         <Text style={styles.brand}>QualiVérifié</Text>
