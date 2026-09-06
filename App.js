@@ -223,6 +223,7 @@ function Badge() {
 }
 
 function Home({ onNavigate, language, setLanguage }) {
+  const [address, setAddress] = useState('');
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader language={language} setLanguage={setLanguage} />
@@ -236,8 +237,10 @@ function Home({ onNavigate, language, setLanguage }) {
 
 <TextInput
   placeholder={language === 'fr' ? 'Adresse du chantier' : 'Work site address'}
-  style={styles.input}
-  onSubmitEditing={() => onNavigate('TypeTravaux')}
+    value={address}
+  onChangeText={setAddress}
+  style={[styles.input, { marginTop: 14 }]}
+  onSubmitEditing={() => { if (address.trim()) onNavigate('TypeTravaux'); }}
   returnKeyType="search"
 />
 
@@ -257,7 +260,13 @@ function Home({ onNavigate, language, setLanguage }) {
           </View>
         </View>
       ))}
-    </ScrollView>
+   <View style={{ alignItems: 'center', marginTop: 45, marginBottom: 25 }}>
+  <View style={{ width: 105, height: 52, backgroundColor: COLORS.gold2, borderTopLeftRadius: 60, borderTopRightRadius: 60 }}>
+    <View style={{ position: 'absolute', width: 12, height: 42, backgroundColor: COLORS.gold, left: 46, top: 5, borderRadius: 6 }} />
+  </View>
+  <View style={{ width: 140, height: 12, backgroundColor: COLORS.gold2, borderRadius: 6, marginTop: -2 }} />
+</View>
+  </ScrollView>
   );
 }
 function TypeTravaux({ onNavigate, language, setLanguage }) {
@@ -689,7 +698,7 @@ tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} langua
       <View style={styles.nav}>
         {[
   ['Accueil', language === 'fr' ? 'Accueil' : 'Home', '⌂'],
-  ['Pros', language === 'fr' ? 'Pros' : 'Pros', '⚲'],
+  
   ['Messages', language === 'fr' ? 'Messages' : 'Messages', '✉'],
   ['Profil', language === 'fr' ? 'Profil' : 'Profile', '●'],
 ].map(([tabName, label, icon]) => (
