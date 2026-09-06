@@ -672,14 +672,12 @@ useEffect(() => {
 };
 
   const content =
-    tab === 'Accueil' ? <Home onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
-    tab === 'TypeTravaux' ? <TypeTravaux onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
-tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
-    tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} /> :
-  
-  
-    tab === 'Messages' ? <Messages selectedPro={selectedPro} language={language} setLanguage={setLanguage} /> :
-<Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} />
+  tab === 'Accueil' ? <Home onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
+  tab === 'TypeTravaux' ? <TypeTravaux onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
+  tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
+  tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} /> :
+  tab === 'Messages' ? <Text style={styles.screenTitle}>Messages</Text> :
+  <Text style={styles.screenTitle}>Profil</Text>;
 
   return (
     <SafeAreaView style={styles.safe}>
