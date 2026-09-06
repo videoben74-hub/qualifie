@@ -666,7 +666,7 @@ tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
           
           ['Profil','●'],
         ].map(([label, icon]) => (
-          <TouchableOpacity key={label} style={styles.navItem} onPress={() => navigate(label)}>
+          <TouchableOpacity key={label} style={styles.navItem} onPress={() => setTab(label)}>
             <Text style={[styles.navIcon, tab === label && styles.navActive]}>{icon}</Text>
             <Text style={[styles.navText, tab === label && styles.navActive]}>{label}</Text>
           </TouchableOpacity>
