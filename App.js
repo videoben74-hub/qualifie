@@ -161,15 +161,15 @@ function AppHeader() {
   <View
     style={{
       position: 'absolute',
-      width: 27,
-      height: 10,
-      right: 4,
-      bottom: 3,
-      borderBottomWidth: 3,
-      borderRightWidth: 3,
+      width: 22,
+      height: 12,
+      right: 2,
+      bottom: 1,
+      borderBottomWidth: 4,
+      borderRightWidth: 4,
       borderColor: COLORS.gold2,
-      borderBottomRightRadius: 18,
-      transform: [{ rotate: '8deg' }],
+      borderBottomRightRadius: 12,
+      transform: [{ rotate: '12deg' }],
     }}
   />
 </View>
@@ -195,23 +195,45 @@ function Home({ onNavigate }) {
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
       <View style={styles.hero}>
-        <Text style={styles.heroTitle}>Adresse du chantier</Text>
-        <Text style={styles.heroText}>Entrez l’adresse où les travaux seront réalisés.</Text>
-        
+        <Text style={styles.heroTitle}>Trouvez le bon pro près de chez vous</Text>
+        <Text style={styles.heroText}>Entrepreneurs qualifiés, profils vérifiés et avis authentiques au Québec.</Text>
+        <TouchableOpacity style={styles.primaryBtn} onPress={() => onNavigate('Pros')}>
+          <Text style={styles.primaryBtnText}>Trouver un entrepreneur</Text>
+        </TouchableOpacity>
       </View>
 
-      
+      <Text style={styles.sectionTitle}>Rechercher par le nom de l’entreprise</Text>
 
 <TextInput
-  placeholder="Adresse du chantier"
+  placeholder="Nom de l’entreprise"
   style={styles.input}
-  onSubmitEditing={() => onNavigate('TypeTravaux')}
+  onSubmitEditing={(e) => onNavigate('Pros', e.nativeEvent.text)}
   returnKeyType="search"
 />
 
+<Text style={styles.sectionTitle}>Type de travaux</Text>
+<View style={styles.grid}>
+  <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel')}>
+    <Text style={styles.categoryIcon}>⌂</Text>
+    <Text style={styles.categoryText}>Résidentiel</Text>
+  </TouchableOpacity>
 
+  <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel — CCQ')}>
+    <Text style={styles.categoryIcon}>⌂</Text>
+    <Text style={styles.categoryText}>Résidentiel — CCQ</Text>
+  </TouchableOpacity>
 
-      <Text style={styles.whyTitle}>Pourquoi QualiVérifié?</Text>
+  <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Commercial')}>
+    <Text style={styles.categoryIcon}>▦</Text>
+    <Text style={styles.categoryText}>Commercial</Text>
+  </TouchableOpacity>
+<TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Services professionnels')}>
+  <Text style={styles.categoryIcon}>⌂</Text>
+  <Text style={styles.categoryText}>Inspection et services professionnels</Text>
+</TouchableOpacity>
+</View>
+
+      <Text style={styles.sectionTitle}>Pourquoi QualiVérifié?</Text>
       {[
         ['✓', 'Pros vérifiés', 'Identité, entreprise, licence et assurance vérifiées.'],
         ['★', 'Avis authentiques', 'Des évaluations liées à de vrais projets.'],
@@ -228,38 +250,6 @@ function Home({ onNavigate }) {
     </ScrollView>
   );
 }
-function TypeTravaux({ onNavigate }) {
-  return (
-    <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
-
-      <Text style={styles.screenTitle}>Type de travaux</Text>
-
-      <View style={styles.grid}>
-        <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel')}>
-          <Text style={styles.categoryIcon}>⌂</Text>
-          <Text style={styles.categoryText}>Résidentiel</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel – CCQ')}>
-          <Text style={styles.categoryIcon}>⌂</Text>
-          <Text style={styles.categoryText}>Résidentiel – CCQ</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Commercial')}>
-          <Text style={styles.categoryIcon}>▦</Text>
-          <Text style={styles.categoryText}>Commercial</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Services professionnels')}>
-          <Text style={styles.categoryIcon}>⌂</Text>
-          <Text style={styles.categoryText}>Inspection et services professionnels</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
-}
-
 function Metiers({ onNavigate, initialType }) {
   const [projectType, setProjectType] = useState(initialType === 'Commercial' ? 'Commercial' : initialType ? 'Résidentiel' : '');
 const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel — CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
@@ -645,8 +635,7 @@ useEffect(() => {
 
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
-    tab === 'TypeTravaux' ? <TypeTravaux onNavigate={navigate} /> :
-tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
+    tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
     tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} /> :
   
   
@@ -666,7 +655,7 @@ tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
           
           ['Profil','●'],
         ].map(([label, icon]) => (
-          <TouchableOpacity key={label} style={styles.navItem} onPress={() => setTab(label)}>
+          <TouchableOpacity key={label} style={styles.navItem} onPress={() => navigate(label)}>
             <Text style={[styles.navIcon, tab === label && styles.navActive]}>{icon}</Text>
             <Text style={[styles.navText, tab === label && styles.navActive]}>{label}</Text>
           </TouchableOpacity>
@@ -699,15 +688,14 @@ const styles = StyleSheet.create({
   primaryBtn: { backgroundColor: COLORS.gold, paddingVertical: 14, paddingHorizontal: 18, borderRadius: 12, alignItems: 'center', marginTop: 8 },
   primaryBtnText: { color: COLORS.navy, fontWeight: '900', fontSize: 15 },
   sectionTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 18, marginTop: 12, marginBottom: 8 },
-whyTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 13, marginTop: 7, marginBottom: 4 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 10 },
   categoryCard: { width: '48%', backgroundColor: COLORS.card, padding: 10, borderRadius: 12, borderWidth: 1, borderColor: COLORS.line },
   categoryIcon: { fontSize: 20, color: COLORS.gold, marginBottom: 4 },
   categoryText: { color: COLORS.text, fontWeight: '700' },
-  infoCard: { flexDirection: 'row', gap: 5, alignItems: 'center', backgroundColor: COLORS.card, padding: 6, borderRadius: 9, marginBottom: 4, borderWidth: 1, borderColor: COLORS.line },
-  infoIcon: { color: COLORS.gold, fontWeight: '900', fontSize: 15, width: 20, textAlign: 'center' },
-  infoTitle: { color: COLORS.text, fontWeight: '800', fontSize: 12 },
-  infoText: { color: COLORS.muted, fontSize: 10, lineHeight: 13, marginTop: 1 },
+  infoCard: { flexDirection: 'row', gap: 8, alignItems: 'center', backgroundColor: COLORS.card, padding: 10, borderRadius: 12, marginBottom: 6, borderWidth: 1, borderColor: COLORS.line },
+  infoIcon: { color: COLORS.gold, fontWeight: '900', fontSize: 22, width: 28, textAlign: 'center' },
+  infoTitle: { color: COLORS.text, fontWeight: '800', fontSize: 15 },
+  infoText: { color: COLORS.muted, fontSize: 13, lineHeight: 19, marginTop: 2 },
   screenTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 27, marginBottom: 12 },
   helper: { color: COLORS.muted, lineHeight: 20, marginBottom: 14 },
   input: { backgroundColor: COLORS.card, borderWidth: 1, borderColor: COLORS.line, borderRadius: 12, padding: 14, fontSize: 15, marginBottom: 10, color: COLORS.text },
