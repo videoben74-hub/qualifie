@@ -529,8 +529,11 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       style={[styles.categoryCard, rbqCategories.includes(category) && { borderColor: COLORS.gold, borderWidth: 2 }]}
       onPress={() => toggleRbqCategory(category)}
     >
-      <Text style={styles.categoryText}>{rbqCategories.includes(category) ? '✓ ' : ''}{language === 'fr' ? category : ({'Entrepreneur général':'General contractor','Charpente et menuiserie':'Framing and carpentry','Portes et fenêtres':'Doors and windows','Plomberie':'Plumbing'}[category] || category)}</Text>
-  ))}
+      <Text style={styles.categoryText}>
+{rbqCategories.includes(category) ? '✓ ' : ''}{language === 'fr' ? category : ({'Entrepreneur général':'General contractor','Charpente et menuiserie':'Framing and carpentry','Portes et fenêtres':'Doors and windows','Plomberie':'Plumbing'}[category] || category)}
+</Text>
+</TouchableOpacity>
+))}
 </View>
   <Text style={styles.sectionTitle}>{language === 'fr' ? 'Statut CCQ' : 'CCQ status'}</Text>
 <View style={styles.grid}>
