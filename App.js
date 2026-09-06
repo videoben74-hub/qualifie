@@ -201,6 +201,10 @@ function Home({ onNavigate }) {
     <Text style={styles.categoryIcon}>▦</Text>
     <Text style={styles.categoryText}>Commercial</Text>
   </TouchableOpacity>
+<TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Services professionnels')}>
+  <Text style={styles.categoryIcon}>⌂</Text>
+  <Text style={styles.categoryText}>Inspection et services professionnels</Text>
+</TouchableOpacity>
 </View>
 
       <Text style={styles.sectionTitle}>Pourquoi QualiVérifié?</Text>
@@ -227,12 +231,12 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
 
-      <Text style={styles.screenTitle}>{initialType ? `Métiers — ${initialType}` : 'Tous les métiers et services'}</Text>
+      <Text style={styles.screenTitle}>{initialType === 'Services professionnels' ? 'Inspection et services professionnels' : initialType ? `Métiers — ${initialType}` : 'Tous les métiers et services'}</Text>
       
 
       
         <View style={styles.grid}>
-  {(initialType === 'Commercial' ? commercialCategories : initialType === 'Résidentiel — CCQ' ? residentialCcqCategories : residentialCategories).map((c) => (
+  {(initialType === 'Services professionnels' ? professionalServices : initialType === 'Commercial' ? commercialCategories : initialType === 'Résidentiel — CCQ' ? residentialCcqCategories : residentialCategories).map((c) => (
           <TouchableOpacity
             key={c}
             style={styles.categoryCard}
@@ -247,20 +251,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 
 
 
-<Text style={styles.sectionTitle}>Inspection et services professionnels</Text>
 
-<View style={styles.grid}>
-  {professionalServices.map((c) => (
-    <TouchableOpacity
-      key={c}
-      style={styles.categoryCard}
-      onPress={() => onNavigate('Pros', c)}
-    >
-      <Text style={styles.categoryIcon}>⌂</Text>
-      <Text style={styles.categoryText}>{c}</Text>
-    </TouchableOpacity>
-  ))}
-</View>
     </ScrollView>
   );
 }
