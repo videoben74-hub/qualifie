@@ -185,7 +185,16 @@ function Home({ onNavigate }) {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.sectionTitle}>Type de travaux</Text>
+      <Text style={styles.sectionTitle}>Rechercher par le nom de l’entreprise</Text>
+
+<TextInput
+  placeholder="Nom de l’entreprise"
+  style={styles.input}
+  onSubmitEditing={(e) => onNavigate('Pros', e.nativeEvent.text)}
+  returnKeyType="search"
+/>
+
+<Text style={styles.sectionTitle}>Type de travaux</Text>
 <View style={styles.grid}>
   <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel')}>
     <Text style={styles.categoryIcon}>⌂</Text>
@@ -255,7 +264,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     </ScrollView>
   );
 }
-function Pros({ initialCategory = '', initialFilters = {}, onNavigate }) {
+function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites, setFavorites }) {
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
 
@@ -283,9 +292,26 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate }) {
           <View style={styles.avatar}><Text style={styles.avatarText}>{p.name.slice(0,1)}</Text></View>
           <View style={{flex:1}}>
             <View style={styles.rowBetween}>
-              <Text style={styles.proName}>{p.name}</Text>
-              {p.verified && <Badge />}
-            </View>
+  <Text style={styles.proName}>{p.name}</Text>
+
+  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+    {p.verified && <Badge />}
+
+    <TouchableOpacity
+      onPress={() =>
+        setFavorites((prev) =>
+          prev.some((fav) => fav.id === p.id)
+            ? prev.filter((fav) => fav.id !== p.id)
+            : [...prev, p]
+        )
+      }
+    >
+      <Text style={{ fontSize: 28 }}>
+        {favorites.some((fav) => fav.id === p.id) ? '♥️' : '♡'}
+      </Text>
+    </TouchableOpacity>
+  </View>
+</View>
             <Text style={styles.proTrade}>{p.trade}</Text>
             <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
@@ -439,7 +465,7 @@ const [sentMessage, setSentMessage] = useState('');
   );
 }
 
-function Profile({ onNavigate, selectedPro }) {
+function Profile({ onNavigate, selectedPro, favorites, setFavorites }) {
   const [profileSection, setProfileSection] = useState(null);
   const [companyName, setCompanyName] = useState('');
 const [neq, setNeq] = useState('');
@@ -535,6 +561,38 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       🛡️ Votre demande est prête à être vérifiée par QualiVérifié.
     </Text>
   </>
+) : profileSection === 'Mes favoris' ? (
+  <>
+    {favorites.length === 0 ? (
+      <Text style={styles.infoText}>♡ Aucun favori pour le moment.</Text>
+    ) : (
+      favorites.map((fav) => (
+        <View key={fav.id} style={styles.proCard}>
+          <Text style={styles.proName}>{fav.name}</Text>
+          <Text style={styles.proTrade}>{fav.trade}</Text>
+          <Text style={styles.proMeta}>★ {fav.rating} • {fav.city}, QC</Text>
+
+          <TouchableOpacity
+            style={styles.contactBtn}
+            onPress={() => onNavigate('Profil', '', fav)}
+          >
+            <Text style={styles.contactBtnText}>Voir le profil</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.contactBtn}
+            onPress={() =>
+              setFavorites((prev) =>
+                prev.filter((item) => item.id !== fav.id)
+              )
+            }
+          >
+            <Text style={styles.contactBtnText}>♥ Retirer des favoris</Text>
+          </TouchableOpacity>
+        </View>
+      ))
+    )}
+  </>
 ) : (
   <Text style={styles.infoText}>
     Cette section sera bientôt disponible dans QualiVérifié.
@@ -562,7 +620,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       {selectedPro && <Text style={styles.profileInfo}>🏆 Plus de 10 ans d’expérience</Text>}
       {selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets')}><Text style={styles.quoteBtnText}>📋 Demander une soumission</Text></TouchableOpacity>}
        {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages', '', selectedPro)}><Text style={styles.contactBtnText}>💬 Contacter l’entrepreneur</Text></TouchableOpacity>}
-       {selectedPro && <TouchableOpacity style={styles.contactBtn}><Text style={styles.contactBtnText}>❤️ Ajouter aux favoris</Text></TouchableOpacity>}
+       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => setFavorites((prev) => prev.some((fav) => fav.id === selectedPro.id) ? prev.filter((fav) => fav.id !== selectedPro.id) : [...prev, selectedPro])}><Text style={styles.contactBtnText}>{favorites.some((fav) => fav.id === selectedPro.id) ? '♥️ Retirer des favoris' : '♡ Ajouter aux favoris'}</Text></TouchableOpacity>}
        {selectedPro && <Text style={styles.sectionTitle}>🛡️ Vérifications QualiVérifié</Text>}
         {selectedPro && <Text style={styles.profileInfo}>✅ Licence RBQ vérifiée</Text>}
          {selectedPro && <Text style={styles.profileInfo}>✅ Assurance responsabilité vérifiée</Text>}
@@ -589,7 +647,7 @@ const [category, setCategory] = useState('');
 const [selectedPro, setSelectedPro] = useState(null);
   const [projects, setProjects] = useState([]);
   const [filters, setFilters] = useState({});
-
+const [favorites, setFavorites] = useState([]);
 useEffect(() => {
  
   const backAction = () => {
@@ -619,10 +677,10 @@ useEffect(() => {
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
     tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
-    tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} /> :
+    tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} /> :
     tab === 'Projets' ? <Projects projects={projects} setProjects={setProjects} /> :
     tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
-    <Profile onNavigate={navigate} selectedPro={selectedPro} />
+    <Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} />
 
   return (
     <SafeAreaView style={styles.safe}>
