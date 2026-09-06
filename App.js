@@ -677,7 +677,7 @@ useEffect(() => {
   tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
   tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} /> :
   tab === 'Messages' ? <Text style={styles.screenTitle}>Messages</Text> :
-  <Text style={styles.screenTitle}>Profil</Text>;
+  <Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} />;
 
   return (
     <SafeAreaView style={styles.safe}>
