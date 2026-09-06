@@ -129,7 +129,30 @@ const professionalServices = [
 'Arpentage',
 'Design intérieur'
 ];
-function AppHeader() {
+const tradeTranslations = {
+  'Rénovation générale': 'General renovation',
+  'Charpente et menuiserie': 'Framing and carpentry',
+  'Portes et fenêtres': 'Doors and windows',
+  'Plomberie': 'Plumbing',
+  'Électricité': 'Electrical',
+  'Ventilation': 'Ventilation',
+  'Chauffage': 'Heating',
+  'Climatisation': 'Air conditioning',
+  'Réfrigération': 'Refrigeration',
+  'Rénovation': 'Renovation',
+  'Tireur de joint': 'Drywall finisher',
+  'Peinture': 'Painting',
+  'Menuiserie': 'Carpentry',
+  'Inspection préachat': 'Pre-purchase inspection',
+  'Inspection de bâtiment': 'Building inspection',
+  'Évaluation immobilière': 'Real estate appraisal',
+  'Architecture': 'Architecture',
+  'Technologue en architecture': 'Architectural technologist',
+  'Ingénierie': 'Engineering',
+  'Arpentage': 'Land surveying',
+  'Design intérieur': 'Interior design'
+};
+function AppHeader({ language = 'fr', setLanguage }) {
   return (
     <View style={styles.header}>
       <View style={{ width: 68, height: 58, marginRight: 12, alignItems: 'center', justifyContent: 'flex-end' }}>
@@ -176,8 +199,17 @@ function AppHeader() {
 </View>
       <View style={{ flex: 1 }}>
         <Text style={styles.brand}>QualiVérifié</Text>
-        <Text style={styles.tagline}>Des pros vérifiés. Des projets en confiance.</Text>
-      </View>
+        <Text style={styles.tagline}>Des projets en confiance, là où licence, distance et compétences ne font qu’un.</Text>
+      <View style={{ flexDirection: 'row', marginTop: 5, gap: 8 }}>
+  <TouchableOpacity onPress={() => setLanguage && setLanguage('fr')}>
+    <Text style={{ color: language === 'fr' ? COLORS.gold2 : '#FFFFFF', fontWeight: '900', fontSize: 11 }}>FR</Text>
+  </TouchableOpacity>
+  <Text style={{ color: '#FFFFFF', fontSize: 11 }}>|</Text>
+  <TouchableOpacity onPress={() => setLanguage && setLanguage('en')}>
+    <Text style={{ color: language === 'en' ? COLORS.gold2 : '#FFFFFF', fontWeight: '900', fontSize: 11 }}>EN</Text>
+  </TouchableOpacity>
+</View>
+</View>
     </View>
   );
 }
@@ -190,20 +222,20 @@ function Badge() {
   );
 }
 
-function Home({ onNavigate }) {
+function Home({ onNavigate, language, setLanguage }) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
+      <AppHeader language={language} setLanguage={setLanguage} />
       <View style={styles.hero}>
-        <Text style={styles.heroTitle}>Adresse du chantier</Text>
-        <Text style={styles.heroText}>Entrez l’adresse où les travaux seront réalisés.</Text>
+        <Text style={styles.heroTitle}>{language === 'fr' ? 'Adresse du chantier' : 'Work site address'}</Text>
+        <Text style={styles.heroText}>{language === 'fr' ? 'Entrez l’adresse où les travaux seront réalisés.' : 'Enter the address where the work will be carried out.'}</Text>
         
       </View>
 
       
 
 <TextInput
-  placeholder="Adresse du chantier"
+  placeholder={language === 'fr' ? 'Adresse du chantier' : 'Work site address'}
   style={styles.input}
   onSubmitEditing={() => onNavigate('TypeTravaux')}
   returnKeyType="search"
@@ -211,11 +243,11 @@ function Home({ onNavigate }) {
 
 
 
-      <Text style={styles.whyTitle}>Pourquoi QualiVérifié?</Text>
+      <Text style={styles.whyTitle}>{language === 'fr' ? 'Pourquoi QualiVérifié?' : 'Why QualiVérifié?'}</Text>
       {[
-        ['✓', 'Pros vérifiés', 'Identité, entreprise, licence et assurance vérifiées.'],
-        ['★', 'Avis authentiques', 'Des évaluations liées à de vrais projets.'],
-        ['⌖', 'Près de chez vous', 'Recherche par métier, ville et distance.'],
+        ['✓', language === 'fr' ? 'Pros vérifiés' : 'Verified pros', language === 'fr' ? 'Identité, entreprise, licence et assurance vérifiées.' : 'Identity, business, licence and insurance verified.'],
+        ['★', language === 'fr' ? 'Avis authentiques' : 'Authentic reviews', language === 'fr' ? 'Des évaluations liées à de vrais projets.' : 'Reviews linked to real projects.'],
+        ['⌖', language === 'fr' ? 'Près de chez vous' : 'Near you', language === 'fr' ? 'Recherche par métier, ville et distance.' : 'Search by trade, city and distance.'],
       ].map(([i,t,d]) => (
         <View key={t} style={styles.infoCard}>
           <Text style={styles.infoIcon}>{i}</Text>
@@ -228,46 +260,46 @@ function Home({ onNavigate }) {
     </ScrollView>
   );
 }
-function TypeTravaux({ onNavigate }) {
+function TypeTravaux({ onNavigate, language, setLanguage }) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
+      <AppHeader language={language} setLanguage={setLanguage} />
 
-      <Text style={styles.screenTitle}>Type de travaux</Text>
+      <Text style={styles.screenTitle}>{language === 'fr' ? 'Type de travaux' : 'Type of work'}</Text>
 
       <View style={styles.grid}>
         <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel')}>
           <Text style={styles.categoryIcon}>⌂</Text>
-          <Text style={styles.categoryText}>Résidentiel</Text>
+          <Text style={styles.categoryText}>{language === 'fr' ? 'Résidentiel' : 'Residential'}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel – CCQ')}>
           <Text style={styles.categoryIcon}>⌂</Text>
-          <Text style={styles.categoryText}>Résidentiel – CCQ</Text>
+          <Text style={styles.categoryText}>{language === 'fr' ? 'Résidentiel – CCQ' : 'Residential – CCQ'}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Commercial')}>
           <Text style={styles.categoryIcon}>▦</Text>
-          <Text style={styles.categoryText}>Commercial</Text>
+          <Text style={styles.categoryText}>{language === 'fr' ? 'Commercial' : 'Commercial'}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Services professionnels')}>
           <Text style={styles.categoryIcon}>⌂</Text>
-          <Text style={styles.categoryText}>Inspection et services professionnels</Text>
+          <Text style={styles.categoryText}>{language === 'fr' ? 'Inspection et services professionnels' : 'Inspection and professional services'}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
 
-function Metiers({ onNavigate, initialType }) {
+function Metiers({ onNavigate, initialType, language, setLanguage }) {
   const [projectType, setProjectType] = useState(initialType === 'Commercial' ? 'Commercial' : initialType ? 'Résidentiel' : '');
 const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel — CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
+      <AppHeader language={language} setLanguage={setLanguage} />
 
-      <Text style={styles.screenTitle}>{initialType === 'Services professionnels' ? 'Inspection et services professionnels' : initialType ? `Métiers — ${initialType}` : 'Tous les métiers et services'}</Text>
+      <Text style={styles.screenTitle}>{language === 'fr' ? (initialType === 'Services professionnels' ? 'Inspection et services professionnels' : initialType ? `Métiers – ${initialType}` : 'Tous les métiers et services') : (initialType === 'Services professionnels' ? 'Inspection and professional services' : initialType === 'Résidentiel' ? 'Trades – Residential' : initialType === 'Résidentiel – CCQ' ? 'Trades – Residential – CCQ' : initialType === 'Commercial' ? 'Trades – Commercial' : 'All trades and services')}</Text>
       
 
       
@@ -279,7 +311,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
             onPress={() => onNavigate('Pros', c, null, { projectType, workType })}
           >
             <Text style={styles.categoryIcon}>⌂</Text>
-            <Text style={styles.categoryText}>{c}</Text>
+            <Text style={styles.categoryText}>{language === 'fr' ? c : (tradeTranslations[c] || c)}</Text>
           </TouchableOpacity>
         ))}
       
@@ -291,7 +323,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     </ScrollView>
   );
 }
-function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites, setFavorites }) {
+function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites, setFavorites, language, setLanguage }) {
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
 
@@ -308,13 +340,12 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
-      <Text style={styles.screenTitle}>Trouver un pro</Text>
-      <TextInput value={query} onChangeText={setQuery} placeholder="Métier ou entreprise" style={styles.input} />
-      <TextInput value={city} onChangeText={setCity} placeholder="Ville (ex. Montréal)" style={styles.input} />
-      <Text style={styles.resultCount}>{results.length} résultat(s)</Text>
-
-      {results.map((p) => (
+      <AppHeader language={language} setLanguage={setLanguage} />
+      <Text style={styles.screenTitle}>{language === 'fr' ? 'Trouver un pro' : 'Find a pro'}</Text>
+      <TextInput value={query} onChangeText={setQuery} placeholder={language === 'fr' ? 'Métier ou entreprise' : 'Trade or company'} style={styles.input} />
+      <TextInput value={city} onChangeText={setCity} placeholder={language === 'fr' ? 'Ville (ex. Montréal)' : 'City (e.g. Montreal)'} style={styles.input} />
+      <Text style={styles.resultCount}>{results.length} {language === 'fr' ? 'résultat(s)' : 'result(s)'}</Text>
+ {results.map((p) => (
         <View key={p.id} style={styles.proCard}>
           <View style={styles.avatar}><Text style={styles.avatarText}>{p.name.slice(0,1)}</Text></View>
           <View style={{flex:1}}>
@@ -339,7 +370,7 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
     </TouchableOpacity>
   </View>
 </View>
-            <Text style={styles.proTrade}>{p.trade}</Text>
+            <Text style={styles.proTrade}>{language === 'fr' ? p.trade : (tradeTranslations[p.trade] || p.trade)}</Text>
             <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
   {p.projectTypes?.map((type) => (
@@ -355,8 +386,10 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
   ))}
 </View>
             <View style={styles.cardActions}>
-            <TouchableOpacity onPress={() => onNavigate('Profil','',p)} style={styles.secondaryBtn}><Text style={styles.secondaryBtnText}>Voir le profil</Text></TouchableOpacity>
-              <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>Soumission</Text></TouchableOpacity>
+  <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.secondaryBtn}>
+    <Text style={styles.secondaryBtnText}>{language === 'fr' ? 'Voir le profil' : 'View profile'}</Text>
+  </TouchableOpacity>
+  <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>{language === 'fr' ? 'Soumission' : 'Quote'}</Text></TouchableOpacity>
             </View>
           </View>
         </View>
@@ -364,16 +397,16 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
     </ScrollView>
   );
 
-function Messages({ selectedPro }) {
+function Messages({ selectedPro, language, setLanguage }) {
   const [selectedChat, setSelectedChat] = useState(selectedPro?.name || null);
 const [messageText, setMessageText] = useState('');
 const [sentMessage, setSentMessage] = useState('');
   if (selectedChat) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
+      <AppHeader language={language} setLanguage={setLanguage} />
       <TouchableOpacity onPress={() => setSelectedChat(null)}>
-        <Text style={styles.proTrade}>‹ Retour aux messages</Text>
+        <Text style={styles.proTrade}>{language === 'fr' ? '‹ Retour aux messages' : '‹ Back to messages'}</Text>
       </TouchableOpacity>
 
       <Text style={styles.screenTitle}>{selectedChat}</Text>
@@ -393,7 +426,7 @@ const [sentMessage, setSentMessage] = useState('');
       <TextInput
   value={messageText}
   onChangeText={setMessageText}
-  placeholder="Écrire un message..."
+  placeholder={language === 'fr' ? 'Écrire un message...' : 'Write a message...'}
   placeholderTextColor={COLORS.muted}
   style={styles.input}
 />
@@ -407,18 +440,18 @@ const [sentMessage, setSentMessage] = useState('');
     }
   }}
 >
-  <Text style={styles.primaryBtnText}>Envoyer</Text>
+  <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
     </ScrollView>
   );
 }
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
-      <Text style={styles.screenTitle}>Messages</Text>
+      <AppHeader language={language} setLanguage={setLanguage} />
+      <Text style={styles.screenTitle}>{language === 'fr' ? 'Messages' : 'Messages'}</Text>
       {[
-        ['Finition Expert', 'Bonjour! Je peux vous envoyer une estimation ce soir.', '10:42'],
-        ['Constructions RL', 'Merci pour les détails du projet.', 'Hier'],
+        ['Finition Expert', language === 'fr' ? 'Bonjour! Je peux vous envoyer une estimation ce soir.' : 'Hello! I can send you an estimate tonight.', '10:42'],
+        ['Constructions RL', language === 'fr' ? 'Merci pour les détails du projet.' : 'Thank you for the project details.', language === 'fr' ? 'Hier' : 'Yesterday'],
       ].map(([name,msg,time]) => (
         <TouchableOpacity key={name} onPress={() => setSelectedChat(name)} style={styles.messageCard}>
           <View style={styles.avatarSmall}><Text style={styles.avatarText}>{name[0]}</Text></View>
@@ -433,7 +466,7 @@ const [sentMessage, setSentMessage] = useState('');
   );
 }
 
-function Profile({ onNavigate, selectedPro, favorites, setFavorites }) {
+function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage }) {
   const [profileSection, setProfileSection] = useState(null);
   const [companyName, setCompanyName] = useState('');
 const [neq, setNeq] = useState('');
@@ -450,20 +483,20 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
+      <AppHeader language={language} setLanguage={setLanguage} />
       <TouchableOpacity onPress={() => setProfileSection(null)}>
-        <Text style={styles.proTrade}>‹ Retour au profil</Text>
+        <Text style={styles.proTrade}>{language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile'}</Text>
       </TouchableOpacity>
       <Text style={styles.screenTitle}>{profileSection}</Text>
       <View style={styles.profileCard}>
   {profileSection === '🛡️ Devenir un pro vérifié' ? (
     <>
-      <Text style={styles.sectionTitle}>Informations de l’entreprise</Text>
+      <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
 
       <TextInput
   value={companyName}
   onChangeText={setCompanyName}
-  placeholder="Nom de l’entreprise"
+  placeholder={language === 'fr' ? 'Nom de l’entreprise' : 'Company name'}
   style={styles.input}
 />
 
@@ -473,24 +506,22 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   placeholder="NEQ"
   style={styles.input}
 />
-{neq.trim() !== '' && !isNeqValid && <Text style={styles.infoText}>Le NEQ doit contenir exactement 10 chiffres.</Text>}
+{neq.trim() !== '' && !isNeqValid && <Text style={styles.infoText}>{language === 'fr' ? 'Le NEQ doit contenir exactement 10 chiffres.' : 'The NEQ must contain exactly 10 digits.'}</Text>}
       <TextInput
   value={rbq}
   onChangeText={setRbq}
-  placeholder="Numéro de licence RBQ"
+  placeholder={language === 'fr' ? 'Numéro de licence RBQ' : 'RBQ licence number'}
   style={styles.input}
 />
-{rbq.trim() !== '' && !isRbqValid && <Text style={styles.infoText}>Format RBQ attendu : 1234-5678-01.</Text>}
+{rbq.trim() !== '' && !isRbqValid && <Text style={styles.infoText}>{language === 'fr' ? 'Format RBQ attendu : 1234-5678-01.' : 'Expected RBQ format: 1234-5678-01.'}</Text>}
       <TextInput
   value={companyCity}
   onChangeText={setCompanyCity}
-  placeholder="Ville"
+  placeholder={language === 'fr' ? 'Ville' : 'City'}
   style={styles.input}
 />
-<Text style={styles.sectionTitle}>Sous-catégories RBQ</Text>
-<Text style={styles.infoText}>
-  Sélectionnez les sous-catégories correspondant à votre licence.
-</Text>
+<Text style={styles.sectionTitle}>{language === 'fr' ? 'Sous-catégories RBQ' : 'RBQ subcategories'}</Text>
+<Text style={styles.infoText}>{language === 'fr' ? 'Sélectionnez les sous-catégories correspondant à votre licence.' : 'Select the subcategories that match your licence.'}</Text>
    <View style={styles.grid}>
   {['Entrepreneur général', 'Charpente et menuiserie', 'Portes et fenêtres', 'Plomberie'].map((category) => (
     <TouchableOpacity
@@ -498,114 +529,107 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       style={[styles.categoryCard, rbqCategories.includes(category) && { borderColor: COLORS.gold, borderWidth: 2 }]}
       onPress={() => toggleRbqCategory(category)}
     >
-      <Text style={styles.categoryText}>{rbqCategories.includes(category) ? '✓ ' : ''}{category}</Text>
-    </TouchableOpacity>
+      <Text style={styles.categoryText}>{rbqCategories.includes(category) ? '✓ ' : ''}{language === 'fr' ? category : ({'Entrepreneur général':'General contractor','Charpente et menuiserie':'Framing and carpentry','Portes et fenêtres':'Doors and windows','Plomberie':'Plumbing'}[category] || category)}</Text>
   ))}
 </View>
-  <Text style={styles.sectionTitle}>Statut CCQ</Text>
+  <Text style={styles.sectionTitle}>{language === 'fr' ? 'Statut CCQ' : 'CCQ status'}</Text>
 <View style={styles.grid}>
   <TouchableOpacity style={[styles.categoryCard, ccqStatus === 'CCQ' && { borderColor: COLORS.gold, borderWidth: 2 }]} onPress={() => setCcqStatus('CCQ')}>
     <Text style={styles.categoryText}>✓ CCQ</Text>
   </TouchableOpacity>
   <TouchableOpacity style={[styles.categoryCard, ccqStatus === 'Hors CCQ' && { borderColor: COLORS.gold, borderWidth: 2 }]} onPress={() => setCcqStatus('Hors CCQ')}>
-    <Text style={styles.categoryText}>✓ Hors CCQ</Text>
+    <Text style={styles.categoryText}>✓ {language === 'fr' ? 'Hors CCQ' : 'Non-CCQ'}</Text>
   </TouchableOpacity>
 </View>
       <TouchableOpacity style={[styles.primaryBtn, (!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0 || !ccqStatus.trim()) && { opacity: 0.4 }]} disabled={!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0 || !ccqStatus.trim()} onPress={() => setProfileSection('Vérification en cours')}>
-        <Text style={styles.primaryBtnText}>
-          Commencer la vérification
-        </Text>
+        <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Commencer la vérification' : 'Start verification'}</Text>
       </TouchableOpacity>
     </>
   ) : profileSection === 'Vérification en cours' ? (
   <>
-    <Text style={styles.sectionTitle}>Vérification en cours</Text>
-    <Text style={styles.profileInfo}>Entreprise : {companyName}</Text>
+    <Text style={styles.sectionTitle}>{language === 'fr' ? 'Vérification en cours' : 'Verification in progress'}</Text>
+    <Text style={styles.profileInfo}>{language === 'fr' ? 'Entreprise' : 'Company'} : {companyName}</Text>
     <Text style={styles.profileInfo}>NEQ : {neq}</Text>
-    <Text style={styles.profileInfo}>Licence RBQ : {rbq}</Text>
-    <Text style={styles.profileInfo}>Sous-catégories RBQ : {rbqCategories}</Text>
-<Text style={styles.profileInfo}>Statut CCQ : {ccqStatus}</Text>
-    <Text style={styles.profileInfo}>Ville : {companyCity}</Text>
-    <Text style={styles.infoText}>
-      🛡️ Votre demande est prête à être vérifiée par QualiVérifié.
-    </Text>
-  </>
+    <Text style={styles.profileInfo}>{language === 'fr' ? 'Licence RBQ' : 'RBQ licence'} : {rbq}</Text>
+    <Text style={styles.profileInfo}>{language === 'fr' ? 'Sous-catégories RBQ' : 'RBQ subcategories'} : {rbqCategories}</Text>
+<Text style={styles.profileInfo}>{language === 'fr' ? 'Statut CCQ' : 'CCQ status'} : {ccqStatus}</Text>
+<Text style={styles.profileInfo}>{language === 'fr' ? 'Ville' : 'City'} : {companyCity}</Text>
+<Text style={styles.infoText}>{language === 'fr' ? '🛡️ Votre demande est prête à être vérifiée par QualiVérifié.' : '🛡️ Your application is ready to be verified by QualiVérifié.'}</Text>
+</>
 ) : profileSection === 'Mes favoris' ? (
-  <>
-    {favorites.length === 0 ? (
-      <Text style={styles.infoText}>♡ Aucun favori pour le moment.</Text>
+<>
+{favorites.length === 0 ? (
+<Text style={styles.infoText}>{language === 'fr' ? '♡ Aucun favori pour le moment.' : '♡ No favorites yet.'}</Text>
     ) : (
       favorites.map((fav) => (
         <View key={fav.id} style={[styles.proCard, { flexDirection: 'column', alignItems: 'stretch', width: '100%' }]}>
           <Text style={styles.proName}>{fav.name}</Text>
-          <Text style={styles.proTrade}>{fav.trade}</Text>
-          <Text style={styles.proMeta}>★ {fav.rating} • {fav.city}, QC</Text>
+<Text style={styles.proTrade}>{language === 'fr' ? fav.trade : (tradeTranslations[fav.trade] || fav.trade)}</Text>
+<Text style={styles.proMeta}>★ {fav.rating} • {fav.city}, QC</Text>
 
-          <TouchableOpacity
-            style={[styles.contactBtn, { alignSelf: 'flex-start', width: '100%', marginTop: 10 }]}
-            onPress={() => onNavigate('Profil', '', fav)}
-          >
-            <Text style={styles.contactBtnText}>Voir le profil</Text>
-          </TouchableOpacity>
+<TouchableOpacity
+  style={[styles.contactBtn, { alignSelf: 'flex-start', width: '100%', marginTop: 10 }]}
+  onPress={() => onNavigate('Profil', '', fav)}
+>
+  <Text style={styles.contactBtnText}>{language === 'fr' ? 'Voir le profil' : 'View profile'}</Text>
+</TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.contactBtn, { alignSelf: 'flex-start', width: '100%', marginTop: 8 }]}
-            onPress={() =>
-              setFavorites((prev) =>
-                prev.filter((item) => item.id !== fav.id)
-              )
-            }
-          >
-            <Text style={styles.contactBtnText}>♥ Retirer des favoris</Text>
+<TouchableOpacity
+  style={[styles.contactBtn, { alignSelf: 'flex-start', width: '100%', marginTop: 8 }]}
+  onPress={() =>
+    setFavorites((prev) =>
+      prev.filter((item) => item.id !== fav.id)
+    )
+  }
+>
+  <Text style={styles.contactBtnText}>{language === 'fr' ? '🧡 Retirer des favoris' : '🧡 Remove from favorites'}</Text>
           </TouchableOpacity>
         </View>
       ))
     )}
   </>
 ) : (
-  <Text style={styles.infoText}>
-    Cette section sera bientôt disponible dans QualiVérifié.
-  </Text>
+  <Text style={styles.infoText}>{language === 'fr' ? 'Cette section sera bientôt disponible dans QualiVérifié.' : 'This section will be available soon in QualiVérifié.'}</Text>
 )}
 </View>
-    </ScrollView>
-  );
-  }
-  return (
-    <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader />
-      <Text style={styles.screenTitle}>{selectedPro ? 'Profil QualiVérifié' : 'Mon profil'}</Text>
-      <View style={styles.profileCard}>
-        <View style={styles.avatarLarge}><Text style={styles.avatarText}>{selectedPro ? selectedPro.name.slice(0,1) : 'B'}</Text></View>
-        <Text style={styles.profileName}>{selectedPro ? selectedPro.name : 'Compte client'}</Text>
-        <Text style={styles.infoText}>{selectedPro ? `${selectedPro.trade} • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} avis)` : 'Gérez vos projets, messages, favoris et avis.'}</Text>
+</ScrollView>
+);
+}
+return (
+<ScrollView contentContainerStyle={styles.page}>
+<AppHeader language={language} setLanguage={setLanguage} />
+<Text style={styles.screenTitle}>{language === 'fr' ? (selectedPro ? 'Profil QualiVérifié' : 'Mon profil') : (selectedPro ? 'QualiVérifié Profile' : 'My profile')}</Text>
+<View style={styles.profileCard}>
+<View style={styles.avatarLarge}><Text style={styles.avatarText}>{selectedPro ? selectedPro.name.slice(0,1) : 'B'}</Text></View>
+<Text style={styles.profileName}>{selectedPro ? selectedPro.name : (language === 'fr' ? 'Compte client' : 'Client account')}</Text>
+<Text style={styles.infoText}>{selectedPro ? `${language === 'fr' ? selectedPro.trade : (tradeTranslations[selectedPro.trade] || selectedPro.trade)} • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} ${language === 'fr' ? 'avis' : 'reviews'})` : (language === 'fr' ? 'Gérez vos projets, messages, favoris et avis.' : 'Manage your projects, messages, favorites and reviews.')}</Text>
       </View>
-{selectedPro && <View style={styles.verifiedBadge}><Text style={styles.verifiedBadgeText}>✓ QualiVérifié — Entrepreneur vérifié</Text></View>}
- {selectedPro && <Text style={styles.profileInfo}>🛡️ Licence et assurance vérifiées</Text>}
-  {selectedPro && <Text style={styles.profileInfo}>🛠️ Services offerts : rénovation intérieure et finition</Text>}
-   {selectedPro && <Text style={styles.profileInfo}>⭐ 4.9/5 basé sur 42 avis clients</Text>}
-    {selectedPro && <Text style={styles.sectionTitle}>À propos</Text>}
-     {selectedPro && <Text style={styles.profileInfo}>Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.</Text>}
-      {selectedPro && <Text style={styles.profileInfo}>🏆 Plus de 10 ans d’expérience</Text>}
-      {selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets')}><Text style={styles.quoteBtnText}>📋 Demander une soumission</Text></TouchableOpacity>}
-       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages', '', selectedPro)}><Text style={styles.contactBtnText}>💬 Contacter l’entrepreneur</Text></TouchableOpacity>}
-       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => setFavorites((prev) => prev.some((fav) => fav.id === selectedPro.id) ? prev.filter((fav) => fav.id !== selectedPro.id) : [...prev, selectedPro])}><Text style={styles.contactBtnText}>{favorites.some((fav) => fav.id === selectedPro.id) ? '♥️ Retirer des favoris' : '♡ Ajouter aux favoris'}</Text></TouchableOpacity>}
-       {selectedPro && <Text style={styles.sectionTitle}>🛡️ Vérifications QualiVérifié</Text>}
-        {selectedPro && <Text style={styles.profileInfo}>✅ Licence RBQ vérifiée</Text>}
-         {selectedPro && <Text style={styles.profileInfo}>✅ Assurance responsabilité vérifiée</Text>}
-          {selectedPro && <Text style={styles.profileInfo}>✅ Identité de l’entreprise vérifiée</Text>}
-           {selectedPro && <Text style={styles.sectionTitle}>📍 Zones desservies</Text>}
+{selectedPro && <View style={styles.verifiedBadge}><Text style={styles.verifiedBadgeText}>{language === 'fr' ? '✓ QualiVérifié — Entrepreneur vérifié' : '✓ QualiVérifié — Verified contractor'}</Text></View>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🛡️ Licence et assurance vérifiées' : '🛡️ Licence and insurance verified'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🛠️ Services offerts : rénovation intérieure et finition' : '🛠️ Services offered: interior renovation and finishing'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '⭐ 4.9/5 basé sur 42 avis clients' : '⭐ 4.9/5 based on 42 customer reviews'}</Text>}
+{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? 'À propos' : 'About'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? 'Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.' : 'Constructions RL supports its clients with their interior renovation projects, providing professional, reliable and meticulous service.'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🏆 Plus de 10 ans d’expérience' : '🏆 Over 10 years of experience'}</Text>}
+{selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets')}><Text style={styles.quoteBtnText}>{language === 'fr' ? '📋 Demander une soumission' : '📋 Request a quote'}</Text></TouchableOpacity>}
+{selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages', '', selectedPro)}><Text style={styles.contactBtnText}>{language === 'fr' ? '💬 Contacter l’entrepreneur' : '💬 Contact contractor'}</Text></TouchableOpacity>}
+       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => setFavorites((prev) => prev.some((fav) => fav.id === selectedPro.id) ? prev.filter((fav) => fav.id !== selectedPro.id) : [...prev, selectedPro])}><Text style={styles.contactBtnText}>{favorites.some((fav) => fav.id === selectedPro.id) ? (language === 'fr' ? '❤️ Retirer des favoris' : '❤️ Remove from favorites') : (language === 'fr' ? '♡ Ajouter aux favoris' : '♡ Add to favorites')}</Text></TouchableOpacity>}
+{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '🛡️ Vérifications QualiVérifié' : '🛡️ QualiVérifié verifications'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '✅ Licence RBQ vérifiée' : '✅ RBQ licence verified'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '✅ Assurance responsabilité vérifiée' : '✅ Liability insurance verified'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '✅ Identité de l’entreprise vérifiée' : '✅ Company identity verified'}</Text>}
+{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '📍 Zones desservies' : '📍 Service areas'}</Text>}
             {selectedPro && <Text style={styles.profileInfo}>Montréal • Laval • Rive-Nord • Rive-Sud</Text>}
-             {selectedPro && <Text style={styles.sectionTitle}>📸 Réalisations</Text>}
-              {selectedPro && <Text style={styles.profileInfo}>📷 Photos des réalisations à venir</Text>}
-               {selectedPro && <Text style={styles.sectionTitle}>⭐ Avis clients</Text>}
-               {selectedPro && <Text style={styles.profileInfo}>⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié</Text>}
-      {!selectedPro && ['🛡 Devenir un pro vérifié', '🏗️ Projets disponibles', 'Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
-        
-        <TouchableOpacity key={x} onPress={() => x === '🏗️ Projets disponibles' ? onNavigate('ProjetsDisponibles') : x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
-          <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
-        </TouchableOpacity>
-      ))}
+{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '📸 Réalisations' : '📸 Projects'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '📷 Photos des réalisations à venir' : '📷 Project photos coming soon'}</Text>}
+{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}</Text>}
+{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié' : '⭐⭐⭐⭐⭐ Excellent work, professional and very clean. — Verified client'}</Text>}
+{!selectedPro && ['🛡️ Devenir un pro vérifié', '🏗️ Projets disponibles', 'Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
+<TouchableOpacity key={x} onPress={() => x === '🏗️ Projets disponibles' ? onNavigate('ProjetsDisponibles') : x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
+<Text style={styles.menuText}>{language === 'fr' ? x : ({'🛡️ Devenir un pro vérifié':'🛡️ Become a verified pro','🏗️ Projets disponibles':'🏗️ Available projects','Mes projets':'My projects','Mes soumissions':'My quotes','Mes favoris':'My favorites','Mes avis':'My reviews','Paramètres':'Settings'}[x] || x)}</Text><Text style={styles.chevron}>›</Text>
+</TouchableOpacity>
+))}
+
     </ScrollView>
   );
 }
@@ -617,6 +641,7 @@ const [selectedPro, setSelectedPro] = useState(null);
   const [projects, setProjects] = useState([]);
   const [filters, setFilters] = useState({});
 const [favorites, setFavorites] = useState([]);
+const [language, setLanguage] = useState('fr');
 useEffect(() => {
  
   const backAction = () => {
@@ -644,14 +669,14 @@ useEffect(() => {
 };
 
   const content =
-    tab === 'Accueil' ? <Home onNavigate={navigate} /> :
-    tab === 'TypeTravaux' ? <TypeTravaux onNavigate={navigate} /> :
-tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
-    tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} /> :
+    tab === 'Accueil' ? <Home onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
+    tab === 'TypeTravaux' ? <TypeTravaux onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
+tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
+    tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} /> :
   
   
-    tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
-    <Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} />
+    tab === 'Messages' ? <Messages selectedPro={selectedPro} language={language} setLanguage={setLanguage} /> :
+<Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} />
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -659,24 +684,21 @@ tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
       <View style={styles.content}>{content}</View>
       <View style={styles.nav}>
         {[
-          ['Accueil','⌂'],
-          ['Pros','⌕'],
-          
-['Messages','✉'],
-          
-          ['Profil','●'],
-        ].map(([label, icon]) => (
-          <TouchableOpacity key={label} style={styles.navItem} onPress={() => navigate(label)}>
-            <Text style={[styles.navIcon, tab === label && styles.navActive]}>{icon}</Text>
-            <Text style={[styles.navText, tab === label && styles.navActive]}>{label}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    
+  ['Accueil', language === 'fr' ? 'Accueil' : 'Home', '⌂'],
+  ['Pros', language === 'fr' ? 'Pros' : 'Pros', '⚲'],
+  ['Messages', language === 'fr' ? 'Messages' : 'Messages', '✉'],
+  ['Profil', language === 'fr' ? 'Profil' : 'Profile', '●'],
+].map(([tabName, label, icon]) => (
+          <TouchableOpacity key={tabName} style={styles.navItem} onPress={() => navigate(tabName)}>
+  <Text style={[styles.navIcon, tab === tabName && styles.navActive]}>{icon}</Text>
+  <Text style={[styles.navText, tab === tabName && styles.navActive]}>{label}</Text>
+</TouchableOpacity>
+))}
+</View>
 
 <View style={styles.sloganBar}>
-  <Text style={styles.sloganTop}>Des projets aujourd’hui.</Text>
-  <Text style={styles.sloganBottom}>Un meilleur demain.</Text>
+  <Text style={styles.sloganTop}>{language === 'fr' ? 'Des projets aujourd’hui.' : 'Projects today.'}</Text>
+  <Text style={styles.sloganBottom}>{language === 'fr' ? 'Un meilleur demain.' : 'A better tomorrow.'}</Text>
 </View>
 
 </SafeAreaView>
