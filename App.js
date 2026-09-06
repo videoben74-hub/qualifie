@@ -181,20 +181,19 @@ function AppHeader({ language = 'fr', setLanguage }) {
     Q
   </Text>
 
-  <View
-    style={{
-      position: 'absolute',
-      width: 27,
-      height: 10,
-      right: 4,
-      bottom: 3,
-      borderBottomWidth: 3,
-      borderRightWidth: 3,
-      borderColor: COLORS.gold2,
-      borderBottomRightRadius: 18,
-      transform: [{ rotate: '8deg' }],
-    }}
-  />
+  <Text
+  style={{
+    position: 'absolute',
+    right: -1,
+    bottom: -5,
+    color: COLORS.gold2,
+    fontSize: 32,
+    fontWeight: '900',
+    transform: [{ rotate: '-8deg' }],
+  }}
+>
+  ✓
+</Text>
 </View>
 </View>
       <View style={{ flex: 1 }}>
@@ -260,11 +259,15 @@ function Home({ onNavigate, language, setLanguage }) {
           </View>
         </View>
       ))}
-   <View style={{ alignItems: 'center', marginTop: 45, marginBottom: 25 }}>
-  <View style={{ width: 105, height: 52, backgroundColor: COLORS.gold2, borderTopLeftRadius: 60, borderTopRightRadius: 60 }}>
-    <View style={{ position: 'absolute', width: 12, height: 42, backgroundColor: COLORS.gold, left: 46, top: 5, borderRadius: 6 }} />
+   <View style={{ alignItems: 'center', marginTop: 38, marginBottom: 28 }}>
+  <View style={{ width: 190, height: 185, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ position: 'absolute', top: 10, left: 36, width: 72, height: 7, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '-32deg' }] }} />
+    <View style={{ position: 'absolute', top: 10, right: 36, width: 72, height: 7, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '32deg' }] }} />
+    <View style={{ width: 150, height: 150, borderRadius: 75, backgroundColor: COLORS.navy, alignItems: 'center', justifyContent: 'center', marginTop: 28 }}>
+      <Text style={{ color: '#FFFFFF', fontSize: 112, fontWeight: '900', lineHeight: 125, marginTop: -4 }}>Q</Text>
+      <Text style={{ position: 'absolute', right: 6, bottom: 5, color: COLORS.gold2, fontSize: 78, fontWeight: '900', transform: [{ rotate: '-8deg' }] }}>✓</Text>
+    </View>
   </View>
-  <View style={{ width: 140, height: 12, backgroundColor: COLORS.gold2, borderRadius: 6, marginTop: -2 }} />
 </View>
   </ScrollView>
   );
