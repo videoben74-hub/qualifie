@@ -259,17 +259,38 @@ function Home({ onNavigate, language, setLanguage }) {
           </View>
         </View>
       ))}
-   <View style={{ alignItems: 'center', marginTop: 38, marginBottom: 28 }}>
-  <View style={{ width: 190, height: 185, alignItems: 'center', justifyContent: 'center' }}>
-    <View style={{ position: 'absolute', top: 10, left: 36, width: 72, height: 7, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '-32deg' }] }} />
-    <View style={{ position: 'absolute', top: 10, right: 36, width: 72, height: 7, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '32deg' }] }} />
-    <View style={{ width: 150, height: 150, borderRadius: 75, backgroundColor: COLORS.navy, alignItems: 'center', justifyContent: 'center', marginTop: 28 }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 112, fontWeight: '900', lineHeight: 125, marginTop: -4 }}>Q</Text>
-      <Text style={{ position: 'absolute', right: 6, bottom: 5, color: COLORS.gold2, fontSize: 78, fontWeight: '900', transform: [{ rotate: '-8deg' }] }}>✓</Text>
+   <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 38, marginBottom: 28 }}>
+
+  <TouchableOpacity
+    style={{ flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 52 }}
+    onPress={() => {}}
+  >
+    <Text style={{ color: COLORS.navy, fontSize: 14, fontWeight: '900', textAlign: 'center' }}>
+      {language === 'fr' ? 'Connectez-vous' : 'Sign in'}
+    </Text>
+  </TouchableOpacity>
+
+  <View style={{ width: 145, height: 170, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ position: 'absolute', top: 8, left: 27, width: 58, height: 6, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '-32deg' }] }} />
+    <View style={{ position: 'absolute', top: 8, right: 27, width: 58, height: 6, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '32deg' }] }} />
+
+    <View style={{ width: 126, height: 126, borderRadius: 63, backgroundColor: COLORS.navy, alignItems: 'center', justifyContent: 'center', marginTop: 26 }}>
+      <View style={{ width: 94, height: 94, borderRadius: 47, borderWidth: 16, borderColor: '#FFFFFF' }} />
+      <Text style={{ position: 'absolute', right: 1, bottom: 1, color: COLORS.gold2, fontSize: 66, fontWeight: '900', transform: [{ rotate: '-8deg' }] }}>✓</Text>
     </View>
   </View>
+
+  <TouchableOpacity
+  style={{ flex: 1, minHeight: 52, backgroundColor: COLORS.gold2, borderRadius: 14, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 5 }}
+  onPress={() => {}}
+>
+  <Text style={{ color: COLORS.navy, fontSize: 14, fontWeight: '900', textAlign: 'center' }}>
+    {language === 'fr' ? 'Inscrivez-vous' : 'Sign up'}
+  </Text>
+</TouchableOpacity>
+
 </View>
-  </ScrollView>
+</ScrollView>
   );
 }
 function TypeTravaux({ onNavigate, language, setLanguage }) {
