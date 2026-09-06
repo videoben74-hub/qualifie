@@ -129,21 +129,23 @@ function Home({ onNavigate }) {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.sectionTitle}>Catégories populaires</Text>
-      <View style={styles.grid}>
-        {categories.map((c) => (
-          <TouchableOpacity key={c} style={styles.categoryCard} onPress={() => onNavigate('Pros', c)}>
-            <Text style={styles.categoryIcon}>⌂</Text>
-            <Text style={styles.categoryText}>{c}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-        <TouchableOpacity
-  style={styles.allTradesBtn}
-  onPress={() => onNavigate('Metiers')}
->
-  <Text style={styles.allTradesBtnText}>Voir tous les métiers et services →</Text>
-</TouchableOpacity>
+      <Text style={styles.sectionTitle}>Type de travaux</Text>
+<View style={styles.grid}>
+  <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel')}>
+    <Text style={styles.categoryIcon}>⌂</Text>
+    <Text style={styles.categoryText}>Résidentiel</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel — CCQ')}>
+    <Text style={styles.categoryIcon}>⌂</Text>
+    <Text style={styles.categoryText}>Résidentiel — CCQ</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Commercial')}>
+    <Text style={styles.categoryIcon}>▦</Text>
+    <Text style={styles.categoryText}>Commercial</Text>
+  </TouchableOpacity>
+</View>
 
       <Text style={styles.sectionTitle}>Pourquoi QualiVérifié?</Text>
       {[
@@ -162,9 +164,9 @@ function Home({ onNavigate }) {
     </ScrollView>
   );
 }
-function Metiers({ onNavigate }) {
-  const [projectType, setProjectType] = useState('');
-const [workType, setWorkType] = useState('');
+function Metiers({ onNavigate, initialType }) {
+  const [projectType, setProjectType] = useState(initialType === 'Commercial' ? 'Commercial' : initialType ? 'Résidentiel' : '');
+const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel — CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
@@ -196,7 +198,7 @@ const [workType, setWorkType] = useState('');
     }}
   >
     <Text style={styles.categoryIcon}>⌂</Text>
-    <Text style={styles.categoryText}>Résidentiel — Hors CCQ</Text>
+    <Text style={styles.categoryText}>Résidentiel</Text>
   </TouchableOpacity>
 
   <TouchableOpacity
@@ -606,7 +608,7 @@ useEffect(() => {
 
   const content =
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
-    tab === 'Metiers' ? <Metiers onNavigate={navigate} /> :
+    tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
     tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} /> :
     tab === 'Projets' ? <Projects projects={projects} setProjects={setProjects} /> :
     tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
