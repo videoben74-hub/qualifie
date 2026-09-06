@@ -16,7 +16,7 @@ const COLORS = {
   navy2: '#15345D',
   gold: '#D9A441',
   gold2: '#F2C66D',
-  bg: '#F5F7FA',
+  bg: '#E9EDF2',
   card: '#FFFFFF',
   text: '#172033',
   muted: '#6B7280',
@@ -366,10 +366,11 @@ function Projects({ projects, setProjects }) {
     setProjects((prev) => [
       ...prev,
       {
-        id: Date.now(),
-        title: title.trim(),
-        details: details.trim(),
-      },
+  id: Date.now(),
+  title: title.trim(),
+  details: details.trim(),
+  status: 'Ouvert',
+},
     ]);
     setSent(true);
     setTitle('');
@@ -395,7 +396,40 @@ setDetails('');
     </ScrollView>
   );
 }
+function AvailableProjects({ projects }) {
+  const openProjects = projects.filter((project) => project.status === 'Ouvert');
 
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader />
+
+      <Text style={styles.screenTitle}>Projets disponibles</Text>
+      <Text style={styles.helper}>
+        Découvrez les nouveaux projets publiés par des clients.
+      </Text>
+
+      {openProjects.length === 0 ? (
+        <Text style={styles.infoText}>
+          Aucun projet disponible pour le moment.
+        </Text>
+      ) : (
+        openProjects.map((project) => (
+          <View key={project.id} style={styles.profileCard}>
+            <Text style={styles.proName}>{project.title}</Text>
+            <Text style={styles.infoText}>{project.details}</Text>
+            <Text style={styles.proTrade}>🟢 Projet ouvert</Text>
+        <TouchableOpacity
+  style={styles.primaryBtn}
+  onPress={() => alert(`Intérêt envoyé pour : ${project.title}`)}
+>
+  <Text style={styles.primaryBtnText}>Je suis intéressé</Text>
+</TouchableOpacity>
+          </View>
+        ))
+      )}
+    </ScrollView>
+  );
+}
 function Messages({ selectedPro }) {
   const [selectedChat, setSelectedChat] = useState(selectedPro?.name || null);
 const [messageText, setMessageText] = useState('');
@@ -567,7 +601,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       <Text style={styles.infoText}>♡ Aucun favori pour le moment.</Text>
     ) : (
       favorites.map((fav) => (
-        <View key={fav.id} style={styles.proCard}>
+        <View key={fav.id} style={[styles.proCard, { flexDirection: 'column', alignItems: 'stretch', width: '100%' }]}>
           <Text style={styles.proName}>{fav.name}</Text>
           <Text style={styles.proTrade}>{fav.trade}</Text>
           <Text style={styles.proMeta}>★ {fav.rating} • {fav.city}, QC</Text>
@@ -631,9 +665,9 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
               {selectedPro && <Text style={styles.profileInfo}>📷 Photos des réalisations à venir</Text>}
                {selectedPro && <Text style={styles.sectionTitle}>⭐ Avis clients</Text>}
                {selectedPro && <Text style={styles.profileInfo}>⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié</Text>}
-      {!selectedPro && ['🛡️ Devenir un pro vérifié', 'Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
+      {!selectedPro && ['🛡 Devenir un pro vérifié', '🏗️ Projets disponibles', 'Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
         
-        <TouchableOpacity key={x} onPress={() => x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
+        <TouchableOpacity key={x} onPress={() => x === '🏗️ Projets disponibles' ? onNavigate('ProjetsDisponibles') : x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
           <Text style={styles.menuText}>{x}</Text><Text style={styles.chevron}>›</Text>
         </TouchableOpacity>
       ))}
@@ -678,6 +712,7 @@ useEffect(() => {
     tab === 'Accueil' ? <Home onNavigate={navigate} /> :
     tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} /> :
     tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} /> :
+    tab === 'ProjetsDisponibles' ? <AvailableProjects projects={projects} /> :
     tab === 'Projets' ? <Projects projects={projects} setProjects={setProjects} /> :
     tab === 'Messages' ? <Messages selectedPro={selectedPro} /> :
     <Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} />
