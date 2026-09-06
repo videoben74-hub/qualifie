@@ -34,11 +34,39 @@ const pros = [
 
 const categories = ['Rénovation', 'Tireur de joint', 'Peinture', 'Plomberie', 'Électricité', 'Menuiserie'];
 
-const allCategories = [
+
+const residentialCategories = [
   'Rénovation générale',
   'Charpente et menuiserie',
   'Portes et fenêtres',
+  'Plomberie',
+  'Électricité',
+  'Ventilation',
+  'Chauffage',
+  'Climatisation',
+  'Réfrigération',
+  'Toiture',
+  'Maçonnerie',
+  'Excavation',
+  'Fondation',
+  'Béton',
+  'Isolation',
+  'Peinture',
+  'Tireur de joint et plâtrier',
+  'Céramique',
+  'Revêtement de plancher',
+  'Revêtement extérieur',
+  'Ferblanterie',
+  'Vitrerie',
+  'Soudure et métaux',
+  'Drain et égout',
+  'Aménagement extérieur'
+];
 
+const residentialCcqCategories = [
+  'Rénovation générale',
+  'Charpente et menuiserie',
+  'Portes et fenêtres',
   'Plomberie',
   'Électricité',
   'Ventilation',
@@ -62,6 +90,34 @@ const allCategories = [
   'Protection incendie',
   'Drain et égout',
   'Aménagement extérieur'
+];
+
+const commercialCategories = [
+  'Rénovation générale',
+  'Charpente et menuiserie',
+  'Portes et fenêtres',
+  'Plomberie',
+  'Électricité',
+  'Ventilation',
+  'Chauffage',
+  'Climatisation',
+  'Réfrigération',
+  'Toiture',
+  'Maçonnerie',
+  'Excavation',
+  'Fondation',
+  'Béton',
+  'Isolation',
+  'Peinture',
+  'Tireur de joint et plâtrier',
+  'Céramique',
+  'Revêtement de plancher',
+  'Revêtement extérieur',
+  'Ferblanterie',
+  'Vitrerie',
+  'Soudure et métaux',
+  'Protection incendie',
+  'Drain et égout'
 ];
 const professionalServices = [
   'Inspection préachat',
@@ -171,49 +227,12 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader />
 
-      <Text style={styles.screenTitle}>Tous les métiers et services</Text>
-      <Text style={styles.helper}>
-        Choisissez le type d’entreprise que vous recherchez.
-      </Text>
+      <Text style={styles.screenTitle}>{initialType ? `Métiers — ${initialType}` : 'Tous les métiers et services'}</Text>
+      
 
-      <Text style={styles.sectionTitle}>Type de travaux</Text>
-
-<View style={styles.grid}>
-  <TouchableOpacity
-    style={styles.categoryCard}
-    onPress={() => {
-      setProjectType('Résidentiel');
-      setWorkType('CCQ');
-    }}
-  >
-    <Text style={styles.categoryIcon}>⌂</Text>
-    <Text style={styles.categoryText}>Résidentiel — CCQ</Text>
-  </TouchableOpacity>
-
-  <TouchableOpacity
-    style={styles.categoryCard}
-    onPress={() => {
-      setProjectType('Résidentiel');
-      setWorkType('Hors CCQ');
-    }}
-  >
-    <Text style={styles.categoryIcon}>⌂</Text>
-    <Text style={styles.categoryText}>Résidentiel</Text>
-  </TouchableOpacity>
-
-  <TouchableOpacity
-    style={styles.categoryCard}
-    onPress={() => {
-      setProjectType('Commercial');
-      setWorkType('CCQ');
-    }}
-  >
-    <Text style={styles.categoryIcon}>▦</Text>
-    <Text style={styles.categoryText}>Commercial — CCQ</Text>
-  </TouchableOpacity>
-</View>
+      
         <View style={styles.grid}>
-  {allCategories.map((c) => (
+  {(initialType === 'Commercial' ? commercialCategories : initialType === 'Résidentiel — CCQ' ? residentialCcqCategories : residentialCategories).map((c) => (
           <TouchableOpacity
             key={c}
             style={styles.categoryCard}
