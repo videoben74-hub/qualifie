@@ -434,6 +434,7 @@ const [ccqStatus, setCcqStatus] = useState('');
 const isNeqValid = /^\d{10}$/.test(neq.trim());
 const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   const toggleRbqCategory = (category) => setRbqCategories((current) => current.includes(category) ? current.filter((item) => item !== category) : [...current, category]);
+  };
   if (profileSection) {
     
     
