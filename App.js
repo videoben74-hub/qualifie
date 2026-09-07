@@ -167,34 +167,7 @@ marginBottom: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-      }}>
-
-        <TouchableOpacity
-          onPress={() => onNavigate && onNavigate('Login')}
-          style={{ width: '25%', alignItems: 'center' }}
-        >
-          <Text
-  numberOfLines={1}
-  adjustsFontSizeToFit
-  style={{
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '900',
-    textAlign: 'center',
-  }}
->
-  Connectez-vous
-</Text>
-
-          <Text style={{
-            color: '#BFC7D5',
-            fontSize: 12,
-            fontWeight: '700',
-            marginTop: 4,
-          }}>
-            Sign in
-          </Text>
-        </TouchableOpacity>
+}}
 
         <View style={{
           width: '50%',
@@ -249,32 +222,7 @@ marginBottom: 8,
           </View>
         </View>
 
-        <TouchableOpacity
-          onPress={() => onNavigate && onNavigate('Signup')}
-          style={{ width: '25%', alignItems: 'center' }}
-        >
-          <Text
-  numberOfLines={1}
-  adjustsFontSizeToFit
-  style={{
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '900',
-    textAlign: 'center',
-  }}
->
-  Inscrivez-vous
-</Text>
-
-          <Text style={{
-            color: '#BFC7D5',
-            fontSize: 12,
-            fontWeight: '700',
-            marginTop: 4,
-          }}>
-            Sign up
-          </Text>
-        </TouchableOpacity>
+        
 
       </View>
     </View>
@@ -479,6 +427,70 @@ function Home({ onNavigate, language, setLanguage }) {
       ? 'Des gens de chez nous, pour des projets durables.'
       : 'Local people, building projects that last.'}
   </Text>
+</View>
+    <View style={{
+  flexDirection: 'row',
+  gap: 12,
+  marginHorizontal: 18,
+  marginTop: 18,
+  marginBottom: 12,
+}}>
+  <TouchableOpacity
+    onPress={() => onNavigate('Login')}
+    style={{
+      flex: 1,
+      minHeight: 58,
+      borderWidth: 2,
+      borderColor: COLORS.navy,
+      borderRadius: 14,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <Text style={{
+      color: COLORS.navy,
+      fontSize: 15,
+      fontWeight: '900',
+    }}>
+      Connectez-vous
+    </Text>
+    <Text style={{
+      color: COLORS.muted,
+      fontSize: 12,
+      fontWeight: '700',
+      marginTop: 2,
+    }}>
+      Sign in
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    onPress={() => onNavigate('Signup')}
+    style={{
+      flex: 1,
+      minHeight: 58,
+      backgroundColor: COLORS.gold2,
+      borderRadius: 14,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <Text style={{
+      color: COLORS.navy,
+      fontSize: 15,
+      fontWeight: '900',
+    }}>
+      Inscrivez-vous
+    </Text>
+    <Text style={{
+      color: COLORS.muted,
+      fontSize: 12,
+      fontWeight: '700',
+      marginTop: 2,
+    }}>
+      Sign up
+    </Text>
+  </TouchableOpacity>
 </View>
 </ScrollView>
   );
