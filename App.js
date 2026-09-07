@@ -575,13 +575,11 @@ useEffect(() => {
     try {
       setAddressLoading(true);
 
-      const search = encodeURIComponent(
-        `${addressQuery.trim()}, Québec, Canada`
-      );
+      const search = encodeURIComponent(addressQuery.trim());
 
-      const response = await fetch(
-        `https://geolocator.api.geo.ca/?q=${search}&lang=${language === 'fr' ? 'fr' : 'en'}`
-      );
+const response = await fetch(
+  `https://geolocator.api.geo.ca/?q=${search}&lang=${language === 'fr' ? 'fr' : 'en'}&keys=nominatim`
+);
 
       const data = await response.json();
 
