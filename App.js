@@ -239,7 +239,42 @@ function Badge() {
 
 function Home({ onNavigate, language, setLanguage }) {
   const [address, setAddress] = useState('');
+  const [homeAddressSuggestions, setHomeAddressSuggestions] = useState([]);
+const [homeAddressLoading, setHomeAddressLoading] = useState(false);
+const [selectedHomeAddress, setSelectedHomeAddress] = useState(null);
   const [showAuthOptions, setShowAuthOptions] = useState(false);
+  useEffect(() => {
+  if (address.trim().length < 3) {
+    setHomeAddressSuggestions([]);
+    setHomeAddressLoading(false);
+    return;
+  }
+
+  const timer = setTimeout(async () => {
+    try {
+      setHomeAddressLoading(true);
+
+      const search = encodeURIComponent(address.trim());
+
+      const response = await fetch(
+        `https://geolocator.api.geo.ca/?q=${search}&lang=${language === 'fr' ? 'fr' : 'en'}&keys=nominatim`
+      );
+
+      const data = await response.json();
+
+      setHomeAddressSuggestions(
+        Array.isArray(data) ? data.slice(0, 5) : []
+      );
+    } catch (error) {
+      console.log('Erreur recherche adresse accueil:', error);
+      setHomeAddressSuggestions([]);
+    } finally {
+      setHomeAddressLoading(false);
+    }
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [address, language]);
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
@@ -293,6 +328,55 @@ function Home({ onNavigate, language, setLanguage }) {
     }}
     returnKeyType="search"
   />
+      {homeAddressLoading && (
+  <Text style={{ marginTop: 6, color: COLORS.muted }}>
+    {language === 'fr'
+      ? 'Recherche des adresses...'
+      : 'Searching addresses...'}
+  </Text>
+)}
+
+{homeAddressSuggestions.map((suggestion, index) => {
+  const label =
+    suggestion.title ||
+    suggestion.display_name ||
+    suggestion.name ||
+    suggestion.address ||
+    suggestion.label ||
+    '';
+
+  if (!label) return null;
+
+  return (
+    <TouchableOpacity
+      key={`${label}-${index}`}
+      onPress={() => {
+        setAddress(label);
+        setSelectedHomeAddress(suggestion);
+        setHomeAddressSuggestions([]);
+      }}
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderWidth: 1,
+        borderColor: '#D6DDE7',
+        borderRadius: 10,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        marginTop: 5,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.text,
+          fontSize: 13,
+          fontWeight: '700',
+        }}
+      >
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+})}
 </View>
 
 
