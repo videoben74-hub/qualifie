@@ -561,7 +561,43 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites, setFavorites, language, setLanguage }) {
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
+  const [addressQuery, setAddressQuery] = useState('');
+const [addressSuggestions, setAddressSuggestions] = useState([]);
+const [addressLoading, setAddressLoading] = useState(false);
+useEffect(() => {
+  if (addressQuery.trim().length < 3) {
+    setAddressSuggestions([]);
+    setAddressLoading(false);
+    return;
+  }
 
+  const timer = setTimeout(async () => {
+    try {
+      setAddressLoading(true);
+
+      const search = encodeURIComponent(
+        `${addressQuery.trim()}, Québec, Canada`
+      );
+
+      const response = await fetch(
+        `https://geolocator.api.geo.ca/?q=${search}&lang=${language === 'fr' ? 'fr' : 'en'}`
+      );
+
+      const data = await response.json();
+
+      setAddressSuggestions(
+        Array.isArray(data) ? data.slice(0, 5) : []
+      );
+    } catch (error) {
+      console.log('Erreur recherche adresse:', error);
+      setAddressSuggestions([]);
+    } finally {
+      setAddressLoading(false);
+    }
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [addressQuery, language]);
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     const c = city.trim().toLowerCase();
@@ -578,7 +614,56 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
       <AppHeader language={language} setLanguage={setLanguage} />
       <Text style={styles.screenTitle}>{language === 'fr' ? 'Trouver un pro' : 'Find a pro'}</Text>
       <TextInput value={query} onChangeText={setQuery} placeholder={language === 'fr' ? 'Métier ou entreprise' : 'Trade or company'} style={styles.input} />
-      <TextInput value={city} onChangeText={setCity} placeholder={language === 'fr' ? 'Ville (ex. Montréal)' : 'City (e.g. Montreal)'} style={styles.input} />
+      <TextInput
+  value={addressQuery}
+  onChangeText={(text) => {
+    setAddressQuery(text);
+    setCity('');
+  }}
+  placeholder={
+    language === 'fr'
+      ? 'Entrez votre adresse'
+      : 'Enter your address'
+  }
+  style={styles.input}
+/>
+    {addressLoading && (
+  <Text style={styles.resultCount}>
+    {language === 'fr'
+      ? 'Recherche des adresses...'
+      : 'Searching addresses...'}
+  </Text>
+)}
+
+{addressSuggestions.map((suggestion, index) => {
+  const label =
+    suggestion.title ||
+    suggestion.name ||
+    suggestion.address ||
+    suggestion.label ||
+    '';
+
+  return (
+    <TouchableOpacity
+      key={`${label}-${index}`}
+      style={styles.input}
+      onPress={() => {
+        setAddressQuery(label);
+        setAddressSuggestions([]);
+
+        const detectedCity =
+          suggestion.city ||
+          suggestion.municipality ||
+          suggestion.locality ||
+          '';
+
+        setCity(detectedCity);
+      }}
+    >
+      <Text>{label}</Text>
+    </TouchableOpacity>
+  );
+})}
       <Text style={styles.resultCount}>{results.length} {language === 'fr' ? 'résultat(s)' : 'result(s)'}</Text>
  {results.map((p) => (
         <View key={p.id} style={styles.proCard}>
