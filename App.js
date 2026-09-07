@@ -158,10 +158,10 @@ function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
       backgroundColor: COLORS.navy,
       borderBottomLeftRadius: 22,
       borderBottomRightRadius: 22,
-      paddingTop: Platform.OS === 'android' ? 46 : 18,
-      paddingBottom: 14,
-      paddingHorizontal: 14,
-      marginBottom: 14,
+      paddingTop: Platform.OS === 'android' ? 38 : 14,
+paddingBottom: 9,
+paddingHorizontal: 8,
+marginBottom: 8,
     }}>
       <View style={{
         flexDirection: 'row',
@@ -173,14 +173,18 @@ function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
           onPress={() => onNavigate && onNavigate('Login')}
           style={{ width: '25%', alignItems: 'center' }}
         >
-          <Text style={{
-            color: '#FFFFFF',
-            fontSize: 14,
-            fontWeight: '900',
-            textAlign: 'center',
-          }}>
-            Connectez-vous
-          </Text>
+          <Text
+  numberOfLines={1}
+  adjustsFontSizeToFit
+  style={{
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '900',
+    textAlign: 'center',
+  }}
+>
+  Connectez-vous
+</Text>
 
           <Text style={{
             color: '#BFC7D5',
@@ -249,14 +253,18 @@ function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
           onPress={() => onNavigate && onNavigate('Signup')}
           style={{ width: '25%', alignItems: 'center' }}
         >
-          <Text style={{
-            color: '#FFFFFF',
-            fontSize: 14,
-            fontWeight: '900',
-            textAlign: 'center',
-          }}>
-            Inscrivez-vous
-          </Text>
+          <Text
+  numberOfLines={1}
+  adjustsFontSizeToFit
+  style={{
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '900',
+    textAlign: 'center',
+  }}
+>
+  Inscrivez-vous
+</Text>
 
           <Text style={{
             color: '#BFC7D5',
@@ -289,16 +297,15 @@ function Home({ onNavigate, language, setLanguage }) {
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
       <View style={{
   backgroundColor: COLORS.card,
-  borderRadius: 20,
-  paddingHorizontal: 18,
-  paddingTop: 18,
-  paddingBottom: 18,
-  marginHorizontal: 14,
-  marginBottom: 18,
+  borderRadius: 16,
+  paddingHorizontal: 14,
+  paddingVertical: 10,
+  marginHorizontal: 10,
+  marginBottom: 8,
 }}>
   <Text style={{
     color: COLORS.navy,
-    fontSize: 24,
+    fontSize: 19,
     fontWeight: '900',
   }}>
     {language === 'fr' ? 'Adresse du chantier' : 'Work site address'}
@@ -306,10 +313,10 @@ function Home({ onNavigate, language, setLanguage }) {
 
   <Text style={{
     color: COLORS.muted,
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: '700',
-    marginTop: 6,
-    marginBottom: 14,
+    marginTop: 2,
+    marginBottom: 7,
   }}>
     {language === 'fr'
       ? 'Entrez l’adresse où les travaux seront réalisés.'
@@ -327,11 +334,11 @@ function Home({ onNavigate, language, setLanguage }) {
       backgroundColor: '#FFFFFF',
       borderWidth: 1,
       borderColor: '#D6DDE7',
-      borderRadius: 12,
-      paddingHorizontal: 16,
-      height: 52,
+      borderRadius: 10,
+      paddingHorizontal: 12,
+      height: 40,
       color: COLORS.text,
-      fontSize: 15,
+      fontSize: 13,
     }}
     onSubmitEditing={() => {
       if (address.trim()) onNavigate('TypeTravaux');
@@ -343,14 +350,14 @@ function Home({ onNavigate, language, setLanguage }) {
 
 
       <View style={{
-  marginHorizontal: 14,
-  marginBottom: 18,
+  marginHorizontal: 10,
+  marginBottom: 8,
 }}>
   <Text style={{
     color: COLORS.navy,
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: '900',
-    marginBottom: 10,
+    marginBottom: 6,
   }}>
     {language === 'fr' ? 'Pourquoi QualiVérifié?' : 'Why QualiVérifié?'}
   </Text>
@@ -382,21 +389,21 @@ function Home({ onNavigate, language, setLanguage }) {
       key={title}
       style={{
         backgroundColor: COLORS.card,
-        borderRadius: 12,
-        paddingHorizontal: 14,
-        paddingVertical: 11,
-        marginBottom: 8,
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        marginBottom: 5,
         flexDirection: 'row',
         alignItems: 'center',
       }}
     >
       <Text style={{
         color: COLORS.gold,
-        fontSize: 23,
+        fontSize: 18,
         fontWeight: '900',
-        width: 34,
+        width: 26,
         textAlign: 'center',
-        marginRight: 8,
+        marginRight: 6,
       }}>
         {icon}
       </Text>
@@ -404,141 +411,74 @@ function Home({ onNavigate, language, setLanguage }) {
       <View style={{ flex: 1 }}>
         <Text style={{
           color: COLORS.text,
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: '900',
         }}>
           {title}
         </Text>
 
-        <Text style={{
-          color: COLORS.muted,
-          fontSize: 13,
-          fontWeight: '700',
-          marginTop: 2,
-        }}>
-          {description}
-        </Text>
-      </View>
-    </View>
-  ))}
+        <Text
+  numberOfLines={1}
+  adjustsFontSizeToFit
+  style={{
+    color: COLORS.muted,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 1,
+  }}
+>
+  {description}
+</Text>
+</View>
+</View>
+))}
 </View>
    <View style={{
   alignItems: 'center',
-  marginHorizontal: 18,
-  marginTop: 12,
-  marginBottom: 24,
+  marginHorizontal: 12,
+  marginTop: 4,
+  marginBottom: 6,
 }}>
   <Text style={{
     color: COLORS.gold,
-    fontSize: 30,
-    fontWeight: '600',
+    fontSize: 19,
+    fontWeight: '800',
     fontStyle: 'italic',
     textAlign: 'center',
-    marginBottom: 10,
   }}>
     {language === 'fr'
       ? 'Bienvenue chez QualiVérifié !'
       : 'Welcome to QualiVérifié!'}
   </Text>
 
-  <Text style={{
-    color: COLORS.navy,
-    fontSize: 15,
-    lineHeight: 21,
-    textAlign: 'center',
-    marginHorizontal: 12,
-  }}>
+  <Text
+    numberOfLines={2}
+    adjustsFontSizeToFit
+    style={{
+      color: COLORS.navy,
+      fontSize: 12,
+      fontWeight: '700',
+      lineHeight: 16,
+      textAlign: 'center',
+      marginTop: 4,
+    }}
+  >
     {language === 'fr'
-      ? 'Nous croyons que chaque projet mérite les bons professionnels. Notre mission est simple : vous connecter avec des entrepreneurs vérifiés, compétents et de confiance, pour des projets réussis, partout au Québec.'
-      : 'We believe every project deserves the right professionals. Our mission is simple: connecting you with verified, skilled and trusted contractors for successful projects across Quebec.'}
+      ? 'Des pros vérifiés et de confiance pour vos projets partout au Québec.'
+      : 'Verified and trusted pros for your projects across Quebec.'}
   </Text>
 
   <Text style={{
     color: COLORS.gold,
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: '900',
     textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 18,
+    marginTop: 3,
   }}>
     {language === 'fr'
       ? 'Des gens de chez nous, pour des projets durables.'
       : 'Local people, building projects that last.'}
   </Text>
-
-  <Text style={{
-    color: COLORS.navy,
-    fontSize: 31,
-    fontWeight: '900',
-    marginBottom: 18,
-  }}>
-    Quali<Text style={{ color: COLORS.gold2 }}>Vérifié</Text>
-  </Text>
-
-  <View style={{
-    flexDirection: 'row',
-    width: '100%',
-    gap: 12,
-  }}>
-    <TouchableOpacity
-      onPress={() => onNavigate('Login')}
-      style={{
-        flex: 1,
-        minHeight: 62,
-        borderWidth: 2,
-        borderColor: COLORS.navy,
-        borderRadius: 14,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Text style={{
-        color: COLORS.navy,
-        fontSize: 15,
-        fontWeight: '900',
-      }}>
-        Connectez-vous
-      </Text>
-
-      <Text style={{
-        color: COLORS.muted,
-        fontSize: 12,
-        fontWeight: '700',
-        marginTop: 2,
-      }}>
-        Sign in
-      </Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity
-  onPress={() => onNavigate('Signup')}
-  style={{
-    flex: 1,
-    minHeight: 62,
-    backgroundColor: COLORS.gold2,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}
->
-  <Text style={{
-    color: COLORS.navy,
-    fontSize: 15,
-    fontWeight: '900',
-  }}>
-    Inscrivez-vous
-  </Text>
-
-  <Text style={{
-    color: COLORS.muted,
-    fontSize: 12,
-    fontWeight: '700',
-    marginTop: 2,
-  }}>
-    Sign up
-  </Text>
-</TouchableOpacity>
-</View>
 </View>
 </ScrollView>
   );
