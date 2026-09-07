@@ -152,63 +152,123 @@ const tradeTranslations = {
   'Arpentage': 'Land surveying',
   'Design intérieur': 'Interior design'
 };
-function AppHeader({ language = 'fr', setLanguage }) {
+function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
   return (
-    <View style={styles.header}>
-      <View style={{ width: 68, height: 58, marginRight: 12, alignItems: 'center', justifyContent: 'flex-end' }}>
-  <View style={{
-    position: 'absolute',
-    top: 5,
-    left: 8,
-    width: 34,
-    height: 4,
-    backgroundColor: COLORS.gold2,
-    transform: [{ rotate: '-32deg' }],
-    borderRadius: 2
-  }} />
-  <View style={{
-    position: 'absolute',
-    top: 5,
-    right: 8,
-    width: 34,
-    height: 4,
-    backgroundColor: COLORS.gold2,
-    transform: [{ rotate: '32deg' }],
-    borderRadius: 2
-  }} />
-  <View style={{ position: 'relative', width: 58, height: 48 }}>
-  <Text style={{ fontSize: 38, fontWeight: '900', color: '#FFFFFF', lineHeight: 45 }}>
-    Q
-  </Text>
+    <View style={{
+      backgroundColor: COLORS.navy,
+      borderBottomLeftRadius: 22,
+      borderBottomRightRadius: 22,
+      paddingTop: Platform.OS === 'android' ? 46 : 18,
+      paddingBottom: 14,
+      paddingHorizontal: 14,
+      marginBottom: 14,
+    }}>
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
 
-  <Text
-  style={{
-    position: 'absolute',
-    right: -1,
-    bottom: -5,
-    color: COLORS.gold2,
-    fontSize: 32,
-    fontWeight: '900',
-    transform: [{ rotate: '-8deg' }],
-  }}
->
-  ✓
-</Text>
-</View>
-</View>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.brand}>QualiVérifié</Text>
-        <Text style={styles.tagline}>Des projets en confiance, là où licence, distance et compétences ne font qu’un.</Text>
-      <View style={{ flexDirection: 'row', marginTop: 5, gap: 8 }}>
-  <TouchableOpacity onPress={() => setLanguage && setLanguage('fr')}>
-    <Text style={{ color: language === 'fr' ? COLORS.gold2 : '#FFFFFF', fontWeight: '900', fontSize: 11 }}>FR</Text>
-  </TouchableOpacity>
-  <Text style={{ color: '#FFFFFF', fontSize: 11 }}>|</Text>
-  <TouchableOpacity onPress={() => setLanguage && setLanguage('en')}>
-    <Text style={{ color: language === 'en' ? COLORS.gold2 : '#FFFFFF', fontWeight: '900', fontSize: 11 }}>EN</Text>
-  </TouchableOpacity>
-</View>
-</View>
+        <TouchableOpacity
+          onPress={() => onNavigate && onNavigate('Login')}
+          style={{ width: '25%', alignItems: 'center' }}
+        >
+          <Text style={{
+            color: '#FFFFFF',
+            fontSize: 14,
+            fontWeight: '900',
+            textAlign: 'center',
+          }}>
+            Connectez-vous
+          </Text>
+
+          <Text style={{
+            color: '#BFC7D5',
+            fontSize: 12,
+            fontWeight: '700',
+            marginTop: 4,
+          }}>
+            Sign in
+          </Text>
+        </TouchableOpacity>
+
+        <View style={{
+          width: '50%',
+          alignItems: 'center',
+        }}>
+          <Text style={{
+            color: '#FFFFFF',
+            fontSize: 25,
+            fontWeight: '900',
+          }}>
+            Quali<Text style={{ color: COLORS.gold2 }}>Vérifié</Text>
+          </Text>
+
+          <Text style={{
+            color: '#FFFFFF',
+            fontSize: 10,
+            fontWeight: '700',
+            textAlign: 'center',
+            marginTop: 5,
+            lineHeight: 14,
+          }}>
+            Des projets en confiance, là où licence, distance et compétences ne font qu’un.
+          </Text>
+
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 7,
+            gap: 9,
+          }}>
+            <TouchableOpacity onPress={() => setLanguage && setLanguage('fr')}>
+              <Text style={{
+                color: language === 'fr' ? COLORS.gold2 : '#FFFFFF',
+                fontWeight: '900',
+                fontSize: 13,
+              }}>
+                FR
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={{ color: '#FFFFFF', fontSize: 13 }}>|</Text>
+
+            <TouchableOpacity onPress={() => setLanguage && setLanguage('en')}>
+              <Text style={{
+                color: language === 'en' ? COLORS.gold2 : '#FFFFFF',
+                fontWeight: '900',
+                fontSize: 13,
+              }}>
+                EN
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => onNavigate && onNavigate('Signup')}
+          style={{ width: '25%', alignItems: 'center' }}
+        >
+          <Text style={{
+            color: '#FFFFFF',
+            fontSize: 14,
+            fontWeight: '900',
+            textAlign: 'center',
+          }}>
+            Inscrivez-vous
+          </Text>
+
+          <Text style={{
+            color: '#BFC7D5',
+            fontSize: 12,
+            fontWeight: '700',
+            marginTop: 4,
+          }}>
+            Sign up
+          </Text>
+        </TouchableOpacity>
+
+      </View>
     </View>
   );
 }
@@ -226,93 +286,259 @@ function Home({ onNavigate, language, setLanguage }) {
   const [showAuthOptions, setShowAuthOptions] = useState(false);
   return (
     <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader language={language} setLanguage={setLanguage} />
-      <View style={styles.hero}>
-        <Text style={styles.heroTitle}>{language === 'fr' ? 'Adresse du chantier' : 'Work site address'}</Text>
-        <Text style={styles.heroText}>{language === 'fr' ? 'Entrez l’adresse où les travaux seront réalisés.' : 'Enter the address where the work will be carried out.'}</Text>
-        
-      </View>
+      <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
+      <View style={{
+  backgroundColor: COLORS.card,
+  borderRadius: 20,
+  paddingHorizontal: 18,
+  paddingTop: 18,
+  paddingBottom: 18,
+  marginHorizontal: 14,
+  marginBottom: 18,
+}}>
+  <Text style={{
+    color: COLORS.navy,
+    fontSize: 24,
+    fontWeight: '900',
+  }}>
+    {language === 'fr' ? 'Adresse du chantier' : 'Work site address'}
+  </Text>
 
-      
+  <Text style={{
+    color: COLORS.muted,
+    fontSize: 15,
+    fontWeight: '700',
+    marginTop: 6,
+    marginBottom: 14,
+  }}>
+    {language === 'fr'
+      ? 'Entrez l’adresse où les travaux seront réalisés.'
+      : 'Enter the address where the work will be carried out.'}
+  </Text>
 
-<TextInput
-  placeholder={language === 'fr' ? 'Adresse du chantier' : 'Work site address'}
+  <TextInput
+    placeholder={language === 'fr'
+      ? 'Ex. : 123 Rue Principale, Montréal'
+      : 'Ex.: 123 Main Street, Montreal'}
+    placeholderTextColor="#8A94A5"
     value={address}
-  onChangeText={setAddress}
-  style={[styles.input, { marginTop: 14 }]}
-  onSubmitEditing={() => { if (address.trim()) onNavigate('TypeTravaux'); }}
-  returnKeyType="search"
-/>
+    onChangeText={setAddress}
+    style={{
+      backgroundColor: '#FFFFFF',
+      borderWidth: 1,
+      borderColor: '#D6DDE7',
+      borderRadius: 12,
+      paddingHorizontal: 16,
+      height: 52,
+      color: COLORS.text,
+      fontSize: 15,
+    }}
+    onSubmitEditing={() => {
+      if (address.trim()) onNavigate('TypeTravaux');
+    }}
+    returnKeyType="search"
+  />
+</View>
 
 
 
-      <Text style={styles.whyTitle}>{language === 'fr' ? 'Pourquoi QualiVérifié?' : 'Why QualiVérifié?'}</Text>
-      {[
-        ['✓', language === 'fr' ? 'Pros vérifiés' : 'Verified pros', language === 'fr' ? 'Identité, entreprise, licence et assurance vérifiées.' : 'Identity, business, licence and insurance verified.'],
-        ['★', language === 'fr' ? 'Avis authentiques' : 'Authentic reviews', language === 'fr' ? 'Des évaluations liées à de vrais projets.' : 'Reviews linked to real projects.'],
-        ['⌖', language === 'fr' ? 'Près de chez vous' : 'Near you', language === 'fr' ? 'Recherche par métier, ville et distance.' : 'Search by trade, city and distance.'],
-      ].map(([i,t,d]) => (
-        <View key={t} style={styles.infoCard}>
-          <Text style={styles.infoIcon}>{i}</Text>
-          <View style={{flex:1}}>
-            <Text style={styles.infoTitle}>{t}</Text>
-            <Text style={styles.infoText}>{d}</Text>
-          </View>
-        </View>
-      ))}
-   <View style={{ alignItems: 'center', marginTop: 38, marginBottom: 28 }}>
+      <View style={{
+  marginHorizontal: 14,
+  marginBottom: 18,
+}}>
+  <Text style={{
+    color: COLORS.navy,
+    fontSize: 20,
+    fontWeight: '900',
+    marginBottom: 10,
+  }}>
+    {language === 'fr' ? 'Pourquoi QualiVérifié?' : 'Why QualiVérifié?'}
+  </Text>
 
-  <TouchableOpacity
-    onPress={() => setShowAuthOptions(!showAuthOptions)}
-    activeOpacity={0.8}
-    style={{ width: 155, height: 175, alignItems: 'center', justifyContent: 'center' }}
-  >
-    <View style={{ position: 'absolute', top: 4, left: 31, width: 62, height: 7, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '-32deg' }] }} />
-    <View style={{ position: 'absolute', top: 4, right: 31, width: 62, height: 7, backgroundColor: COLORS.gold2, borderRadius: 5, transform: [{ rotate: '32deg' }] }} />
-
-    <View style={{ width: 132, height: 132, borderRadius: 66, backgroundColor: COLORS.navy, alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
-      <View style={{ width: 98, height: 98, borderRadius: 49, borderWidth: 16, borderColor: '#FFFFFF' }} />
-
-      <Text
-        style={{
-          position: 'absolute',
-          right: -7,
-          bottom: -5,
-          color: COLORS.gold2,
-          fontSize: 82,
-          fontWeight: '900',
-          transform: [{ rotate: '-12deg' }],
-        }}
-      >
-        ✓
+  {[
+    [
+      '✓',
+      language === 'fr' ? 'Pros vérifiés' : 'Verified pros',
+      language === 'fr'
+        ? 'Identité, entreprise, licence et assurance vérifiées.'
+        : 'Identity, business, licence and insurance verified.'
+    ],
+    [
+      '★',
+      language === 'fr' ? 'Avis authentiques' : 'Authentic reviews',
+      language === 'fr'
+        ? 'Des évaluations liées à de vrais projets.'
+        : 'Reviews linked to real projects.'
+    ],
+    [
+      '⌖',
+      language === 'fr' ? 'Près de chez vous' : 'Near you',
+      language === 'fr'
+        ? 'Recherche par métier, ville et distance.'
+        : 'Search by trade, city and distance.'
+    ],
+  ].map(([icon, title, description]) => (
+    <View
+      key={title}
+      style={{
+        backgroundColor: COLORS.card,
+        borderRadius: 12,
+        paddingHorizontal: 14,
+        paddingVertical: 11,
+        marginBottom: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+      }}
+    >
+      <Text style={{
+        color: COLORS.gold,
+        fontSize: 23,
+        fontWeight: '900',
+        width: 34,
+        textAlign: 'center',
+        marginRight: 8,
+      }}>
+        {icon}
       </Text>
-    </View>
-  </TouchableOpacity>
 
-  {showAuthOptions && (
-    <View style={{ flexDirection: 'row', width: '100%', gap: 12, marginTop: 12 }}>
-
-      <TouchableOpacity
-        style={{ flex: 1, minHeight: 54, borderWidth: 2, borderColor: COLORS.navy, borderRadius: 14, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 }}
-        onPress={() => {}}
-      >
-        <Text style={{ color: COLORS.navy, fontSize: 14, fontWeight: '900', textAlign: 'center' }}>
-          {language === 'fr' ? 'Connectez-vous' : 'Sign in'}
+      <View style={{ flex: 1 }}>
+        <Text style={{
+          color: COLORS.text,
+          fontSize: 16,
+          fontWeight: '900',
+        }}>
+          {title}
         </Text>
-      </TouchableOpacity>
 
-      <TouchableOpacity
-        style={{ flex: 1, minHeight: 54, backgroundColor: COLORS.gold2, borderRadius: 14, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 }}
-        onPress={() => {}}
-      >
-        <Text style={{ color: COLORS.navy, fontSize: 14, fontWeight: '900', textAlign: 'center' }}>
-          {language === 'fr' ? 'Inscrivez-vous' : 'Sign up'}
+        <Text style={{
+          color: COLORS.muted,
+          fontSize: 13,
+          fontWeight: '700',
+          marginTop: 2,
+        }}>
+          {description}
         </Text>
-      </TouchableOpacity>
-
+      </View>
     </View>
-  )}
+  ))}
+</View>
+   <View style={{
+  alignItems: 'center',
+  marginHorizontal: 18,
+  marginTop: 12,
+  marginBottom: 24,
+}}>
+  <Text style={{
+    color: COLORS.gold,
+    fontSize: 30,
+    fontWeight: '600',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginBottom: 10,
+  }}>
+    {language === 'fr'
+      ? 'Bienvenue chez QualiVérifié !'
+      : 'Welcome to QualiVérifié!'}
+  </Text>
 
+  <Text style={{
+    color: COLORS.navy,
+    fontSize: 15,
+    lineHeight: 21,
+    textAlign: 'center',
+    marginHorizontal: 12,
+  }}>
+    {language === 'fr'
+      ? 'Nous croyons que chaque projet mérite les bons professionnels. Notre mission est simple : vous connecter avec des entrepreneurs vérifiés, compétents et de confiance, pour des projets réussis, partout au Québec.'
+      : 'We believe every project deserves the right professionals. Our mission is simple: connecting you with verified, skilled and trusted contractors for successful projects across Quebec.'}
+  </Text>
+
+  <Text style={{
+    color: COLORS.gold,
+    fontSize: 15,
+    fontWeight: '900',
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 18,
+  }}>
+    {language === 'fr'
+      ? 'Des gens de chez nous, pour des projets durables.'
+      : 'Local people, building projects that last.'}
+  </Text>
+
+  <Text style={{
+    color: COLORS.navy,
+    fontSize: 31,
+    fontWeight: '900',
+    marginBottom: 18,
+  }}>
+    Quali<Text style={{ color: COLORS.gold2 }}>Vérifié</Text>
+  </Text>
+
+  <View style={{
+    flexDirection: 'row',
+    width: '100%',
+    gap: 12,
+  }}>
+    <TouchableOpacity
+      onPress={() => onNavigate('Login')}
+      style={{
+        flex: 1,
+        minHeight: 62,
+        borderWidth: 2,
+        borderColor: COLORS.navy,
+        borderRadius: 14,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Text style={{
+        color: COLORS.navy,
+        fontSize: 15,
+        fontWeight: '900',
+      }}>
+        Connectez-vous
+      </Text>
+
+      <Text style={{
+        color: COLORS.muted,
+        fontSize: 12,
+        fontWeight: '700',
+        marginTop: 2,
+      }}>
+        Sign in
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+  onPress={() => onNavigate('Signup')}
+  style={{
+    flex: 1,
+    minHeight: 62,
+    backgroundColor: COLORS.gold2,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <Text style={{
+    color: COLORS.navy,
+    fontSize: 15,
+    fontWeight: '900',
+  }}>
+    Inscrivez-vous
+  </Text>
+
+  <Text style={{
+    color: COLORS.muted,
+    fontSize: 12,
+    fontWeight: '700',
+    marginTop: 2,
+  }}>
+    Sign up
+  </Text>
+</TouchableOpacity>
+</View>
 </View>
 </ScrollView>
   );
@@ -828,27 +1054,60 @@ whyTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 13, marginTop: 7, m
   menuRow: { backgroundColor: COLORS.card, borderBottomWidth: 1, borderBottomColor: COLORS.line, paddingVertical: 17, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' },
   menuText: { color: COLORS.text, fontWeight: '700' },
   chevron: { color: COLORS.gold, fontSize: 24 },
-  nav: { flexDirection: 'row', backgroundColor: COLORS.navy, paddingTop: 8, paddingBottom: Platform.OS === 'ios' ? 18 : 22 },
-  navItem: { flex: 1, alignItems: 'center' },
-  navIcon: { color: '#AFB9C8', fontSize: 20, fontWeight: '800' },
-  navText: { color: '#AFB9C8', fontSize: 10, marginTop: 2 },
-  navActive: { color: COLORS.gold2, fontWeight: '900' },
+  nav: {
+  flexDirection: 'row',
+  backgroundColor: COLORS.navy,
+  paddingTop: 12,
+  paddingBottom: Platform.OS === 'ios' ? 18 : 18,
+  minHeight: 92,
+  alignItems: 'center',
+},
+
+navItem: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+
+navIcon: {
+  color: '#AFB9C8',
+  fontSize: 22,
+  fontWeight: '800',
+},
+
+navText: {
+  color: '#AFB9C8',
+  fontSize: 11,
+  fontWeight: '700',
+  marginTop: 4,
+},
+
+navActive: {
+  color: COLORS.gold2,
+  fontWeight: '900',
+},
   sloganBar: {
   backgroundColor: COLORS.navy,
   alignItems: 'center',
-  paddingTop: 10,
-  paddingBottom: Platform.OS === 'android' ? 34 : 18,
+  justifyContent: 'center',
+  paddingTop: 14,
+  paddingBottom: Platform.OS === 'android' ? 26 : 18,
+  minHeight: 110,
 },
+
 sloganTop: {
   color: '#FFFFFF',
-  fontSize: 15,
-  fontWeight: '700',
+  fontSize: 17,
+  fontWeight: '800',
+  textAlign: 'center',
 },
+
 sloganBottom: {
   color: COLORS.gold2,
-  fontSize: 18,
+  fontSize: 19,
   fontWeight: '900',
-  marginTop: 2,
+  marginTop: 4,
+  textAlign: 'center',
 },
   allTradesBtn: {
   backgroundColor: COLORS.navy,
