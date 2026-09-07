@@ -167,7 +167,7 @@ marginBottom: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-}}
+}}>
 
         <View style={{
           width: '50%',
