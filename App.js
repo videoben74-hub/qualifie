@@ -222,30 +222,40 @@ marginBottom: 8,
           </View>
         </View>
         <View
-          style={{
-            width: 105,
-            height: 105,
-            borderRadius: 53,
-            backgroundColor: COLORS.gold2,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: 7,
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.navy,
-              fontSize: 13,
-              fontWeight: '900',
-              textAlign: 'center',
-              lineHeight: 16,
-            }}
-          >
-            {language === 'fr'
-              ? 'Abonnement\nEntreprise\nÀ partir de\n27,77 $'
-              : 'Business\nSubscription\nFrom\n$27.77'}
-          </Text>
-        </View>
+  style={{
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <View
+    style={{
+      width: 105,
+      height: 105,
+      borderRadius: 53,
+      backgroundColor: COLORS.gold2,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 8,
+    }}
+  >
+    <Text
+      style={{
+        width: '100%',
+        color: COLORS.navy,
+        fontSize: 13,
+        fontWeight: '900',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        lineHeight: 16,
+      }}
+    >
+      {language === 'fr'
+        ? 'Abonnement\nEntreprise\nÀ partir de\n27,77 $'
+        : 'Business\nSubscription\nFrom\n$27.77'}
+    </Text>
+  </View>
+</View>
         
 
       </View>
