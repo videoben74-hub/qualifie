@@ -1073,6 +1073,62 @@ return (
     </ScrollView>
   );
 }
+function Signup({ onNavigate, language, setLanguage }) {
+  const [accountType, setAccountType] = useState('business');
+
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader
+        language={language}
+        setLanguage={setLanguage}
+      />
+
+      <TouchableOpacity
+        onPress={() => onNavigate('Accueil')}
+        style={{
+          alignSelf: 'flex-start',
+          paddingVertical: 8,
+          paddingHorizontal: 4,
+          marginBottom: 6,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 16,
+            fontWeight: '900',
+          }}
+        >
+          ← {language === 'fr' ? 'Retour' : 'Back'}
+        </Text>
+      </TouchableOpacity>
+
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 28,
+          fontWeight: '900',
+          marginBottom: 6,
+        }}
+      >
+        {language === 'fr' ? 'Créez votre compte' : 'Create your account'}
+      </Text>
+
+      <Text
+        style={{
+          color: COLORS.muted,
+          fontSize: 14,
+          lineHeight: 20,
+          marginBottom: 16,
+        }}
+      >
+        {language === 'fr'
+          ? 'Inscrivez-vous pour faire partie de la communauté QualiVérifié.'
+          : 'Sign up to join the QualiVérifié community.'}
+      </Text>
+</ScrollView>
+  );
+}
 
 export default function App() {
   const [tab, setTab] = useState('Accueil');
