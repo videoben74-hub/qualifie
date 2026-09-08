@@ -168,27 +168,9 @@ marginBottom: 8,
         alignItems: 'center',
         justifyContent: 'space-between',
 }}>
-<TouchableOpacity
-  onPress={() => onNavigate && onNavigate('Login')}
-  style={{
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}
->
-  <Text
-    style={{
-      color: COLORS.gold2,
-      fontSize: 12,
-      fontWeight: '900',
-      textAlign: 'center',
-    }}
-  >
-    {language === 'fr' ? 'Connectez-vous' : 'Sign in'}
-  </Text>
-</TouchableOpacity>
+
         <View style={{
-          width: '50%',
+          width: '72%',
           alignItems: 'center',
         }}>
           <Text style={{
@@ -241,7 +223,7 @@ marginBottom: 8,
         </View>
         <View
   style={{
-    width: '50%',
+    width: '28%',
     alignItems: 'center',
     justifyContent: 'center',
   }}
