@@ -1075,6 +1075,10 @@ return (
 }
 function Signup({ onNavigate, language, setLanguage }) {
   const [accountType, setAccountType] = useState('business');
+  const [businessName, setBusinessName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -1126,6 +1130,200 @@ function Signup({ onNavigate, language, setLanguage }) {
           ? 'Inscrivez-vous pour faire partie de la communauté QualiVérifié.'
           : 'Sign up to join the QualiVérifié community.'}
       </Text>
+        <View
+  style={{
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  }}
+>
+  <TouchableOpacity
+    onPress={() => setAccountType('business')}
+    style={{
+      flex: 1,
+      minHeight: 72,
+      borderRadius: 14,
+      backgroundColor:
+        accountType === 'business' ? COLORS.gold2 : COLORS.card,
+      borderWidth: 1,
+      borderColor:
+        accountType === 'business' ? COLORS.gold2 : COLORS.line,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 8,
+    }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 15,
+        fontWeight: '900',
+        textAlign: 'center',
+      }}
+    >
+      🧰 {language === 'fr' ? 'Je suis une entreprise' : 'I am a business'}
+    </Text>
+
+    <Text
+      style={{
+        color: COLORS.muted,
+        fontSize: 12,
+        fontWeight: '700',
+        marginTop: 3,
+      }}
+    >
+      {language === 'fr' ? 'Entrepreneur' : 'Contractor'}
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    onPress={() => setAccountType('client')}
+    style={{
+      flex: 1,
+      minHeight: 72,
+      borderRadius: 14,
+      backgroundColor:
+        accountType === 'client' ? COLORS.gold2 : COLORS.card,
+      borderWidth: 1,
+      borderColor:
+        accountType === 'client' ? COLORS.gold2 : COLORS.line,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 8,
+    }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 15,
+        fontWeight: '900',
+        textAlign: 'center',
+      }}
+    >
+      👤 {language === 'fr' ? 'Je suis un particulier' : 'I am a client'}
+    </Text>
+
+    <Text
+      style={{
+        color: COLORS.muted,
+        fontSize: 12,
+        fontWeight: '700',
+        marginTop: 3,
+      }}
+    >
+      Client
+    </Text>
+  </TouchableOpacity>
+</View>
+        {accountType === 'business' && (
+  <TextInput
+         value={businessName}
+         onChangeText={setBusinessName}
+    placeholder={language === 'fr' ? "Nom de l’entreprise *" : 'Business name *'}
+    placeholderTextColor={COLORS.muted}
+    style={{
+      backgroundColor: COLORS.card,
+      borderWidth: 1,
+      borderColor: COLORS.line,
+      borderRadius: 14,
+      minHeight: 54,
+      paddingHorizontal: 14,
+      color: COLORS.navy,
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+)}
+  <TextInput
+value={email}
+onChangeText={setEmail}
+  placeholder={language === 'fr' ? 'Courriel *' : 'Email *'}
+  placeholderTextColor={COLORS.muted}
+  keyboardType="email-address"
+  autoCapitalize="none"
+  style={{
+    backgroundColor: COLORS.card,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    borderRadius: 14,
+    minHeight: 54,
+    paddingHorizontal: 14,
+    color: COLORS.navy,
+    fontSize: 15,
+    marginBottom: 12,
+  }}
+/>
+  <TextInput
+value={password}
+onChangeText={setPassword}
+  placeholder={language === 'fr' ? 'Mot de passe *' : 'Password *'}
+  placeholderTextColor={COLORS.muted}
+  secureTextEntry
+  autoCapitalize="none"
+  style={{
+    backgroundColor: COLORS.card,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    borderRadius: 14,
+    minHeight: 54,
+    paddingHorizontal: 14,
+    color: COLORS.navy,
+    fontSize: 15,
+    marginBottom: 12,
+  }}
+/>
+  <TextInput
+value={confirmPassword}
+onChangeText={setConfirmPassword}
+  placeholder={language === 'fr' ? 'Confirmer le mot de passe *' : 'Confirm password *'}
+  placeholderTextColor={COLORS.muted}
+  secureTextEntry
+  autoCapitalize="none"
+  style={{
+    backgroundColor: COLORS.card,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    borderRadius: 14,
+    minHeight: 54,
+    paddingHorizontal: 14,
+    color: COLORS.navy,
+    fontSize: 15,
+    marginBottom: 12,
+  }}
+/>
+  <TouchableOpacity
+onPress={() => {
+  if (!email || !password || !confirmPassword || (accountType === 'business' && !businessName)) {
+    alert(language === 'fr' ? 'Veuillez remplir tous les champs obligatoires.' : 'Please fill in all required fields.');
+    return;
+  }
+  if (password !== confirmPassword) {
+    alert(language === 'fr' ? 'Les mots de passe ne correspondent pas.' : 'Passwords do not match.');
+    return;
+  }
+  alert(language === 'fr' ? 'Compte prêt à être créé !' : 'Account ready to be created!');
+  onNavigate('Accueil');
+}}
+  style={{
+    backgroundColor: COLORS.gold2,
+    borderRadius: 14,
+    minHeight: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 4,
+    marginBottom: 14,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '900',
+    }}
+  >
+    {language === 'fr' ? 'Créer mon compte' : 'Create my account'}
+  </Text>
+</TouchableOpacity>
 </ScrollView>
   );
 }
@@ -1165,8 +1363,27 @@ useEffect(() => {
 };
 
   const content =
-    tab === 'Accueil' ? <Home onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
-    tab === 'TypeTravaux' ? <TypeTravaux onNavigate={navigate} language={language} setLanguage={setLanguage} /> :
+  tab === 'Accueil' ? (
+    <Home
+      onNavigate={navigate}
+      language={language}
+      setLanguage={setLanguage}
+    />
+  ) :
+  tab === 'Signup' ? (
+    <Signup
+      onNavigate={navigate}
+      language={language}
+      setLanguage={setLanguage}
+    />
+  ) :
+  tab === 'TypeTravaux' ? (
+    <TypeTravaux
+      onNavigate={navigate}
+      language={language}
+      setLanguage={setLanguage}
+    />
+  ) :
 tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
     tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} /> :
   
