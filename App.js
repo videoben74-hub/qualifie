@@ -168,7 +168,25 @@ marginBottom: 8,
         alignItems: 'center',
         justifyContent: 'space-between',
 }}>
-
+<TouchableOpacity
+  onPress={() => onNavigate && onNavigate('Login')}
+  style={{
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.gold2,
+      fontSize: 12,
+      fontWeight: '900',
+      textAlign: 'center',
+    }}
+  >
+    {language === 'fr' ? 'Connectez-vous' : 'Sign in'}
+  </Text>
+</TouchableOpacity>
         <View style={{
           width: '50%',
           alignItems: 'center',
@@ -228,33 +246,35 @@ marginBottom: 8,
     justifyContent: 'center',
   }}
 >
-  <View
+  <TouchableOpacity
+  onPress={() => onNavigate && onNavigate('Signup')}
+  activeOpacity={0.8}
+  style={{
+    width: 105,
+    height: 105,
+    borderRadius: 53,
+    backgroundColor: COLORS.gold2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+  }}
+>
+  <Text
     style={{
-      width: 105,
-      height: 105,
-      borderRadius: 53,
-      backgroundColor: COLORS.gold2,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 8,
+      width: '100%',
+      color: COLORS.navy,
+      fontSize: 13,
+      fontWeight: '900',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      lineHeight: 16,
     }}
   >
-    <Text
-      style={{
-        width: '100%',
-        color: COLORS.navy,
-        fontSize: 13,
-        fontWeight: '900',
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        lineHeight: 16,
-      }}
-    >
-      {language === 'fr'
-        ? 'Abonnement\nEntreprise\nÀ partir de\n27,77 $'
-        : 'Business\nSubscription\nFrom\n$27.77'}
-    </Text>
-  </View>
+    {language === 'fr'
+      ? 'Abonnement\nEntreprise\nÀ partir de\n27,77 $'
+      : 'Business\nSubscription\nFrom\n$27.77'}
+  </Text>
+</TouchableOpacity>
 </View>
         
 
@@ -296,9 +316,16 @@ const [selectedHomeAddress, setSelectedHomeAddress] = useState(null);
 
       const data = await response.json();
 
-      setHomeAddressSuggestions(
-        Array.isArray(data) ? data.slice(0, 5) : []
-      );
+const results =
+  Array.isArray(data)
+    ? data
+    : Array.isArray(data?.features)
+    ? data.features
+    : Array.isArray(data?.results)
+    ? data.results
+    : [];
+
+setHomeAddressSuggestions(results.slice(0, 5));
     } catch (error) {
       console.log('Erreur recherche adresse accueil:', error);
       setHomeAddressSuggestions([]);
@@ -341,27 +368,40 @@ const [selectedHomeAddress, setSelectedHomeAddress] = useState(null);
   </Text>
 
   <TextInput
-    placeholder={language === 'fr'
+  placeholder={
+    language === 'fr'
       ? 'Ex. : 123 Rue Principale, Montréal'
-      : 'Ex.: 123 Main Street, Montreal'}
-    placeholderTextColor="#8A94A5"
-    value={address}
-    onChangeText={setAddress}
-    style={{
-      backgroundColor: '#FFFFFF',
-      borderWidth: 1,
-      borderColor: '#D6DDE7',
-      borderRadius: 10,
-      paddingHorizontal: 12,
-      height: 40,
-      color: COLORS.text,
-      fontSize: 13,
-    }}
-    onSubmitEditing={() => {
-      if (address.trim()) onNavigate('TypeTravaux');
-    }}
-    returnKeyType="search"
-  />
+      : 'Ex.: 123 Main Street, Montreal'
+  }
+  placeholderTextColor="#8A94A5"
+  value={address}
+  onChangeText={(text) => {
+    setAddress(text);
+    setSelectedHomeAddress(null);
+  }}
+  style={{
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#D6DDE7',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    height: 40,
+    color: COLORS.text,
+    fontSize: 13,
+  }}
+  onSubmitEditing={() => {
+    if (selectedHomeAddress) {
+      onNavigate('TypeTravaux');
+    } else {
+      alert(
+        language === 'fr'
+          ? 'Veuillez sélectionner une adresse dans les suggestions.'
+          : 'Please select an address from the suggestions.'
+      );
+    }
+  }}
+  returnKeyType="search"
+/>
       {homeAddressLoading && (
   <Text style={{ marginTop: 6, color: COLORS.muted }}>
     {language === 'fr'
@@ -1083,9 +1123,10 @@ function Signup({ onNavigate, language, setLanguage }) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader
-        language={language}
-        setLanguage={setLanguage}
-      />
+  language={language}
+  setLanguage={setLanguage}
+  onNavigate={onNavigate}
+/>
 
       <TouchableOpacity
         onPress={() => onNavigate('Accueil')}
