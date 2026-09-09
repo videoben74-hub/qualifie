@@ -632,6 +632,74 @@ setHomeAddressSuggestions(results.slice(0, 5));
     </Text>
   </TouchableOpacity>
 </View>
+            <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        marginHorizontal: 28,
+        marginTop: 2,
+        marginBottom: 4,
+      }}
+    >
+      {[
+        ['1', language === 'fr' ? 'Connexion' : 'Sign in'],
+        ['2', language === 'fr' ? 'Adresse' : 'Address'],
+        ['3', language === 'fr' ? 'Métier' : 'Trade'],
+        ['4', language === 'fr' ? 'Soumission' : 'Quote'],
+      ].map(([number, label], index) => (
+        <React.Fragment key={number}>
+          <View style={{ alignItems: 'center' }}>
+            <View
+              style={{
+                width: 27,
+                height: 27,
+                borderRadius: 14,
+                backgroundColor: COLORS.gold2,
+                borderWidth: 1,
+                borderColor: COLORS.navy,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  color: COLORS.navy,
+                  fontSize: 13,
+                  fontWeight: '900',
+                }}
+              >
+                {number}
+              </Text>
+            </View>
+
+            <Text
+              style={{
+                color: COLORS.navy,
+                fontSize: 10,
+                fontWeight: '800',
+                marginTop: 3,
+              }}
+            >
+              {label}
+            </Text>
+          </View>
+
+          {index < 3 && (
+            <Text
+              style={{
+                color: COLORS.gold,
+                fontSize: 19,
+                fontWeight: '700',
+                marginBottom: 14,
+              }}
+            >
+              →
+            </Text>
+          )}
+        </React.Fragment>
+      ))}
+    </View>
 </ScrollView>
   );
 }
