@@ -1141,7 +1141,7 @@ return (
 {selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? 'À propos' : 'About'}</Text>}
 {selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? 'Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.' : 'Constructions RL supports its clients with their interior renovation projects, providing professional, reliable and meticulous service.'}</Text>}
 {selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🏆 Plus de 10 ans d’expérience' : '🏆 Over 10 years of experience'}</Text>}
-{selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets')}><Text style={styles.quoteBtnText}>{language === 'fr' ? '📋 Demander une soumission' : '📋 Request a quote'}</Text></TouchableOpacity>}
+{selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets', '', selectedPro)}><Text style={styles.quoteBtnText}>{language === 'fr' ? '📋 Demander une soumission' : '📋 Request a quote'}</Text></TouchableOpacity>}
 {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages', '', selectedPro)}><Text style={styles.contactBtnText}>{language === 'fr' ? '💬 Contacter l’entrepreneur' : '💬 Contact contractor'}</Text></TouchableOpacity>}
        {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => setFavorites((prev) => prev.some((fav) => fav.id === selectedPro.id) ? prev.filter((fav) => fav.id !== selectedPro.id) : [...prev, selectedPro])}><Text style={styles.contactBtnText}>{favorites.some((fav) => fav.id === selectedPro.id) ? (language === 'fr' ? '❤️ Retirer des favoris' : '❤️ Remove from favorites') : (language === 'fr' ? '♡ Ajouter aux favoris' : '♡ Add to favorites')}</Text></TouchableOpacity>}
 {selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '🛡️ Vérifications QualiVérifié' : '🛡️ QualiVérifié verifications'}</Text>}
@@ -1288,6 +1288,246 @@ return (
           </Text>
         </TouchableOpacity>
       ))}
+    </ScrollView>
+  );
+}
+ function Projets({ onNavigate, selectedPro, projects, setProjects, language, setLanguage }) {
+  const [description, setDescription] = useState('');
+  const [address, setAddress] = useState('');
+  const [sent, setSent] = useState(false);
+
+  const sendQuoteRequest = () => {
+    if (!description.trim() || !address.trim()) {
+      return;
+    }
+
+    const newProject = {
+      id: Date.now(),
+      contractorId: selectedPro?.id || null,
+      contractorName: selectedPro?.name || 'Entrepreneur',
+      clientName: 'Client démo',
+      address: address.trim(),
+      description: description.trim(),
+      status: 'new',
+      createdAt: new Date().toISOString(),
+    };
+
+    setProjects((current) => [newProject, ...current]);
+    setSent(true);
+  };
+
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader
+        language={language}
+        setLanguage={setLanguage}
+        onNavigate={onNavigate}
+      />
+
+      <TouchableOpacity
+        onPress={() => onNavigate('Profil', '', selectedPro)}
+        style={{
+          alignSelf: 'flex-start',
+          paddingVertical: 8,
+          paddingHorizontal: 4,
+          marginBottom: 6,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 16,
+            fontWeight: '900',
+          }}
+        >
+          ← {language === 'fr' ? 'Retour' : 'Back'}
+        </Text>
+      </TouchableOpacity>
+
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 28,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: 6,
+        }}
+      >
+        {language === 'fr'
+          ? 'Demande de soumission'
+          : 'Quote request'}
+      </Text>
+
+      <Text
+        style={{
+          color: COLORS.gold,
+          fontSize: 17,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: 20,
+        }}
+      >
+        {selectedPro?.name || (language === 'fr'
+          ? 'Entrepreneur sélectionné'
+          : 'Selected contractor')}
+      </Text>
+
+      {sent ? (
+        <View
+          style={{
+            backgroundColor: COLORS.card,
+            borderWidth: 1,
+            borderColor: COLORS.line,
+            borderRadius: 16,
+            padding: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.navy,
+              fontSize: 22,
+              fontWeight: '900',
+              textAlign: 'center',
+              marginBottom: 10,
+            }}
+          >
+            ✅ {language === 'fr'
+              ? 'Demande envoyée !'
+              : 'Request sent!'}
+          </Text>
+
+          <Text
+            style={{
+              color: COLORS.muted,
+              fontSize: 14,
+              fontWeight: '700',
+              textAlign: 'center',
+                           lineHeight: 21,
+              marginBottom: 18,
+            }}
+          >
+            {language === 'fr'
+              ? `Votre demande a été transmise à ${selectedPro?.name || 'l’entrepreneur'}.`
+              : `Your request has been sent to ${selectedPro?.name || 'the contractor'}.`}
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => onNavigate('Accueil')}
+            style={{
+              backgroundColor: COLORS.gold2,
+              borderRadius: 14,
+              minHeight: 54,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.navy,
+                fontSize: 16,
+                fontWeight: '900',
+              }}
+            >
+              {language === 'fr'
+                ? 'Retour à l’accueil'
+                : 'Back to home'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          <Text
+            style={{
+              color: COLORS.navy,
+              fontSize: 15,
+              fontWeight: '900',
+              marginBottom: 7,
+            }}
+          >
+            {language === 'fr'
+              ? 'Adresse du chantier'
+              : 'Project address'}
+          </Text>
+
+          <TextInput
+            value={address}
+            onChangeText={setAddress}
+            placeholder={language === 'fr'
+              ? 'Ex. : 123 Rue Principale, Montréal'
+              : 'Ex.: 123 Main Street, Montreal'}
+            placeholderTextColor={COLORS.muted}
+            style={{
+              backgroundColor: COLORS.card,
+              borderWidth: 1,
+              borderColor: COLORS.line,
+              borderRadius: 14,
+              minHeight: 54,
+              paddingHorizontal: 14,
+              color: COLORS.navy,
+              fontSize: 15,
+              marginBottom: 16,
+            }}
+          />
+
+          <Text
+            style={{
+              color: COLORS.navy,
+              fontSize: 15,
+              fontWeight: '900',
+              marginBottom: 7,
+            }}
+          >
+            {language === 'fr'
+              ? 'Décrivez les travaux'
+              : 'Describe the work'}
+          </Text>
+
+          <TextInput
+            value={description}
+            onChangeText={setDescription}
+            multiline
+            placeholder={language === 'fr'
+              ? 'Ex. : Rénovation complète de la salle de bain...'
+              : 'Ex.: Complete bathroom renovation...'}
+            placeholderTextColor={COLORS.muted}
+            style={{
+              backgroundColor: COLORS.card,
+              borderWidth: 1,
+              borderColor: COLORS.line,
+              borderRadius: 14,
+              minHeight: 130,
+              padding: 14,
+              color: COLORS.navy,
+              fontSize: 15,
+              textAlignVertical: 'top',
+              marginBottom: 18,
+            }}
+          />
+
+          <TouchableOpacity
+            onPress={sendQuoteRequest}
+            style={{
+              backgroundColor: COLORS.gold2,
+              borderRadius: 14,
+              minHeight: 58,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.navy,
+                fontSize: 16,
+                fontWeight: '900',
+              }}
+            >
+              📋 {language === 'fr'
+                ? 'Envoyer la demande'
+                : 'Send request'}
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -1722,8 +1962,22 @@ tab === 'Signup' ? (
     />
   ) :
 tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
-    tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} /> :
-  tab === 'EntrepriseDemo' ? (
+    tab === 'Pros' ? <Pros initialCategory=
+{category} initialFilters={filters} onNavigate=
+{navigate} favorites={favorites} setFavorites=
+{setFavorites} language={language} setLanguage=
+{setLanguage} /> :
+tab === 'Projets' ? (
+  <Projets
+    onNavigate={navigate}
+    selectedPro={selectedPro}
+    projects={projects}
+    setProjects={setProjects}
+    language={language}
+    setLanguage={setLanguage}
+  />
+) :
+tab === 'EntrepriseDemo' ? (
   <EntrepriseDemo
     onNavigate={navigate}
     language={language}
