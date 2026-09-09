@@ -1163,6 +1163,236 @@ return (
     </ScrollView>
   );
 }
+ function EntrepriseDemo({ onNavigate, language, setLanguage }) {
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader
+        language={language}
+        setLanguage={setLanguage}
+        onNavigate={onNavigate}
+      />
+
+      <TouchableOpacity
+        onPress={() => onNavigate('Accueil')}
+        style={{
+          alignSelf: 'flex-start',
+          paddingVertical: 8,
+          paddingHorizontal: 4,
+          marginBottom: 8,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 16,
+            fontWeight: '900',
+          }}
+        >
+          ← {language === 'fr' ? 'Déconnexion' : 'Sign out'}
+        </Text>
+      </TouchableOpacity>
+
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 27,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: 4,
+        }}
+      >
+        {language === 'fr' ? 'Espace entreprise' : 'Business dashboard'}
+      </Text>
+
+      <Text
+        style={{
+          color: COLORS.gold,
+          fontSize: 16,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: 20,
+        }}
+      >
+        Construction Démo inc.
+      </Text>
+
+      {[
+        [
+          '📋',
+          language === 'fr'
+            ? 'Demandes de soumission'
+            : 'Quote requests',
+          language === 'fr'
+            ? '3 nouvelles demandes'
+            : '3 new requests',
+        ],
+        [
+          '💬',
+          language === 'fr' ? 'Messages clients' : 'Client messages',
+          language === 'fr'
+            ? '2 conversations actives'
+            : '2 active conversations',
+        ],
+        [
+          '🏢',
+          language === 'fr'
+            ? 'Profil de l’entreprise'
+            : 'Business profile',
+          language === 'fr'
+            ? 'Informations et vérifications'
+            : 'Information and verification',
+        ],
+        [
+          '⭐',
+          language === 'fr' ? 'Avis reçus' : 'Reviews',
+          '4.9 / 5',
+        ],
+        [
+          '💳',
+          language === 'fr' ? 'Abonnement' : 'Subscription',
+          language === 'fr'
+            ? 'Entreprise — actif'
+            : 'Business — active',
+        ],
+      ].map(([icon, title, subtitle]) => (
+        <TouchableOpacity
+          key={title}
+          style={{
+            backgroundColor: COLORS.card,
+            borderRadius: 14,
+            borderWidth: 1,
+            borderColor: COLORS.line,
+            padding: 16,
+            marginBottom: 12,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.navy,
+              fontSize: 17,
+              fontWeight: '900',
+              marginBottom: 4,
+            }}
+          >
+            {icon} {title}
+          </Text>
+
+          <Text
+            style={{
+              color: COLORS.muted,
+              fontSize: 13,
+              fontWeight: '700',
+            }}
+          >
+            {subtitle}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+}
+ function Login({ onNavigate, onDemoLogin, language, setLanguage }) {
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader
+        language={language}
+        setLanguage={setLanguage}
+        onNavigate={onNavigate}
+      />
+
+      <TouchableOpacity
+        onPress={() => onNavigate('Accueil')}
+        style={{
+          alignSelf: 'flex-start',
+          paddingVertical: 8,
+          paddingHorizontal: 4,
+          marginBottom: 6,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 16,
+            fontWeight: '900',
+          }}
+        >
+          ← {language === 'fr' ? 'Retour' : 'Back'}
+        </Text>
+      </TouchableOpacity>
+
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 28,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: 8,
+        }}
+      >
+        {language === 'fr' ? 'Connexion' : 'Sign in'}
+      </Text>
+
+      <Text
+        style={{
+          color: COLORS.muted,
+          fontSize: 14,
+          fontWeight: '700',
+          textAlign: 'center',
+          marginBottom: 24,
+        }}
+      >
+        {language === 'fr'
+          ? 'Choisissez un compte de démonstration.'
+          : 'Choose a demo account.'}
+      </Text>
+
+      <TouchableOpacity
+        onPress={() => onDemoLogin('client')}
+        style={{
+          backgroundColor: COLORS.card,
+          borderWidth: 2,
+          borderColor: COLORS.navy,
+          borderRadius: 14,
+          minHeight: 64,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 14,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 17,
+            fontWeight: '900',
+          }}
+        >
+          👤 {language === 'fr' ? 'Client démo' : 'Demo client'}
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => onDemoLogin('business')}
+        style={{
+          backgroundColor: COLORS.gold2,
+          borderRadius: 14,
+          minHeight: 64,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 17,
+            fontWeight: '900',
+          }}
+        >
+          🏢 {language === 'fr' ? 'Entreprise démo' : 'Demo business'}
+        </Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+}
 function Signup({ onNavigate, language, setLanguage }) {
   const [accountType, setAccountType] = useState('business');
   const [businessName, setBusinessName] = useState('');
@@ -1452,22 +1682,38 @@ useEffect(() => {
   setFilters(newFilters);
   setTab(to);
 };
-
+  const onDemoLogin = (type) => {
+    if (type === 'client') {
+      setSelectedPro(null);
+      setTab('Accueil');
+    } else {
+      setSelectedPro(null);
+      setTab('EntrepriseDemo');
+    }
+  };
   const content =
   tab === 'Accueil' ? (
-    <Home
-      onNavigate={navigate}
-      language={language}
-      setLanguage={setLanguage}
-    />
-  ) :
-  tab === 'Signup' ? (
-    <Signup
-      onNavigate={navigate}
-      language={language}
-      setLanguage={setLanguage}
-    />
-  ) :
+  <Home
+    onNavigate={navigate}
+    language={language}
+    setLanguage={setLanguage}
+  />
+) :
+tab === 'Login' ? (
+  <Login
+    onNavigate={navigate}
+    onDemoLogin={onDemoLogin}
+    language={language}
+    setLanguage={setLanguage}
+  />
+) :
+tab === 'Signup' ? (
+  <Signup
+    onNavigate={navigate}
+    language={language}
+    setLanguage={setLanguage}
+  />
+) :
   tab === 'TypeTravaux' ? (
     <TypeTravaux
       onNavigate={navigate}
@@ -1477,7 +1723,13 @@ useEffect(() => {
   ) :
 tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
     tab === 'Pros' ? <Pros initialCategory={category} initialFilters={filters} onNavigate={navigate} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} /> :
-  
+  tab === 'EntrepriseDemo' ? (
+  <EntrepriseDemo
+    onNavigate={navigate}
+    language={language}
+    setLanguage={setLanguage}
+  />
+) :
   
     tab === 'Messages' ? <Messages selectedPro={selectedPro} language={language} setLanguage={setLanguage} /> :
 <Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} />
