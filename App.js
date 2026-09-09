@@ -1257,6 +1257,11 @@ return (
       ].map(([icon, title, subtitle]) => (
         <TouchableOpacity
           key={title}
+       onPress={() => {
+  if (title === (language === 'fr' ? 'Demandes de soumission' : 'Quote requests')) {
+    onNavigate('QuoteRequests');
+  }
+}}
           style={{
             backgroundColor: COLORS.card,
             borderRadius: 14,
@@ -1288,6 +1293,139 @@ return (
           </Text>
         </TouchableOpacity>
       ))}
+    </ScrollView>
+  );
+}
+ function QuoteRequests({ onNavigate, language, setLanguage }) {
+  return (
+    <ScrollView
+      contentContainerStyle={{
+        padding: 20,
+        paddingBottom: 40,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 27,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: 8,
+        }}
+      >
+        {language === 'fr'
+          ? 'Demandes de soumission'
+          : 'Quote requests'}
+      </Text>
+
+      <Text
+        style={{
+          color: COLORS.muted,
+          fontSize: 15,
+          fontWeight: '700',
+          textAlign: 'center',
+          marginBottom: 24,
+        }}
+      >
+        {language === 'fr'
+          ? '3 nouvelles demandes'
+          : '3 new requests'}
+      </Text>
+
+      {[
+        {
+          client: 'Client #001',
+          project:
+            language === 'fr'
+              ? 'Rénovation de salle de bain'
+              : 'Bathroom renovation',
+          location: 'Montréal, QC',
+        },
+        {
+          client: 'Client #002',
+          project:
+            language === 'fr'
+              ? 'Peinture intérieure'
+              : 'Interior painting',
+          location: 'Laval, QC',
+        },
+        {
+          client: 'Client #003',
+          project:
+            language === 'fr'
+              ? 'Rénovation de cuisine'
+              : 'Kitchen renovation',
+          location: 'Longueuil, QC',
+        },
+      ].map((request, index) => (
+        <View
+          key={index}
+          style={{
+            backgroundColor: COLORS.card,
+            borderRadius: 14,
+            borderWidth: 1,
+            borderColor: COLORS.line,
+            padding: 16,
+            marginBottom: 12,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.navy,
+              fontSize: 17,
+              fontWeight: '900',
+              marginBottom: 6,
+            }}
+          >
+            {request.project}
+          </Text>
+
+          <Text
+            style={{
+              color: COLORS.muted,
+              fontSize: 14,
+              fontWeight: '700',
+              marginBottom: 4,
+            }}
+          >
+            👤 {request.client}
+          </Text>
+
+          <Text
+            style={{
+              color: COLORS.muted,
+              fontSize: 14,
+              fontWeight: '700',
+            }}
+          >
+            📍 {request.location}
+          </Text>
+        </View>
+      ))}
+
+      <TouchableOpacity
+        onPress={() => onNavigate('EnterpriseDemo')}
+        style={{
+          backgroundColor: COLORS.gold2,
+          borderRadius: 14,
+          minHeight: 54,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 12,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 16,
+            fontWeight: '900',
+          }}
+        >
+          {language === 'fr'
+            ? 'Retour à l’espace entreprise'
+            : 'Back to business dashboard'}
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -1977,16 +2115,36 @@ tab === 'Projets' ? (
     setLanguage={setLanguage}
   />
 ) :
-tab === 'EntrepriseDemo' ? (
-  <EntrepriseDemo
+tab === 'EnterpriseDemo' ? (
+  <EnterpriseDemo
     onNavigate={navigate}
     language={language}
     setLanguage={setLanguage}
   />
 ) :
-  
-    tab === 'Messages' ? <Messages selectedPro={selectedPro} language={language} setLanguage={setLanguage} /> :
-<Profile onNavigate={navigate} selectedPro={selectedPro} favorites={favorites} setFavorites={setFavorites} language={language} setLanguage={setLanguage} />
+tab === 'QuoteRequests' ? (
+  <QuoteRequests
+    onNavigate={navigate}
+    language={language}
+    setLanguage={setLanguage}
+  />
+) :
+tab === 'Messages' ? (
+  <Messages
+    selectedPro={selectedPro}
+    language={language}
+    setLanguage={setLanguage}
+  />
+) : (
+  <Profile
+    onNavigate={navigate}
+    selectedPro={selectedPro}
+    favorites={favorites}
+    setFavorites={setFavorites}
+    language={language}
+    setLanguage={setLanguage}
+  />
+)
 
   return (
     <SafeAreaView style={styles.safe}>
