@@ -10,6 +10,7 @@ import {
   StatusBar,
   Platform, BackHandler, Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 const COLORS = {
   navy: '#0B1F3A',
@@ -1005,7 +1006,30 @@ const [ccqStatus, setCcqStatus] = useState('');
 const isNeqValid = /^\d{10}$/.test(neq.trim());
 const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   const toggleRbqCategory = (category) => setRbqCategories((current) => current.includes(category) ? current.filter((item) => item !== category) : [...current, category]);
-  
+  const pickProfilePhoto = async () => {
+  const permissionResult =
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (!permissionResult.granted) {
+    alert(
+      language === 'fr'
+        ? 'Permission requise pour accéder aux photos.'
+        : 'Permission is required to access photos.'
+    );
+    return;
+  }
+
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ['images'],
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 0.8,
+  });
+
+  if (!result.canceled && result.assets?.length > 0) {
+    setProfilePhoto(result.assets[0].uri);
+  }
+};
   if (profileSection) {
     
     
@@ -1237,7 +1261,10 @@ return (
 <AppHeader language={language} setLanguage={setLanguage} />
 <Text style={styles.screenTitle}>{language === 'fr' ? (selectedPro ? 'Profil QualiVérifié' : 'Mon profil') : (selectedPro ? 'QualiVérifié Profile' : 'My profile')}</Text>
 <View style={styles.profileCard}>
-<View style={styles.avatarLarge}>
+<TouchableOpacity
+  style={styles.avatarLarge}
+  onPress={pickProfilePhoto}
+>
   {profilePhoto ? (
     <Image
       source={{ uri: profilePhoto }}
@@ -1245,10 +1272,10 @@ return (
     />
   ) : (
     <Text style={styles.avatarText}>
-      {selectedPro ? selectedPro.name.slice(0, 1) : 'B'}
+      {selectedPro ? selectedPro.name.slice(0, 1) : '📷'}
     </Text>
   )}
-</View>
+</TouchableOpacity>
 <Text style={styles.profileName}>
   {selectedPro
     ? selectedPro.name
