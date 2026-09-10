@@ -1154,10 +1154,27 @@ return (
 {selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '📷 Photos des réalisations à venir' : '📷 Project photos coming soon'}</Text>}
 {selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}</Text>}
 {selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié' : '⭐⭐⭐⭐⭐ Excellent work, professional and very clean. — Verified client'}</Text>}
-{!selectedPro && ['🛡️ Devenir un pro vérifié', '🏗️ Projets disponibles', 'Mes projets', 'Mes soumissions', 'Mes favoris', 'Mes avis', 'Paramètres'].map((x) => (
-<TouchableOpacity key={x} onPress={() => x === '🏗️ Projets disponibles' ? onNavigate('ProjetsDisponibles') : x === 'Mes projets' ? onNavigate('Projets') : setProfileSection(x)} style={styles.menuRow}>
-<Text style={styles.menuText}>{language === 'fr' ? x : ({'🛡️ Devenir un pro vérifié':'🛡️ Become a verified pro','🏗️ Projets disponibles':'🏗️ Available projects','Mes projets':'My projects','Mes soumissions':'My quotes','Mes favoris':'My favorites','Mes avis':'My reviews','Paramètres':'Settings'}[x] || x)}</Text><Text style={styles.chevron}>›</Text>
-</TouchableOpacity>
+{!selectedPro && [
+  { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
+  { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
+  { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
+  { fr: '👤 Profil public', en: '👤 Public profile', section: 'Profil public' },
+  { fr: '🚪 Déconnexion', en: '🚪 Log out', section: 'Déconnexion' },
+].map((item) => (
+  <TouchableOpacity
+    key={item.section}
+    onPress={() =>
+      item.section === 'Déconnexion'
+        ? onNavigate('Accueil')
+        : setProfileSection(item.section)
+    }
+    style={styles.menuRow}
+  >
+    <Text style={styles.menuText}>
+      {language === 'fr' ? item.fr : item.en}
+    </Text>
+    <Text style={styles.chevron}>›</Text>
+  </TouchableOpacity>
 ))}
 
     </ScrollView>
