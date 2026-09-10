@@ -1136,6 +1136,30 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         : 'Your average rating and total number of reviews will be displayed on your public profile.'}
     </Text>
   </>
+) : profileSection === 'Abonnement' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '💳 Abonnement entreprise' : '💳 Business subscription'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? 'Votre abonnement QualiVérifié vous permet de maintenir votre profil entreprise actif et visible auprès des clients.'
+        : 'Your QualiVérifié subscription keeps your business profile active and visible to clients.'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'À partir de 27,77 $ par mois.'
+        : 'Starting at $27.77 per month.'}
+    </Text>
+
+    <Text style={styles.infoText}>
+  {language === 'fr'
+    ? 'La gestion complète du paiement et du renouvellement sera ajoutée ici.'
+    : 'Full payment and renewal management will be added here.'}
+</Text>
+</>
 ) : (
   <Text style={styles.infoText}>
     {language === 'fr'
