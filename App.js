@@ -1003,6 +1003,30 @@ const [rbq, setRbq] = useState('');
 const [companyCity, setCompanyCity] = useState('');
   const [rbqCategories, setRbqCategories] = useState([]);
 const [ccqStatus, setCcqStatus] = useState('');
+  const customerReviews = [
+  {
+    id: 1,
+    rating: 5,
+    fr: 'Excellent service. Entrepreneur professionnel et ponctuel.',
+    en: 'Excellent service. Professional and punctual contractor.',
+  },
+  {
+    id: 2,
+    rating: 5,
+    fr: 'Très satisfait du résultat. Je recommande cette entreprise.',
+    en: 'Very satisfied with the result. I recommend this company.',
+  },
+];
+
+const averageRating =
+  customerReviews.length > 0
+    ? (
+        customerReviews.reduce(
+          (total, review) => total + review.rating,
+          0
+        ) / customerReviews.length
+      ).toFixed(1)
+    : '0.0';
 const isNeqValid = /^\d{10}$/.test(neq.trim());
 const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   const toggleRbqCategory = (category) => setRbqCategories((current) => current.includes(category) ? current.filter((item) => item !== category) : [...current, category]);
@@ -1337,7 +1361,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     </Text>
 
     <Text style={styles.profileInfo}>
-      {companyName.trim()
+      {companyName && companyName.trim()
         ? companyName
         : language === 'fr'
         ? 'Nom de votre entreprise'
@@ -1352,28 +1376,28 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 
     <Text style={styles.infoText}>
       {language === 'fr'
-        ? `📍 Ville : ${companyCity.trim() || 'Non renseignée'}`
-        : `📍 City: ${companyCity.trim() || 'Not provided'}`}
+        ? `📍 Ville : ${companyCity && companyCity.trim() ? companyCity : 'Non renseignée'}`
+        : `📍 City: ${companyCity && companyCity.trim() ? companyCity : 'Not provided'}`}
     </Text>
 
     <Text style={styles.infoText}>
       {language === 'fr'
-        ? `🪪 Licence RBQ : ${rbq.trim() || 'Non renseignée'}`
-        : `🪪 RBQ licence: ${rbq.trim() || 'Not provided'}`}
+        ? `🪪 Licence RBQ : ${rbq && rbq.trim() ? rbq : 'Non renseignée'}`
+        : `🪪 RBQ licence: ${rbq && rbq.trim() ? rbq : 'Not provided'}`}
     </Text>
 
     <Text style={styles.infoText}>
       {language === 'fr'
-        ? `👷 Statut CCQ : ${ccqStatus.trim() || 'Non renseigné'}`
-        : `👷 CCQ status: ${ccqStatus.trim() || 'Not provided'}`}
+        ? `👷 Statut CCQ : ${ccqStatus && ccqStatus.trim() ? ccqStatus : 'Non renseigné'}`
+        : `👷 CCQ status: ${ccqStatus && ccqStatus.trim() ? ccqStatus : 'Not provided'}`}
     </Text>
 
     <Text style={[styles.menuText, { marginTop: 14 }]}>
-      {language === 'fr' ? '🛠️ Services' : '🛠️ Services'}
+      {language === 'fr' ? '🛠 Services' : '🛠 Services'}
     </Text>
 
     <Text style={styles.infoText}>
-      {rbqCategories.length > 0
+      {rbqCategories && rbqCategories.length > 0
         ? rbqCategories.join(', ')
         : language === 'fr'
         ? 'Aucun service sélectionné.'
