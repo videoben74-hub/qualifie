@@ -1282,7 +1282,16 @@ return (
     : (language === 'fr' ? 'Menu Entreprise' : 'Business Menu')}
 </Text>
 
-<Text style={styles.infoText}>
+<Text
+  style={[
+    styles.infoText,
+    {
+      textAlign: 'center',
+      width: '100%',
+      paddingHorizontal: 10,
+    },
+  ]}
+>
   {selectedPro
     ? `${language === 'fr'
         ? selectedPro.trade
