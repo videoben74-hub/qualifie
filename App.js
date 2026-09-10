@@ -1160,6 +1160,42 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     : 'Full payment and renewal management will be added here.'}
 </Text>
 </>
+) : profileSection === 'Paramètres' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '⚙️ Paramètres' : '⚙️ Settings'}
+    </Text>
+
+    <Text style={styles.menuText}>
+      {language === 'fr' ? '🌐 Langue' : '🌐 Language'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'Français / English'
+        : 'English / Français'}
+    </Text>
+
+    <Text style={styles.menuText}>
+      {language === 'fr' ? '🔔 Notifications' : '🔔 Notifications'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'Gérez les notifications de votre compte.'
+        : 'Manage your account notifications.'}
+    </Text>
+
+    <Text style={styles.menuText}>
+      {language === 'fr' ? '🔒 Sécurité du compte' : '🔒 Account security'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'Mot de passe et sécurité de votre compte.'
+        : 'Password and account security.'}
+    </Text>
+  </>
 ) : (
   <Text style={styles.infoText}>
     {language === 'fr'
