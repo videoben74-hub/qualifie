@@ -1151,26 +1151,59 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 
     <Text style={styles.profileInfo}>
       {language === 'fr'
-        ? 'Les avis laissés par vos clients apparaîtront ici.'
-        : 'Reviews left by your customers will appear here.'}
+        ? 'Note moyenne : 5.0 / 5'
+        : 'Average rating: 5.0 / 5'}
     </Text>
 
     <Text style={styles.infoText}>
-      {language === 'fr'
-        ? 'Votre note moyenne et le nombre total d’avis seront affichés sur votre profil public.'
-        : 'Your average rating and total number of reviews will be displayed on your public profile.'}
+      {language === 'fr' ? '2 avis clients' : '2 customer reviews'}
     </Text>
+
+    {[
+      {
+        id: 1,
+        rating: 5,
+        fr: 'Excellent service. Entrepreneur professionnel et ponctuel.',
+        en: 'Excellent service. Professional and punctual contractor.',
+      },
+      {
+        id: 2,
+        rating: 5,
+        fr: 'Très satisfait du résultat. Je recommande cette entreprise.',
+        en: 'Very satisfied with the result. I recommend this company.',
+      },
+    ].map((review) => (
+      <View
+        key={review.id}
+        style={{
+          backgroundColor: '#FFFFFF',
+          padding: 16,
+          borderRadius: 14,
+          marginTop: 14,
+        }}
+      >
+        <Text style={{ fontSize: 20, marginBottom: 6 }}>
+          {'⭐'.repeat(review.rating)}
+        </Text>
+
+        <Text style={styles.infoText}>
+          {language === 'fr' ? review.fr : review.en}
+        </Text>
+      </View>
+    ))}
   </>
 ) : profileSection === 'Abonnement' ? (
   <>
     <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '💳 Abonnement entreprise' : '💳 Business subscription'}
+      {language === 'fr'
+        ? '💳 Abonnement entreprise'
+        : '💳 Business subscription'}
     </Text>
 
     <Text style={styles.profileInfo}>
       {language === 'fr'
-        ? 'Votre abonnement QualiVérifié vous permet de maintenir votre profil entreprise actif et visible auprès des clients.'
-        : 'Your QualiVérifié subscription keeps your business profile active and visible to clients.'}
+        ? 'Forfait QualiVérifié'
+        : 'QualiVérifié plan'}
     </Text>
 
     <Text style={styles.infoText}>
@@ -1179,12 +1212,52 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         : 'Starting at $27.77 per month.'}
     </Text>
 
-    <Text style={styles.infoText}>
-  {language === 'fr'
-    ? 'La gestion complète du paiement et du renouvellement sera ajoutée ici.'
-    : 'Full payment and renewal management will be added here.'}
-</Text>
-</>
+    <View
+      style={{
+        backgroundColor: '#FFFFFF',
+        padding: 16,
+        borderRadius: 14,
+        marginTop: 16,
+      }}
+    >
+      <Text style={styles.menuText}>
+        {language === 'fr' ? '✅ Statut' : '✅ Status'}
+      </Text>
+
+      <Text style={styles.infoText}>
+        {language === 'fr'
+          ? 'Abonnement entreprise actif'
+          : 'Business subscription active'}
+      </Text>
+
+      <Text style={[styles.menuText, { marginTop: 14 }]}>
+        {language === 'fr' ? '⭐ Inclus' : '⭐ Included'}
+      </Text>
+
+      <Text style={styles.infoText}>
+        {language === 'fr'
+          ? '• Profil entreprise visible\n• Accès aux demandes de soumission\n• Messagerie avec les clients\n• Avis clients\n• Présence dans les résultats de recherche'
+          : '• Visible business profile\n• Access to quote requests\n• Client messaging\n• Customer reviews\n• Presence in search results'}
+      </Text>
+    </View>
+
+    <TouchableOpacity
+      style={[styles.primaryBtn, { marginTop: 18 }]}
+      onPress={() =>
+        alert(
+          language === 'fr'
+            ? 'La gestion du paiement et du renouvellement sera activée prochainement.'
+            : 'Payment and renewal management will be activated soon.'
+        )
+      }
+    >
+      <Text style={styles.primaryBtnText}>
+        {language === 'fr'
+          ? 'Gérer mon abonnement'
+          : 'Manage my subscription'}
+      </Text>
+    </TouchableOpacity>
+  </>
 ) : profileSection === 'Paramètres' ? (
   <>
     <Text style={styles.sectionTitle}>
@@ -1197,30 +1270,66 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 
     <Text style={styles.infoText}>
       {language === 'fr'
-        ? 'Français / English'
-        : 'English / Français'}
+        ? 'Choisissez la langue de QualiVérifié.'
+        : 'Choose your QualiVérifié language.'}
     </Text>
 
-    <Text style={styles.menuText}>
-      {language === 'fr' ? '🔔 Notifications' : '🔔 Notifications'}
-    </Text>
+    <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
+      <TouchableOpacity
+        style={[
+          styles.primaryBtn,
+          { flex: 1, opacity: language === 'fr' ? 1 : 0.6 },
+        ]}
+        onPress={() => setLanguage('fr')}
+      >
+        <Text style={styles.primaryBtnText}>FR</Text>
+      </TouchableOpacity>
 
-    <Text style={styles.infoText}>
-      {language === 'fr'
-        ? 'Gérez les notifications de votre compte.'
-        : 'Manage your account notifications.'}
-    </Text>
+      <TouchableOpacity
+        style={[
+          styles.primaryBtn,
+          { flex: 1, opacity: language === 'en' ? 1 : 0.6 },
+        ]}
+        onPress={() => setLanguage('en')}
+      >
+        <Text style={styles.primaryBtnText}>EN</Text>
+      </TouchableOpacity>
+    </View>
 
-    <Text style={styles.menuText}>
-      {language === 'fr' ? '🔒 Sécurité du compte' : '🔒 Account security'}
-    </Text>
-
-    <Text style={styles.infoText}>
-      {language === 'fr'
-        ? 'Mot de passe et sécurité de votre compte.'
-        : 'Password and account security.'}
-    </Text>
-  </>
+    <TouchableOpacity
+      style={[styles.primaryBtn, { marginTop: 22 }]}
+      onPress={() =>
+        alert(
+          language === 'fr'
+            ? 'La gestion des notifications sera disponible prochainement.'
+            : 'Notification management will be available soon.'
+        )
+      }
+    >
+      <Text style={styles.primaryBtnText}>
+        {language === 'fr'
+          ? '🔔 Gérer les notifications'
+          : '🔔 Manage notifications'}
+        </Text>
+</TouchableOpacity>
+      <TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 14 }]}
+  onPress={() =>
+    alert(
+      language === 'fr'
+        ? 'Les options de sécurité du compte seront disponibles prochainement.'
+        : 'Account security options will be available soon.'
+    )
+  }
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? '🔒 Sécurité du compte'
+      : '🔒 Account security'}
+  </Text>
+</TouchableOpacity>
+</>
+      
 ) : profileSection === 'Profil public' ? (
   <>
     <Text style={styles.sectionTitle}>
