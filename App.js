@@ -1118,8 +1118,30 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       ))
     )}
   </>
+) : profileSection === 'Mes avis' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? 'Les avis laissés par vos clients apparaîtront ici.'
+        : 'Reviews left by your customers will appear here.'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'Votre note moyenne et le nombre total d’avis seront affichés sur votre profil public.'
+        : 'Your average rating and total number of reviews will be displayed on your public profile.'}
+    </Text>
+  </>
 ) : (
-  <Text style={styles.infoText}>{language === 'fr' ? 'Cette section sera bientôt disponible dans QualiVérifié.' : 'This section will be available soon in QualiVérifié.'}</Text>
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? 'Cette section sera bientôt disponible dans QualiVérifié.'
+      : 'This section will be available soon in QualiVérifié.'}
+  </Text>
 )}
 </View>
 </ScrollView>
