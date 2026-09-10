@@ -996,6 +996,7 @@ const [sentMessage, setSentMessage] = useState('');
 function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage }) {
   const [profileSection, setProfileSection] = useState(null);
   const [companyName, setCompanyName] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState(null);
 const [neq, setNeq] = useState('');
 const [rbq, setRbq] = useState('');
 const [companyCity, setCompanyCity] = useState('');
@@ -1236,9 +1237,34 @@ return (
 <AppHeader language={language} setLanguage={setLanguage} />
 <Text style={styles.screenTitle}>{language === 'fr' ? (selectedPro ? 'Profil QualiVérifié' : 'Mon profil') : (selectedPro ? 'QualiVérifié Profile' : 'My profile')}</Text>
 <View style={styles.profileCard}>
-<View style={styles.avatarLarge}><Text style={styles.avatarText}>{selectedPro ? selectedPro.name.slice(0,1) : 'B'}</Text></View>
-<Text style={styles.profileName}>{selectedPro ? selectedPro.name : (language === 'fr' ? 'Compte client' : 'Client account')}</Text>
-<Text style={styles.infoText}>{selectedPro ? `${language === 'fr' ? selectedPro.trade : (tradeTranslations[selectedPro.trade] || selectedPro.trade)} • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} ${language === 'fr' ? 'avis' : 'reviews'})` : (language === 'fr' ? 'Gérez vos projets, messages, favoris et avis.' : 'Manage your projects, messages, favorites and reviews.')}</Text>
+<View style={styles.avatarLarge}>
+  {profilePhoto ? (
+    <Image
+      source={{ uri: profilePhoto }}
+      style={{ width: '100%', height: '100%', borderRadius: 999 }}
+    />
+  ) : (
+    <Text style={styles.avatarText}>
+      {selectedPro ? selectedPro.name.slice(0, 1) : 'B'}
+    </Text>
+  )}
+</View>
+<Text style={styles.profileName}>
+  {selectedPro
+    ? selectedPro.name
+    : (language === 'fr' ? 'Menu Entreprise' : 'Business Menu')}
+</Text>
+
+<Text style={styles.infoText}>
+  {selectedPro
+    ? `${language === 'fr'
+        ? selectedPro.trade
+        : (tradeTranslations[selectedPro.trade] || selectedPro.trade)
+      } • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} ${language === 'fr' ? 'avis' : 'reviews'})`
+    : (language === 'fr'
+        ? 'Bon succès dans vos projets !'
+        : 'Wishing you success in your projects!')}
+</Text>
       </View>
 {selectedPro && <View style={styles.verifiedBadge}><Text style={styles.verifiedBadgeText}>{language === 'fr' ? '✓ QualiVérifié — Entrepreneur vérifié' : '✓ QualiVérifié — Verified contractor'}</Text></View>}
 {selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🛡️ Licence et assurance vérifiées' : '🛡️ Licence and insurance verified'}</Text>}
