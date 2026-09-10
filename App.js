@@ -1196,6 +1196,30 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         : 'Password and account security.'}
     </Text>
   </>
+) : profileSection === 'Profil public' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '👤 Profil public' : '👤 Public profile'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? 'Voici les informations principales que les clients verront sur votre profil public.'
+        : 'Here are the main details clients will see on your public profile.'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'Nom de l’entreprise, métier, ville, note, avis, licence, services et zones desservies.'
+        : 'Business name, trade, city, rating, reviews, licence, services and service areas.'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'Vous pourrez également y présenter vos réalisations et vos photos.'
+        : 'You will also be able to showcase your projects and photos.'}
+    </Text>
+  </>
 ) : (
   <Text style={styles.infoText}>
     {language === 'fr'
