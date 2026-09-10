@@ -1337,21 +1337,53 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     </Text>
 
     <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? 'Voici les informations principales que les clients verront sur votre profil public.'
-        : 'Here are the main details clients will see on your public profile.'}
+      {companyName.trim()
+        ? companyName
+        : language === 'fr'
+        ? 'Nom de votre entreprise'
+        : 'Your business name'}
     </Text>
 
     <Text style={styles.infoText}>
       {language === 'fr'
-        ? 'Nom de l’entreprise, métier, ville, note, avis, licence, services et zones desservies.'
-        : 'Business name, trade, city, rating, reviews, licence, services and service areas.'}
+        ? `⭐ Note : ${averageRating} / 5 (${customerReviews.length} avis)`
+        : `⭐ Rating: ${averageRating} / 5 (${customerReviews.length} reviews)`}
     </Text>
 
     <Text style={styles.infoText}>
       {language === 'fr'
-        ? 'Vous pourrez également y présenter vos réalisations et vos photos.'
-        : 'You will also be able to showcase your projects and photos.'}
+        ? `📍 Ville : ${companyCity.trim() || 'Non renseignée'}`
+        : `📍 City: ${companyCity.trim() || 'Not provided'}`}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? `🪪 Licence RBQ : ${rbq.trim() || 'Non renseignée'}`
+        : `🪪 RBQ licence: ${rbq.trim() || 'Not provided'}`}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? `👷 Statut CCQ : ${ccqStatus.trim() || 'Non renseigné'}`
+        : `👷 CCQ status: ${ccqStatus.trim() || 'Not provided'}`}
+    </Text>
+
+    <Text style={[styles.menuText, { marginTop: 14 }]}>
+      {language === 'fr' ? '🛠️ Services' : '🛠️ Services'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {rbqCategories.length > 0
+        ? rbqCategories.join(', ')
+        : language === 'fr'
+        ? 'Aucun service sélectionné.'
+        : 'No services selected.'}
+    </Text>
+
+    <Text style={[styles.infoText, { marginTop: 14 }]}>
+      {language === 'fr'
+        ? 'Ces informations représentent ce que les clients verront sur votre profil QualiVérifié.'
+        : 'This information represents what clients will see on your QualiVérifié profile.'}
     </Text>
   </>
 ) : (
