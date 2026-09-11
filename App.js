@@ -1179,7 +1179,18 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   {profileSection === '🛡️ Devenir un pro vérifié' ? (
     <>
       <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
-
+<Text
+  style={{
+    color: COLORS.green,
+    fontSize: 13,
+    fontWeight: '800',
+    marginBottom: 12,
+  }}
+>
+  {language === 'fr'
+    ? '✅ Profil sauvegardé automatiquement'
+    : '✅ Profile saved automatically'}
+</Text>
       <TextInput
   value={companyName}
   onChangeText={setCompanyName}
