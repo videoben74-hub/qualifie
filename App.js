@@ -1305,11 +1305,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       {language === 'fr' ? '🌐 Langue' : '🌐 Language'}
     </Text>
 
-    <Text style={styles.infoText}>
-      {language === 'fr'
-        ? 'Choisissez la langue de QualiVérifié.'
-        : 'Choose your QualiVérifié language.'}
-    </Text>
+    
 
     <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
       <TouchableOpacity
