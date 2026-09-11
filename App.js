@@ -1375,7 +1375,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     ? 'Maximum de 2 divisions par entreprise'
     : 'Maximum of 2 divisions per business'}
 </Text>
-    </Text>
+    
 
     <View
       style={{
