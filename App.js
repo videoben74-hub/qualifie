@@ -997,11 +997,13 @@ const [sentMessage, setSentMessage] = useState('');
 function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage }) {
   const [profileSection, setProfileSection] = useState(null);
   const [companyName, setCompanyName] = useState('');
-  const [profilePhoto, setProfilePhoto] = useState(null);
+const [profilePhoto, setProfilePhoto] = useState(null);
+const [companyDescription, setCompanyDescription] = useState('');
+const [companyPhotos, setCompanyPhotos] = useState([]);
 const [neq, setNeq] = useState('');
 const [rbq, setRbq] = useState('');
 const [companyCity, setCompanyCity] = useState('');
-  const [rbqCategories, setRbqCategories] = useState([]);
+const [rbqCategories, setRbqCategories] = useState([]);
 const [ccqStatus, setCcqStatus] = useState('');
   const customerReviews = [
   {
@@ -1054,6 +1056,41 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     setProfilePhoto(result.assets[0].uri);
   }
 };
+  const pickCompanyPhoto = async () => {
+  if (companyPhotos.length >= 10) {
+    alert(
+      language === 'fr'
+        ? 'Vous pouvez ajouter un maximum de 10 photos.'
+        : 'You can add a maximum of 10 photos.'
+    );
+    return;
+  }
+
+  const permissionResult =
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (!permissionResult.granted) {
+    alert(
+      language === 'fr'
+        ? 'Permission requise pour accéder aux photos.'
+        : 'Permission is required to access photos.'
+    );
+    return;
+  }
+
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ['images'],
+    allowsEditing: true,
+    quality: 0.8,
+  });
+
+  if (!result.canceled && result.assets?.length > 0) {
+    setCompanyPhotos((current) => [
+      ...current,
+      result.assets[0].uri,
+    ]);
+  }
+};
   if (profileSection) {
     
     
@@ -1075,7 +1112,98 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   placeholder={language === 'fr' ? 'Nom de l’entreprise' : 'Company name'}
   style={styles.input}
 />
+<TextInput
+  value={companyDescription}
+  onChangeText={setCompanyDescription}
+  placeholder={
+    language === 'fr'
+      ? 'Description de votre entreprise'
+      : 'Describe your business'
+  }
+  placeholderTextColor={COLORS.muted}
+  maxLength={1000}
+  multiline
+  textAlignVertical="top"
+  style={[
+    styles.input,
+    {
+      minHeight: 130,
+      paddingTop: 14,
+      marginBottom: 6,
+    },
+  ]}
+/>
 
+<Text style={[styles.infoText, { textAlign: 'right', marginBottom: 14 }]}>
+  {companyDescription.length}/1000
+</Text>
+
+<Text style={styles.sectionTitle}>
+  {language === 'fr' ? '📸 Photos de l’entreprise' : '📸 Business photos'}
+</Text>
+
+<Text style={styles.infoText}>
+  {language === 'fr'
+    ? `Ajoutez jusqu’à 10 photos (${companyPhotos.length}/10)`
+    : `Add up to 10 photos (${companyPhotos.length}/10)`}
+</Text>
+
+<TouchableOpacity
+  onPress={pickCompanyPhoto}
+  style={[styles.primaryBtn, { marginTop: 10, marginBottom: 14 }]}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? `📷 Ajouter une photo (${companyPhotos.length}/10)`
+      : `📷 Add a photo (${companyPhotos.length}/10)`}
+  </Text>
+</TouchableOpacity>
+
+{companyPhotos.length > 0 && (
+  <View
+    style={{
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 10,
+      marginBottom: 16,
+    }}
+  >
+    {companyPhotos.map((photo, index) => (
+      <View
+        key={`${photo}-${index}`}
+        style={{
+          width: '47%',
+          marginBottom: 10,
+        }}
+      >
+        <Image
+          source={{ uri: photo }}
+          style={{
+            width: '100%',
+            height: 120,
+            borderRadius: 12,
+          }}
+        />
+
+        <TouchableOpacity
+          onPress={() =>
+            setCompanyPhotos((current) =>
+              current.filter((_, photoIndex) => photoIndex !== index)
+            )
+          }
+          style={{
+            marginTop: 6,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ color: '#B00020', fontWeight: '800' }}>
+            {language === 'fr' ? '✕ Supprimer' : '✕ Remove'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    ))}
+  </View>
+)}
       <TextInput
   value={neq}
   onChangeText={setNeq}
@@ -1376,7 +1504,47 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         ? 'Nom de votre entreprise'
         : 'Your business name'}
     </Text>
+{companyDescription.trim() !== '' && (
+  <>
+    <Text style={[styles.menuText, { marginTop: 16 }]}>
+      {language === 'fr' ? '🏢 À propos de nous' : '🏢 About us'}
+    </Text>
 
+    <Text style={[styles.infoText, { marginTop: 6 }]}>
+      {companyDescription}
+    </Text>
+  </>
+)}
+
+{companyPhotos.length > 0 && (
+  <>
+    <Text style={[styles.menuText, { marginTop: 18, marginBottom: 10 }]}>
+      {language === 'fr' ? '📸 Nos réalisations' : '📸 Our work'}
+    </Text>
+
+    <View
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 10,
+        marginBottom: 16,
+      }}
+    >
+      {companyPhotos.map((photo, index) => (
+        <Image
+          key={`${photo}-${index}`}
+          source={{ uri: photo }}
+          style={{
+            width: '47%',
+            height: 120,
+            borderRadius: 12,
+            marginBottom: 6,
+          }}
+        />
+      ))}
+    </View>
+  </>
+)}
     <Text style={styles.infoText}>
       {language === 'fr'
         ? `⭐ Note : ${averageRating} / 5 (${customerReviews.length} avis)`
