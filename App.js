@@ -2461,6 +2461,7 @@ const [confirmPassword, setConfirmPassword] = useState('');
       marginBottom: 12,
     }}
   />
+  )}
   {accountType === 'business' && (
   <>
     <TextInput
