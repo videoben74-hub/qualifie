@@ -1593,7 +1593,18 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     <Text style={styles.sectionTitle}>
       {language === 'fr' ? '👤 Profil public' : '👤 Public profile'}
     </Text>
-
+{profilePhoto && (
+  <Image
+    source={{ uri: profilePhoto }}
+    style={{
+      width: 110,
+      height: 110,
+      borderRadius: 55,
+      alignSelf: 'center',
+      marginBottom: 14,
+    }}
+  />
+)}
     <Text style={styles.profileInfo}>
       {companyName && companyName.trim()
         ? companyName
