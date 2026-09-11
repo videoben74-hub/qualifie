@@ -1225,15 +1225,28 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     </Text>
 
     <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? 'Forfait QualiVérifié'
-        : 'QualiVérifié plan'}
-    </Text>
+  {language === 'fr'
+    ? 'Forfaits QualiVérifié'
+    : 'QualiVérifié plans'}
+</Text>
 
-    <Text style={styles.infoText}>
-      {language === 'fr'
-        ? 'À partir de 27,77 $ par mois.'
-        : 'Starting at $27.77 per month.'}
+<Text style={styles.infoText}>
+  {language === 'fr'
+    ? '1 division — 27,77 $ / mois'
+    : '1 division — $27.77 / month'}
+</Text>
+
+<Text style={[styles.infoText, { marginTop: 8 }]}>
+  {language === 'fr'
+    ? '2 divisions — 37,77 $ / mois'
+    : '2 divisions — $37.77 / month'}
+</Text>
+
+<Text style={[styles.infoText, { marginTop: 8, fontWeight: '800' }]}>
+  {language === 'fr'
+    ? 'Maximum de 2 divisions par entreprise'
+    : 'Maximum of 2 divisions per business'}
+</Text>
     </Text>
 
     <View
