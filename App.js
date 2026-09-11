@@ -11,7 +11,7 @@ import {
   Platform, BackHandler, Image,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const COLORS = {
   navy: '#0B1F3A',
   navy2: '#15345D',
@@ -1005,6 +1005,80 @@ const [rbq, setRbq] = useState('');
 const [companyCity, setCompanyCity] = useState('');
 const [rbqCategories, setRbqCategories] = useState([]);
 const [ccqStatus, setCcqStatus] = useState('');
+  
+    const [profileLoaded, setProfileLoaded] = useState(false);
+
+useEffect(() => {
+  const loadCompanyProfile = async () => {
+    try {
+      const savedProfile = await AsyncStorage.getItem(
+        'qualiverifie_company_profile'
+      );
+
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+
+        setCompanyName(profile.companyName || '');
+        setProfilePhoto(profile.profilePhoto || null);
+        setCompanyDescription(profile.companyDescription || '');
+        setCompanyPhotos(
+          Array.isArray(profile.companyPhotos) ? profile.companyPhotos : []
+        );
+        setNeq(profile.neq || '');
+        setRbq(profile.rbq || '');
+        setCompanyCity(profile.companyCity || '');
+        setRbqCategories(
+          Array.isArray(profile.rbqCategories) ? profile.rbqCategories : []
+        );
+        setCcqStatus(profile.ccqStatus || '');
+      }
+    } catch (error) {
+      console.log('Erreur chargement profil entreprise :', error);
+    } finally {
+      setProfileLoaded(true);
+    }
+  };
+
+  loadCompanyProfile();
+}, []);
+
+useEffect(() => {
+  if (!profileLoaded) return;
+
+  const saveCompanyProfile = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'qualiverifie_company_profile',
+        JSON.stringify({
+          companyName,
+          profilePhoto,
+          companyDescription,
+          companyPhotos,
+          neq,
+          rbq,
+          companyCity,
+          rbqCategories,
+          ccqStatus,
+        })
+      );
+    } catch (error) {
+      console.log('Erreur sauvegarde profil entreprise :', error);
+    }
+  };
+
+  saveCompanyProfile();
+}, [
+  profileLoaded,
+  companyName,
+  profilePhoto,
+  companyDescription,
+  companyPhotos,
+  neq,
+  rbq,
+  companyCity,
+  rbqCategories,
+  ccqStatus,
+]);
   const customerReviews = [
   {
     id: 1,
