@@ -2685,8 +2685,8 @@ tab === 'Messages' ? (
   ['Profil', language === 'fr' ? 'Profil' : 'Profile', '●'],
 ].map(([tabName, label, icon]) => (
           <TouchableOpacity key={tabName} style={styles.navItem} onPress={() => navigate(tabName)}>
-  <Text style={[styles.navIcon, tab === tabName && styles.navActive]}>{icon}</Text>
-  <Text style={[styles.navText, tab === tabName && styles.navActive]}>{label}</Text>
+  <Text style={[styles.navIcon, (tab === tabName || (tabName === 'Profil' && tab === 'EntrepriseDemo')) && styles.navActive]}>{icon}</Text>
+  <Text style={[styles.navText, (tab === tabName || (tabName === 'Profil' && tab === 'EntrepriseDemo')) && styles.navActive]}>{label}</Text>
 </TouchableOpacity>
 ))}
 </View>
