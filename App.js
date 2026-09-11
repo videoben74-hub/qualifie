@@ -1358,13 +1358,13 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     : 'QualiVérifié plans'}
 </Text>
 
-<Text style={styles.infoText}>
+<Text style={[styles.infoText, { textAlign: 'center' }]}>
   {language === 'fr'
     ? '1 division — 27,77 $ / mois'
     : '1 division — $27.77 / month'}
 </Text>
 
-<Text style={[styles.infoText, { marginTop: 8 }]}>
+<Text style={[styles.infoText, { marginTop: 8, textAlign: 'center' }]}>
   {language === 'fr'
     ? '2 divisions — 37,77 $ / mois'
     : '2 divisions — $37.77 / month'}
@@ -1399,11 +1399,23 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         {language === 'fr' ? '⭐ Inclus' : '⭐ Included'}
       </Text>
 
-      <Text style={styles.infoText}>
-        {language === 'fr'
-          ? '• Profil entreprise visible\n• Accès aux demandes de soumission\n• Messagerie avec les clients\n• Avis clients\n• Présence dans les résultats de recherche'
-          : '• Visible business profile\n• Access to quote requests\n• Client messaging\n• Customer reviews\n• Presence in search results'}
-      </Text>
+      <View style={{ width: '100%' }}>
+  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+    {language === 'fr' ? '• Profil entreprise visible' : '• Visible business profile'}
+  </Text>
+  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+    {language === 'fr' ? '• Accès aux demandes de soumission' : '• Access to quote requests'}
+  </Text>
+  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+    {language === 'fr' ? '• Messagerie avec les clients' : '• Client messaging'}
+  </Text>
+  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+    {language === 'fr' ? '• Avis clients' : '• Customer reviews'}
+  </Text>
+  <Text style={styles.infoText}>
+    {language === 'fr' ? '• Présence dans les résultats de recherche' : '• Presence in search results'}
+  </Text>
+</View>
     </View>
 
     <TouchableOpacity
