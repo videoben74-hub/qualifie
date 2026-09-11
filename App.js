@@ -2300,10 +2300,12 @@ return (
 }
 function Signup({ onNavigate, language, setLanguage }) {
   const [accountType, setAccountType] = useState('business');
-  const [businessName, setBusinessName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const [businessName, setBusinessName] = useState('');
+const [rbqNumber, setRbqNumber] = useState('');
+const [rbqVerified, setRbqVerified] = useState(false);
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -2459,6 +2461,74 @@ function Signup({ onNavigate, language, setLanguage }) {
       marginBottom: 12,
     }}
   />
+  {accountType === 'business' && (
+  <>
+    <TextInput
+      value={rbqNumber}
+      onChangeText={(text) => {
+        setRbqNumber(text);
+        setRbqVerified(false);
+      }}
+      placeholder={
+        language === 'fr'
+          ? 'Numéro de licence RBQ *'
+          : 'RBQ licence number *'
+      }
+      placeholderTextColor={COLORS.muted}
+      keyboardType="numbers-and-punctuation"
+      style={{
+        backgroundColor: COLORS.card,
+        borderWidth: 1,
+        borderColor: rbqVerified ? COLORS.gold2 : COLORS.line,
+        borderRadius: 14,
+        minHeight: 54,
+        paddingHorizontal: 14,
+        color: COLORS.navy,
+        fontSize: 15,
+        marginBottom: 10,
+      }}
+    />
+
+    <TouchableOpacity
+      onPress={() => {
+        if (!rbqNumber.trim()) {
+          alert(
+            language === 'fr'
+              ? 'Veuillez entrer votre numéro de licence RBQ.'
+              : 'Please enter your RBQ licence number.'
+          );
+          return;
+        }
+
+        alert(
+          language === 'fr'
+            ? 'La vérification automatique avec le registre officiel de la RBQ sera connectée à cette étape.'
+            : 'Automatic verification with the official RBQ registry will be connected at this step.'
+        );
+      }}
+      style={{
+        backgroundColor: COLORS.navy,
+        borderRadius: 14,
+        minHeight: 52,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 12,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.gold2,
+          fontSize: 15,
+          fontWeight: '900',
+        }}
+      >
+        {language === 'fr'
+          ? '🔎 Vérifier la licence RBQ'
+          : '🔎 Verify RBQ licence'}
+      </Text>
+    </TouchableOpacity>
+  </>
+)}
 )}
   <TextInput
 value={email}
@@ -2523,6 +2593,14 @@ onPress={() => {
     alert(language === 'fr' ? 'Veuillez remplir tous les champs obligatoires.' : 'Please fill in all required fields.');
     return;
   }
+  if (accountType === 'business' && !rbqVerified) {
+  alert(
+    language === 'fr'
+      ? 'Vous devez vérifier votre licence RBQ avant de créer votre compte.'
+      : 'You must verify your RBQ licence before creating your account.'
+  );
+  return;
+}
   if (password !== confirmPassword) {
     alert(language === 'fr' ? 'Les mots de passe ne correspondent pas.' : 'Passwords do not match.');
     return;
