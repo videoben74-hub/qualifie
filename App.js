@@ -1869,6 +1869,15 @@ return (
             : '2 active conversations',
         ],
         [
+  '🏢',
+  language === 'fr'
+    ? 'Informations de l’entreprise'
+    : 'Company information',
+  language === 'fr'
+    ? 'Nom, description, photos, NEQ et RBQ'
+    : 'Name, description, photos, NEQ and RBQ',
+],
+        [
           '🏢',
           language === 'fr'
             ? 'Profil de l’entreprise'
@@ -1895,6 +1904,20 @@ return (
        onPress={() => {
   if (title === (language === 'fr' ? 'Demandes de soumission' : 'Quote requests')) {
     onNavigate('QuoteRequests');
+  } else if (
+    title ===
+    (language === 'fr'
+      ? 'Informations de l’entreprise'
+      : 'Company information')
+  ) {
+    setProfileSection('🛡 Devenir un pro vérifié');
+  } else if (
+    title ===
+    (language === 'fr'
+      ? 'Profil de l’entreprise'
+      : 'Business profile')
+  ) {
+    setProfileSection('Profil public');
   }
 }}
           style={{
