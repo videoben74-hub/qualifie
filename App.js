@@ -1189,7 +1189,9 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   {profileSection === 'Informations entreprise' ? (
     <>
       <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
-
+<Text style={[styles.infoText, { fontWeight: '700', marginBottom: 6 }]}>
+  {language === 'fr' ? "Nom de l’entreprise" : 'Company name'}
+</Text>
       <TextInput
   value={companyName}
   onChangeText={setCompanyName}
@@ -1310,14 +1312,16 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     multiline
     textAlignVertical="top"
     style={[
-      styles.input,
-      {
-        width: '100%',
-        minHeight: 150,
-        paddingTop: 14,
-        marginBottom: 6,
-      },
-    ]}
+  styles.input,
+  {
+    width: '100%',
+    minHeight: 220,
+    paddingTop: 14,
+    paddingHorizontal: 16,
+    marginBottom: 6,
+    alignSelf: 'stretch',
+  },
+]}
   />
 
   <Text
@@ -1447,6 +1451,19 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       : '🛠️ Trades and professional services  ›'}
   </Text>
 </TouchableOpacity>
+    {rbqCategories.length > 0 && (
+  <View style={{ marginTop: 14, marginBottom: 18 }}>
+    <Text style={[styles.profileInfo, { fontWeight: '700' }]}>
+      {language === 'fr'
+        ? 'Métiers et services sélectionnés :'
+        : 'Selected trades and services:'}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {rbqCategories.join(', ')}
+    </Text>
+  </View>
+)}
   <Text style={styles.sectionTitle}>
   {language === 'fr'
     ? 'Statut CCQ (facultatif)'
