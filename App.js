@@ -441,33 +441,33 @@ setHomeAddressSuggestions(results.slice(0, 5));
       <View
   style={{
     marginHorizontal: 10,
-    marginBottom: 8,
+    marginBottom: 6,
     backgroundColor: COLORS.navy,
     borderRadius: 16,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 11,
   }}
 >
   <Text
     style={{
       color: COLORS.gold2,
-      fontSize: 14,
+      fontSize: 13,
       fontWeight: '700',
-      lineHeight: 20,
+      lineHeight: 17,
     }}
   >
     {language === 'fr'
-      ? "Dans un monde où les avis d’aujourd’hui sont devenus le bouche-à-oreille d’hier, la confiance est plus importante que jamais."
+      ? "Dans un monde où les avis d’aujourd’hui sont devenus le bouche-à-oreille d’hier, la confiance est plus importante que jamais. ⭐⭐⭐⭐⭐"
       : "In a world where today's reviews have become yesterday's word of mouth, trust is more important than ever."}
   </Text>
 
   <Text
     style={{
       color: COLORS.gold2,
-      fontSize: 14,
+      fontSize: 13,
       fontWeight: '700',
-      lineHeight: 20,
-      marginTop: 10,
+      lineHeight: 17,
+      marginTop: 7,
     }}
   >
     {language === 'fr'
@@ -478,10 +478,10 @@ setHomeAddressSuggestions(results.slice(0, 5));
   <Text
     style={{
       color: COLORS.gold2,
-      fontSize: 14,
+      fontSize: 13,
       fontWeight: '700',
-      lineHeight: 20,
-      marginTop: 10,
+      lineHeight: 17,
+      marginTop: 7,
     }}
   >
     {language === 'fr'
