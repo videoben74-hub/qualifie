@@ -1184,8 +1184,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       <TouchableOpacity onPress={() => setProfileSection(null)}>
         <Text style={styles.proTrade}>{language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile'}</Text>
       </TouchableOpacity>
-      <Text style={styles.screenTitle}>{profileSection}</Text>
-      <View style={styles.profileCard}>
+      
   {profileSection === 'Informations entreprise' ? (
     <>
       <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
@@ -1334,11 +1333,27 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   </Text>
 </View>
 
-<Text style={styles.sectionTitle}>
-  {language === 'fr'
-    ? '📸 Photos des réalisations'
-    : '📸 Project photos'}
-</Text>
+<View style={{ marginTop: 8, marginBottom: 14 }}>
+  <Text
+    style={[
+      styles.sectionTitle,
+      {
+        fontSize: 28,
+        fontWeight: '900',
+        color: COLORS.navy,
+        marginBottom: 14,
+      },
+    ]}
+  >
+    {language === 'fr' ? '👤 Profil public' : '👤 Public profile'}
+  </Text>
+
+  <Text style={styles.sectionTitle}>
+    {language === 'fr'
+      ? '📸 Photos des réalisations'
+      : '📸 Project photos'}
+  </Text>
+</View>
 
 <Text style={styles.infoText}>
   {language === 'fr'
@@ -1414,26 +1429,47 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     ))}
   </View>
 )}
-      <TextInput
+      <Text style={[styles.infoText, { fontWeight: '800', marginBottom: 6 }]}>
+  {language === 'fr' ? 'NEQ' : 'NEQ'}
+</Text>
+
+<TextInput
   value={neq}
   onChangeText={setNeq}
-  placeholder="NEQ"
-  style={styles.input}
+  placeholder={language === 'fr' ? 'Numéro d’entreprise du Québec' : 'Quebec enterprise number'}
+  placeholderTextColor={COLORS.muted}
+  keyboardType="number-pad"
+  maxLength={10}
+  style={[styles.input, { width: '100%' }]}
 />
-{neq.trim() !== '' && !isNeqValid && <Text style={styles.infoText}>{language === 'fr' ? 'Le NEQ doit contenir exactement 10 chiffres.' : 'The NEQ must contain exactly 10 digits.'}</Text>}
-      <TextInput
+
+{neq.trim() !== '' && !isNeqValid && (
+  <Text style={[styles.infoText, { marginBottom: 12 }]}>
+    {language === 'fr'
+      ? 'Le NEQ doit contenir exactement 10 chiffres.'
+      : 'The NEQ must contain exactly 10 digits.'}
+  </Text>
+)}
+
+<Text style={[styles.infoText, { fontWeight: '800', marginTop: 8, marginBottom: 6 }]}>
+  {language === 'fr' ? 'Licence RBQ' : 'RBQ licence'}
+</Text>
+
+<TextInput
   value={rbq}
   onChangeText={setRbq}
-  placeholder={language === 'fr' ? 'Numéro de licence RBQ' : 'RBQ licence number'}
-  style={styles.input}
+  placeholder={language === 'fr' ? 'Ex. 1234-5678-01' : 'Ex. 1234-5678-01'}
+  placeholderTextColor={COLORS.muted}
+  style={[styles.input, { width: '100%' }]}
 />
-{rbq.trim() !== '' && !isRbqValid && <Text style={styles.infoText}>{language === 'fr' ? 'Format RBQ attendu : 1234-5678-01.' : 'Expected RBQ format: 1234-5678-01.'}</Text>}
-      <TextInput
-  value={companyCity}
-  onChangeText={setCompanyCity}
-  placeholder={language === 'fr' ? 'Ville' : 'City'}
-  style={styles.input}
-/>
+
+{rbq.trim() !== '' && !isRbqValid && (
+  <Text style={[styles.infoText, { marginBottom: 12 }]}>
+    {language === 'fr'
+      ? 'Format RBQ attendu : 1234-5678-01.'
+      : 'Expected RBQ format: 1234-5678-01.'}
+  </Text>
+)}
 <TouchableOpacity
   style={[
     styles.primaryBtn,
@@ -2202,15 +2238,7 @@ return (
     ? 'Nom, description, photos, NEQ et RBQ'
     : 'Name, description, photos, NEQ and RBQ',
 ],
-        [
-          '🏢',
-          language === 'fr'
-            ? 'Profil de l’entreprise'
-            : 'Business profile',
-          language === 'fr'
-            ? 'Informations et vérifications'
-            : 'Information and verification',
-        ],
+        
         [
           '⭐',
           language === 'fr' ? 'Avis reçus' : 'Reviews',
@@ -2236,14 +2264,7 @@ return (
       : 'Company information')
   ) {
     setProfileSection('🛡 Devenir un pro vérifié');
-  } else if (
-    title ===
-    (language === 'fr'
-      ? 'Profil de l’entreprise'
-      : 'Business profile')
-  ) {
-    setProfileSection('Profil public');
-  }
+  
 }}
           style={{
             backgroundColor: COLORS.card,
@@ -3262,7 +3283,18 @@ whyTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 13, marginTop: 7, m
   infoText: { color: COLORS.muted, fontSize: 10, lineHeight: 13, marginTop: 1 },
   screenTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 27, marginBottom: 12 },
   helper: { color: COLORS.muted, lineHeight: 20, marginBottom: 14 },
-  input: { backgroundColor: COLORS.card, borderWidth: 1, borderColor: COLORS.line, borderRadius: 12, padding: 14, fontSize: 15, marginBottom: 10, color: COLORS.text },
+  input: {
+  width: '100%',
+  alignSelf: 'stretch',
+  backgroundColor: COLORS.card,
+  borderWidth: 1,
+  borderColor: COLORS.line,
+  borderRadius: 12,
+  padding: 14,
+  fontSize: 15,
+  marginBottom: 10,
+  color: COLORS.text,
+},
   textArea: { minHeight: 130, textAlignVertical: 'top' },
   resultCount: { color: COLORS.muted, marginVertical: 8, fontWeight: '700' },
   proCard: { flexDirection: 'row', gap: 12, backgroundColor: COLORS.card, padding: 14, borderRadius: 16, marginBottom: 12, borderWidth: 1, borderColor: COLORS.line },
