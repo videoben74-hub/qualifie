@@ -1197,6 +1197,11 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   placeholder={language === 'fr' ? 'Nom de l’entreprise' : 'Company name'}
   style={styles.input}
 />
+   <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
+  {language === 'fr'
+    ? '📝 Description de l’entreprise'
+    : '📝 Business description'}
+</Text>
 <TextInput
   value={companyDescription}
   onChangeText={setCompanyDescription}
@@ -1224,7 +1229,9 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 </Text>
 
 <Text style={styles.sectionTitle}>
-  {language === 'fr' ? '📸 Photos de l’entreprise' : '📸 Business photos'}
+  {language === 'fr'
+    ? '📸 Photos des réalisations'
+    : '📸 Project photos'}
 </Text>
 
 <Text style={styles.infoText}>
@@ -1235,12 +1242,24 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 
 <TouchableOpacity
   onPress={pickCompanyPhoto}
-  style={[styles.primaryBtn, { marginTop: 10, marginBottom: 14 }]}
+  disabled={companyPhotos.length >= 10}
+  style={[
+    styles.primaryBtn,
+    {
+      marginTop: 10,
+      marginBottom: 14,
+      opacity: companyPhotos.length >= 10 ? 0.45 : 1,
+    },
+  ]}
 >
   <Text style={styles.primaryBtnText}>
-    {language === 'fr'
-      ? `📷 Ajouter une photo (${companyPhotos.length}/10)`
-      : `📷 Add a photo (${companyPhotos.length}/10)`}
+    {companyPhotos.length >= 10
+      ? language === 'fr'
+        ? '✅ Maximum atteint (10/10)'
+        : '✅ Maximum reached (10/10)'
+      : language === 'fr'
+      ? `📸 Ajouter une photo (${companyPhotos.length}/10)`
+      : `📸 Add a photo (${companyPhotos.length}/10)`}
   </Text>
 </TouchableOpacity>
 
