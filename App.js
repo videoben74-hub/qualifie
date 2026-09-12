@@ -601,14 +601,14 @@ setHomeAddressSuggestions(results.slice(0, 5));
   </TouchableOpacity>
 </View>
             <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        marginHorizontal: 28,
-        marginTop: 2,
-        marginBottom: 4,
-      }}
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginHorizontal: 28,
+    marginTop: -10,
+    marginBottom: 0,
+  }}
     >
       {[
         ['1', language === 'fr' ? 'Connexion' : 'Sign in'],
