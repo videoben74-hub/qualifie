@@ -438,89 +438,56 @@ setHomeAddressSuggestions(results.slice(0, 5));
 
 
 
-      <View style={{
-  marginHorizontal: 10,
-  marginBottom: 8,
-}}>
-  <Text style={{
-    color: COLORS.navy,
-    fontSize: 17,
-    fontWeight: '900',
-    marginBottom: 6,
-  }}>
-    {language === 'fr' ? 'Pourquoi QualiVérifié?' : 'Why QualiVérifié?'}
-  </Text>
-
-  {[
-    [
-      '✓',
-      language === 'fr' ? 'Pros vérifiés' : 'Verified pros',
-      language === 'fr'
-        ? 'Identité, entreprise, licence et assurance vérifiées.'
-        : 'Identity, business, licence and insurance verified.'
-    ],
-    [
-      '★',
-      language === 'fr' ? 'Avis authentiques' : 'Authentic reviews',
-      language === 'fr'
-        ? 'Des évaluations liées à de vrais projets.'
-        : 'Reviews linked to real projects.'
-    ],
-    [
-      '⌖',
-      language === 'fr' ? 'Près de chez vous' : 'Near you',
-      language === 'fr'
-        ? 'Recherche par métier, ville et distance.'
-        : 'Search by trade, city and distance.'
-    ],
-  ].map(([icon, title, description]) => (
-    <View
-      key={title}
-      style={{
-        backgroundColor: COLORS.card,
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        marginBottom: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}
-    >
-      <Text style={{
-        color: COLORS.gold,
-        fontSize: 18,
-        fontWeight: '900',
-        width: 26,
-        textAlign: 'center',
-        marginRight: 6,
-      }}>
-        {icon}
-      </Text>
-
-      <View style={{ flex: 1 }}>
-        <Text style={{
-          color: COLORS.text,
-          fontSize: 14,
-          fontWeight: '900',
-        }}>
-          {title}
-        </Text>
-
-        <Text
-  numberOfLines={1}
-  adjustsFontSizeToFit
+      <View
   style={{
-    color: COLORS.muted,
-    fontSize: 11,
-    fontWeight: '700',
-    marginTop: 1,
+    marginHorizontal: 10,
+    marginBottom: 8,
+    backgroundColor: COLORS.navy,
+    borderRadius: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
   }}
 >
-  {description}
-</Text>
-</View>
-</View>
-))}
+  <Text
+    style={{
+      color: COLORS.gold2,
+      fontSize: 14,
+      fontWeight: '700',
+      lineHeight: 20,
+    }}
+  >
+    {language === 'fr'
+      ? "Dans un monde où les avis d’aujourd’hui sont devenus le bouche-à-oreille d’hier, la confiance est plus importante que jamais."
+      : "In a world where today's reviews have become yesterday's word of mouth, trust is more important than ever."}
+  </Text>
+
+  <Text
+    style={{
+      color: COLORS.gold2,
+      fontSize: 14,
+      fontWeight: '700',
+      lineHeight: 20,
+      marginTop: 10,
+    }}
+  >
+    {language === 'fr'
+      ? "QualiVérifié vous permet de trouver des entrepreneurs détenant les licences nécessaires pour vos projets de construction et de rénovation."
+      : "QualiVérifié helps you find contractors holding the required licences for your construction and renovation projects."}
+  </Text>
+
+  <Text
+    style={{
+      color: COLORS.gold2,
+      fontSize: 14,
+      fontWeight: '700',
+      lineHeight: 20,
+      marginTop: 10,
+    }}
+  >
+    {language === 'fr'
+      ? "La plateforme rassemble également les services, professionnels et ventes liés au domaine du bâtiment, afin de vous aider à trouver les bonnes personnes pour votre projet."
+      : "The platform also brings together services, professionals and sales related to the building industry, helping you find the right people for your project."}
+  </Text>
 </View>
    <View style={{
   alignItems: 'center',
