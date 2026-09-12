@@ -2062,7 +2062,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       : 'This section will be available soon in QualiVérifié.'}
   </Text>
 )}
-</View>
+
 </ScrollView>
 );
 }
