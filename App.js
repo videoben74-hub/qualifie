@@ -1049,7 +1049,7 @@ setCompanyWebsite(profile.companyWebsite || '');
     }
   };
 
-  load    };
+  
 
     loadCompanyProfile();
   }, []);
