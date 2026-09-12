@@ -2265,7 +2265,7 @@ return (
   ) {
     setProfileSection('🛡 Devenir un pro vérifié');
   
-}}
+}}}
           style={{
             backgroundColor: COLORS.card,
             borderRadius: 14,
