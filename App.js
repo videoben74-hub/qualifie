@@ -1009,7 +1009,7 @@ const [companyPostalCode, setCompanyPostalCode] = useState('');
 const [companyEmail, setCompanyEmail] = useState('');
 const [companyWebsite, setCompanyWebsite] = useState('');
 const [rbqCategories, setRbqCategories] = useState([]);
-const [ccqStatus, setCcqStatus] = useState('');
+const [ccqStatus, setCcqStatus] = useState([]);
   
     const [profileLoaded, setProfileLoaded] = useState(false);
 
@@ -1040,7 +1040,7 @@ setCompanyWebsite(profile.companyWebsite || '');
         setRbqCategories(
           Array.isArray(profile.rbqCategories) ? profile.rbqCategories : []
         );
-        setCcqStatus(profile.ccqStatus || '');
+        setCcqStatus(Array.isArray(profile.ccqStatus) ? profile.ccqStatus : profile.ccqStatus ? [profile.ccqStatus] : []);
       }
     } catch (error) {
       console.log('Erreur chargement profil entreprise :', error);
@@ -1049,11 +1049,10 @@ setCompanyWebsite(profile.companyWebsite || '');
     }
   };
 
-  loadCompanyProfile();
-}, []);
+  load    };
 
-useEffect(() => {
-  if (!profileLoaded) return;
+    loadCompanyProfile();
+  }, []);
 
   const saveCompanyProfile = async () => {
     try {
@@ -1068,37 +1067,24 @@ useEffect(() => {
           rbq,
           companyCity,
           companyAddress,
-companyPostalCode,
+          companyPostalCode,
           companyPhone,
-companyEmail,
-companyWebsite,
+          companyEmail,
+          companyWebsite,
           rbqCategories,
           ccqStatus,
         })
+      );
+
+      alert(
+        language === 'fr'
+          ? 'Modifications enregistrées avec succès.'
+          : 'Changes saved successfully.'
       );
     } catch (error) {
       console.log('Erreur sauvegarde profil entreprise :', error);
     }
   };
-
-  saveCompanyProfile();
-}, [
-  profileLoaded,
-  companyName,
-  profilePhoto,
-  companyDescription,
-  companyPhotos,
-  neq,
-  rbq,
-  companyCity,
-  companyAddress,
-companyPostalCode,
-companyPhone,
-companyEmail,
-companyWebsite,
-rbqCategories,
-ccqStatus,
-]);
   const customerReviews = [
   {
     id: 1,
@@ -1172,17 +1158,21 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     return;
   }
 
+  const remainingPhotos = 10 - companyPhotos.length;
+
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ['images'],
-    allowsEditing: true,
+    allowsMultipleSelection: true,
+    selectionLimit: remainingPhotos,
     quality: 0.8,
   });
 
   if (!result.canceled && result.assets?.length > 0) {
-    setCompanyPhotos((current) => [
-      ...current,
-      result.assets[0].uri,
-    ]);
+    const newPhotos = result.assets.map((asset) => asset.uri);
+
+    setCompanyPhotos((current) =>
+      [...current, ...newPhotos].slice(0, 10)
+    );
   }
 };
   if (profileSection) {
@@ -1199,111 +1189,146 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   {profileSection === 'Informations entreprise' ? (
     <>
       <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
-<Text
-  style={{
-    color: COLORS.green,
-    fontSize: 13,
-    fontWeight: '800',
-    marginBottom: 12,
-  }}
->
-  {language === 'fr'
-    ? '✅ Profil sauvegardé automatiquement'
-    : '✅ Profile saved automatically'}
-</Text>
+
       <TextInput
   value={companyName}
   onChangeText={setCompanyName}
   placeholder={language === 'fr' ? 'Nom de l’entreprise' : 'Company name'}
   style={styles.input}
 />
-   <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
-  {language === 'fr'
-    ? '📞 Coordonnées de l’entreprise'
-    : '📞 Business contact information'}
-</Text>
-<TextInput
-  value={companyAddress}
-  onChangeText={setCompanyAddress}
-  placeholder={language === 'fr' ? 'Adresse de l’entreprise' : 'Business address'}
-  placeholderTextColor={COLORS.muted}
-  style={styles.input}
-/>
+   <View
+  style={{
+    marginTop: 18,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+  }}
+>
+  <Text style={[styles.sectionTitle, { marginBottom: 14 }]}>
+    {language === 'fr'
+      ? '📞 Coordonnées de l’entreprise'
+      : '📞 Business contact information'}
+  </Text>
 
-<TextInput
-  value={companyCity}
-  onChangeText={setCompanyCity}
-  placeholder={language === 'fr' ? 'Ville' : 'City'}
-  placeholderTextColor={COLORS.muted}
-  style={styles.input}
-/>
+  <TextInput
+    value={companyAddress}
+    onChangeText={setCompanyAddress}
+    placeholder={language === 'fr' ? 'Adresse de l’entreprise' : 'Business address'}
+    placeholderTextColor={COLORS.muted}
+    style={[styles.input, { width: '100%', marginBottom: 10 }]}
+  />
 
-<TextInput
-  value={companyPostalCode}
-  onChangeText={setCompanyPostalCode}
-  placeholder={language === 'fr' ? 'Code postal' : 'Postal code'}
-  placeholderTextColor={COLORS.muted}
-  autoCapitalize="characters"
-  maxLength={7}
-  style={styles.input}
-/>
-<TextInput
-  value={companyPhone}
-  onChangeText={setCompanyPhone}
-  placeholder={language === 'fr' ? 'Téléphone' : 'Phone'}
-  placeholderTextColor={COLORS.muted}
-  keyboardType="phone-pad"
-  style={styles.input}
-/>
+  <TextInput
+    value={companyCity}
+    onChangeText={setCompanyCity}
+    placeholder={language === 'fr' ? 'Ville' : 'City'}
+    placeholderTextColor={COLORS.muted}
+    style={[styles.input, { width: '100%', marginBottom: 10 }]}
+  />
 
-<TextInput
-  value={companyEmail}
-  onChangeText={setCompanyEmail}
-  placeholder={language === 'fr' ? 'Courriel' : 'Email'}
-  placeholderTextColor={COLORS.muted}
-  keyboardType="email-address"
-  autoCapitalize="none"
-  style={styles.input}
-/>
+  <TextInput
+    value={companyPostalCode}
+    onChangeText={setCompanyPostalCode}
+    placeholder={language === 'fr' ? 'Code postal' : 'Postal code'}
+    placeholderTextColor={COLORS.muted}
+    autoCapitalize="characters"
+    maxLength={7}
+    style={[styles.input, { width: '100%', marginBottom: 10 }]}
+  />
 
-<TextInput
-  value={companyWebsite}
-  onChangeText={setCompanyWebsite}
-  placeholder={language === 'fr' ? 'Site Web' : 'Website'}
-  placeholderTextColor={COLORS.muted}
-  autoCapitalize="none"
-  style={styles.input}
-/>
-   <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
-  {language === 'fr'
-    ? '📝 Description de l’entreprise'
-    : '📝 Business description'}
-</Text>
-<TextInput
-  value={companyDescription}
-  onChangeText={setCompanyDescription}
-  placeholder={
-    language === 'fr'
-      ? 'Description de votre entreprise'
-      : 'Describe your business'
-  }
-  placeholderTextColor={COLORS.muted}
-  maxLength={1000}
-  multiline
-  textAlignVertical="top"
-  style={[
-    styles.input,
-    {
-      minHeight: 130,
-      paddingTop: 14,
-      marginBottom: 6,
-    },
-  ]}
-/>
+  <TextInput
+    value={companyPhone}
+    onChangeText={setCompanyPhone}
+    placeholder={language === 'fr' ? 'Téléphone' : 'Phone'}
+    placeholderTextColor={COLORS.muted}
+    keyboardType="phone-pad"
+    style={[styles.input, { width: '100%', marginBottom: 10 }]}
+  />
 
-<Text style={[styles.infoText, { textAlign: 'right', marginBottom: 14 }]}>
-  {companyDescription.length}/1000
-</Text>
+  <TextInput
+    value={companyEmail}
+    onChangeText={setCompanyEmail}
+    placeholder={language === 'fr' ? 'Courriel' : 'Email'}
+    placeholderTextColor={COLORS.muted}
+    keyboardType="email-address"
+    autoCapitalize="none"
+    style={[styles.input, { width: '100%', marginBottom: 10 }]}
+  />
+
+  <TextInput
+    value={companyWebsite}
+    onChangeText={setCompanyWebsite}
+    placeholder={
+      language === 'fr'
+        ? 'Site Web (facultatif)'
+        : 'Website (optional)'
+    }
+    placeholderTextColor={COLORS.muted}
+    autoCapitalize="none"
+    style={[styles.input, { width: '100%' }]}
+  />
+</View>
+   <View
+  style={{
+    marginTop: 18,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+  }}
+>
+  <Text style={[styles.sectionTitle, { marginBottom: 6 }]}>
+    {language === 'fr'
+      ? '📝 Description de l’entreprise'
+      : '📝 Business description'}
+  </Text>
+
+  <Text
+    style={[
+      styles.infoText,
+      { marginBottom: 12, lineHeight: 20 },
+    ]}
+  >
+    {language === 'fr'
+      ? 'Présentez vos spécialités, votre expérience et ce qui distingue votre entreprise.'
+      : 'Present your specialties, experience and what makes your business stand out.'}
+  </Text>
+
+  <TextInput
+    value={companyDescription}
+    onChangeText={setCompanyDescription}
+    placeholder={
+      language === 'fr'
+        ? 'Présentez votre entreprise, vos spécialités et votre expérience'
+        : 'Introduce your business, specialties and experience'
+    }
+    placeholderTextColor={COLORS.muted}
+    maxLength={1000}
+    multiline
+    textAlignVertical="top"
+    style={[
+      styles.input,
+      {
+        width: '100%',
+        minHeight: 150,
+        paddingTop: 14,
+        marginBottom: 6,
+      },
+    ]}
+  />
+
+  <Text
+    style={[
+      styles.infoText,
+      { textAlign: 'right' },
+    ]}
+  >
+    {companyDescription.length}/1000
+  </Text>
+</View>
 
 <Text style={styles.sectionTitle}>
   {language === 'fr'
@@ -1405,42 +1430,189 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   placeholder={language === 'fr' ? 'Ville' : 'City'}
   style={styles.input}
 />
-<Text style={styles.sectionTitle}>{language === 'fr' ? 'Sous-catégories RBQ' : 'RBQ subcategories'}</Text>
-<Text style={styles.infoText}>{language === 'fr' ? 'Sélectionnez les sous-catégories correspondant à votre licence.' : 'Select the subcategories that match your licence.'}</Text>
-   <View style={styles.grid}>
-  {['Entrepreneur général', 'Charpente et menuiserie', 'Portes et fenêtres', 'Plomberie'].map((category) => (
-    <TouchableOpacity
-      key={category}
-      style={[styles.categoryCard, rbqCategories.includes(category) && { borderColor: COLORS.gold, borderWidth: 2 }]}
-      onPress={() => toggleRbqCategory(category)}
-    >
-      <Text style={styles.categoryText}>
-{rbqCategories.includes(category) ? '✓ ' : ''}{language === 'fr' ? category : ({'Entrepreneur général':'General contractor','Charpente et menuiserie':'Framing and carpentry','Portes et fenêtres':'Doors and windows','Plomberie':'Plumbing'}[category] || category)}
-</Text>
+<TouchableOpacity
+  style={[
+    styles.primaryBtn,
+    {
+      marginTop: 18,
+      marginBottom: 18,
+      width: '100%',
+    },
+  ]}
+  onPress={() => setProfileSection('Métiers et services')}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? '🛠️ Métiers et services professionnels  ›'
+      : '🛠️ Trades and professional services  ›'}
+  </Text>
 </TouchableOpacity>
-))}
-</View>
-  <Text style={styles.sectionTitle}>{language === 'fr' ? 'Statut CCQ' : 'CCQ status'}</Text>
+  <Text style={styles.sectionTitle}>
+  {language === 'fr'
+    ? 'Statut CCQ (facultatif)'
+    : 'CCQ status (optional)'}
+</Text>
+
 <View style={styles.grid}>
-  <TouchableOpacity style={[styles.categoryCard, ccqStatus === 'CCQ' && { borderColor: COLORS.gold, borderWidth: 2 }]} onPress={() => setCcqStatus('CCQ')}>
-    <Text style={styles.categoryText}>✓ CCQ</Text>
+  <TouchableOpacity
+    style={[
+      styles.categoryCard,
+      ccqStatus.includes('CCQ') && {
+        borderColor: COLORS.gold,
+        borderWidth: 2,
+      },
+    ]}
+    onPress={() =>
+      setCcqStatus((current) =>
+        current.includes('CCQ')
+          ? current.filter((item) => item !== 'CCQ')
+          : [...current, 'CCQ']
+      )
+    }
+  >
+    <Text style={styles.categoryText}>
+      {ccqStatus.includes('CCQ') ? '✓ ' : ''}CCQ
+    </Text>
   </TouchableOpacity>
-  <TouchableOpacity style={[styles.categoryCard, ccqStatus === 'Hors CCQ' && { borderColor: COLORS.gold, borderWidth: 2 }]} onPress={() => setCcqStatus('Hors CCQ')}>
-    <Text style={styles.categoryText}>✓ {language === 'fr' ? 'Hors CCQ' : 'Non-CCQ'}</Text>
+
+  <TouchableOpacity
+    style={[
+      styles.categoryCard,
+      ccqStatus.includes('Hors CCQ') && {
+        borderColor: COLORS.gold,
+        borderWidth: 2,
+      },
+    ]}
+    onPress={() =>
+      setCcqStatus((current) =>
+        current.includes('Hors CCQ')
+          ? current.filter((item) => item !== 'Hors CCQ')
+          : [...current, 'Hors CCQ']
+      )
+    }
+  >
+    <Text style={styles.categoryText}>
+      {ccqStatus.includes('Hors CCQ') ? '✓ ' : ''}
+      {language === 'fr' ? 'Hors CCQ' : 'Non-CCQ'}
+    </Text>
   </TouchableOpacity>
 </View>
-      <TouchableOpacity style={[styles.primaryBtn, (!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0 || !ccqStatus.trim()) && { opacity: 0.4 }]} disabled={!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0 || !ccqStatus.trim()} onPress={() => setProfileSection('Vérification en cours')}>
+  <TouchableOpacity style={[styles.primaryBtn, (!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0) && { opacity: 0.4 }]} disabled={!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0} onPress={() => setProfileSection('Vérification en cours')}>
         <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Commencer la vérification' : 'Start verification'}</Text>
       </TouchableOpacity>
+  <TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 18 }]}
+  onPress={saveCompanyProfile}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? '💾 Enregistrer les modifications'
+      : '💾 Save changes'}
+  </Text>
+</TouchableOpacity>
     </>
-  ) : profileSection === 'Vérification en cours' ? (
+  ) : profileSection === 'Métiers et services' ? (
   <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr'
+        ? '🛠️ Métiers et services professionnels'
+        : '🛠️ Trades and professional services'}
+    </Text>
+
+    <Text style={[styles.infoText, { marginBottom: 16 }]}>
+      {language === 'fr'
+        ? 'Sélectionnez tous les métiers et services offerts par votre entreprise.'
+        : 'Select all trades and services offered by your business.'}
+    </Text>
+
+    {[
+      'Entrepreneur général',
+      'Charpente et menuiserie',
+      'Ébéniste',
+      'Portes et fenêtres',
+      'Plomberie',
+      'Électricité',
+      'Frigoriste',
+      'Chauffage',
+      'Ventilation',
+      'Climatisation',
+      'Isolation',
+      'Toiture',
+      'Revêtement extérieur',
+      'Maçonnerie',
+      'Béton',
+      'Excavation',
+      'Fondation',
+'Fissure de fondation',
+'Crépi',
+      'Peinture',
+      'Plâtrier et tireur de joints',
+      'Céramique',
+      'Revêtement de plancher',
+      'Armoires et comptoirs',
+      'Escaliers et rampes',
+      'Soudure',
+      'Génie civil',
+      'Grutier',
+      'Ascenseurs et monte-charges',
+      'Après sinistre',
+      'Inspection de bâtiment',
+      'Architecte',
+      'Ingénieur',
+      'Arpenteur-géomètre',
+      'Designer intérieur',
+      'Technologue',
+      'Agent d’immeuble',
+      'Paysagiste',
+      'Aménagement de bureau',
+      'Marketing',
+    ].map((category) => (
+      <TouchableOpacity
+        key={category}
+        style={[
+          styles.categoryCard,
+          {
+            width: '100%',
+            marginBottom: 10,
+          },
+          rbqCategories.includes(category) && {
+            borderColor: COLORS.gold,
+            borderWidth: 2,
+          },
+        ]}
+        onPress={() => toggleRbqCategory(category)}
+      >
+        <Text style={styles.categoryText}>
+          {rbqCategories.includes(category) ? '✓ ' : ''}
+          {category}
+        </Text>
+      </TouchableOpacity>
+    ))}
+
+    <TouchableOpacity
+      style={[styles.primaryBtn, { marginTop: 18 }]}
+      onPress={() => setProfileSection('Informations entreprise')}
+    >
+      <Text style={styles.primaryBtnText}>
+        {language === 'fr'
+          ? '✓ Confirmer mes sélections'
+          : '✓ Confirm selections'}
+      </Text>
+    </TouchableOpacity>
+  </>
+) : profileSection === 'Vérification en cours' ? (
+<>
     <Text style={styles.sectionTitle}>{language === 'fr' ? 'Vérification en cours' : 'Verification in progress'}</Text>
     <Text style={styles.profileInfo}>{language === 'fr' ? 'Entreprise' : 'Company'} : {companyName}</Text>
     <Text style={styles.profileInfo}>NEQ : {neq}</Text>
     <Text style={styles.profileInfo}>{language === 'fr' ? 'Licence RBQ' : 'RBQ licence'} : {rbq}</Text>
-    <Text style={styles.profileInfo}>{language === 'fr' ? 'Sous-catégories RBQ' : 'RBQ subcategories'} : {rbqCategories}</Text>
-<Text style={styles.profileInfo}>{language === 'fr' ? 'Statut CCQ' : 'CCQ status'} : {ccqStatus}</Text>
+    <Text style={styles.profileInfo}>
+  {language === 'fr' ? 'Métiers et services' : 'Trades and services'} : {rbqCategories.join(', ')}
+</Text>
+
+<Text style={styles.profileInfo}>
+  {language === 'fr' ? 'Statut CCQ' : 'CCQ status'} : {ccqStatus.length > 0 ? ccqStatus.join(', ') : (language === 'fr' ? 'Non renseigné' : 'Not specified')}
+</Text>
 <Text style={styles.profileInfo}>{language === 'fr' ? 'Ville' : 'City'} : {companyCity}</Text>
 <Text style={styles.infoText}>{language === 'fr' ? '🛡️ Votre demande est prête à être vérifiée par QualiVérifié.' : '🛡️ Your application is ready to be verified by QualiVérifié.'}</Text>
 </>
