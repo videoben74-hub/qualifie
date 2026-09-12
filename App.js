@@ -1003,6 +1003,11 @@ const [companyPhotos, setCompanyPhotos] = useState([]);
 const [neq, setNeq] = useState('');
 const [rbq, setRbq] = useState('');
 const [companyCity, setCompanyCity] = useState('');
+  const [companyAddress, setCompanyAddress] = useState('');
+const [companyPostalCode, setCompanyPostalCode] = useState('');
+  const [companyPhone, setCompanyPhone] = useState('');
+const [companyEmail, setCompanyEmail] = useState('');
+const [companyWebsite, setCompanyWebsite] = useState('');
 const [rbqCategories, setRbqCategories] = useState([]);
 const [ccqStatus, setCcqStatus] = useState('');
   
@@ -1027,6 +1032,11 @@ useEffect(() => {
         setNeq(profile.neq || '');
         setRbq(profile.rbq || '');
         setCompanyCity(profile.companyCity || '');
+        setCompanyAddress(profile.companyAddress || '');
+setCompanyPostalCode(profile.companyPostalCode || '');
+        setCompanyPhone(profile.companyPhone || '');
+setCompanyEmail(profile.companyEmail || '');
+setCompanyWebsite(profile.companyWebsite || '');
         setRbqCategories(
           Array.isArray(profile.rbqCategories) ? profile.rbqCategories : []
         );
@@ -1057,6 +1067,11 @@ useEffect(() => {
           neq,
           rbq,
           companyCity,
+          companyAddress,
+companyPostalCode,
+          companyPhone,
+companyEmail,
+companyWebsite,
           rbqCategories,
           ccqStatus,
         })
@@ -1076,8 +1091,13 @@ useEffect(() => {
   neq,
   rbq,
   companyCity,
-  rbqCategories,
-  ccqStatus,
+  companyAddress,
+companyPostalCode,
+companyPhone,
+companyEmail,
+companyWebsite,
+rbqCategories,
+ccqStatus,
 ]);
   const customerReviews = [
   {
@@ -1176,7 +1196,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       </TouchableOpacity>
       <Text style={styles.screenTitle}>{profileSection}</Text>
       <View style={styles.profileCard}>
-  {profileSection === '🛡️ Devenir un pro vérifié' ? (
+  {profileSection === 'Informations entreprise' ? (
     <>
       <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
 <Text
@@ -1195,6 +1215,63 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   value={companyName}
   onChangeText={setCompanyName}
   placeholder={language === 'fr' ? 'Nom de l’entreprise' : 'Company name'}
+  style={styles.input}
+/>
+   <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
+  {language === 'fr'
+    ? '📞 Coordonnées de l’entreprise'
+    : '📞 Business contact information'}
+</Text>
+<TextInput
+  value={companyAddress}
+  onChangeText={setCompanyAddress}
+  placeholder={language === 'fr' ? 'Adresse de l’entreprise' : 'Business address'}
+  placeholderTextColor={COLORS.muted}
+  style={styles.input}
+/>
+
+<TextInput
+  value={companyCity}
+  onChangeText={setCompanyCity}
+  placeholder={language === 'fr' ? 'Ville' : 'City'}
+  placeholderTextColor={COLORS.muted}
+  style={styles.input}
+/>
+
+<TextInput
+  value={companyPostalCode}
+  onChangeText={setCompanyPostalCode}
+  placeholder={language === 'fr' ? 'Code postal' : 'Postal code'}
+  placeholderTextColor={COLORS.muted}
+  autoCapitalize="characters"
+  maxLength={7}
+  style={styles.input}
+/>
+<TextInput
+  value={companyPhone}
+  onChangeText={setCompanyPhone}
+  placeholder={language === 'fr' ? 'Téléphone' : 'Phone'}
+  placeholderTextColor={COLORS.muted}
+  keyboardType="phone-pad"
+  style={styles.input}
+/>
+
+<TextInput
+  value={companyEmail}
+  onChangeText={setCompanyEmail}
+  placeholder={language === 'fr' ? 'Courriel' : 'Email'}
+  placeholderTextColor={COLORS.muted}
+  keyboardType="email-address"
+  autoCapitalize="none"
+  style={styles.input}
+/>
+
+<TextInput
+  value={companyWebsite}
+  onChangeText={setCompanyWebsite}
+  placeholder={language === 'fr' ? 'Site Web' : 'Website'}
+  placeholderTextColor={COLORS.muted}
+  autoCapitalize="none"
   style={styles.input}
 />
    <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
@@ -1678,17 +1755,56 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         : `⭐ Rating: ${averageRating} / 5 (${customerReviews.length} reviews)`}
     </Text>
 
-    <Text style={styles.infoText}>
-      {language === 'fr'
-        ? `📍 Ville : ${companyCity && companyCity.trim() ? companyCity : 'Non renseignée'}`
-        : `📍 City: ${companyCity && companyCity.trim() ? companyCity : 'Not provided'}`}
-    </Text>
+    
+      {companyAddress.trim() !== '' && (
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? `📍 Adresse : ${companyAddress}`
+      : `📍 Address: ${companyAddress}`}
+  </Text>
+)}
 
+<Text style={styles.infoText}>
+  {language === 'fr'
+    ? `🏙️ Ville : ${companyCity && companyCity.trim() ? companyCity : 'Non renseignée'}`
+    : `🏙️ City: ${companyCity && companyCity.trim() ? companyCity : 'Not provided'}`}
+</Text>
+
+{companyPostalCode.trim() !== '' && (
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? `📮 Code postal : ${companyPostalCode}`
+      : `📮 Postal code: ${companyPostalCode}`}
+  </Text>
+)}
+{companyPhone.trim() !== '' && (
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? `📞 Téléphone : ${companyPhone}`
+      : `📞 Phone: ${companyPhone}`}
+  </Text>
+)}
+
+{companyEmail.trim() !== '' && (
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? `✉️ Courriel : ${companyEmail}`
+      : `✉️ Email: ${companyEmail}`}
+  </Text>
+)}
+
+{companyWebsite.trim() !== '' && (
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? `🌐 Site Web : ${companyWebsite}`
+      : `🌐 Website: ${companyWebsite}`}
+  </Text>
+)}
     <Text style={styles.infoText}>
-      {language === 'fr'
-        ? `🪪 Licence RBQ : ${rbq && rbq.trim() ? rbq : 'Non renseignée'}`
-        : `🪪 RBQ licence: ${rbq && rbq.trim() ? rbq : 'Not provided'}`}
-    </Text>
+  {language === 'fr'
+    ? `🪪 Licence RBQ : ${rbq && rbq.trim() ? rbq : 'Non renseignée'}`
+    : `🪪 RBQ licence: ${rbq && rbq.trim() ? rbq : 'Not provided'}`}
+</Text>
 
     <Text style={styles.infoText}>
       {language === 'fr'
@@ -1795,6 +1911,7 @@ return (
   { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
   { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
   { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
+  { fr: '🏢 Informations de l’entreprise', en: '🏢 Company information', section: 'Informations entreprise' },
   { fr: '👤 Profil public', en: '👤 Public profile', section: 'Profil public' },
   { fr: '🚪 Déconnexion', en: '🚪 Log out', section: 'Déconnexion' },
 ].map((item) => (
