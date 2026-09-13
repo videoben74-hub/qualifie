@@ -27,7 +27,7 @@ const COLORS = {
 };
 
 const pros = [
-  { id: '1', name: 'Constructions RL', trade: 'Rénovation intérieure', city: 'Montréal', rating: 4.9, reviews: 42, distance: 12, verified: true, projectTypes: ['Résidentiel', 'Commercial'], workTypes: ['CCQ', 'Hors CCQ'] },
+  { id: '1', name: 'Constructions RL', trade: 'Rénovation générale', city: 'Montréal', rating: 4.9, reviews: 42, distance: 12, verified: true, projectTypes: ['Résidentiel', 'Commercial'], workTypes: ['CCQ', 'Hors CCQ'] },
   { id: '2', name: 'Finition Expert', trade: 'Tireur de joint', city: 'Laval', rating: 4.8, reviews: 35, distance: 8, verified: true, projectTypes: ['Résidentiel'], workTypes: ['Hors CCQ'] },
   { id: '3', name: 'Bâtir Plus Inc.', trade: 'Menuiserie', city: 'Longueuil', rating: 4.7, reviews: 28, distance: 15, verified: true, projectTypes: ['Résidentiel', 'Commercial'], workTypes: ['CCQ'] },
   { id: '4', name: 'Électro SécuriPro', trade: 'Électricité', city: 'Montréal', rating: 4.9, reviews: 61, distance: 6, verified: true, projectTypes: ['Commercial'], workTypes: ['CCQ'] },
