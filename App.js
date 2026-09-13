@@ -408,10 +408,11 @@ setHomeAddressSuggestions(results.slice(0, 5));
     <TouchableOpacity
       key={`${label}-${index}`}
       onPress={() => {
-        setAddress(label);
-        setSelectedHomeAddress(suggestion);
-        setHomeAddressSuggestions([]);
-      }}
+  setAddress(label);
+  setSelectedHomeAddress(suggestion);
+  setHomeAddressSuggestions([]);
+  onNavigate('TypeTravaux');
+}}
       style={{
         backgroundColor: '#FFFFFF',
         borderWidth: 1,
