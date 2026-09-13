@@ -651,14 +651,14 @@ setHomeAddressSuggestions(results.slice(0, 5));
     </Text>
   </TouchableOpacity>
 </View>
-            <View
+          <View
   style={{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     marginHorizontal: 10,
-marginTop: -28,
-marginBottom: -8,
+    marginTop: 8,
+    marginBottom: 4,
   }}
 >
   {[
