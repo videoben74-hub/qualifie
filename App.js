@@ -984,56 +984,8 @@ const response = await fetch(
       {language === 'fr' ? 'Trouver un pro' : 'Find a pro'}
     </Text>
       <TextInput value={query} onChangeText={setQuery} placeholder={language === 'fr' ? 'Métier ou entreprise' : 'Trade or company'} style={styles.input} />
-      <TextInput
-  value={addressQuery}
-  onChangeText={(text) => {
-    setAddressQuery(text);
-    setCity('');
-  }}
-  placeholder={
-    language === 'fr'
-      ? 'Entrez votre adresse'
-      : 'Enter your address'
-  }
-  style={styles.input}
-/>
-    {addressLoading && (
-  <Text style={styles.resultCount}>
-    {language === 'fr'
-      ? 'Recherche des adresses...'
-      : 'Searching addresses...'}
-  </Text>
-)}
-
-{addressSuggestions.map((suggestion, index) => {
-  const label =
-    suggestion.title ||
-    suggestion.name ||
-    suggestion.address ||
-    suggestion.label ||
-    '';
-
-  return (
-    <TouchableOpacity
-      key={`${label}-${index}`}
-      style={styles.input}
-      onPress={() => {
-        setAddressQuery(label);
-        setAddressSuggestions([]);
-
-        const detectedCity =
-          suggestion.city ||
-          suggestion.municipality ||
-          suggestion.locality ||
-          '';
-
-        setCity(detectedCity);
-      }}
-    >
-      <Text>{label}</Text>
-    </TouchableOpacity>
-  );
-})}
+      
+    
       <Text style={styles.resultCount}>{results.length} {language === 'fr' ? 'résultat(s)' : 'result(s)'}</Text>
  {results.map((p) => (
         <View key={p.id} style={styles.proCard}>
@@ -1080,7 +1032,7 @@ const response = await fetch(
     <Text style={styles.secondaryBtnText}>{language === 'fr' ? 'Voir le profil' : 'View profile'}</Text>
   </TouchableOpacity>
   <TouchableOpacity
-  onPress={() => onNavigate('Soumission', '', p)}
+  onPress={() => onNavigate('Projets', '', p)}
   style={styles.smallGoldBtn}
 >
   <Text style={styles.smallGoldBtnText}>
