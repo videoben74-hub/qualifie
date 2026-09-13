@@ -38,18 +38,12 @@ const categories = ['Rénovation', 'Tireur de joint', 'Peinture', 'Plomberie', '
 
 const residentialCategories = [
   'Rénovation générale',
-  'Charpente et menuiserie',
   'Portes et fenêtres',
   'Plomberie',
   'Électricité',
-  'Ventilation',
-  'Chauffage',
   'Climatisation',
-  'Réfrigération',
   'Toiture',
   'Maçonnerie',
-  'Excavation',
-  'Fondation',
   'Béton',
   'Isolation',
   'Peinture',
@@ -57,11 +51,23 @@ const residentialCategories = [
   'Céramique',
   'Revêtement de plancher',
   'Revêtement extérieur',
-  'Ferblanterie',
-  'Vitrerie',
   'Soudure et métaux',
   'Drain et égout',
-  'Aménagement extérieur'
+  'Gouttières',
+  'Imperméabilisation',
+  'Après sinistre',
+  'Aluminium',
+  'Calfeutrage',
+  'Escaliers et rampes',
+  'Armoires de cuisine',
+  'Briqueteur',
+  'Réparation de fissures de béton',
+  'Époxy',
+  'Clôtures',
+  'Pavage et asphalte',
+  'Pavé uni',
+  'Crépi',
+  'Crépi acrylique',
 ];
 
 const residentialCcqCategories = [
@@ -140,9 +146,41 @@ const tradeTranslations = {
   'Chauffage': 'Heating',
   'Climatisation': 'Air conditioning',
   'Réfrigération': 'Refrigeration',
+  'Toiture': 'Roofing',
+  'Maçonnerie': 'Masonry',
+  'Excavation': 'Excavation',
+  'Fondation': 'Foundation',
+  'Béton': 'Concrete',
+  'Isolation': 'Insulation',
+  'Peinture': 'Painting',
+  'Tireur de joint et plâtrier': 'Drywall finishing and plastering',
+  'Céramique': 'Tile installation',
+  'Revêtement de plancher': 'Flooring',
+  'Revêtement extérieur': 'Exterior siding',
+  'Ferblanterie': 'Sheet metal work',
+  'Vitrerie': 'Glazing',
+  'Soudure et métaux': 'Welding and metalwork',
+  'Protection incendie': 'Fire protection',
+  'Drain et égout': 'Drain and sewer',
+
+  'Gouttières': 'Gutters',
+  'Imperméabilisation': 'Waterproofing',
+  'Après sinistre': 'Disaster restoration',
+  'Aluminium': 'Aluminum',
+  'Calfeutrage': 'Caulking',
+  'Escaliers et rampes': 'Stairs and railings',
+  'Armoires de cuisine': 'Kitchen cabinets',
+  'Briqueteur': 'Bricklayer',
+  'Réparation de fissures de béton': 'Concrete crack repair',
+  'Époxy': 'Epoxy',
+  'Clôtures': 'Fences',
+  'Pavage et asphalte': 'Paving and asphalt',
+  'Pavé uni': 'Interlocking pavers',
+  'Crépi': 'Parging',
+  'Crépi acrylique': 'Acrylic stucco',
+
   'Rénovation': 'Renovation',
   'Tireur de joint': 'Drywall finisher',
-  'Peinture': 'Painting',
   'Menuiserie': 'Carpentry',
   'Inspection préachat': 'Pre-purchase inspection',
   'Inspection de bâtiment': 'Building inspection',
@@ -151,7 +189,7 @@ const tradeTranslations = {
   'Technologue en architecture': 'Architectural technologist',
   'Ingénierie': 'Engineering',
   'Arpentage': 'Land surveying',
-  'Design intérieur': 'Interior design'
+  'Design intérieur': 'Interior design',
 };
 function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
   return (
@@ -718,14 +756,85 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
         <View style={styles.grid}>
   {(initialType === 'Services professionnels' ? professionalServices : initialType === 'Commercial' ? commercialCategories : initialType === 'Résidentiel — CCQ' ? residentialCcqCategories : residentialCategories).map((c) => (
           <TouchableOpacity
-            key={c}
-            style={styles.categoryCard}
-            onPress={() => onNavigate('Pros', c, null, { projectType, workType })}
-          >
-            <Text style={styles.categoryIcon}>⌂</Text>
-            <Text style={styles.categoryText}>{language === 'fr' ? c : (tradeTranslations[c] || c)}</Text>
-          </TouchableOpacity>
-        ))}
+  key={c}
+  style={styles.categoryCard}
+  onPress={() => onNavigate('Pros', c, null, { projectType, workType })}
+>
+  <View
+    style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+    }}
+  >
+    <Text
+      style={[
+        styles.categoryIcon,
+        {
+          marginRight: 10,
+          marginBottom: 0,
+        },
+      ]}
+    >
+      {{
+        'Rénovation générale': '🔨',
+        'Portes et fenêtres': '▣',
+        'Plomberie': '💧',
+        'Électricité': '⚡',
+        'Climatisation': '❄',
+        'Toiture': '⌂',
+        'Maçonnerie': '▦',
+        'Béton': '◉',
+        'Isolation': '◇',
+        'Peinture': '▰',
+        'Tireur de joint et plâtrier': '◢',
+        'Céramique': '▦',
+        'Revêtement de plancher': '▤',
+        'Revêtement extérieur': '⌂',
+        'Soudure et métaux': '⚒',
+        'Drain et égout': '↳',
+        'Gouttières': '⌐',
+        'Imperméabilisation': '💧',
+        'Après sinistre': '⌂',
+        'Aluminium': '▥',
+        'Calfeutrage': '╱',
+        'Escaliers et rampes': '▟',
+        'Armoires de cuisine': '▣',
+        'Briqueteur': '▦',
+        'Réparation de fissures de béton': 'ϟ',
+        'Époxy': '◆',
+        'Clôtures': '╫',
+        'Pavage et asphalte': '▰',
+        'Pavé uni': '▦',
+        'Crépi': '▧',
+        'Crépi acrylique': '▧',
+      }[c] || '⌂'}
+    </Text>
+
+    <Text
+      style={[
+        styles.categoryText,
+        {
+          flex: 1,
+        },
+      ]}
+    >
+      {language === 'fr' ? c : (tradeTranslations[c] || c)}
+    </Text>
+
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 22,
+        fontWeight: '700',
+        marginLeft: 6,
+      }}
+    >
+      ›
+    </Text>
+  </View>
+</TouchableOpacity>
+))}
       
 </View>
 
@@ -3241,10 +3350,38 @@ const styles = StyleSheet.create({
   primaryBtnText: { color: COLORS.navy, fontWeight: '900', fontSize: 15 },
   sectionTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 18, marginTop: 12, marginBottom: 8 },
 whyTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 13, marginTop: 7, marginBottom: 4 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 10 },
-  categoryCard: { width: '48%', backgroundColor: COLORS.card, padding: 10, borderRadius: 12, borderWidth: 1, borderColor: COLORS.line },
-  categoryIcon: { fontSize: 20, color: COLORS.gold, marginBottom: 4 },
-  categoryText: { color: COLORS.text, fontWeight: '700' },
+  grid: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'space-between',
+  gap: 10,
+},
+
+categoryCard: {
+  width: '48%',
+  backgroundColor: COLORS.card,
+  minHeight: 74,
+  paddingVertical: 12,
+  paddingHorizontal: 12,
+  borderRadius: 14,
+  borderWidth: 1,
+  borderColor: COLORS.line,
+  justifyContent: 'center',
+},
+
+categoryIcon: {
+  fontSize: 20,
+  color: COLORS.gold,
+  width: 26,
+  textAlign: 'center',
+},
+
+categoryText: {
+  color: COLORS.text,
+  fontWeight: '800',
+  fontSize: 14,
+  lineHeight: 18,
+},
   infoCard: { flexDirection: 'row', gap: 5, alignItems: 'center', backgroundColor: COLORS.card, padding: 6, borderRadius: 9, marginBottom: 4, borderWidth: 1, borderColor: COLORS.line },
   infoIcon: { color: COLORS.gold, fontWeight: '900', fontSize: 15, width: 20, textAlign: 'center' },
   infoTitle: { color: COLORS.text, fontWeight: '800', fontSize: 12 },
