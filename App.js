@@ -657,8 +657,8 @@ setHomeAddressSuggestions(results.slice(0, 5));
     alignItems: 'center',
     justifyContent: 'space-around',
     marginHorizontal: 10,
-    marginTop: -22,
-    marginBottom: -4,
+marginTop: -28,
+marginBottom: -8,
   }}
 >
   {[
