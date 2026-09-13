@@ -490,13 +490,14 @@ setHomeAddressSuggestions(results.slice(0, 5));
     paddingVertical: 7,
   }}
 >
+  <Text
   style={{
-  color: COLORS.gold2,
-  fontSize: 11,
-  fontWeight: '700',
-  lineHeight: 13,
-}}
-  >
+    color: COLORS.gold2,
+    fontSize: 11,
+    fontWeight: '700',
+    lineHeight: 13,
+  }}
+>
     {language === 'fr'
       ? "Dans un monde où les avis d’aujourd’hui sont devenus le bouche-à-oreille d’hier, la confiance est plus importante que jamais. ⭐⭐⭐⭐⭐"
       : "In a world where today's reviews have become yesterday's word of mouth, trust is more important than ever. ⭐⭐⭐⭐⭐"}
