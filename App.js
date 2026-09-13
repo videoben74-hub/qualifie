@@ -490,13 +490,12 @@ setHomeAddressSuggestions(results.slice(0, 5));
     paddingVertical: 7,
   }}
 >
-  <Text
-    style={{
-      color: COLORS.gold2,
-      fontSize: 11,
-      fontWeight: '700',
-      lineHeight: 14,
-    }}
+  style={{
+  color: COLORS.gold2,
+  fontSize: 11,
+  fontWeight: '700',
+  lineHeight: 13,
+}}
   >
     {language === 'fr'
       ? "Dans un monde où les avis d’aujourd’hui sont devenus le bouche-à-oreille d’hier, la confiance est plus importante que jamais. ⭐⭐⭐⭐⭐"
@@ -505,12 +504,12 @@ setHomeAddressSuggestions(results.slice(0, 5));
 
   <Text
     style={{
-      color: COLORS.gold2,
-      fontSize: 11,
-      fontWeight: '700',
-      lineHeight: 14,
-      marginTop: 4,
-    }}
+  color: COLORS.gold2,
+  fontSize: 11,
+  fontWeight: '700',
+  lineHeight: 13,
+  marginTop: 2,
+}}
   >
     {language === 'fr'
       ? "QualiVérifié vous permet de trouver des entrepreneurs détenant les licences nécessaires pour vos projets de construction et de rénovation."
@@ -518,14 +517,14 @@ setHomeAddressSuggestions(results.slice(0, 5));
   </Text>
 
   <Text
-    style={{
-      color: COLORS.gold2,
-      fontSize: 11,
-      fontWeight: '700',
-      lineHeight: 14,
-      marginTop: 4,
-    }}
-  >
+  style={{
+    color: COLORS.gold2,
+    fontSize: 11,
+    fontWeight: '700',
+    lineHeight: 13,
+    marginTop: 2,
+  }}
+>
     {language === 'fr'
       ? "La plateforme rassemble également les services, professionnels et ventes liés au domaine du bâtiment, afin de vous aider à trouver les bonnes personnes pour votre projet."
       : "The platform also brings together services, professionals and sales related to the building industry, helping you find the right people for your project."}
@@ -590,10 +589,9 @@ setHomeAddressSuggestions(results.slice(0, 5));
   flexDirection: 'row',
   gap: 8,
   marginHorizontal: 12,
-  marginTop: 3,
-  marginBottom: 2,
+  marginTop: 0,
+  marginBottom: 0,
 }}>
-
   <TouchableOpacity
   onPress={() => onNavigate('Login')}
   style={{
@@ -657,9 +655,9 @@ setHomeAddressSuggestions(results.slice(0, 5));
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginHorizontal: 12,
-    marginTop: -18,
-    marginBottom: 0,
+    marginHorizontal: 10,
+    marginTop: -22,
+    marginBottom: -4,
   }}
 >
   {[
@@ -706,17 +704,17 @@ setHomeAddressSuggestions(results.slice(0, 5));
       </View>
 
       {index < 3 && (
-        <Text
-          style={{
-            color: COLORS.gold,
-            fontSize: 12,
-            fontWeight: '700',
-            marginBottom: 5,
-          }}
-        >
-          →
-        </Text>
-      )}
+  <Text
+    style={{
+      color: COLORS.gold,
+      fontSize: 11,
+      fontWeight: '700',
+      marginBottom: 0,
+    }}
+  >
+    →
+  </Text>
+)}
     </React.Fragment>
   ))}
 </View>
