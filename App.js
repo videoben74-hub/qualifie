@@ -2074,9 +2074,24 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       
 ) : profileSection === 'Profil public' ? (
   <>
-    <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '👤 Profil public' : '👤 Public profile'}
+  <TouchableOpacity
+    onPress={() => onNavigate('Pros', selectedPro?.trade || '')}
+    style={{ marginBottom: 12 }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 15,
+        fontWeight: '800',
+      }}
+    >
+      {language === 'fr' ? '‹ Retour aux pros' : '‹ Back to pros'}
     </Text>
+  </TouchableOpacity>
+
+  <Text style={styles.sectionTitle}>
+    {language === 'fr' ? '👤 Profil public' : '👤 Public profile'}
+  </Text>
 {profilePhoto && (
   <Image
     source={{ uri: profilePhoto }}
