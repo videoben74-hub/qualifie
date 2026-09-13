@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 const COLORS = {
   navy: '#0B1F3A',
   navy2: '#15345D',
@@ -118,7 +120,7 @@ const commercialCategories = [
   'Ventilation',
   'Chauffage',
   'Climatisation',
-  'Réfrigération',
+  'Frigoriste',
   'Toiture',
   
   'Excavation',
@@ -158,9 +160,9 @@ const tradeTranslations = {
   'Ventilation': 'Ventilation',
   'Chauffage': 'Heating',
   'Climatisation': 'Air conditioning',
-  'Réfrigération': 'Refrigeration',
+  'Frigoriste': 'Refrigeration technician',
   'Toiture': 'Roofing',
-  'Maçonnerie': 'Masonry',
+  
   'Excavation': 'Excavation',
   'Fondation': 'Foundation',
   'Béton': 'Concrete',
@@ -846,62 +848,73 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
       width: '100%',
     }}
   >
-    <Text
-      style={[
-        styles.categoryIcon,
-        {
-          marginRight: 10,
-          marginBottom: 0,
-        },
-      ]}
-    >
-      {{
-        'Rénovation générale': '🔨',
-'Portes et fenêtres': '🚪',
-'Plomberie': '💧',
-'Électricité': '⚡',
-'Climatisation': '❄️',
-'Toiture': '🏠',
-
-        'Béton': '◼️',
-'Isolation': '🛡️',
-'Peinture': '🖌️',
-'Tireur de joint et plâtrier': '🔺',
-'Céramique': '🔲',
-'Revêtement de plancher': '🪵',
-'Revêtement extérieur': '🏡',
-'Soudure et métaux': '⚒️',
-'Drain et égout': '🔧',
-        'Gouttières': '🌧️',
-'Imperméabilisation': '💧',
-'Après sinistre': '🔥',
-'Aluminium': '🔩',
-'Calfeutrage': '💉',
-'Escaliers et rampes': '🪜',
-'Armoires de cuisine': '🗄️',
-'Ventilation': '💨',
-'Chauffage': '🔥',
-'Réfrigération': '🧊',
-'Excavation': '🚜',
-'Fondation': '🏠',
-'Ferblanterie': '🔩',
-'Protection incendie': '🧯',
-'Briqueteur': '🧱',
-'Réparation de fissures de béton': '💧',
-'Époxy': '🪣',
-'Clôture': '🚧',
-'Pavage et asphalte': '🛣️',
-'Pavé uni': '🧱',
-'Crépi': '🏠',
-'Crépi acrylique': '🎨',
-'Pose de gypse': '▭',
-'Démolition': '🔨',
-'Mécanique d’ascenseur': '🛗',
-'Grutier': '🏗️',
-
-
-      }[c] || '⌂'}
-    </Text>
+    {['Crépi', 'Crépi acrylique', 'Clôture', 'Pavé uni'].includes(c) ? (
+  <MaterialCommunityIcons
+    name={
+      c === 'Clôture'
+        ? 'fence'
+        : c === 'Pavé uni'
+        ? 'view-grid-outline'
+        : 'trowel'
+    }
+    size={30}
+    color={COLORS.gold}
+    style={{
+      marginRight: 10,
+      marginBottom: 0,
+    }}
+  />
+) : (
+  <Text
+    style={[
+      styles.categoryIcon,
+      {
+        marginRight: 10,
+        marginBottom: 0,
+      },
+    ]}
+  >
+    {{
+      'Rénovation générale': '🔨',
+      'Portes et fenêtres': '🚪',
+      'Plomberie': '💧',
+      'Électricité': '⚡',
+      'Climatisation': '❄️',
+      'Toiture': '🏠',
+      'Béton': '◼️',
+      'Isolation': '🛡️',
+      'Peinture': '🖌️',
+      'Tireur de joint et plâtrier': '🔺',
+      'Céramique': '🔲',
+      'Revêtement de plancher': '🪵',
+      'Revêtement extérieur': '🏡',
+      'Soudure et métaux': '⚒️',
+      'Drain et égout': '🚰',
+      'Gouttières': '🌧️',
+      'Imperméabilisation': '💧',
+      'Après sinistre': '🔥',
+      'Aluminium': '🏠',
+      'Calfeutrage': '💉',
+      'Escaliers et rampes': '🪜',
+      'Armoires de cuisine': '🗄️',
+      'Ventilation': '💨',
+      'Chauffage': '🔥',
+      'Frigoriste': '🧊',
+      'Excavation': '🚜',
+      'Fondation': '🏠',
+      'Ferblanterie': '🔩',
+      'Protection incendie': '🧯',
+      'Briqueteur': '🧱',
+      'Réparation de fissures de béton': '💧',
+      'Époxy': '🪣',
+      'Pavage et asphalte': '🛣️',
+      'Pose de gypse': '▭',
+      'Démolition': '🔨',
+      'Mécanique d’ascenseur': '🛗',
+      'Grutier': '🏗️',
+    }[c] || '⌂'}
+  </Text>
+)}
 
     <Text
   style={[
