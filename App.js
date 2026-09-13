@@ -2627,7 +2627,7 @@ return (
       />
 
       <TouchableOpacity
-        onPress={() => onNavigate('Profil', '', selectedPro)}
+        onPress={() => onNavigate('Pros', selectedPro?.trade || '', selectedPro)}
         style={{
           alignSelf: 'flex-start',
           paddingVertical: 8,
