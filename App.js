@@ -404,15 +404,17 @@ setHomeAddressSuggestions(results.slice(0, 5));
     setSelectedHomeAddress(null);
   }}
   style={{
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#D6DDE7',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    height: 36,
-    color: COLORS.text,
-    fontSize: 13,
-  }}
+  backgroundColor: '#FFFFFF',
+  borderWidth: 1,
+  borderColor: '#D6DDE7',
+  borderRadius: 10,
+  paddingHorizontal: 12,
+  paddingVertical: 0,
+  height: 44,
+  color: COLORS.text,
+  fontSize: 14,
+  textAlignVertical: 'center',
+}}
   onSubmitEditing={() => {
     if (selectedHomeAddress) {
       onNavigate('TypeTravaux');
@@ -718,6 +720,41 @@ setHomeAddressSuggestions(results.slice(0, 5));
 )}
     </React.Fragment>
   ))}
+</View>
+    <View
+  style={{
+    marginTop: 28,
+    marginHorizontal: 24,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 18,
+      fontWeight: '900',
+      textAlign: 'center',
+      lineHeight: 25,
+    }}
+  >
+    {language === 'fr'
+      ? 'Chaque grand projet commence par une première étape.'
+      : 'Every great project begins with a first step.'}
+  </Text>
+
+  <Text
+    style={{
+      color: COLORS.gold,
+      fontSize: 15,
+      fontWeight: '800',
+      textAlign: 'center',
+      marginTop: 6,
+    }}
+  >
+    {language === 'fr'
+      ? 'La vôtre commence ici.'
+      : 'Yours starts here.'}
+  </Text>
 </View>
 </ScrollView>
   );
