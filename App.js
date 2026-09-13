@@ -1088,9 +1088,10 @@ const response = await fetch(
   </Text>
 </TouchableOpacity>
           </View>
-        </View>
-      ))}
-    </ScrollView>
+</View>
+</View>
+))}
+</ScrollView>
   );
 }
 
