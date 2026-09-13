@@ -351,8 +351,8 @@ const [selectedHomeAddress, setSelectedHomeAddress] = useState(null);
       const search = encodeURIComponent(address.trim());
 
       const response = await fetch(
-        `https://geolocator.api.geo.ca/?q=${search}&lang=${language === 'fr' ? 'fr' : 'en'}&keys=nominatim`
-      );
+  `https://geolocator.api.geo.ca/?q=${search}&lang=${language === 'fr' ? 'fr' : 'en'}&keys=nominatim,locate,geonames`
+);
 
       const data = await response.json();
 
@@ -365,7 +365,7 @@ const results =
     ? data.results
     : [];
 
-setHomeAddressSuggestions(results.slice(0, 5));
+setHomeAddressSuggestions(results.slice(0, 12));
     } catch (error) {
       console.log('Erreur recherche adresse accueil:', error);
       setHomeAddressSuggestions([]);
