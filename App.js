@@ -2104,7 +2104,7 @@ return (
   { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
   { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
   { fr: '🏢 Informations de l’entreprise', en: '🏢 Company information', section: 'Informations entreprise' },
-  { fr: '👤 Profil public', en: '👤 Public profile', section: 'Profil public' },
+  
   { fr: '🚪 Déconnexion', en: '🚪 Log out', section: 'Déconnexion' },
 ].map((item) => (
   <TouchableOpacity
