@@ -749,10 +749,23 @@ function Metiers({ onNavigate, initialType, language, setLanguage }) {
   const [projectType, setProjectType] = useState(initialType === 'Commercial' ? 'Commercial' : initialType ? 'Résidentiel' : '');
 const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel — CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
-    <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader language={language} setLanguage={setLanguage} />
+  <ScrollView
+    contentContainerStyle={styles.page}
+    contentInsetAdjustmentBehavior="automatic"
+    showsVerticalScrollIndicator={false}
+  >
+    <AppHeader language={language} setLanguage={setLanguage} />
 
-      <Text style={styles.screenTitle}>{language === 'fr' ? (initialType === 'Services professionnels' ? 'Inspection et services professionnels' : initialType ? `Métiers – ${initialType}` : 'Tous les métiers et services') : (initialType === 'Services professionnels' ? 'Inspection and professional services' : initialType === 'Résidentiel' ? 'Trades – Residential' : initialType === 'Résidentiel – CCQ' ? 'Trades – Residential – CCQ' : initialType === 'Commercial' ? 'Trades – Commercial' : 'All trades and services')}</Text>
+<TouchableOpacity
+  onPress={() => onNavigate('TypeTravaux')}
+  style={{ marginBottom: 10 }}
+>
+  <Text style={{ color: COLORS.navy, fontSize: 15, fontWeight: '800' }}>
+    {language === 'fr' ? '‹ Retour' : '‹ Back'}
+  </Text>
+</TouchableOpacity>
+
+<Text style={styles.screenTitle}>{language ===
       
 
       
