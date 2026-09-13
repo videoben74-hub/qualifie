@@ -358,7 +358,10 @@ setHomeAddressSuggestions(results.slice(0, 5));
   return () => clearTimeout(timer);
 }, [address, language]);
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+    <ScrollView
+  contentContainerStyle={styles.page}
+  keyboardShouldPersistTaps="handled"
+>
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
       <View style={{
   backgroundColor: COLORS.card,
