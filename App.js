@@ -1079,8 +1079,14 @@ const response = await fetch(
   <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.secondaryBtn}>
     <Text style={styles.secondaryBtnText}>{language === 'fr' ? 'Voir le profil' : 'View profile'}</Text>
   </TouchableOpacity>
-  <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.smallGoldBtn}><Text style={styles.smallGoldBtnText}>{language === 'fr' ? 'Soumission' : 'Quote'}</Text></TouchableOpacity>
-            </View>
+  <TouchableOpacity
+  onPress={() => onNavigate('Soumission', '', p)}
+  style={styles.smallGoldBtn}
+>
+  <Text style={styles.smallGoldBtnText}>
+    {language === 'fr' ? 'Soumission' : 'Quote'}
+  </Text>
+</TouchableOpacity>
           </View>
         </View>
       ))}
@@ -2247,7 +2253,30 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 return (
 <ScrollView contentContainerStyle={styles.page}>
 <AppHeader language={language} setLanguage={setLanguage} />
-<Text style={styles.screenTitle}>{language === 'fr' ? (selectedPro ? 'Profil QualiVérifié' : 'Mon profil') : (selectedPro ? 'QualiVérifié Profile' : 'My profile')}</Text>
+<>
+{selectedPro && (
+  <TouchableOpacity
+    onPress={() => onNavigate('Pros', selectedPro.trade)}
+    style={{ marginBottom: 10 }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 15,
+        fontWeight: '800',
+      }}
+    >
+      {language === 'fr' ? '‹ Retour aux pros' : '‹ Back to pros'}
+    </Text>
+  </TouchableOpacity>
+)}
+
+<Text style={styles.screenTitle}>
+  {language === 'fr'
+    ? (selectedPro ? 'Profil QualiVérifié' : 'Mon profil')
+    : (selectedPro ? 'QualiVérifié Profile' : 'My profile')}
+</Text>
+</>
 <View style={styles.profileCard}>
 <TouchableOpacity
   style={styles.avatarLarge}
