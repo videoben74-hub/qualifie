@@ -909,9 +909,21 @@ const response = await fetch(
   }, [query, city, initialFilters]);
 
   return (
-    <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
-      <AppHeader language={language} setLanguage={setLanguage} />
-      <Text style={styles.screenTitle}>{language === 'fr' ? 'Trouver un pro' : 'Find a pro'}</Text>
+  <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
+    <AppHeader language={language} setLanguage={setLanguage} />
+
+    <TouchableOpacity
+      onPress={() => onNavigate('Metiers')}
+      style={{ marginBottom: 10 }}
+    >
+      <Text style={{ color: COLORS.navy, fontSize: 15, fontWeight: '800' }}>
+        {language === 'fr' ? '‹ Retour aux métiers' : '‹ Back to trades'}
+      </Text>
+    </TouchableOpacity>
+
+    <Text style={styles.screenTitle}>
+      {language === 'fr' ? 'Trouver un pro' : 'Find a pro'}
+    </Text>
       <TextInput value={query} onChangeText={setQuery} placeholder={language === 'fr' ? 'Métier ou entreprise' : 'Trade or company'} style={styles.input} />
       <TextInput
   value={addressQuery}
