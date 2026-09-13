@@ -63,7 +63,7 @@ const residentialCategories = [
   'Briqueteur',
   'Réparation de fissures de béton',
   'Époxy',
-  'Clôtures',
+  'Clôture',
   'Pavage et asphalte',
   'Pavé uni',
   'Crépi',
@@ -173,7 +173,7 @@ const tradeTranslations = {
   'Briqueteur': 'Bricklayer',
   'Réparation de fissures de béton': 'Concrete crack repair',
   'Époxy': 'Epoxy',
-  'Clôtures': 'Fences',
+  'Clôture': 'Fencing',
   'Pavage et asphalte': 'Paving and asphalt',
   'Pavé uni': 'Interlocking pavers',
   'Crépi': 'Parging',
@@ -803,7 +803,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
         'Briqueteur': '▦',
         'Réparation de fissures de béton': 'ϟ',
         'Époxy': '◆',
-        'Clôtures': '╫',
+        'Clôture': '╫',
         'Pavage et asphalte': '▰',
         'Pavé uni': '▦',
         'Crépi': '▧',
@@ -812,15 +812,27 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     </Text>
 
     <Text
-      style={[
-        styles.categoryText,
-        {
-          flex: 1,
-        },
-      ]}
-    >
-      {language === 'fr' ? c : (tradeTranslations[c] || c)}
-    </Text>
+  style={[
+    styles.categoryText,
+    {
+      flex: 1,
+      fontSize:
+        c === 'Imperméabilisation'
+          ? 12
+          : c === 'Réparation de fissures de béton'
+          ? 12
+          : 14,
+      lineHeight:
+        c === 'Imperméabilisation'
+          ? 15
+          : c === 'Réparation de fissures de béton'
+          ? 15
+          : 18,
+    },
+  ]}
+>
+  {language === 'fr' ? c : (tradeTranslations[c] || c)}
+</Text>
 
     <Text
       style={{
