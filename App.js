@@ -367,13 +367,13 @@ setHomeAddressSuggestions(results.slice(0, 5));
   backgroundColor: COLORS.card,
   borderRadius: 16,
   paddingHorizontal: 14,
-  paddingVertical: 10,
+  paddingVertical: 6,
   marginHorizontal: 10,
-  marginBottom: 8,
+  marginBottom: 5,
 }}>
   <Text style={{
     color: COLORS.navy,
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: '900',
   }}>
     {language === 'fr' ? 'Adresse du chantier' : 'Work site address'}
@@ -381,10 +381,10 @@ setHomeAddressSuggestions(results.slice(0, 5));
 
   <Text style={{
     color: COLORS.muted,
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
-    marginTop: 2,
-    marginBottom: 7,
+    marginTop: 1,
+    marginBottom: 4,
   }}>
     {language === 'fr'
       ? 'Entrez l’adresse où les travaux seront réalisés.'
@@ -409,7 +409,7 @@ setHomeAddressSuggestions(results.slice(0, 5));
     borderColor: '#D6DDE7',
     borderRadius: 10,
     paddingHorizontal: 12,
-    height: 40,
+    height: 36,
     color: COLORS.text,
     fontSize: 13,
   }}
@@ -483,33 +483,33 @@ setHomeAddressSuggestions(results.slice(0, 5));
       <View
   style={{
     marginHorizontal: 10,
-    marginBottom: 6,
+    marginBottom: 4,
     backgroundColor: COLORS.navy,
     borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 11,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
   }}
 >
   <Text
     style={{
       color: COLORS.gold2,
-      fontSize: 13,
+      fontSize: 11,
       fontWeight: '700',
-      lineHeight: 17,
+      lineHeight: 14,
     }}
   >
     {language === 'fr'
       ? "Dans un monde où les avis d’aujourd’hui sont devenus le bouche-à-oreille d’hier, la confiance est plus importante que jamais. ⭐⭐⭐⭐⭐"
-      : "In a world where today's reviews have become yesterday's word of mouth, trust is more important than ever."}
+      : "In a world where today's reviews have become yesterday's word of mouth, trust is more important than ever. ⭐⭐⭐⭐⭐"}
   </Text>
 
   <Text
     style={{
       color: COLORS.gold2,
-      fontSize: 13,
+      fontSize: 11,
       fontWeight: '700',
-      lineHeight: 17,
-      marginTop: 7,
+      lineHeight: 14,
+      marginTop: 4,
     }}
   >
     {language === 'fr'
@@ -520,10 +520,10 @@ setHomeAddressSuggestions(results.slice(0, 5));
   <Text
     style={{
       color: COLORS.gold2,
-      fontSize: 13,
+      fontSize: 11,
       fontWeight: '700',
-      lineHeight: 17,
-      marginTop: 7,
+      lineHeight: 14,
+      marginTop: 4,
     }}
   >
     {language === 'fr'
@@ -531,34 +531,38 @@ setHomeAddressSuggestions(results.slice(0, 5));
       : "The platform also brings together services, professionals and sales related to the building industry, helping you find the right people for your project."}
   </Text>
 </View>
-   <View style={{
-  alignItems: 'center',
-  marginHorizontal: 12,
-  marginTop: 4,
-  marginBottom: 6,
-}}>
-  <Text style={{
-    color: COLORS.gold,
-    fontSize: 19,
-    fontWeight: '800',
-    fontStyle: 'italic',
-    textAlign: 'center',
-  }}>
+   <View
+  style={{
+    alignItems: 'center',
+    marginHorizontal: 10,
+    marginTop: 0,
+    marginBottom: 0,
+  }}
+>
+
+  <Text
+    style={{
+      color: COLORS.gold,
+      fontSize: 16,
+      fontWeight: '800',
+      fontStyle: 'italic',
+      textAlign: 'center',
+    }}
+  >
     {language === 'fr'
       ? 'Bienvenue chez QualiVérifié !'
       : 'Welcome to QualiVérifié!'}
   </Text>
 
   <Text
-    numberOfLines={2}
+    numberOfLines={1}
     adjustsFontSizeToFit
     style={{
       color: COLORS.navy,
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: '700',
-      lineHeight: 16,
       textAlign: 'center',
-      marginTop: 4,
+      marginTop: 2,
     }}
   >
     {language === 'fr'
@@ -566,13 +570,17 @@ setHomeAddressSuggestions(results.slice(0, 5));
       : 'Verified and trusted pros for your projects across Quebec.'}
   </Text>
 
-  <Text style={{
-    color: COLORS.gold,
-    fontSize: 12,
-    fontWeight: '900',
-    textAlign: 'center',
-    marginTop: 3,
-  }}>
+  <Text
+    numberOfLines={1}
+    adjustsFontSizeToFit
+    style={{
+      color: COLORS.gold,
+      fontSize: 11,
+      fontWeight: '900',
+      textAlign: 'center',
+      marginTop: 2,
+    }}
+  >
     {language === 'fr'
       ? 'Des gens de chez nous, pour des projets durables.'
       : 'Local people, building projects that last.'}
@@ -580,33 +588,34 @@ setHomeAddressSuggestions(results.slice(0, 5));
 </View>
     <View style={{
   flexDirection: 'row',
-  gap: 12,
-  marginHorizontal: 18,
-  marginTop: 18,
-  marginBottom: 12,
+  gap: 8,
+  marginHorizontal: 12,
+  marginTop: 3,
+  marginBottom: 2,
 }}>
+
   <TouchableOpacity
-    onPress={() => onNavigate('Login')}
-    style={{
-      flex: 1,
-      minHeight: 58,
-      borderWidth: 2,
-      borderColor: COLORS.navy,
-      borderRadius: 14,
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  >
+  onPress={() => onNavigate('Login')}
+  style={{
+    flex: 1,
+    minHeight: 42,
+    borderWidth: 2,
+    borderColor: COLORS.navy,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
     <Text style={{
       color: COLORS.navy,
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: '900',
     }}>
       Connectez-vous
     </Text>
     <Text style={{
       color: COLORS.muted,
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: '700',
       marginTop: 2,
     }}>
@@ -615,26 +624,27 @@ setHomeAddressSuggestions(results.slice(0, 5));
   </TouchableOpacity>
 
   <TouchableOpacity
-    onPress={() => onNavigate('Signup')}
-    style={{
-      flex: 1,
-      minHeight: 58,
-      backgroundColor: COLORS.gold2,
-      borderRadius: 14,
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  >
+  onPress={() => onNavigate('Signup')}
+  style={{
+    flex: 1,
+    minHeight: 42,
+    backgroundColor: COLORS.gold2,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  
     <Text style={{
       color: COLORS.navy,
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: '900',
     }}>
       Inscrivez-vous
     </Text>
     <Text style={{
       color: COLORS.muted,
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: '700',
       marginTop: 2,
     }}>
@@ -647,69 +657,69 @@ setHomeAddressSuggestions(results.slice(0, 5));
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginHorizontal: 28,
-    marginTop: -10,
+    marginHorizontal: 12,
+    marginTop: -18,
     marginBottom: 0,
   }}
-    >
-      {[
-        ['1', language === 'fr' ? 'Connexion' : 'Sign in'],
-        ['2', language === 'fr' ? 'Adresse' : 'Address'],
-        ['3', language === 'fr' ? 'Métier' : 'Trade'],
-        ['4', language === 'fr' ? 'Soumission' : 'Quote'],
-      ].map(([number, label], index) => (
-        <React.Fragment key={number}>
-          <View style={{ alignItems: 'center' }}>
-            <View
-              style={{
-                width: 27,
-                height: 27,
-                borderRadius: 14,
-                backgroundColor: COLORS.gold2,
-                borderWidth: 1,
-                borderColor: COLORS.navy,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Text
-                style={{
-                  color: COLORS.navy,
-                  fontSize: 13,
-                  fontWeight: '900',
-                }}
-              >
-                {number}
-              </Text>
-            </View>
+>
+  {[
+    ['1', language === 'fr' ? 'Connexion' : 'Sign in'],
+    ['2', language === 'fr' ? 'Adresse' : 'Address'],
+    ['3', language === 'fr' ? 'Métier' : 'Trade'],
+    ['4', language === 'fr' ? 'Soumission' : 'Quote'],
+  ].map(([number, label], index) => (
+    <React.Fragment key={number}>
+      <View style={{ alignItems: 'center' }}>
+        <View
+          style={{
+            width: 21,
+            height: 21,
+            borderRadius: 11,
+            backgroundColor: COLORS.gold2,
+            borderWidth: 1,
+            borderColor: COLORS.navy,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.navy,
+              fontSize: 10,
+              fontWeight: '900',
+            }}
+          >
+            {number}
+          </Text>
+        </View>
 
-            <Text
-              style={{
-                color: COLORS.navy,
-                fontSize: 10,
-                fontWeight: '800',
-                marginTop: 3,
-              }}
-            >
-              {label}
-            </Text>
-          </View>
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 8,
+            fontWeight: '800',
+            marginTop: 1,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
 
-          {index < 3 && (
-            <Text
-              style={{
-                color: COLORS.gold,
-                fontSize: 19,
-                fontWeight: '700',
-                marginBottom: 14,
-              }}
-            >
-              →
-            </Text>
-          )}
-        </React.Fragment>
-      ))}
-    </View>
+      {index < 3 && (
+        <Text
+          style={{
+            color: COLORS.gold,
+            fontSize: 12,
+            fontWeight: '700',
+            marginBottom: 5,
+          }}
+        >
+          →
+        </Text>
+      )}
+    </React.Fragment>
+  ))}
+</View>
 </ScrollView>
   );
 }
