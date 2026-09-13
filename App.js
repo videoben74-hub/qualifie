@@ -899,7 +899,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 'Mécanique d’ascenseur': '🛗',
 'Grutier': '🏗️',
 
-];
+
       }[c] || '⌂'}
     </Text>
 
