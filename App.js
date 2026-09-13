@@ -830,7 +830,23 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
   </Text>
 </TouchableOpacity>
 
-<Text style={styles.screenTitle}>{language === 'fr' ? 'Choisissez un métier' : 'Choose a trade'}</Text>
+<Text style={styles.screenTitle}>
+  {language === 'fr'
+    ? `Choisissez un métier — ${
+        projectType === 'Commercial'
+          ? 'Commercial (CCQ)'
+          : workType === 'CCQ'
+          ? 'Résidentiel (CCQ)'
+          : 'Résidentiel'
+      }`
+    : `Choose a trade — ${
+        projectType === 'Commercial'
+          ? 'Commercial (CCQ)'
+          : workType === 'CCQ'
+          ? 'Residential (CCQ)'
+          : 'Residential'
+      }`}
+</Text>
       
 
       
@@ -848,14 +864,14 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
       width: '100%',
     }}
   >
-    {['Crépi', 'Crépi acrylique', 'Clôture', 'Pavé uni'].includes(c) ? (
+    {['Crépi', 'Crépi acrylique', 'Tireur de joint et plâtrier', 'Clôture', 'Pavé uni'].includes(c) ? (
   <MaterialCommunityIcons
     name={
       c === 'Clôture'
         ? 'fence'
         : c === 'Pavé uni'
         ? 'view-grid-outline'
-        : 'trowel'
+        : 'tools'
     }
     size={30}
     color={COLORS.gold}
