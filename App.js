@@ -774,7 +774,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
   </Text>
 </TouchableOpacity>
 
-<Text style={styles.screenTitle}>{language ===
+<Text style={styles.screenTitle}>{language === 'fr' ? 'Choisissez un métier' : 'Choose a trade'}</Text>
       
 
       
