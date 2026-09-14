@@ -338,8 +338,23 @@ function Home({ onNavigate, language, setLanguage }) {
 const [userLocation, setUserLocation] = useState(null);
 
 const useCurrentLocation = async () => {
+  let locationSubscription = null;
+  let timeoutId = null;
+
   try {
     setLocationLoading(true);
+
+    const servicesEnabled =
+      await Location.hasServicesEnabledAsync();
+
+    if (!servicesEnabled) {
+      alert(
+        language === 'fr'
+          ? 'Activez la localisation de votre téléphone puis réessayez.'
+          : 'Turn on location services on your phone and try again.'
+      );
+      return;
+    }
 
     const { status } =
       await Location.requestForegroundPermissionsAsync();
@@ -353,44 +368,68 @@ const useCurrentLocation = async () => {
       return;
     }
 
-    let position = await Location.getLastKnownPositionAsync({
-      maxAge: 60000,
-      requiredAccuracy: 1000,
-    });
+    const lastPosition =
+      await Location.getLastKnownPositionAsync();
 
-    if (!position) {
-      position = await Promise.race([
-        Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Low,
-        }),
-        new Promise((_, reject) =>
-          setTimeout(
-            () => reject(new Error('LOCATION_TIMEOUT')),
-            10000
-          )
-        ),
-      ]);
+    if (lastPosition?.coords) {
+      setUserLocation({
+        latitude: lastPosition.coords.latitude,
+        longitude: lastPosition.coords.longitude,
+      });
+
+      onNavigate('TypeTravaux');
+      return;
     }
 
-    const coords = {
+    const position = await new Promise(
+      async (resolve, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error('LOCATION_TIMEOUT'));
+        }, 12000);
+
+        try {
+          locationSubscription =
+            await Location.watchPositionAsync(
+              {
+                accuracy: Location.Accuracy.Balanced,
+                timeInterval: 1000,
+                distanceInterval: 1,
+              },
+              (location) => {
+                clearTimeout(timeoutId);
+                resolve(location);
+              }
+            );
+        } catch (error) {
+          clearTimeout(timeoutId);
+          reject(error);
+        }
+      }
+    );
+
+    setUserLocation({
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
-    };
+    });
 
-    setUserLocation(coords);
-
-setTimeout(() => {
-  onNavigate('TypeTravaux');
-}, 300);
+    onNavigate('TypeTravaux');
   } catch (error) {
     console.log('Erreur localisation :', error);
 
     alert(
       language === 'fr'
-        ? 'Impossible d’obtenir votre position. Vérifiez que la localisation de votre téléphone est activée puis réessayez.'
-        : 'Unable to get your location. Make sure location services are enabled on your phone and try again.'
+        ? 'Impossible d’obtenir votre position. Vérifiez que la localisation est activée puis réessayez.'
+        : 'Unable to get your location. Make sure location services are enabled and try again.'
     );
   } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    if (locationSubscription) {
+      locationSubscription.remove();
+    }
+
     setLocationLoading(false);
   }
 };
