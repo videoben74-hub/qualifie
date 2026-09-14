@@ -378,7 +378,10 @@ const useCurrentLocation = async () => {
     };
 
     setUserLocation(coords);
-    onNavigate('TypeTravaux');
+
+setTimeout(() => {
+  onNavigate('TypeTravaux');
+}, 300);
   } catch (error) {
     console.log('Erreur localisation :', error);
 
