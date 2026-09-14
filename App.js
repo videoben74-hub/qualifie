@@ -344,9 +344,6 @@ function Badge() {
   const [locationLoading, setLocationLoading] = useState(false);
 
 const useCurrentLocation = async () => {
-  let locationSubscription = null;
-  let timeoutId = null;
-
   try {
     setLocationLoading(true);
 
@@ -362,10 +359,15 @@ const useCurrentLocation = async () => {
       return;
     }
 
-    const { status } =
-      await Location.requestForegroundPermissionsAsync();
+    let permission =
+      await Location.getForegroundPermissionsAsync();
 
-    if (status !== 'granted') {
+    if (permission.status !== 'granted') {
+      permission =
+        await Location.requestForegroundPermissionsAsync();
+    }
+
+    if (permission.status !== 'granted') {
       alert(
         language === 'fr'
           ? 'La permission de localisation est nécessaire pour trouver les entrepreneurs près de vous.'
@@ -374,50 +376,37 @@ const useCurrentLocation = async () => {
       return;
     }
 
-    const lastPosition =
-      await Location.getLastKnownPositionAsync();
-
-    if (lastPosition?.coords) {
-      setUserLocation({
-        latitude: lastPosition.coords.latitude,
-        longitude: lastPosition.coords.longitude,
+    let position =
+      await Location.getLastKnownPositionAsync({
+        maxAge: 120000,
+        requiredAccuracy: 500,
       });
 
-      onNavigate('TypeTravaux');
-      return;
+    if (!position?.coords) {
+      position = await Promise.race([
+        Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+          mayShowUserSettingsDialog: true,
+        }),
+        new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error('LOCATION_TIMEOUT')),
+            15000
+          )
+        ),
+      ]);
     }
 
-    const position = await new Promise(
-      async (resolve, reject) => {
-        timeoutId = setTimeout(() => {
-          reject(new Error('LOCATION_TIMEOUT'));
-        }, 12000);
-
-        try {
-          locationSubscription =
-            await Location.watchPositionAsync(
-              {
-                accuracy: Location.Accuracy.Balanced,
-                timeInterval: 1000,
-                distanceInterval: 1,
-              },
-              (location) => {
-                clearTimeout(timeoutId);
-                resolve(location);
-              }
-            );
-        } catch (error) {
-          clearTimeout(timeoutId);
-          reject(error);
-        }
-      }
-    );
+    if (!position?.coords) {
+      throw new Error('LOCATION_NOT_AVAILABLE');
+    }
 
     setUserLocation({
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
     });
 
+    setLocationLoading(false);
     onNavigate('TypeTravaux');
   } catch (error) {
     console.log('Erreur localisation :', error);
@@ -428,14 +417,6 @@ const useCurrentLocation = async () => {
         : 'Unable to get your location. Make sure location services are enabled and try again.'
     );
   } finally {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    if (locationSubscription) {
-      locationSubscription.remove();
-    }
-
     setLocationLoading(false);
   }
 };
