@@ -348,25 +348,40 @@ const [selectedHomeAddress, setSelectedHomeAddress] = useState(null);
     try {
       setHomeAddressLoading(true);
 
-      const search = encodeURIComponent(address.trim());
-
       const response = await fetch(
-  `https://geolocator.api.geo.ca/?q=${search}&lang=${language === 'fr' ? 'fr' : 'en'}&keys=nominatim,locate,geonames`
-);
+        'https://htimquvctbepnhplxjhn.supabase.co/functions/v1/address-search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            searchTerm: address.trim(),
+            language: language === 'fr' ? 'fr' : 'en',
+            limit: 10,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Erreur recherche adresse : ${response.status}`);
+      }
 
       const data = await response.json();
 
-const results =
-  Array.isArray(data)
-    ? data
-    : Array.isArray(data?.features)
-    ? data.features
-    : Array.isArray(data?.results)
-    ? data.results
-    : [];
+      const results = Array.isArray(data?.items)
+        ? data.items.map((item) => ({
+            id: item.Id,
+            title: item.Text,
+            description: item.Description,
+            text: item.Text,
+            label: `${item.Text}${item.Description ? `, ${item.Description}` : ''}`,
+            next: item.Next,
+          }))
+        : [];
 
-setHomeAddressSuggestions(results.slice(0, 12));
-    } catch (error) {
+      setHomeAddressSuggestions(results);
+        } catch (error) {
       console.log('Erreur recherche adresse accueil:', error);
       setHomeAddressSuggestions([]);
     } finally {
@@ -376,7 +391,8 @@ setHomeAddressSuggestions(results.slice(0, 12));
 
   return () => clearTimeout(timer);
 }, [address, language]);
-  return (
+
+return (
     <ScrollView
   contentContainerStyle={styles.page}
   keyboardShouldPersistTaps="handled"
@@ -457,24 +473,80 @@ setHomeAddressSuggestions(results.slice(0, 12));
 
 {homeAddressSuggestions.map((suggestion, index) => {
   const label =
-    suggestion.title ||
-    suggestion.display_name ||
-    suggestion.name ||
-    suggestion.address ||
-    suggestion.label ||
-    '';
+  suggestion.label ||
+  suggestion.title ||
+  suggestion.display_name ||
+  suggestion.name ||
+  suggestion.address ||
+  '';
 
   if (!label) return null;
 
   return (
     <TouchableOpacity
       key={`${label}-${index}`}
-      onPress={() => {
+      onPress={async () => {
+  if (suggestion.next === 'Retrieve' && suggestion.id) {
+    try {
+      setHomeAddressLoading(true);
+
+      const response = await fetch(
+        'https://htimquvctbepnhplxjhn.supabase.co/functions/v1/address-search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            searchTerm: address.trim(),
+            retrieveId: suggestion.id,
+            language: language === 'fr' ? 'fr' : 'en',
+            limit: 10,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Erreur Retrieve : ${response.status}`);
+      }
+
+      const data = await response.json();
+      const item = Array.isArray(data?.items) ? data.items[0] : null;
+
+      if (!item) {
+        return;
+      }
+
+      const fullAddress = [
+        item.SubBuilding,
+        item.BuildingNumber,
+        item.Street,
+        item.City,
+        item.ProvinceName || item.Province,
+        item.PostalCode,
+      ]
+        .filter(Boolean)
+        .join(' ');
+
+      setAddress(fullAddress);
+      setSelectedHomeAddress(item);
+      setHomeAddressSuggestions([]);
+      onNavigate('TypeTravaux');
+    } catch (error) {
+      console.log('Erreur Retrieve adresse:', error);
+    } finally {
+      setHomeAddressLoading(false);
+    }
+
+    return;
+  }
+
   setAddress(label);
   setSelectedHomeAddress(suggestion);
   setHomeAddressSuggestions([]);
   onNavigate('TypeTravaux');
 }}
+
       style={{
         backgroundColor: '#FFFFFF',
         borderWidth: 1,
