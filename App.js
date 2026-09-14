@@ -407,24 +407,26 @@ return (
   marginBottom: 5,
 }}>
   <Text style={{
-    color: COLORS.navy,
-    fontSize: 17,
-    fontWeight: '900',
-  }}>
-    {language === 'fr' ? 'Adresse du chantier' : 'Work site address'}
-  </Text>
+  color: COLORS.navy,
+  fontSize: 17,
+  fontWeight: '900',
+}}>
+  {language === 'fr'
+    ? 'Entrepreneurs près de vous'
+    : 'Contractors near you'}
+</Text>
 
-  <Text style={{
-    color: COLORS.muted,
-    fontSize: 11,
-    fontWeight: '700',
-    marginTop: 1,
-    marginBottom: 4,
-  }}>
-    {language === 'fr'
-      ? 'Entrez l’adresse où les travaux seront réalisés.'
-      : 'Enter the address where the work will be carried out.'}
-  </Text>
+<Text style={{
+  color: COLORS.muted,
+  fontSize: 11,
+  fontWeight: '700',
+  marginTop: 1,
+  marginBottom: 4,
+}}>
+  {language === 'fr'
+    ? 'Utilisez votre position pour trouver les entrepreneurs à proximité.'
+    : 'Use your location to find nearby contractors.'}
+</Text>
 
   <TextInput
   placeholder={
