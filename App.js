@@ -331,11 +331,17 @@ function Badge() {
   );
 }
 
-function Home({ onNavigate, language, setLanguage }) {
-  
+
+  function Home({
+  onNavigate,
+  language,
+  setLanguage,
+  userLocation,
+  setUserLocation,
+}) {
+
   const [showAuthOptions, setShowAuthOptions] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
-const [userLocation, setUserLocation] = useState(null);
 
 const useCurrentLocation = async () => {
   let locationSubscription = null;
@@ -3383,6 +3389,8 @@ useEffect(() => {
     onNavigate={navigate}
     language={language}
     setLanguage={setLanguage}
+    userLocation={userLocation}
+    setUserLocation={setUserLocation}
   />
 ) :
 tab === 'Login' ? (
