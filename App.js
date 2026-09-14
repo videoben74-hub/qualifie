@@ -13,7 +13,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import * as Location from 'expo-location';
 const COLORS = {
   navy: '#0B1F3A',
   navy2: '#15345D',
@@ -332,65 +332,50 @@ function Badge() {
 }
 
 function Home({ onNavigate, language, setLanguage }) {
-  const [address, setAddress] = useState('');
-  const [homeAddressSuggestions, setHomeAddressSuggestions] = useState([]);
-const [homeAddressLoading, setHomeAddressLoading] = useState(false);
-const [selectedHomeAddress, setSelectedHomeAddress] = useState(null);
+  
   const [showAuthOptions, setShowAuthOptions] = useState(false);
-  useEffect(() => {
-  if (address.trim().length < 3) {
-    setHomeAddressSuggestions([]);
-    setHomeAddressLoading(false);
-    return;
-  }
+  const [locationLoading, setLocationLoading] = useState(false);
+const [userLocation, setUserLocation] = useState(null);
 
-  const timer = setTimeout(async () => {
-    try {
-      setHomeAddressLoading(true);
+const useCurrentLocation = async () => {
+  try {
+    setLocationLoading(true);
 
-      const response = await fetch(
-        'https://htimquvctbepnhplxjhn.supabase.co/functions/v1/address-search',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            searchTerm: address.trim(),
-            language: language === 'fr' ? 'fr' : 'en',
-            limit: 10,
-          }),
-        }
+    const { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert(
+        language === 'fr'
+          ? 'La permission de localisation est nécessaire pour trouver les entrepreneurs près de vous.'
+          : 'Location permission is required to find contractors near you.'
       );
-
-      if (!response.ok) {
-        throw new Error(`Erreur recherche adresse : ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      const results = Array.isArray(data?.items)
-        ? data.items.map((item) => ({
-            id: item.Id,
-            title: item.Text,
-            description: item.Description,
-            text: item.Text,
-            label: `${item.Text}${item.Description ? `, ${item.Description}` : ''}`,
-            next: item.Next,
-          }))
-        : [];
-
-      setHomeAddressSuggestions(results);
-        } catch (error) {
-      console.log('Erreur recherche adresse accueil:', error);
-      setHomeAddressSuggestions([]);
-    } finally {
-      setHomeAddressLoading(false);
+      return;
     }
-  }, 500);
 
-  return () => clearTimeout(timer);
-}, [address, language]);
+    const position = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
+    });
+
+    const coords = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+    };
+
+    setUserLocation(coords);
+    onNavigate('TypeTravaux');
+  } catch (error) {
+    console.log('Erreur localisation :', error);
+
+    alert(
+      language === 'fr'
+        ? 'Impossible d’obtenir votre position pour le moment.'
+        : 'Unable to get your location right now.'
+    );
+  } finally {
+    setLocationLoading(false);
+  }
+};
+  
 
 return (
     <ScrollView
@@ -428,149 +413,38 @@ return (
     : 'Use your location to find nearby contractors.'}
 </Text>
 
-  <TextInput
-  placeholder={
-    language === 'fr'
-      ? 'Ex. : 123 Rue Principale, Montréal'
-      : 'Ex.: 123 Main Street, Montreal'
-  }
-  placeholderTextColor="#8A94A5"
-  value={address}
-  onChangeText={(text) => {
-    setAddress(text);
-    setSelectedHomeAddress(null);
-  }}
+  <TouchableOpacity
+  onPress={useCurrentLocation}
+  disabled={locationLoading}
   style={{
-  backgroundColor: '#FFFFFF',
-  borderWidth: 1,
-  borderColor: '#D6DDE7',
-  borderRadius: 10,
-  paddingHorizontal: 12,
-  paddingVertical: 0,
-  height: 44,
-  color: COLORS.text,
-  fontSize: 14,
-  textAlignVertical: 'center',
-}}
-  onSubmitEditing={() => {
-    if (selectedHomeAddress) {
-      onNavigate('TypeTravaux');
-    } else {
-      alert(
-        language === 'fr'
-          ? 'Veuillez sélectionner une adresse dans les suggestions.'
-          : 'Please select an address from the suggestions.'
-      );
-    }
+    backgroundColor: COLORS.gold,
+    borderRadius: 10,
+    paddingVertical: 13,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 8,
   }}
-  returnKeyType="search"
-/>
-      {homeAddressLoading && (
-  <Text style={{ marginTop: 6, color: COLORS.muted }}>
-    {language === 'fr'
-      ? 'Recherche des adresses...'
-      : 'Searching addresses...'}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 15,
+      fontWeight: '900',
+    }}
+  >
+    {locationLoading
+      ? language === 'fr'
+        ? 'Localisation en cours...'
+        : 'Locating...'
+      : language === 'fr'
+        ? '📍 Utiliser ma position actuelle'
+        : '📍 Use my current location'}
   </Text>
-)}
+</TouchableOpacity>
+      
 
-{homeAddressSuggestions.map((suggestion, index) => {
-  const label =
-  suggestion.label ||
-  suggestion.title ||
-  suggestion.display_name ||
-  suggestion.name ||
-  suggestion.address ||
-  '';
 
-  if (!label) return null;
-
-  return (
-    <TouchableOpacity
-      key={`${label}-${index}`}
-      onPress={async () => {
-  if (suggestion.next === 'Retrieve' && suggestion.id) {
-    try {
-      setHomeAddressLoading(true);
-
-      const response = await fetch(
-        'https://htimquvctbepnhplxjhn.supabase.co/functions/v1/address-search',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            searchTerm: address.trim(),
-            retrieveId: suggestion.id,
-            language: language === 'fr' ? 'fr' : 'en',
-            limit: 10,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Erreur Retrieve : ${response.status}`);
-      }
-
-      const data = await response.json();
-      const item = Array.isArray(data?.items) ? data.items[0] : null;
-
-      if (!item) {
-        return;
-      }
-
-      const fullAddress = [
-        item.SubBuilding,
-        item.BuildingNumber,
-        item.Street,
-        item.City,
-        item.ProvinceName || item.Province,
-        item.PostalCode,
-      ]
-        .filter(Boolean)
-        .join(' ');
-
-      setAddress(fullAddress);
-      setSelectedHomeAddress(item);
-      setHomeAddressSuggestions([]);
-      onNavigate('TypeTravaux');
-    } catch (error) {
-      console.log('Erreur Retrieve adresse:', error);
-    } finally {
-      setHomeAddressLoading(false);
-    }
-
-    return;
-  }
-
-  setAddress(label);
-  setSelectedHomeAddress(suggestion);
-  setHomeAddressSuggestions([]);
-  onNavigate('TypeTravaux');
-}}
-
-      style={{
-        backgroundColor: '#FFFFFF',
-        borderWidth: 1,
-        borderColor: '#D6DDE7',
-        borderRadius: 10,
-        paddingHorizontal: 12,
-        paddingVertical: 10,
-        marginTop: 5,
-      }}
-    >
-      <Text
-        style={{
-          color: COLORS.text,
-          fontSize: 13,
-          fontWeight: '700',
-        }}
-      >
-        {label}
-      </Text>
-    </TouchableOpacity>
-  );
-})}
 </View>
 
 
