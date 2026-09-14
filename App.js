@@ -3349,6 +3349,7 @@ const [selectedPro, setSelectedPro] = useState(null);
   const [filters, setFilters] = useState({});
 const [favorites, setFavorites] = useState([]);
 const [language, setLanguage] = useState('fr');
+const [userLocation, setUserLocation] = useState(null);
 useEffect(() => {
  
   const backAction = () => {
