@@ -341,7 +341,8 @@ const useCurrentLocation = async () => {
   try {
     setLocationLoading(true);
 
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    const { status } =
+      await Location.requestForegroundPermissionsAsync();
 
     if (status !== 'granted') {
       alert(
@@ -352,9 +353,24 @@ const useCurrentLocation = async () => {
       return;
     }
 
-    const position = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
+    let position = await Location.getLastKnownPositionAsync({
+      maxAge: 60000,
+      requiredAccuracy: 1000,
     });
+
+    if (!position) {
+      position = await Promise.race([
+        Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
+        }),
+        new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error('LOCATION_TIMEOUT')),
+            10000
+          )
+        ),
+      ]);
+    }
 
     const coords = {
       latitude: position.coords.latitude,
@@ -368,8 +384,8 @@ const useCurrentLocation = async () => {
 
     alert(
       language === 'fr'
-        ? 'Impossible d’obtenir votre position pour le moment.'
-        : 'Unable to get your location right now.'
+        ? 'Impossible d’obtenir votre position. Vérifiez que la localisation de votre téléphone est activée puis réessayez.'
+        : 'Unable to get your location. Make sure location services are enabled on your phone and try again.'
     );
   } finally {
     setLocationLoading(false);
