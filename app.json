@@ -7,12 +7,24 @@
     "scheme": "qualiverifie",
     "userInterfaceStyle": "automatic",
     "android": {
-      "package": "ca.qualiverifie.app"
-    },
+  "package": "ca.qualiverifie.app",
+  "permissions": [
+    "ACCESS_COARSE_LOCATION",
+    "ACCESS_FINE_LOCATION"
+  ]
+},
     "ios": {
       "bundleIdentifier": "ca.qualiverifie.app",
       "supportsTablet": true
     },
+    "plugins": [
+  [
+    "expo-location",
+    {
+      "locationWhenInUsePermission": "QualiVérifié utilise votre position pour trouver les entrepreneurs près de vous."
+    }
+  ]
+],
     "extra": {
       "eas": {
         "projectId": "a23799a9-262e-41b2-9e5a-6283cd497f80"
