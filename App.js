@@ -665,74 +665,7 @@ return (
     </Text>
   </TouchableOpacity>
 </View>
-          <View
-  style={{
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginHorizontal: 10,
-    marginTop: 8,
-    marginBottom: 4,
-  }}
->
-  {[
-    ['1', language === 'fr' ? 'Connexion' : 'Sign in'],
-    ['2', language === 'fr' ? 'Adresse' : 'Address'],
-    ['3', language === 'fr' ? 'Métier' : 'Trade'],
-    ['4', language === 'fr' ? 'Soumission' : 'Quote'],
-  ].map(([number, label], index) => (
-    <React.Fragment key={number}>
-      <View style={{ alignItems: 'center' }}>
-        <View
-          style={{
-            width: 21,
-            height: 21,
-            borderRadius: 11,
-            backgroundColor: COLORS.gold2,
-            borderWidth: 1,
-            borderColor: COLORS.navy,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.navy,
-              fontSize: 10,
-              fontWeight: '900',
-            }}
-          >
-            {number}
-          </Text>
-        </View>
-
-        <Text
-          style={{
-            color: COLORS.navy,
-            fontSize: 8,
-            fontWeight: '800',
-            marginTop: 1,
-          }}
-        >
-          {label}
-        </Text>
-      </View>
-
-      {index < 3 && (
-  <Text
-    style={{
-      color: COLORS.gold,
-      fontSize: 11,
-      fontWeight: '700',
-      marginBottom: 0,
-    }}
-  >
-    →
-  </Text>
-)}
-    </React.Fragment>
-  ))}
-</View>
+        
     <View
   style={{
     marginTop: 28,
