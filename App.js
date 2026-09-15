@@ -1108,9 +1108,21 @@ const [sentMessage, setSentMessage] = useState('');
   );
 }
   return (
-    <ScrollView contentContainerStyle={styles.page}>
-      <AppHeader language={language} setLanguage={setLanguage} />
-      <Text style={styles.screenTitle}>{language === 'fr' ? 'Messages' : 'Messages'}</Text>
+  <ScrollView contentContainerStyle={styles.page}>
+    <AppHeader language={language} setLanguage={setLanguage} />
+
+    <TouchableOpacity
+      onPress={() => onNavigate('Profil', '', selectedPro)}
+      style={{ marginBottom: 10 }}
+    >
+      <Text style={styles.proTrade}>
+        {language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile'}
+      </Text>
+    </TouchableOpacity>
+
+    <Text style={styles.screenTitle}>
+      {language === 'fr' ? 'Messages' : 'Messages'}
+    </Text>
       {[
         ['Finition Expert', language === 'fr' ? 'Bonjour! Je peux vous envoyer une estimation ce soir.' : 'Hello! I can send you an estimate tonight.', '10:42'],
         ['Constructions RL', language === 'fr' ? 'Merci pour les détails du projet.' : 'Thank you for the project details.', language === 'fr' ? 'Hier' : 'Yesterday'],
