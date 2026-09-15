@@ -774,7 +774,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     ? `Choisissez un métier — ${
         initialType === 'Services professionnels'
           ? 'Inspection et services professionnels'
-          : initialType === 'Résidentiel – CCQ'
+          : initialType === 'Résidentiel CCQ'
           ? 'Résidentiel CCQ'
           : initialType === 'Commercial'
           ? 'Commercial'
@@ -783,7 +783,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     : `Choose a trade — ${
         initialType === 'Services professionnels'
           ? 'Inspection and professional services'
-          : initialType === 'Résidentiel – CCQ'
+          : initialType === 'Résidentiel CCQ'
           ? 'Residential CCQ'
           : initialType === 'Commercial'
           ? 'Commercial'
@@ -794,8 +794,15 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 
       
         <View style={styles.grid}>
-  {(initialType === 'Services professionnels' ? professionalServices : initialType === 'Commercial' ? commercialCategories : initialType === 'Résidentiel — CCQ' ? residentialCcqCategories : residentialCategories).map((c) => (
-          <TouchableOpacity
+  {(initialType === 'Services professionnels'
+    ? professionalServices
+    : initialType === 'Commercial'
+    ? commercialCategories
+    : initialType === 'Résidentiel CCQ'
+    ? residentialCcqCategories
+    : residentialCategories
+  ).map((c) => (
+    <TouchableOpacity
   key={c}
   style={styles.categoryCard}
   onPress={() => onNavigate('Pros', c, null, { projectType, workType })}
@@ -814,7 +821,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
         ? 'fence'
         : c === 'Pavé uni'
         ? 'view-grid-outline'
-        : 'tools'
+        : 'square'
     }
     size={30}
     color={COLORS.gold}
