@@ -71,6 +71,7 @@ const residentialCategories = [
   'Pavé uni',
 'Crépi',
 'Crépi acrylique',
+'Puits',
 'Démolition',
 ];
 
@@ -106,6 +107,7 @@ const residentialCcqCategories = [
   'Pavage et asphalte',
   'Pavé uni',
 'Crépi',
+'Puits',
 'Démolition',
 'Mécanique d’ascenseur',
 'Grutier',
@@ -142,14 +144,17 @@ const commercialCategories = [
 'Grutier',
 ];
 const professionalServices = [
-  'Inspection préachat',
-'Inspection de bâtiment',
-'Évaluation immobilière',
-'Architecture',
-'Technologue en architecture',
-'Ingénierie',
-'Arpentage',
-'Design intérieur'
+  
+  'Inspection de bâtiment',
+  'Évaluation immobilière',
+  'Architecture',
+  'Technologue en architecture',
+  'Ingénierie',
+  'Arpentage',
+  'Design intérieur',
+  'Agent d’immeuble',
+  'Gestion immobilière',
+  'Notaire'
 ];
 const tradeTranslations = {
   'Rénovation générale': 'General renovation',
@@ -194,6 +199,7 @@ const tradeTranslations = {
   'Crépi': 'Parging',
 'Crépi acrylique': 'Acrylic stucco',
 'Pose de gypse': 'Drywall installation',
+'Puits': 'Wells',
 'Démolition': 'Demolition',
 'Mécanique d’ascenseur': 'Elevator mechanics',
 'Grutier': 'Crane operator',
@@ -201,14 +207,16 @@ const tradeTranslations = {
 'Rénovation': 'Renovation',
   'Tireur de joint': 'Drywall finisher',
   'Menuiserie': 'Carpentry',
-  'Inspection préachat': 'Pre-purchase inspection',
   'Inspection de bâtiment': 'Building inspection',
-  'Évaluation immobilière': 'Real estate appraisal',
-  'Architecture': 'Architecture',
-  'Technologue en architecture': 'Architectural technologist',
-  'Ingénierie': 'Engineering',
-  'Arpentage': 'Land surveying',
-  'Design intérieur': 'Interior design',
+'Évaluation immobilière': 'Real estate appraisal',
+'Architecture': 'Architecture',
+'Technologue en architecture': 'Architectural technologist',
+'Ingénierie': 'Engineering',
+'Arpentage': 'Land surveying',
+'Design intérieur': 'Interior design',
+'Agent d’immeuble': 'Real estate agent',
+'Gestion immobilière': 'Property management',
+'Notaire': 'Notary',
 };
 function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
   return (
@@ -737,7 +745,7 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
 }
 
 function Metiers({ onNavigate, initialType, language, setLanguage }) {
-  const [projectType, setProjectType] = useState(initialType === 'Commercial' ? 'Commercial' : initialType ? 'Résidentiel' : '');
+  const [projectType, setProjectType] = useState(initialType || '');
 const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel — CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
   <ScrollView
@@ -759,17 +767,21 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 <Text style={styles.screenTitle}>
   {language === 'fr'
     ? `Choisissez un métier — ${
-        projectType === 'Commercial'
-          ? 'Commercial (CCQ)'
-          : workType === 'CCQ'
-          ? 'Résidentiel (CCQ)'
+        initialType === 'Services professionnels'
+          ? 'Inspection et services professionnels'
+          : initialType === 'Résidentiel – CCQ'
+          ? 'Résidentiel CCQ'
+          : initialType === 'Commercial'
+          ? 'Commercial'
           : 'Résidentiel'
       }`
     : `Choose a trade — ${
-        projectType === 'Commercial'
-          ? 'Commercial (CCQ)'
-          : workType === 'CCQ'
-          ? 'Residential (CCQ)'
+        initialType === 'Services professionnels'
+          ? 'Inspection and professional services'
+          : initialType === 'Résidentiel – CCQ'
+          ? 'Residential CCQ'
+          : initialType === 'Commercial'
+          ? 'Commercial'
           : 'Residential'
       }`}
 </Text>
@@ -826,7 +838,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
       'Béton': '◼️',
       'Isolation': '🛡️',
       'Peinture': '🖌️',
-      'Tireur de joint et plâtrier': '🔺',
+      'Tireur de joint et plâtrier': '◼️',
       'Céramique': '🔲',
       'Revêtement de plancher': '🪵',
       'Revêtement extérieur': '🏡',
@@ -851,7 +863,10 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
       'Époxy': '🪣',
       'Pavage et asphalte': '🛣️',
       'Pose de gypse': '▭',
-      'Démolition': '🔨',
+      'Crépi': '◼️',
+'Crépi acrylique': '◼️',
+'Démolition': '🔨',
+        'Puits': '💧',
       'Mécanique d’ascenseur': '🛗',
       'Grutier': '🏗️',
     }[c] || '⌂'}
