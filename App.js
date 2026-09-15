@@ -1047,7 +1047,7 @@ const response = await fetch(
   );
 }
 
-function Messages({ selectedPro, language, setLanguage }) {
+function Messages({ selectedPro, language, setLanguage, onNavigate }) {
   const [selectedChat, setSelectedChat] = useState(selectedPro?.name || null);
 const [messageText, setMessageText] = useState('');
 const [sentMessage, setSentMessage] = useState('');
@@ -1055,9 +1055,21 @@ const [sentMessage, setSentMessage] = useState('');
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader language={language} setLanguage={setLanguage} />
-      <TouchableOpacity onPress={() => setSelectedChat(null)}>
-        <Text style={styles.proTrade}>{language === 'fr' ? '‹ Retour aux messages' : '‹ Back to messages'}</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+  onPress={() => {
+    if (selectedPro) {
+      onNavigate('Profil', '', selectedPro);
+    } else {
+      setSelectedChat(null);
+    }
+  }}
+>
+  <Text style={styles.proTrade}>
+    {selectedPro
+      ? (language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile')
+      : (language === 'fr' ? '‹ Retour aux messages' : '‹ Back to messages')}
+  </Text>
+</TouchableOpacity>
 
       <Text style={styles.screenTitle}>{selectedChat}</Text>
 
@@ -3380,6 +3392,7 @@ tab === 'Messages' ? (
     selectedPro={selectedPro}
     language={language}
     setLanguage={setLanguage}
+    onNavigate={navigate}
   />
 ) : (
   <Profile
