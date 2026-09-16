@@ -3517,10 +3517,7 @@ tab === 'Messages' ? (
 ))}
 </View>
 
-<View style={styles.sloganBar}>
-  <Text style={styles.sloganTop}>{language === 'fr' ? 'Des projets aujourd’hui.' : 'Projects today.'}</Text>
-  <Text style={styles.sloganBottom}>{language === 'fr' ? 'Un meilleur demain.' : 'A better tomorrow.'}</Text>
-</View>
+
 
 </SafeAreaView>
     
