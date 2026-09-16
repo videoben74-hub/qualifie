@@ -41,8 +41,11 @@ const categories = ['Rénovation', 'Tireur de joint', 'Peinture', 'Plomberie', '
 const residentialCategories = [
   'Rénovation générale',
   'Portes et fenêtres',
+'Portes de garage',
+'Serrurerie',
   'Plomberie',
   'Électricité',
+'Systèmes d’alarme et sécurité',
   'Climatisation',
   'Toiture',
   
@@ -56,8 +59,10 @@ const residentialCategories = [
   'Revêtement extérieur',
   'Soudure et métaux',
   'Drain et égout',
+'Drain français',
   'Gouttières',
-  'Imperméabilisation',
+  'Après sinistre',
+'Décontamination',
   'Après sinistre',
   'Aluminium',
   'Calfeutrage',
@@ -72,14 +77,18 @@ const residentialCategories = [
 'Crépi',
 'Crépi acrylique',
 'Puits',
+'Piscine et spa',
 'Démolition',
 ];
 
 const residentialCcqCategories = [
   'Rénovation générale',
   'Portes et fenêtres',
-  'Plomberie',
-  'Électricité',
+'Portes de garage',
+'Serrurerie',
+'Plomberie',
+'Électricité',
+'Systèmes d’alarme et sécurité',
   'Climatisation',
   'Toiture',
   
@@ -88,15 +97,18 @@ const residentialCcqCategories = [
   'Peinture',
   'Tireur de joint et plâtrier',
   'Pose de gypse',
+'Systèmes intérieurs',
   'Céramique',
   'Revêtement de plancher',
   'Revêtement extérieur',
   'Soudure et métaux',
 'Monteur d’acier',
 'Drain et égout',
+'Drain français',
   'Gouttières',
-  'Imperméabilisation',
   'Après sinistre',
+'Décontamination',
+  
   'Aluminium',
   'Calfeutrage',
   'Escaliers et rampes',
@@ -118,8 +130,11 @@ const commercialCategories = [
   'Rénovation générale',
   'Charpente et menuiserie',
   'Portes et fenêtres',
-  'Plomberie',
-  'Électricité',
+'Portes de garage',
+'Serrurerie',
+'Plomberie',
+'Électricité',
+'Systèmes d’alarme et sécurité',
   'Ventilation',
   'Chauffage',
   'Climatisation',
@@ -133,25 +148,31 @@ const commercialCategories = [
   'Peinture',
   'Tireur de joint et plâtrier',
   'Pose de gypse',
+'Systèmes intérieurs',
   'Céramique',
   'Revêtement de plancher',
   'Revêtement extérieur',
   'Ferblanterie',
   'Soudure et métaux',
   'Monteur d’acier',
-  'Protection incendie',
   'Drain et égout',
+'Drain français',
   'Après sinistre',
+'Décontamination',
+  
 'Mécanique d’ascenseur',
 'Grutier',
 ];
-const professionalServices = [
+
   
+  const professionalServices = [
   'Inspection de bâtiment',
+  'Test de radon',
   'Évaluation immobilière',
   'Architecture',
   'Technologue en architecture',
   'Ingénierie',
+  'Photographie immobilière',
   'Marketing',
   'Arpentage',
   'Design intérieur',
@@ -159,10 +180,41 @@ const professionalServices = [
   'Gestion immobilière',
   'Notaire'
 ];
+const cleaningCategories = [
+  'Nettoyage de conduits',
+  'Nettoyage après construction',
+  'Nettoyage résidentiel',
+  'Nettoyage commercial',
+  'Nettoyage de vitres',
+  'Nettoyage de tapis et meubles',
+  'Lavage à pression',
+'Entretien ménager',
+'Nettoyage de gouttières',
+'Location de conteneurs'
+];
 const tradeTranslations = {
   'Rénovation générale': 'General renovation',
     'Monteur d’acier': 'Steel erector',
   'Marketing': 'Marketing',
+'Portes de garage': 'Garage doors',
+'Serrurerie': 'Locksmith',
+'Systèmes d’alarme et sécurité': 'Alarm and security systems',
+'Drain français': 'French drain',
+'Décontamination': 'Decontamination',
+'Systèmes intérieurs': 'Interior systems',
+'Piscine et spa': 'Pool and spa',
+'Test de radon': 'Radon testing',
+'Photographie immobilière': 'Real estate photography',
+'Nettoyage de conduits': 'Duct cleaning',
+'Nettoyage après construction': 'Post-construction cleaning',
+'Nettoyage résidentiel': 'Residential cleaning',
+'Nettoyage commercial': 'Commercial cleaning',
+'Nettoyage de vitres': 'Window cleaning',
+'Nettoyage de tapis et meubles': 'Carpet and upholstery cleaning',
+'Lavage à pression': 'Pressure washing',
+'Entretien ménager': 'Housekeeping',
+'Nettoyage de gouttières': 'Gutter cleaning',
+'Location de conteneurs': 'Container rental',
   'Charpente et menuiserie': 'Framing and carpentry',
   'Portes et fenêtres': 'Doors and windows',
   'Plomberie': 'Plumbing',
@@ -740,11 +792,45 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
           <Text style={styles.categoryText}>{language === 'fr' ? 'Commercial' : 'Commercial'}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Services professionnels')}>
-          <Text style={styles.categoryIcon}>⌂</Text>
-          <Text style={styles.categoryText}>{language === 'fr' ? 'Inspection et services professionnels' : 'Inspection and professional services'}</Text>
-        </TouchableOpacity>
-      </View>
+        <TouchableOpacity
+  style={styles.categoryCard}
+  onPress={() => onNavigate('Metiers', 'Services professionnels')}
+>
+  <Text style={styles.categoryIcon}>⌂</Text>
+  <Text style={styles.categoryText}>
+    {language === 'fr'
+      ? 'Inspection et services professionnels'
+      : 'Inspection and professional services'}
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.categoryCard}
+  onPress={() => onNavigate('Metiers', 'Nettoyage et conteneur')}
+>
+  <Text style={styles.categoryIcon}>🧹</Text>
+  <Text style={styles.categoryText}>
+    {language === 'fr'
+      ? 'Nettoyage et conteneur'
+      : 'Cleaning and containers'}
+  </Text>
+</TouchableOpacity>
+
+</View>
+    <Text
+  style={{
+    color: COLORS.muted,
+    fontSize: 11,
+    lineHeight: 15,
+    textAlign: 'center',
+    marginTop: 14,
+    marginHorizontal: 12,
+  }}
+>
+  {language === 'fr'
+    ? 'Sous toutes réserves, les entrepreneurs s’engagent à exécuter seulement les travaux qui leur sont conférés par leur licence.'
+    : 'Subject to all applicable requirements, contractors undertake to perform only the work authorized by their licence.'}
+</Text>
     </ScrollView>
   );
 }
@@ -771,18 +857,22 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 
 <Text style={styles.screenTitle}>
   {language === 'fr'
-    ? `Choisissez un métier — ${
+    ? `Choisissez un métier – ${
         initialType === 'Services professionnels'
           ? 'Inspection et services professionnels'
+          : initialType === 'Nettoyage et conteneur'
+          ? 'Nettoyage et conteneur'
           : initialType === 'Résidentiel CCQ'
           ? 'Résidentiel CCQ'
           : initialType === 'Commercial'
           ? 'Commercial'
           : 'Résidentiel'
       }`
-    : `Choose a trade — ${
+    : `Choose a trade – ${
         initialType === 'Services professionnels'
           ? 'Inspection and professional services'
+          : initialType === 'Nettoyage et conteneur'
+          ? 'Cleaning and containers'
           : initialType === 'Résidentiel CCQ'
           ? 'Residential CCQ'
           : initialType === 'Commercial'
@@ -790,18 +880,17 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           : 'Residential'
       }`}
 </Text>
-      
-
-      
         <View style={styles.grid}>
   {(initialType === 'Services professionnels'
-    ? professionalServices
-    : initialType === 'Commercial'
-    ? commercialCategories
-    : initialType === 'Résidentiel CCQ'
-    ? residentialCcqCategories
-    : residentialCategories
-  ).map((c) => (
+  ? professionalServices
+  : initialType === 'Nettoyage et conteneur'
+  ? cleaningCategories
+  : initialType === 'Commercial'
+  ? commercialCategories
+  : initialType === 'Résidentiel CCQ'
+  ? residentialCcqCategories
+  : residentialCategories
+).map((c) => (
     <TouchableOpacity
   key={c}
   style={styles.categoryCard}
