@@ -734,6 +734,20 @@ return (
       ? 'La vôtre commence ici.'
       : 'Yours starts here.'}
   </Text>
+    <Text
+  style={{
+    color: COLORS.navy,
+    fontSize: 17,
+    fontWeight: '900',
+    textAlign: 'center',
+    marginTop: 24,
+    lineHeight: 23,
+  }}
+>
+  {language === 'fr'
+    ? 'Vos travaux simplifiés avec QualiVérifié.'
+    : 'Your projects made easier with QualiVérifié.'}
+</Text>
 </View>
 </ScrollView>
   );
