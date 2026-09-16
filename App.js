@@ -2004,8 +2004,8 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       <Text style={styles.primaryBtnText}>
         {language === 'fr'
           ? 'Prendre un abonnement entreprise'
-: 'Get a business subscription'
-      </Text>
+: 'Get a business subscription'}
+</Text>
     </TouchableOpacity>
   </>
 ) : profileSection === 'Paramètres' ? (
