@@ -3044,179 +3044,10 @@ const [confirmPassword, setConfirmPassword] = useState('');
           ? 'Inscrivez-vous pour faire partie de la communauté QualiVérifié.'
           : 'Sign up to join the QualiVérifié community.'}
       </Text>
-        <View
-  style={{
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 16,
-  }}
->
-  <TouchableOpacity
-    onPress={() => setAccountType('business')}
-    style={{
-      flex: 1,
-      minHeight: 72,
-      borderRadius: 14,
-      backgroundColor:
-        accountType === 'business' ? COLORS.gold2 : COLORS.card,
-      borderWidth: 1,
-      borderColor:
-        accountType === 'business' ? COLORS.gold2 : COLORS.line,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 8,
-    }}
-  >
-    <Text
-      style={{
-        color: COLORS.navy,
-        fontSize: 15,
-        fontWeight: '900',
-        textAlign: 'center',
-      }}
-    >
-      🧰 {language === 'fr' ? 'Je suis une entreprise' : 'I am a business'}
-    </Text>
+        
+      
+  
 
-    <Text
-      style={{
-        color: COLORS.muted,
-        fontSize: 12,
-        fontWeight: '700',
-        marginTop: 3,
-      }}
-    >
-      {language === 'fr' ? 'Entrepreneur' : 'Contractor'}
-    </Text>
-  </TouchableOpacity>
-
-  <TouchableOpacity
-    onPress={() => setAccountType('client')}
-    style={{
-      flex: 1,
-      minHeight: 72,
-      borderRadius: 14,
-      backgroundColor:
-        accountType === 'client' ? COLORS.gold2 : COLORS.card,
-      borderWidth: 1,
-      borderColor:
-        accountType === 'client' ? COLORS.gold2 : COLORS.line,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 8,
-    }}
-  >
-    <Text
-      style={{
-        color: COLORS.navy,
-        fontSize: 15,
-        fontWeight: '900',
-        textAlign: 'center',
-      }}
-    >
-      👤 {language === 'fr' ? 'Je suis un particulier' : 'I am a client'}
-    </Text>
-
-    <Text
-      style={{
-        color: COLORS.muted,
-        fontSize: 12,
-        fontWeight: '700',
-        marginTop: 3,
-      }}
-    >
-      Client
-    </Text>
-  </TouchableOpacity>
-</View>
-        {accountType === 'business' && (
-  <TextInput
-         value={businessName}
-         onChangeText={setBusinessName}
-    placeholder={language === 'fr' ? "Nom de l’entreprise *" : 'Business name *'}
-    placeholderTextColor={COLORS.muted}
-    style={{
-      backgroundColor: COLORS.card,
-      borderWidth: 1,
-      borderColor: COLORS.line,
-      borderRadius: 14,
-      minHeight: 54,
-      paddingHorizontal: 14,
-      color: COLORS.navy,
-      fontSize: 15,
-      marginBottom: 12,
-    }}
-  />
-  )}
-  {accountType === 'business' && (
-  <>
-    <TextInput
-      value={rbqNumber}
-      onChangeText={(text) => {
-        setRbqNumber(text);
-        setRbqVerified(false);
-      }}
-      placeholder={
-        language === 'fr'
-          ? 'Numéro de licence RBQ *'
-          : 'RBQ licence number *'
-      }
-      placeholderTextColor={COLORS.muted}
-      keyboardType="numbers-and-punctuation"
-      style={{
-        backgroundColor: COLORS.card,
-        borderWidth: 1,
-        borderColor: rbqVerified ? COLORS.gold2 : COLORS.line,
-        borderRadius: 14,
-        minHeight: 54,
-        paddingHorizontal: 14,
-        color: COLORS.navy,
-        fontSize: 15,
-        marginBottom: 10,
-      }}
-    />
-
-    <TouchableOpacity
-      onPress={() => {
-        if (!rbqNumber.trim()) {
-          alert(
-            language === 'fr'
-              ? 'Veuillez entrer votre numéro de licence RBQ.'
-              : 'Please enter your RBQ licence number.'
-          );
-          return;
-        }
-
-        alert(
-          language === 'fr'
-            ? 'La vérification automatique avec le registre officiel de la RBQ sera connectée à cette étape.'
-            : 'Automatic verification with the official RBQ registry will be connected at this step.'
-        );
-      }}
-      style={{
-        backgroundColor: COLORS.navy,
-        borderRadius: 14,
-        minHeight: 52,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 12,
-      }}
-    >
-      <Text
-        style={{
-          color: COLORS.gold2,
-          fontSize: 15,
-          fontWeight: '900',
-        }}
-      >
-        {language === 'fr'
-          ? '🔎 Vérifier la licence RBQ'
-          : '🔎 Verify RBQ licence'}
-      </Text>
-    </TouchableOpacity>
-  </>
-)}
-)}
   <TextInput
 value={email}
 onChangeText={setEmail}
@@ -3276,18 +3107,11 @@ onChangeText={setConfirmPassword}
 />
   <TouchableOpacity
 onPress={() => {
-  if (!email || !password || !confirmPassword || (accountType === 'business' && !businessName)) {
+  if (!email || !password || !confirmPassword) {
     alert(language === 'fr' ? 'Veuillez remplir tous les champs obligatoires.' : 'Please fill in all required fields.');
     return;
   }
-  if (accountType === 'business' && !rbqVerified) {
-  alert(
-    language === 'fr'
-      ? 'Vous devez vérifier votre licence RBQ avant de créer votre compte.'
-      : 'You must verify your RBQ licence before creating your account.'
-  );
-  return;
-}
+  
   if (password !== confirmPassword) {
     alert(language === 'fr' ? 'Les mots de passe ne correspondent pas.' : 'Passwords do not match.');
     return;
