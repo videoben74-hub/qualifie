@@ -932,24 +932,30 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     {{
       'Rénovation générale': '🔨',
       'Portes et fenêtres': '🚪',
+'Portes de garage': '🚪',
+'Serrurerie': '🔑',
       'Plomberie': '💧',
       'Électricité': '⚡',
+'Systèmes d’alarme et sécurité': '🛡️',
       'Climatisation': '❄️',
       'Toiture': '🏠',
       'Béton': '◼️',
       'Isolation': '🛡️',
       'Peinture': '🖌️',
       'Tireur de joint et plâtrier': '🪣',
+'Systèmes intérieurs': '▦',
       'Céramique': '🔲',
       'Revêtement de plancher': '🪵',
       'Revêtement extérieur': '🏡',
       'Soudure et métaux': '⚒️',
 'Monteur d’acier': '🔩',
 'Drain et égout': '🚰',
+'Drain français': '💧',
       
       'Gouttières': '🌧️',
       'Imperméabilisation': '💧',
       'Après sinistre': '🔥',
+'Décontamination': '🧪',
       'Aluminium': '🏠',
       'Calfeutrage': '💉',
       'Escaliers et rampes': '🪜',
@@ -958,6 +964,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
       'Chauffage': '🔥',
       'Frigoriste': '🧊',
       'Excavation': '🚜',
+        'Piscine et spa': '🏊',
       'Fondation': '🏠',
       'Ferblanterie': '🔩',
       'Protection incendie': '🧯',
@@ -1075,7 +1082,7 @@ const response = await fetch(
     <AppHeader language={language} setLanguage={setLanguage} />
 
     <TouchableOpacity
-      onPress={() => onNavigate('Metiers')}
+      onPress={() => onNavigate('Metiers', initialFilters.projectType || '')}
       style={{ marginBottom: 10 }}
     >
       <Text style={{ color: COLORS.navy, fontSize: 15, fontWeight: '800' }}>
