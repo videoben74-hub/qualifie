@@ -1168,6 +1168,8 @@ const [sentMessage, setSentMessage] = useState('');
 function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage }) {
   const [profileSection, setProfileSection] = useState(null);
   const [companyName, setCompanyName] = useState('');
+  const [subscriptionFlow, setSubscriptionFlow] = useState(false);
+  const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
 const [profilePhoto, setProfilePhoto] = useState(null);
 const [companyDescription, setCompanyDescription] = useState('');
 const [companyPhotos, setCompanyPhotos] = useState([]);
@@ -1726,7 +1728,13 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       </TouchableOpacity>
   <TouchableOpacity
   style={[styles.primaryBtn, { marginTop: 18 }]}
-  onPress={saveCompanyProfile}
+  onPress={async () => {
+  await saveCompanyProfile();
+
+  if (subscriptionFlow) {
+    setProfileSection('Choix divisions');
+  }
+}}
 >
   <Text style={styles.primaryBtnText}>
     {language === 'fr'
@@ -1735,8 +1743,209 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   </Text>
 </TouchableOpacity>
     </>
-  ) : profileSection === 'Métiers et services' ? (
+) : profileSection === 'Choix divisions' ? (
   <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr'
+        ? '🏗️ Choisissez votre forfait'
+        : '🏗️ Choose your plan'}
+    </Text>
+
+    <Text style={[styles.infoText, { marginBottom: 16 }]}>
+      {language === 'fr'
+        ? 'Sélectionnez le nombre de divisions pour votre entreprise.'
+        : 'Select the number of divisions for your business.'}
+    </Text>
+
+    <TouchableOpacity
+      style={[
+        styles.categoryCard,
+        { marginBottom: 12 },
+        selectedDivisionCount === 1 && {
+          borderColor: COLORS.gold,
+          borderWidth: 2,
+        },
+      ]}
+      onPress={() => setSelectedDivisionCount(1)}
+    >
+      <Text style={styles.categoryText}>
+        {selectedDivisionCount === 1 ? '✓ ' : ''}
+        {language === 'fr'
+          ? '1 division — 27,77 $ / mois'
+          : '1 division — $27.77 / month'}
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[
+        styles.categoryCard,
+        { marginBottom: 12 },
+        selectedDivisionCount === 2 && {
+          borderColor: COLORS.gold,
+          borderWidth: 2,
+        },
+      ]}
+      onPress={() => setSelectedDivisionCount(2)}
+    >
+      <Text style={styles.categoryText}>
+        {selectedDivisionCount === 2 ? '✓ ' : ''}
+        {language === 'fr'
+          ? '2 divisions — 37,77 $ / mois'
+          : '2 divisions — $37.77 / month'}
+      </Text>
+    </TouchableOpacity>
+<TouchableOpacity
+  style={[
+    styles.primaryBtn,
+    {
+      marginTop: 20,
+      opacity: selectedDivisionCount ? 1 : 0.4,
+    },
+  ]}
+  disabled={!selectedDivisionCount}
+  onPress={() => setProfileSection('Résumé forfait')}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr' ? 'Continuer ›' : 'Continue ›'}
+  </Text>
+</TouchableOpacity>
+    <Text style={[styles.infoText, { marginTop: 8 }]}>
+      {language === 'fr'
+        ? 'Maximum de 2 divisions par entreprise'
+        : 'Maximum of 2 divisions per business'}
+    </Text>
+  </>
+
+  ) : profileSection === 'Résumé forfait' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr'
+        ? '💳 Résumé de votre forfait'
+        : '💳 Your plan summary'}
+    </Text>
+
+    <View
+      style={{
+        backgroundColor: '#FFFFFF',
+        padding: 20,
+        borderRadius: 16,
+        marginTop: 10,
+      }}
+    >
+      <Text style={[styles.profileInfo, { textAlign: 'center' }]}>
+        {selectedDivisionCount === 1
+          ? (language === 'fr' ? '1 division' : '1 division')
+          : (language === 'fr' ? '2 divisions' : '2 divisions')}
+      </Text>
+
+      <Text
+        style={[
+          styles.sectionTitle,
+          { textAlign: 'center', marginTop: 18 },
+        ]}
+      >
+        {selectedDivisionCount === 1
+          ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
+          : (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')}
+      </Text>
+
+      <Text style={[styles.infoText, { textAlign: 'center' }]}>
+        {language === 'fr'
+          ? 'Abonnement entreprise QualiVérifié'
+          : 'QualiVérifié business subscription'}
+      </Text>
+    </View>
+
+    <TouchableOpacity
+      style={[styles.primaryBtn, { marginTop: 20 }]}
+      onPress={() => setProfileSection('Choix divisions')}
+    >
+      <Text style={styles.primaryBtnText}>
+        {language === 'fr'
+          ? '‹ Modifier mon choix'
+          : '‹ Change my selection'}
+      </Text>
+    </TouchableOpacity>
+        <TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 12 }]}
+  onPress={() => setProfileSection('Paiement')}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? '💳 Passer au paiement'
+      : '💳 Proceed to payment'}
+  </Text>
+</TouchableOpacity>
+  </>
+) : profileSection === 'Paiement' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr'
+        ? '💳 Paiement'
+        : '💳 Payment'}
+    </Text>
+
+    <View
+      style={{
+        backgroundColor: '#FFFFFF',
+        padding: 20,
+        borderRadius: 16,
+        marginTop: 10,
+      }}
+    >
+      <Text style={[styles.profileInfo, { textAlign: 'center' }]}>
+        {language === 'fr'
+          ? 'Abonnement entreprise QualiVérifié'
+          : 'QualiVérifié business subscription'}
+      </Text>
+
+      <Text
+        style={[
+          styles.sectionTitle,
+          { textAlign: 'center', marginTop: 18 },
+        ]}
+      >
+        {selectedDivisionCount === 1
+          ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
+          : (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')}
+      </Text>
+
+      <Text
+        style={[
+          styles.infoText,
+          { textAlign: 'center', marginTop: 12 },
+        ]}
+      >
+        {language === 'fr'
+          ? 'Votre paiement sera effectué de façon sécurisée.'
+          : 'Your payment will be processed securely.'}
+      </Text>
+    </View>
+
+    <TouchableOpacity
+      style={[styles.primaryBtn, { marginTop: 20, opacity: 0.5 }]}
+      disabled={true}
+    >
+      <Text style={styles.primaryBtnText}>
+        {language === 'fr'
+          ? '🔒 Paiement sécurisé'
+          : '🔒 Secure payment'}
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[styles.primaryBtn, { marginTop: 12 }]}
+      onPress={() => setProfileSection('Résumé forfait')}
+    >
+      <Text style={styles.primaryBtnText}>
+  {language === 'fr'
+    ? '‹ Retour au résumé'
+    : '‹ Back to summary'}
+</Text>
+</TouchableOpacity>
+</>
+) : profileSection === 'Métiers et services' ? (
+<>
     <Text style={styles.sectionTitle}>
       {language === 'fr'
         ? '🛠️ Métiers et services professionnels'
@@ -1998,7 +2207,10 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     
       <TouchableOpacity
   style={[styles.primaryBtn, { marginTop: 18 }]}
-  onPress={() => setProfileSection('Informations entreprise')}
+  onPress={() => {
+  setSubscriptionFlow(true);
+  setProfileSection('Informations entreprise');
+}}
 >
     
       <Text style={styles.primaryBtnText}>
@@ -3405,10 +3617,7 @@ categoryText: {
   secondaryBtn: { borderWidth: 1, borderColor: COLORS.navy, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 10 },
   secondaryBtnText: { color: COLORS.navy, fontWeight: '800', fontSize: 12 },
   smallGoldBtn: { backgroundColor: COLORS.gold, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 10 },
-  smallGoldBtnText: { color: COLORS.navy, fontWeight: '900', fontSize: 12 },
-  success: { backgroundColor: '#E6F6EF', borderRadius: 12, padding: 14, marginTop: 14 },
-  successText: { color: COLORS.green, fontWeight: '800' },
-  messageCard: { flexDirection: 'row', gap: 12, alignItems: 'center', backgroundColor: COLORS.card, padding: 15, borderRadius: 14, borderWidth: 1, borderColor: COLORS.line, marginBottom: 10 },
+  
   time: { color: COLORS.muted, fontSize: 11 },
   profileCard: { alignItems: 'center', backgroundColor: COLORS.card, borderRadius: 18, padding: 24, marginBottom: 14, borderWidth: 1, borderColor: COLORS.line },
   profileName: { color: COLORS.navy, fontWeight: '900', fontSize: 20, marginBottom: 5 },
