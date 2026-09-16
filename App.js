@@ -1963,13 +1963,13 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       }}
     >
       <Text style={styles.menuText}>
-        {language === 'fr' ? '✅ Statut' : '✅ Status'}
+        {language === 'fr' ? 'Statut' : 'Status'}
       </Text>
 
       <Text style={styles.infoText}>
         {language === 'fr'
-          ? 'Abonnement entreprise actif'
-          : 'Business subscription active'}
+          ? 'Aucun abonnement entreprise actif'
+: 'No active business subscription'}
       </Text>
 
       <Text style={[styles.menuText, { marginTop: 14 }]}>
@@ -1995,20 +1995,16 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 </View>
     </View>
 
-    <TouchableOpacity
-      style={[styles.primaryBtn, { marginTop: 18 }]}
-      onPress={() =>
-        alert(
-          language === 'fr'
-            ? 'La gestion du paiement et du renouvellement sera activée prochainement.'
-            : 'Payment and renewal management will be activated soon.'
-        )
-      }
-    >
+    
+      <TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 18 }]}
+  onPress={() => setProfileSection('Informations entreprise')}
+>
+    
       <Text style={styles.primaryBtnText}>
         {language === 'fr'
-          ? 'Gérer mon abonnement'
-          : 'Manage my subscription'}
+          ? 'Prendre un abonnement entreprise'
+: 'Get a business subscription'
       </Text>
     </TouchableOpacity>
   </>
