@@ -2241,6 +2241,31 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         : 'This information represents what clients will see on your QualiVérifié profile.'}
     </Text>
   </>
+) : profileSection === 'Abonnement' ? (
+  <>
+    <Text style={styles.screenTitle}>
+      {language === 'fr'
+        ? 'Abonnement entreprise'
+        : 'Business subscription'}
+    </Text>
+
+    <Text style={[styles.infoText, { marginBottom: 18 }]}>
+      {language === 'fr'
+        ? 'Créez votre profil d’entreprise et choisissez les branches dans lesquelles vous souhaitez apparaître.'
+        : 'Create your business profile and choose the categories in which you want to appear.'}
+    </Text>
+
+    <TouchableOpacity
+      onPress={() => setProfileSection('Informations entreprise')}
+      style={styles.quoteBtn}
+    >
+      <Text style={styles.quoteBtnText}>
+        {language === 'fr'
+          ? '💳 Prendre un abonnement entreprise'
+          : '💳 Get a business subscription'}
+      </Text>
+    </TouchableOpacity>
+  </>
 ) : (
   <Text style={styles.infoText}>
     {language === 'fr'
