@@ -614,55 +614,24 @@ return (
   style={{
     alignItems: 'center',
     marginHorizontal: 10,
-    marginTop: 0,
-    marginBottom: 0,
+    marginTop: 4,
+    marginBottom: 6,
   }}
 >
-
   <Text
+    numberOfLines={1}
+    adjustsFontSizeToFit
     style={{
       color: COLORS.gold,
-      fontSize: 16,
-      fontWeight: '800',
+      fontSize: 17,
+      fontWeight: '900',
       fontStyle: 'italic',
       textAlign: 'center',
     }}
   >
     {language === 'fr'
-      ? 'Bienvenue chez QualiVérifié !'
-      : 'Welcome to QualiVérifié!'}
-  </Text>
-
-  <Text
-    numberOfLines={1}
-    adjustsFontSizeToFit
-    style={{
-      color: COLORS.navy,
-      fontSize: 11,
-      fontWeight: '700',
-      textAlign: 'center',
-      marginTop: 2,
-    }}
-  >
-    {language === 'fr'
-      ? 'Des pros vérifiés et de confiance pour vos projets partout au Québec.'
-      : 'Verified and trusted pros for your projects across Quebec.'}
-  </Text>
-
-  <Text
-    numberOfLines={1}
-    adjustsFontSizeToFit
-    style={{
-      color: COLORS.gold,
-      fontSize: 11,
-      fontWeight: '900',
-      textAlign: 'center',
-      marginTop: 2,
-    }}
-  >
-    {language === 'fr'
-      ? 'Des gens de chez nous, pour des projets durables.'
-      : 'Local people, building projects that last.'}
+      ? 'Des travaux à exécuter ? QualiVérifié !'
+      : 'Work to be done? QualiVérifié!'}
   </Text>
 </View>
     <View style={{
@@ -903,35 +872,17 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
       width: '100%',
     }}
   >
-    {['Crépi', 'Crépi acrylique', 'Tireur de joint et plâtrier', 'Clôture', 'Pavé uni'].includes(c) ? (
-  <MaterialCommunityIcons
-    name={
-      c === 'Clôture'
-        ? 'fence'
-        : c === 'Pavé uni'
-        ? 'view-grid-outline'
-        : 'square'
-    }
-    size={30}
-    color={COLORS.gold}
-    style={{
+    <Text
+  style={[
+    styles.categoryIcon,
+    {
       marginRight: 10,
       marginBottom: 0,
-    }}
-  />
-) : (
-  <Text
-    style={[
-      styles.categoryIcon,
-      {
-        marginRight: 10,
-        marginBottom: 0,
-      },
-    ]}
-  >
-    {'⌂'}
-  </Text>
-)}
+    },
+  ]}
+>
+  {'⌂'}
+</Text>
 
     <Text
   style={[
