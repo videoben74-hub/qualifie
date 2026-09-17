@@ -1535,6 +1535,14 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       : '💾 Save my profile'}
   </Text>
 </TouchableOpacity>
+    <TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 14 }]}
+  onPress={() => onNavigate('Accueil')}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr' ? '🚪 Déconnexion' : '🚪 Log out'}
+  </Text>
+</TouchableOpacity>
   </>
 ) : profileSection === 'Informations entreprise' ? (
     <>
