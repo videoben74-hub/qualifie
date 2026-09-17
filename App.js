@@ -1163,16 +1163,25 @@ const [sentMessage, setSentMessage] = useState('');
 
 function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage, accountType }) {
   const [profileSection, setProfileSection] =
-  useState(accountType === 'client' ? 'Profil client' : null);
-  useEffect(() => {
-  if (accountType === 'client') {
+  useState(
+    selectedPro
+      ? null
+      : accountType === 'client'
+      ? 'Profil client'
+      : null
+  );
+
+useEffect(() => {
+  if (selectedPro) {
+    setProfileSection(null);
+  } else if (accountType === 'client') {
     setProfileSection('Profil client');
   } else if (accountType === 'business') {
     setProfileSection(null);
   }
-}, [accountType]);
-  const [companyName, setCompanyName] = useState('');
-  console.log('ACCOUNT TYPE DANS PROFILE =', accountType);
+}, [accountType, selectedPro]);
+
+console.log('ACCOUNT TYPE DANS PROFILE =', accountType);
   const [subscriptionFlow, setSubscriptionFlow] = useState(false);
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
   const [selectedDivisions, setSelectedDivisions] = useState([]);
