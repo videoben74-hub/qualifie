@@ -1166,6 +1166,7 @@ function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, s
   const [companyName, setCompanyName] = useState('');
   const [subscriptionFlow, setSubscriptionFlow] = useState(false);
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
+  const [selectedDivisions, setSelectedDivisions] = useState([]);
 const [profilePhoto, setProfilePhoto] = useState(null);
 const [companyDescription, setCompanyDescription] = useState('');
 const [companyPhotos, setCompanyPhotos] = useState([]);
@@ -1825,7 +1826,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     },
   ]}
   disabled={!selectedDivisionCount}
-  onPress={() => setProfileSection('Résumé forfait')}
+  onPress={() => setProfileSection('Sélection divisions')}
 >
   <Text style={styles.primaryBtnText}>
     {language === 'fr' ? 'Continuer ›' : 'Continue ›'}
@@ -1834,7 +1835,80 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     
   </>
 
-  ) : profileSection === 'Résumé forfait' ? (
+  ) : profileSection === 'Sélection divisions' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr'
+        ? '🏗️ Choisissez vos divisions'
+        : '🏗️ Choose your divisions'}
+    </Text>
+
+    <Text style={[styles.infoText, { marginBottom: 16 }]}>
+      {language === 'fr'
+        ? `Sélectionnez ${selectedDivisionCount} division${selectedDivisionCount > 1 ? 's' : ''}.`
+        : `Select ${selectedDivisionCount} division${selectedDivisionCount > 1 ? 's' : ''}.`}
+    </Text>
+
+    {[
+      'Résidentiel',
+      'Résidentiel – CCQ',
+      'Commercial',
+      'Inspection et services professionnels',
+      'Nettoyage et conteneur',
+    ].map((division) => {
+      const isSelected = selectedDivisions.includes(division);
+
+      return (
+        <TouchableOpacity
+          key={division}
+          style={[
+            styles.categoryCard,
+            { marginBottom: 12, width: '100%' },
+            isSelected && {
+              borderColor: COLORS.gold,
+              borderWidth: 2,
+            },
+          ]}
+          onPress={() => {
+            if (isSelected) {
+              setSelectedDivisions(
+                selectedDivisions.filter((item) => item !== division)
+              );
+            } else if (
+              selectedDivisions.length < selectedDivisionCount
+            ) {
+              setSelectedDivisions([...selectedDivisions, division]);
+            }
+          }}
+        >
+          <Text style={styles.categoryText}>
+            {isSelected ? '✓ ' : ''}
+            {division}
+          </Text>
+        </TouchableOpacity>
+      );
+    })}
+
+    <TouchableOpacity
+      style={[
+        styles.primaryBtn,
+        {
+          marginTop: 18,
+          opacity:
+            selectedDivisions.length === selectedDivisionCount ? 1 : 0.4,
+        },
+      ]}
+      disabled={
+        selectedDivisions.length !== selectedDivisionCount
+      }
+      onPress={() => setProfileSection('Résumé forfait')}
+    >
+      <Text style={styles.primaryBtnText}>
+        {language === 'fr' ? 'Continuer ›' : 'Continue ›'}
+      </Text>
+    </TouchableOpacity>
+  </>
+) : profileSection === 'Résumé forfait' ? (
   <>
     <Text style={styles.sectionTitle}>
       {language === 'fr'
@@ -1854,6 +1928,10 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   {selectedDivisionCount === 1
     ? '1 division'
     : `${selectedDivisionCount} divisions`}
+</Text>
+      <Text style={[styles.infoText, { textAlign: 'center', marginTop: 10 }]}>
+  {language === 'fr' ? 'Divisions : ' : 'Divisions: '}
+  {selectedDivisions.join(', ')}
 </Text>
 
 <Text
