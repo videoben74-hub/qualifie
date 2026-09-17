@@ -1545,7 +1545,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   </Text>
 </TouchableOpacity>
     <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 14, marginBottom: 24 }]}
+  style={[styles.primaryBtn, { marginTop: 8, marginBottom: 70 }]}
   onPress={() => onNavigate('Accueil')}
 >
   <Text style={styles.primaryBtnText}>
