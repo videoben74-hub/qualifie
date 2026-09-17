@@ -1456,25 +1456,25 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     <View
       style={{
         alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 22,
+        marginTop: 6,
+marginBottom: 12,
       }}
     >
       {clientPhoto ? (
         <Image
           source={{ uri: clientPhoto }}
           style={{
-            width: 110,
-            height: 110,
-            borderRadius: 55,
+            width: 90,
+height: 90,
+borderRadius: 45,
           }}
         />
       ) : (
         <View
           style={{
-            width: 110,
-            height: 110,
-            borderRadius: 55,
+            width: 90,
+height: 90,
+borderRadius: 45,
             backgroundColor: COLORS.navy,
             alignItems: 'center',
             justifyContent: 'center',
