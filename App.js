@@ -1164,6 +1164,13 @@ const [sentMessage, setSentMessage] = useState('');
 function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage, accountType }) {
   const [profileSection, setProfileSection] =
   useState(accountType === 'client' ? 'Profil client' : null);
+  useEffect(() => {
+  if (accountType === 'client') {
+    setProfileSection('Profil client');
+  } else if (accountType === 'business') {
+    setProfileSection(null);
+  }
+}, [accountType]);
   const [companyName, setCompanyName] = useState('');
   const [subscriptionFlow, setSubscriptionFlow] = useState(false);
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
@@ -3699,6 +3706,19 @@ const [language, setLanguage] = useState('fr');
 const [userLocation, setUserLocation] = useState(null);
   const [accountType, setAccountType] = useState(null);
 useEffect(() => {
+  const loadAccountType = async () => {
+    const savedAccountType = await AsyncStorage.getItem(
+      'qualiverifie_account_type'
+    );
+
+    if (savedAccountType) {
+      setAccountType(savedAccountType);
+    }
+  };
+
+  loadAccountType();
+}, []);
+  useEffect(() => {
  
   const backAction = () => {
     if (selectedPro) {
@@ -3723,8 +3743,9 @@ useEffect(() => {
   setFilters(newFilters);
   setTab(to);
 };
-  const onDemoLogin = (type) => {
+  const onDemoLogin = async (type) => {
     setAccountType(type);
+    await AsyncStorage.setItem('qualiverifie_account_type', type);
     if (type === 'client') {
       setSelectedPro(null);
       setTab('Accueil');
