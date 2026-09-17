@@ -2849,8 +2849,9 @@ return (
 </TouchableOpacity>
 <Text style={styles.profileName}>
   {selectedPro
-    ? selectedPro.name
-    : (language === 'fr' ? 'Menu Entreprise' : 'Business Menu')}
+  ? selectedPro.name
+  
+  : (language === 'fr' ? 'Menu Entreprise' : 'Business Menu')}
 </Text>
 
 <Text
@@ -2894,13 +2895,15 @@ return (
 {selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}</Text>}
 {selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié' : '⭐⭐⭐⭐⭐ Excellent work, professional and very clean. — Verified client'}</Text>}
 {!selectedPro && [
-  { fr: '👤 Profil client', en: '👤 Client profile', section: 'Profil client' },
+  
   { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
   { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
   { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
-  { fr: '🏢 Informations de l’entreprise', en: '🏢 Company information', section: 'Informations entreprise' },
+ 
+{ fr: '🏢 Informations de l’entreprise', en: '🏢 Company information', section: 'Informations entreprise' },
+{ fr: '🚪 Déconnexion', en: '🚪 Log out', section: 'Déconnexion' }, 
   
-  { fr: '🚪 Déconnexion', en: '🚪 Log out', section: 'Déconnexion' },
+  
 ].map((item) => (
   <TouchableOpacity
     key={item.section}
