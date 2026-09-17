@@ -1161,8 +1161,9 @@ const [sentMessage, setSentMessage] = useState('');
   );
 }
 
-function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage }) {
-  const [profileSection, setProfileSection] = useState(null);
+function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage, accountType }) {
+  const [profileSection, setProfileSection] =
+  useState(accountType === 'client' ? 'Profil client' : null);
   const [companyName, setCompanyName] = useState('');
   const [subscriptionFlow, setSubscriptionFlow] = useState(false);
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
@@ -3690,6 +3691,7 @@ const [selectedPro, setSelectedPro] = useState(null);
 const [favorites, setFavorites] = useState([]);
 const [language, setLanguage] = useState('fr');
 const [userLocation, setUserLocation] = useState(null);
+  const [accountType, setAccountType] = useState(null);
 useEffect(() => {
  
   const backAction = () => {
@@ -3716,6 +3718,7 @@ useEffect(() => {
   setTab(to);
 };
   const onDemoLogin = (type) => {
+    setAccountType(type);
     if (type === 'client') {
       setSelectedPro(null);
       setTab('Accueil');
@@ -3795,13 +3798,14 @@ tab === 'Messages' ? (
   />
 ) : (
   <Profile
-    onNavigate={navigate}
-    selectedPro={selectedPro}
-    favorites={favorites}
-    setFavorites={setFavorites}
-    language={language}
-    setLanguage={setLanguage}
-  />
+  onNavigate={navigate}
+  selectedPro={selectedPro}
+  favorites={favorites}
+  setFavorites={setFavorites}
+  language={language}
+  setLanguage={setLanguage}
+  accountType={accountType}
+/>
 )
 
   return (
