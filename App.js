@@ -1172,6 +1172,7 @@ function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, s
   }
 }, [accountType]);
   const [companyName, setCompanyName] = useState('');
+  console.log('ACCOUNT TYPE DANS PROFILE =', accountType);
   const [subscriptionFlow, setSubscriptionFlow] = useState(false);
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
   const [selectedDivisions, setSelectedDivisions] = useState([]);
