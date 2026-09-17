@@ -1661,8 +1661,16 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   </Text>
 </TouchableOpacity>
     {rbqCategories.length > 0 && (
-  <View style={{ marginTop: 14, marginBottom: 18 }}>
-    <Text style={[styles.profileInfo, { fontWeight: '700' }]}>
+  <View
+    style={{
+      marginTop: 14,
+      marginBottom: 18,
+      backgroundColor: '#FFFFFF',
+      borderRadius: 16,
+      padding: 16,
+    }}
+  >
+    <Text style={{ fontWeight: '700', marginBottom: 8 }}>
       {language === 'fr'
         ? 'Métiers et services sélectionnés :'
         : 'Selected trades and services:'}
@@ -2229,7 +2237,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   style={[styles.primaryBtn, { marginTop: 18 }]}
   onPress={() => {
   setSubscriptionFlow(true);
-  setProfileSection('Informations entreprise');
+  setProfileSection('Choix divisions');
 }}
 >
     
