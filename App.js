@@ -1227,7 +1227,28 @@ setCompanyWebsite(profile.companyWebsite || '');
 
     loadCompanyProfile();
   }, []);
+useEffect(() => {
+  const loadClientProfile = async () => {
+    try {
+      const savedClientProfile = await AsyncStorage.getItem(
+        'qualiverifie_client_profile'
+      );
 
+      if (savedClientProfile) {
+        const profile = JSON.parse(savedClientProfile);
+
+        setClientName(profile.clientName || '');
+        setClientEmail(profile.clientEmail || '');
+        setClientPhone(profile.clientPhone || '');
+        setClientPhoto(profile.clientPhoto || null);
+      }
+    } catch (error) {
+      console.log('Erreur chargement profil client :', error);
+    }
+  };
+
+  loadClientProfile();
+}, []);
   const saveCompanyProfile = async () => {
     try {
       await AsyncStorage.setItem(
