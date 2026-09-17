@@ -1827,11 +1827,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     {language === 'fr' ? 'Continuer ›' : 'Continue ›'}
   </Text>
 </TouchableOpacity>
-    <Text style={[styles.infoText, { marginTop: 8 }]}>
-      {language === 'fr'
-        ? 'Maximum de 2 divisions par entreprise'
-        : 'Maximum of 2 divisions per business'}
-    </Text>
+    
   </>
 
   ) : profileSection === 'Résumé forfait' ? (
