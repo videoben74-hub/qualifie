@@ -1420,9 +1420,15 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader language={language} setLanguage={setLanguage} />
-      <TouchableOpacity onPress={() => setProfileSection(null)}>
-        <Text style={styles.proTrade}>{language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile'}</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+  onPress={() =>
+    setProfileSection(accountType === 'client' ? 'Profil client' : null)
+  }
+>
+  <Text style={styles.proTrade}>
+    {language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile'}
+  </Text>
+</TouchableOpacity>
       
   {profileSection === 'Profil client' ? (
   <>
