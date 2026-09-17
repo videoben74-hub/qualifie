@@ -1168,6 +1168,10 @@ function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, s
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
   const [selectedDivisions, setSelectedDivisions] = useState([]);
 const [profilePhoto, setProfilePhoto] = useState(null);
+  const [clientName, setClientName] = useState('');
+const [clientEmail, setClientEmail] = useState('');
+const [clientPhone, setClientPhone] = useState('');
+const [clientPhoto, setClientPhoto] = useState(null);
 const [companyDescription, setCompanyDescription] = useState('');
 const [companyPhotos, setCompanyPhotos] = useState([]);
 const [neq, setNeq] = useState('');
@@ -1306,6 +1310,49 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     setProfilePhoto(result.assets[0].uri);
   }
 };
+  const pickClientPhoto = async () => {
+  const permissionResult =
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (!permissionResult.granted) {
+    alert(
+      language === 'fr'
+        ? 'Permission requise pour accéder aux photos.'
+        : 'Permission is required to access photos.'
+    );
+    return;
+  }
+
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ['images'],
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 0.8,
+  });
+
+  if (!result.canceled && result.assets?.length > 0) {
+    setClientPhoto(result.assets[0].uri);
+  }
+};
+  const saveClientProfile = async () => {
+  const clientProfile = {
+    clientName,
+    clientEmail,
+    clientPhone,
+    clientPhoto,
+  };
+
+  await AsyncStorage.setItem(
+    'qualiverifie_client_profile',
+    JSON.stringify(clientProfile)
+  );
+
+  alert(
+    language === 'fr'
+      ? 'Profil client enregistré.'
+      : 'Client profile saved.'
+  );
+};
   const pickCompanyPhoto = async () => {
   if (companyPhotos.length >= 10) {
     alert(
@@ -1355,7 +1402,105 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         <Text style={styles.proTrade}>{language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile'}</Text>
       </TouchableOpacity>
       
-  {profileSection === 'Informations entreprise' ? (
+  {profileSection === 'Profil client' ? (
+  <>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '👤 Profil client' : '👤 Client profile'}
+    </Text>
+
+    <View
+      style={{
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 22,
+      }}
+    >
+      {clientPhoto ? (
+        <Image
+          source={{ uri: clientPhoto }}
+          style={{
+            width: 110,
+            height: 110,
+            borderRadius: 55,
+          }}
+        />
+      ) : (
+        <View
+          style={{
+            width: 110,
+            height: 110,
+            borderRadius: 55,
+            backgroundColor: COLORS.navy,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Text
+            style={{
+              color: '#FFFFFF',
+              fontSize: 42,
+              fontWeight: '800',
+            }}
+          >
+            {clientName.trim()
+              ? clientName.trim()[0].toUpperCase()
+              : '👤'}
+          </Text>
+        </View>
+      )}
+    </View>
+<TouchableOpacity
+  style={[styles.primaryBtn, { marginBottom: 20 }]}
+  onPress={pickClientPhoto}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? clientPhoto
+        ? '📷 Modifier ma photo'
+        : '📷 Ajouter une photo'
+      : clientPhoto
+        ? '📷 Change my photo'
+        : '📷 Add a photo'}
+  </Text>
+</TouchableOpacity>
+    <TextInput
+      value={clientName}
+      onChangeText={setClientName}
+      placeholder={language === 'fr' ? 'Nom complet' : 'Full name'}
+      placeholderTextColor={COLORS.muted}
+      style={styles.input}
+    />
+
+    <TextInput
+      value={clientEmail}
+      onChangeText={setClientEmail}
+      placeholder={language === 'fr' ? 'Courriel' : 'Email'}
+      placeholderTextColor={COLORS.muted}
+      keyboardType="email-address"
+      autoCapitalize="none"
+      style={styles.input}
+    />
+
+    <TextInput
+      value={clientPhone}
+      onChangeText={setClientPhone}
+      placeholder={language === 'fr' ? 'Téléphone' : 'Phone'}
+      placeholderTextColor={COLORS.muted}
+      keyboardType="phone-pad"
+      style={styles.input}
+    />
+      <TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 18 }]}
+  onPress={saveClientProfile}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? '💾 Enregistrer mon profil'
+      : '💾 Save my profile'}
+  </Text>
+</TouchableOpacity>
+  </>
+) : profileSection === 'Informations entreprise' ? (
     <>
       <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
 <Text style={[styles.infoText, { fontWeight: '700', marginBottom: 6 }]}>
@@ -2713,6 +2858,7 @@ return (
 {selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}</Text>}
 {selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié' : '⭐⭐⭐⭐⭐ Excellent work, professional and very clean. — Verified client'}</Text>}
 {!selectedPro && [
+  { fr: '👤 Profil client', en: '👤 Client profile', section: 'Profil client' },
   { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
   { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
   { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
