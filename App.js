@@ -1545,6 +1545,14 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   </Text>
 </TouchableOpacity>
     <TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 8 }]}
+  onPress={() => setProfileSection('Mes favoris')}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr' ? '♡ Vos favoris' : '♡ Your favorites'}
+  </Text>
+</TouchableOpacity>
+    <TouchableOpacity
   style={[styles.primaryBtn, { marginTop: 8, marginBottom: 70 }]}
   onPress={() => onNavigate('Accueil')}
 >
