@@ -1794,6 +1794,24 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
           : '2 divisions — $37.77 / month'}
       </Text>
     </TouchableOpacity>
+      <TouchableOpacity
+  style={[
+    styles.categoryCard,
+    { marginBottom: 12 },
+    selectedDivisionCount === 3 && {
+      borderColor: COLORS.gold,
+      borderWidth: 2,
+    },
+  ]}
+  onPress={() => setSelectedDivisionCount(3)}
+>
+  <Text style={styles.categoryText}>
+    {selectedDivisionCount === 3 ? '✓ ' : ' '}
+    {language === 'fr'
+      ? '3 divisions – 47,77 $ / mois'
+      : '3 divisions – $47.77 / month'}
+  </Text>
+</TouchableOpacity>
 <TouchableOpacity
   style={[
     styles.primaryBtn,
@@ -1833,21 +1851,24 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       }}
     >
       <Text style={[styles.profileInfo, { textAlign: 'center' }]}>
-        {selectedDivisionCount === 1
-          ? (language === 'fr' ? '1 division' : '1 division')
-          : (language === 'fr' ? '2 divisions' : '2 divisions')}
-      </Text>
+  {selectedDivisionCount === 1
+    ? '1 division'
+    : `${selectedDivisionCount} divisions`}
+</Text>
 
-      <Text
-        style={[
-          styles.sectionTitle,
-          { textAlign: 'center', marginTop: 18 },
-        ]}
-      >
-        {selectedDivisionCount === 1
-          ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
-          : (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')}
-      </Text>
+<Text
+  style={[
+    styles.sectionTitle,
+    { textAlign: 'center', marginTop: 18 },
+  ]}
+>
+  {selectedDivisionCount === 1
+    ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
+    : selectedDivisionCount === 2
+    ? (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')
+    : (language === 'fr' ? '47,77 $ / mois' : '$47.77 / month')}
+</Text>
+      
 
       <Text style={[styles.infoText, { textAlign: 'center' }]}>
         {language === 'fr'
@@ -1906,8 +1927,10 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
         ]}
       >
         {selectedDivisionCount === 1
-          ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
-          : (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')}
+  ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
+  : selectedDivisionCount === 2
+  ? (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')
+  : (language === 'fr' ? '47,77 $ / mois' : '$47.77 / month')}
       </Text>
 
       <Text
