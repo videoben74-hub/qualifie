@@ -2178,12 +2178,13 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     ? '2 divisions — 37,77 $ / mois'
     : '2 divisions — $37.77 / month'}
 </Text>
-
-<Text style={[styles.infoText, { marginTop: 8, fontWeight: '800' }]}>
+  <Text style={[styles.infoText, { marginTop: 8, textAlign: 'center' }]}>
   {language === 'fr'
-    ? 'Maximum de 2 divisions par entreprise'
-    : 'Maximum of 2 divisions per business'}
+    ? '3 divisions — 47,77 $ / mois'
+    : '3 divisions — $47.77 / month'}
 </Text>
+
+
     
 
     <View
