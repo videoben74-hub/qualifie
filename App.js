@@ -3626,7 +3626,7 @@ categoryText: {
   backgroundColor: COLORS.navy,
   paddingTop: 12,
   paddingBottom: Platform.OS === 'ios' ? 18 : 18,
-  minHeight: 92,
+  minHeight: 125,
   alignItems: 'center',
 },
 
