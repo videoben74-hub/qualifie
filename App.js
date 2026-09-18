@@ -2830,12 +2830,14 @@ borderRadius: 45,
     </Text>
 
     <Text style={[styles.infoText, { marginTop: 14 }]}>
-      {language === 'fr'
-        ? 'Ces informations représentent ce que les clients verront sur votre profil QualiVérifié.'
-        : 'This information represents what clients will see on your QualiVérifié profile.'}
-    </Text>
-  </>
-: profileSection === 'Abonnement' ? (
+  {language === 'fr'
+    ? 'Ces informations représentent ce que les clients verront sur votre profil QualiVérifié.'
+    : 'This information represents what clients will see on your QualiVérifié profile.'}
+</Text>
+</>
+
+)
+) : profileSection === 'Abonnement' ? (
   <>
     <TouchableOpacity
       onPress={() => setProfileSection(null)}
