@@ -2836,7 +2836,7 @@ borderRadius: 45,
 </Text>
 </>
 
-)
+
 ) : profileSection === 'Abonnement' ? (
   <>
     <TouchableOpacity
