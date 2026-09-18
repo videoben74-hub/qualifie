@@ -5,9 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "qualiverifie",
-    "userInterfaceStyle": "automatic",
     "android": {
   "package": "ca.qualiverifie.app",
+  "icon": "./file_000000000c9c81f5814be2c1b138d845.png",
   "permissions": [
     "ACCESS_COARSE_LOCATION",
     "ACCESS_FINE_LOCATION"
