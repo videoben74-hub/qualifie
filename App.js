@@ -1535,7 +1535,7 @@ borderRadius: 45,
       style={styles.input}
     />
       <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 18 }]}
+  style={[styles.primaryBtn, { marginTop: -70 }]}
   onPress={saveClientProfile}
 >
   <Text style={styles.primaryBtnText}>
@@ -1553,7 +1553,7 @@ borderRadius: 45,
   </Text>
 </TouchableOpacity>
     <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 8, marginBottom: 180 }]}
+  style={[styles.primaryBtn, { marginTop: 8, marginBottom: 70 }]}
   onPress={() => onNavigate('Accueil')}
 >
   <Text style={styles.primaryBtnText}>
