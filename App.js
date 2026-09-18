@@ -2500,7 +2500,9 @@ borderRadius: 45,
       >
         <Text style={styles.categoryText}>
           {rbqCategories.includes(category) ? '✓ ' : ''}
-          {category}
+          {language === 'fr'
+  ? category
+  : (tradeTranslations[category] || category)}
         </Text>
       </TouchableOpacity>
     ))}
