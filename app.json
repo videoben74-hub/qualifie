@@ -8,6 +8,10 @@
     "android": {
   "package": "ca.qualiverifie.app",
   "icon": "./file_000000000c9c81f5814be2c1b138d845.png",
+  "adaptiveIcon": {
+    "foregroundImage": "./file_000000000c9c81f5814be2c1b138d845.png",
+    "backgroundColor": "#071D3A"
+  },
   "permissions": [
     "ACCESS_COARSE_LOCATION",
     "ACCESS_FINE_LOCATION"
