@@ -268,6 +268,7 @@ const tradeTranslations = {
 'Arpentage': 'Land surveying',
 'Design intérieur': 'Interior design',
 'Agent d’immeuble': 'Real estate agent',
+'Aménagement de bureau': 'Office planning',
 'Gestion immobilière': 'Property management',
 'Notaire': 'Notary',
 };
@@ -301,15 +302,17 @@ marginBottom: 8,
           </Text>
 
           <Text style={{
-            color: '#FFFFFF',
-            fontSize: 10,
-            fontWeight: '700',
-            textAlign: 'center',
-            marginTop: 5,
-            lineHeight: 14,
-          }}>
-            Des projets en confiance, là où licence, distance et compétences ne font qu’un.
-          </Text>
+  color: '#FFFFFF',
+  fontSize: 10,
+  fontWeight: '700',
+  textAlign: 'center',
+  marginTop: 5,
+  lineHeight: 14,
+}}>
+  {language === 'fr'
+    ? 'Des projets en confiance, là où licence, distance et compétences ne font qu’un.'
+    : 'Projects with confidence, where licensing, distance and skills come together.'}
+</Text>
 
           <View style={{
             flexDirection: 'row',
@@ -1004,7 +1007,12 @@ const response = await fetch(
     <Text style={styles.screenTitle}>
       {language === 'fr' ? 'Trouver un pro' : 'Find a pro'}
     </Text>
-      <TextInput value={query} onChangeText={setQuery} placeholder={language === 'fr' ? 'Métier ou entreprise' : 'Trade or company'} style={styles.input} />
+      <TextInput
+  value={language === 'fr' ? query : (tradeTranslations[query] || query)}
+  onChangeText={setQuery}
+  placeholder={language === 'fr' ? 'Métier ou entreprise' : 'Trade or company'}
+  style={styles.input}
+/>
       
     
       <Text style={styles.resultCount}>{results.length} {language === 'fr' ? 'résultat(s)' : 'result(s)'}</Text>
@@ -1037,16 +1045,26 @@ const response = await fetch(
             <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
   {p.projectTypes?.map((type) => (
-    <Text key={type} style={styles.badgeText}>
-      {type === 'Résidentiel' ? '🏠 ' : '🏢 '}{type}
-    </Text>
-  ))}
+  <Text key={type} style={styles.badgeText}>
+    {type === 'Résidentiel' ? ' 🏠 ' : ' 🏢 '}
+    {language === 'fr'
+      ? type
+      : type === 'Résidentiel'
+      ? 'Residential'
+      : type}
+  </Text>
+))}
 
-  {p.workTypes?.map((type) => (
-    <Text key={type} style={styles.badgeText}>
-      {type === 'CCQ' ? '👷 ' : '🔨 '}{type}
-    </Text>
-  ))}
+{p.workTypes?.map((type) => (
+  <Text key={type} style={styles.badgeText}>
+    {type === 'CCQ' ? ' 👷 ' : ' 🔨 '}
+    {language === 'fr'
+      ? type
+      : type === 'Hors CCQ'
+      ? 'Non-CCQ'
+      : type}
+  </Text>
+))}
 </View>
             <View style={styles.cardActions}>
   <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.secondaryBtn}>
@@ -1097,8 +1115,10 @@ const [sentMessage, setSentMessage] = useState('');
       <View style={[styles.messageCard, { flexDirection: 'column', alignItems: 'stretch' }]}>
         <Text style={styles.proName}>{selectedChat}</Text>
         <Text style={styles.infoText}>
-          Bonjour! Je peux vous envoyer une estimation ce soir.
-        </Text>
+  {language === 'fr'
+    ? 'Bonjour! Je peux vous envoyer une estimation ce soir.'
+    : 'Hello! I can send you an estimate this evening.'}
+</Text>
       </View>
 {sentMessage ? (
   <View style={styles.messageCard}>
