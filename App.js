@@ -1973,13 +1973,23 @@ borderRadius: 45,
 ) : profileSection === 'Choix divisions' ? (
   <>
     <TouchableOpacity
-      onPress={() => setProfileSection('Abonnement')}
-      style={{ alignSelf: 'flex-start', marginBottom: 12 }}
-    >
-      <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
-        {language === 'fr' ? '← Retour à l’abonnement' : '← Back to subscription'}
-      </Text>
-    </TouchableOpacity>
+  onPress={() => setProfileSection('Abonnement')}
+  style={{
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? '← Retour' : '← Back'}
+  </Text>
+</TouchableOpacity>
 
     <Text style={styles.sectionTitle}>
       {language === 'fr'
@@ -2150,13 +2160,23 @@ borderRadius: 45,
 ) : profileSection === 'Résumé forfait' ? (
   <>
     <TouchableOpacity
-      onPress={() => setProfileSection('Choix divisions')}
-      style={{ alignSelf: 'flex-start', marginBottom: 12 }}
-    >
-      <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
-        {language === 'fr' ? '← Retour au choix' : '← Back to selection'}
-      </Text>
-    </TouchableOpacity>
+  onPress={() => setProfileSection('Choix divisions')}
+  style={{
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? '← Retour' : '← Back'}
+  </Text>
+</TouchableOpacity>
 
     <Text style={styles.sectionTitle}>
       {language === 'fr'
@@ -2226,11 +2246,31 @@ borderRadius: 45,
   </>
 ) : profileSection === 'Paiement' ? (
   <>
-    <Text style={styles.sectionTitle}>
-      {language === 'fr'
-        ? '💳 Paiement'
-        : '💳 Payment'}
-    </Text>
+    
+  <TouchableOpacity
+  onPress={() => setProfileSection('Résumé forfait')}
+  style={{
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? '← Retour' : '← Back'}
+  </Text>
+</TouchableOpacity>
+<Text style={styles.sectionTitle}>
+  {language === 'fr'
+    ? '💳 Paiement'
+    : '💳 Payment'}
+</Text>
+      
 
     <View
       style={{
@@ -2282,16 +2322,7 @@ borderRadius: 45,
       </Text>
     </TouchableOpacity>
 
-    <TouchableOpacity
-      style={[styles.primaryBtn, { marginTop: 12 }]}
-      onPress={() => setProfileSection('Résumé forfait')}
-    >
-      <Text style={styles.primaryBtnText}>
-  {language === 'fr'
-    ? '‹ Retour au résumé'
-    : '‹ Back to summary'}
-</Text>
-</TouchableOpacity>
+    
 </>
 ) : profileSection === 'Métiers et services' ? (
 <>
