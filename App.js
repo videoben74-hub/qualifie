@@ -1444,7 +1444,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 >
       <AppHeader language={language} setLanguage={setLanguage} />
 
-{profileSection !== 'Profil client' && (
+{['Mes favoris'].includes(profileSection) && (
   <TouchableOpacity
     onPress={() => setProfileSection('Profil client')}
     style={{
