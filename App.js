@@ -1553,7 +1553,7 @@ borderRadius: 45,
   </Text>
 </TouchableOpacity>
     <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 8, marginBottom: 70 }]}
+  style={[styles.primaryBtn, { marginTop: 8, marginBottom: 180 }]}
   onPress={() => onNavigate('Accueil')}
 >
   <Text style={styles.primaryBtnText}>
