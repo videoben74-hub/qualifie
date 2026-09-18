@@ -2088,6 +2088,24 @@ borderRadius: 45,
 
   ) : profileSection === 'Sélection divisions' ? (
   <>
+    <TouchableOpacity
+  onPress={() => setProfileSection('Choix forfait')}
+  style={{
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? '← Retour' : '← Back'}
+  </Text>
+</TouchableOpacity>
     <Text style={styles.sectionTitle}>
       {language === 'fr'
         ? '🏗️ Choisissez vos divisions'
