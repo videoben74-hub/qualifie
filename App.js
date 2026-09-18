@@ -1972,6 +1972,15 @@ borderRadius: 45,
     </>
 ) : profileSection === 'Choix divisions' ? (
   <>
+    <TouchableOpacity
+      onPress={() => setProfileSection('Abonnement')}
+      style={{ alignSelf: 'flex-start', marginBottom: 12 }}
+    >
+      <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
+        {language === 'fr' ? '← Retour à l’abonnement' : '← Back to subscription'}
+      </Text>
+    </TouchableOpacity>
+
     <Text style={styles.sectionTitle}>
       {language === 'fr'
         ? '🏗️ Choisissez votre forfait'
@@ -2140,6 +2149,15 @@ borderRadius: 45,
   </>
 ) : profileSection === 'Résumé forfait' ? (
   <>
+    <TouchableOpacity
+      onPress={() => setProfileSection('Choix divisions')}
+      style={{ alignSelf: 'flex-start', marginBottom: 12 }}
+    >
+      <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
+        {language === 'fr' ? '← Retour au choix' : '← Back to selection'}
+      </Text>
+    </TouchableOpacity>
+
     <Text style={styles.sectionTitle}>
       {language === 'fr'
         ? '💳 Résumé de votre forfait'
@@ -2817,8 +2835,17 @@ borderRadius: 45,
         : 'This information represents what clients will see on your QualiVérifié profile.'}
     </Text>
   </>
-) : profileSection === 'Abonnement' ? (
+: profileSection === 'Abonnement' ? (
   <>
+    <TouchableOpacity
+      onPress={() => setProfileSection(null)}
+      style={{ alignSelf: 'flex-start', marginBottom: 12 }}
+    >
+      <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
+        {language === 'fr' ? '← Retour au profil' : '← Back to profile'}
+      </Text>
+    </TouchableOpacity>
+
     <Text style={styles.screenTitle}>
       {language === 'fr'
         ? 'Abonnement entreprise'
