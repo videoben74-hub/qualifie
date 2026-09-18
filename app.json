@@ -7,9 +7,9 @@
     "scheme": "qualiverifie",
     "android": {
   "package": "ca.qualiverifie.app",
-  "icon": "./file_000000000c9c81f5814be2c1b138d845.png",
+  "icon": "./file_0000000056b881f5b326834cb96b1484.png",
   "adaptiveIcon": {
-    "foregroundImage": "./file_000000000c9c81f5814be2c1b138d845.png",
+    "foregroundImage": "./file_0000000056b881f5b326834cb96b1484.png",
     "backgroundColor": "#071D3A"
   },
   "permissions": [
