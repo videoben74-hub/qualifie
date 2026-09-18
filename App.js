@@ -2104,9 +2104,17 @@ borderRadius: 45,
           }}
         >
           <Text style={styles.categoryText}>
-            {isSelected ? '✓ ' : ''}
-            {division}
-          </Text>
+  {isSelected ? '✓ ' : ''}
+  {language === 'fr'
+    ? division
+    : ({
+        'Résidentiel': 'Residential',
+        'Résidentiel - CCQ': 'Residential - CCQ',
+        'Commercial': 'Commercial',
+        'Inspection et services professionnels': 'Inspection and professional services',
+        'Nettoyage et conteneur': 'Cleaning and container services',
+      }[division] || division)}
+</Text>
         </TouchableOpacity>
       );
     })}
