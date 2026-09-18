@@ -1185,11 +1185,13 @@ console.log('ACCOUNT TYPE DANS PROFILE =', accountType);
   const [subscriptionFlow, setSubscriptionFlow] = useState(false);
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
   const [selectedDivisions, setSelectedDivisions] = useState([]);
+  
 const [profilePhoto, setProfilePhoto] = useState(null);
-  const [clientName, setClientName] = useState('');
+const [clientName, setClientName] = useState('');
 const [clientEmail, setClientEmail] = useState('');
 const [clientPhone, setClientPhone] = useState('');
 const [clientPhoto, setClientPhoto] = useState(null);
+const [companyName, setCompanyName] = useState('');
 const [companyDescription, setCompanyDescription] = useState('');
 const [companyPhotos, setCompanyPhotos] = useState([]);
 const [neq, setNeq] = useState('');
@@ -1445,6 +1447,14 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
       
   {profileSection === 'Profil client' ? (
   <>
+   <TouchableOpacity
+  onPress={() => setProfileSection(null)}
+  style={{ alignSelf: 'flex-start', marginBottom: 8 }}
+>
+  <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
+    {language === 'fr' ? '← Retour au profil' : '← Back to profile'}
+  </Text>
+</TouchableOpacity>
     <Text style={styles.sectionTitle}>
       {language === 'fr' ? '👤 Profil client' : '👤 Client profile'}
     </Text>
@@ -1559,6 +1569,14 @@ borderRadius: 45,
   </>
 ) : profileSection === 'Informations entreprise' ? (
     <>
+  <TouchableOpacity
+  onPress={() => setProfileSection(null)}
+  style={{ alignSelf: 'flex-start', marginBottom: 8 }}
+>
+  <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
+    {language === 'fr' ? '← Retour au profil' : '← Back to profile'}
+  </Text>
+</TouchableOpacity>
       <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
 <Text style={[styles.infoText, { fontWeight: '700', marginBottom: 6 }]}>
   {language === 'fr' ? "Nom de l’entreprise" : 'Company name'}
