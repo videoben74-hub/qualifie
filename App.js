@@ -271,6 +271,22 @@ const tradeTranslations = {
 'Aménagement de bureau': 'Office planning',
 'Gestion immobilière': 'Property management',
 'Notaire': 'Notary',
+  'Arpenteur-géomètre': 'Land surveyor',
+'Ascenseurs et monte-charges': 'Elevators and lifts',
+'Conteneur': 'Container rental',
+'Designer intérieur': 'Interior designer',
+'Ébéniste': 'Cabinetmaker',
+'Entrepreneur général': 'General contractor',
+'Fissure de béton': 'Concrete crack repair',
+'Fissure de fondation': 'Foundation crack repair',
+'Génie civil': 'Civil engineering',
+'Gouttière': 'Gutters',
+'Ingénieur': 'Engineer',
+'Maçonnerie': 'Masonry',
+'Paysagiste': 'Landscaping',
+'Plâtrier et tireur de joints': 'Plasterer and drywall finisher',
+'Soudure': 'Welding',
+'Technologue': 'Architectural technologist',
 };
 function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
   return (
