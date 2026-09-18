@@ -287,6 +287,7 @@ const tradeTranslations = {
 'Plâtrier et tireur de joints': 'Plasterer and drywall finisher',
 'Soudure': 'Welding',
 'Technologue': 'Architectural technologist',
+  'Architecte': 'Architect',
 };
 function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
   return (
