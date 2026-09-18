@@ -4208,6 +4208,11 @@ categoryText: {
   secondaryBtn: { borderWidth: 1, borderColor: COLORS.navy, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 10 },
   secondaryBtnText: { color: COLORS.navy, fontWeight: '800', fontSize: 12 },
   smallGoldBtn: { backgroundColor: COLORS.gold, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 14 },
+  smallGoldBtnText: {
+  color: COLORS.navy,
+  fontWeight: '800',
+  fontSize: 12,
+},
   
   time: { color: COLORS.muted, fontSize: 11 },
   profileCard: { alignItems: 'center', backgroundColor: COLORS.card, borderRadius: 18, padding: 24, marginBottom: 14, borderWidth: 1, borderColor: COLORS.line },
