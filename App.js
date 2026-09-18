@@ -1444,13 +1444,23 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 >
       <AppHeader language={language} setLanguage={setLanguage} />
 
-{profileSection === 'Mes favoris' && (
+{profileSection !== 'Profil client' && (
   <TouchableOpacity
     onPress={() => setProfileSection('Profil client')}
-    style={{ alignSelf: 'flex-start', marginBottom: 12 }}
+    style={{
+      alignSelf: 'flex-start',
+      marginBottom: 12,
+      paddingVertical: 8,
+    }}
   >
-    <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
-      {language === 'fr' ? '← Retour au profil' : '← Back to profile'}
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 16,
+        fontWeight: '800',
+      }}
+    >
+      {language === 'fr' ? '← Retour' : '← Back'}
     </Text>
   </TouchableOpacity>
 )}
@@ -2872,7 +2882,13 @@ borderRadius: 45,
   <>
     <TouchableOpacity
       onPress={() => setProfileSection(null)}
-      style={{ alignSelf: 'flex-start', marginBottom: 12 }}
+      style={{
+  alignSelf: 'flex-start',
+  marginBottom: 12,
+  paddingVertical: 8,
+  paddingHorizontal: 4,
+  zIndex: 10,
+}}
     >
       <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
         {language === 'fr' ? '← Retour au profil' : '← Back to profile'}
