@@ -2509,6 +2509,24 @@ borderRadius: 45,
   </>
 ) : profileSection === 'Mes avis' ? (
   <>
+  <TouchableOpacity
+  onPress={() => setProfileSection(null)}
+  style={{
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? '← Retour' : '← Back'}
+  </Text>
+</TouchableOpacity>
     <Text style={styles.sectionTitle}>
       {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
     </Text>
@@ -2558,6 +2576,24 @@ borderRadius: 45,
   </>
 ) : profileSection === 'Abonnement' ? (
   <>
+  <TouchableOpacity
+  onPress={() => setProfileSection(null)}
+  style={{
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? '← Retour' : '← Back'}
+  </Text>
+</TouchableOpacity>
     <Text style={styles.sectionTitle}>
       {language === 'fr'
         ? '💳 Abonnement entreprise'
@@ -2649,6 +2685,24 @@ borderRadius: 45,
   </>
 ) : profileSection === 'Paramètres' ? (
   <>
+  <TouchableOpacity
+  onPress={() => setProfileSection(null)}
+  style={{
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? '← Retour' : '← Back'}
+  </Text>
+</TouchableOpacity>
     <Text style={styles.sectionTitle}>
       {language === 'fr' ? '⚙️ Paramètres' : '⚙️ Settings'}
     </Text>
