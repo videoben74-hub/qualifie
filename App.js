@@ -3733,6 +3733,9 @@ return (
   );
 }
 function Login({ onNavigate, language, setLanguage }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader
@@ -3767,11 +3770,37 @@ function Login({ onNavigate, language, setLanguage }) {
           fontSize: 28,
           fontWeight: '900',
           textAlign: 'center',
-          marginBottom: 8,
+          marginBottom: 24,
         }}
       >
         {language === 'fr' ? 'Connexion' : 'Sign in'}
       </Text>
+
+      <TextInput
+        value={email}
+        onChangeText={setEmail}
+        placeholder={language === 'fr' ? 'Courriel' : 'Email'}
+        autoCapitalize="none"
+        keyboardType="email-address"
+        style={styles.input}
+      />
+
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        placeholder={language === 'fr' ? 'Mot de passe' : 'Password'}
+        secureTextEntry
+        style={styles.input}
+      />
+
+      <TouchableOpacity
+        style={styles.primaryButton}
+        onPress={() => {}}
+      >
+        <Text style={styles.primaryButtonText}>
+          {language === 'fr' ? 'Se connecter' : 'Sign in'}
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
