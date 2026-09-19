@@ -3835,10 +3835,7 @@ return (
   );
 }
 function Signup({ onNavigate, language, setLanguage }) {
-  const [accountType, setAccountType] = useState('business');
-const [businessName, setBusinessName] = useState('');
-const [rbqNumber, setRbqNumber] = useState('');
-const [rbqVerified, setRbqVerified] = useState(false);
+  
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [confirmPassword, setConfirmPassword] = useState('');
