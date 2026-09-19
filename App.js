@@ -14,6 +14,7 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { supabase } from './supabase';
 const COLORS = {
   navy: '#0B1F3A',
   navy2: '#15345D',
