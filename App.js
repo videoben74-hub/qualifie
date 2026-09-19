@@ -3773,64 +3773,10 @@ return (
         {language === 'fr' ? 'Connexion' : 'Sign in'}
       </Text>
 
-      <Text
-        style={{
-          color: COLORS.muted,
-          fontSize: 14,
-          fontWeight: '700',
-          textAlign: 'center',
-          marginBottom: 24,
-        }}
-      >
-        {language === 'fr'
-          ? 'Choisissez un compte de démonstration.'
-          : 'Choose a demo account.'}
-      </Text>
+      
 
-      <TouchableOpacity
-        onPress={() => onDemoLogin('client')}
-        style={{
-          backgroundColor: COLORS.card,
-          borderWidth: 2,
-          borderColor: COLORS.navy,
-          borderRadius: 14,
-          minHeight: 64,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: 14,
-        }}
-      >
-        <Text
-          style={{
-            color: COLORS.navy,
-            fontSize: 17,
-            fontWeight: '900',
-          }}
-        >
-          👤 {language === 'fr' ? 'Client démo' : 'Demo client'}
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => onDemoLogin('business')}
-        style={{
-          backgroundColor: COLORS.gold2,
-          borderRadius: 14,
-          minHeight: 64,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Text
-          style={{
-            color: COLORS.navy,
-            fontSize: 17,
-            fontWeight: '900',
-          }}
-        >
-          🏢 {language === 'fr' ? 'Entreprise démo' : 'Demo business'}
-        </Text>
-      </TouchableOpacity>
+      
+      
     </ScrollView>
   );
 }
