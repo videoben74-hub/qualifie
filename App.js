@@ -3956,7 +3956,7 @@ onChangeText={setConfirmPassword}
   }}
 />
   <TouchableOpacity
-onPress={() => {
+onPress={async () => {
   if (!email || !password || !confirmPassword) {
     alert(language === 'fr' ? 'Veuillez remplir tous les champs obligatoires.' : 'Please fill in all required fields.');
     return;
@@ -3966,8 +3966,18 @@ onPress={() => {
     alert(language === 'fr' ? 'Les mots de passe ne correspondent pas.' : 'Passwords do not match.');
     return;
   }
-  alert(language === 'fr' ? 'Compte prêt à être créé !' : 'Account ready to be created!');
-  onNavigate('Accueil');
+  const { error } = await supabase.auth.signUp({
+  email: email.trim(),
+  password,
+});
+
+if (error) {
+  alert(error.message);
+  return;
+}
+
+alert(language === 'fr' ? 'Compte créé !' : 'Account created!');
+onNavigate('Accueil');
 }}
   style={{
     backgroundColor: COLORS.gold2,
