@@ -3742,11 +3742,7 @@ const handleLogin = async () => {
   });
 
   if (error) {
-    alert(
-      language === 'fr'
-        ? 'Courriel ou mot de passe incorrect.'
-        : 'Incorrect email or password.'
-    );
+    alert(error.message);
     return;
   }
 
