@@ -568,6 +568,26 @@ return (
         : '📍 Use my current location'}
   </Text>
 </TouchableOpacity>
+    <TouchableOpacity
+  onPress={() => onNavigate('Pros')}
+  style={{
+    marginTop: 8,
+    paddingVertical: 10,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 14,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr'
+      ? '🔍 Rechercher une entreprise par nom ›'
+      : '🔍 Search for a company by name ›'}
+  </Text>
+</TouchableOpacity>
       
 
 
