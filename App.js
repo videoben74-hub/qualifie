@@ -3735,7 +3735,23 @@ return (
 function Login({ onNavigate, language, setLanguage }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+const handleLogin = async () => {
+  const { error } = await supabase.auth.signInWithPassword({
+    email: email.trim(),
+    password,
+  });
 
+  if (error) {
+    alert(
+      language === 'fr'
+        ? 'Courriel ou mot de passe incorrect.'
+        : 'Incorrect email or password.'
+    );
+    return;
+  }
+
+  onNavigate('Accueil');
+};
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader
@@ -3795,7 +3811,7 @@ function Login({ onNavigate, language, setLanguage }) {
 
       <TouchableOpacity
         style={styles.primaryButton}
-        onPress={() => {}}
+        onPress={handleLogin}
       >
         <Text style={styles.primaryButtonText}>
           {language === 'fr' ? 'Se connecter' : 'Sign in'}
