@@ -3789,21 +3789,23 @@ const handleLogin = async () => {
       </Text>
 
       <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder={language === 'fr' ? 'Courriel' : 'Email'}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        style={styles.input}
-      />
+  value={email}
+  onChangeText={setEmail}
+  placeholder={language === 'fr' ? 'Courriel' : 'Email'}
+  placeholderTextColor="#6B7280"
+  autoCapitalize="none"
+  keyboardType="email-address"
+  style={styles.input}
+/>
 
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder={language === 'fr' ? 'Mot de passe' : 'Password'}
-        secureTextEntry
-        style={styles.input}
-      />
+<TextInput
+  value={password}
+  onChangeText={setPassword}
+  placeholder={language === 'fr' ? 'Mot de passe' : 'Password'}
+  placeholderTextColor="#6B7280"
+  secureTextEntry
+  style={styles.input}
+/>
 
       <TouchableOpacity
   style={{
