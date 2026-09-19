@@ -3732,7 +3732,49 @@ return (
     </ScrollView>
   );
 }
+function Login({ onNavigate, language, setLanguage }) {
+  return (
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader
+        language={language}
+        setLanguage={setLanguage}
+        onNavigate={onNavigate}
+      />
 
+      <TouchableOpacity
+        onPress={() => onNavigate('Accueil')}
+        style={{
+          alignSelf: 'flex-start',
+          paddingVertical: 8,
+          paddingHorizontal: 4,
+          marginBottom: 6,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 16,
+            fontWeight: '900',
+          }}
+        >
+          ← {language === 'fr' ? 'Retour' : 'Back'}
+        </Text>
+      </TouchableOpacity>
+
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 28,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: 8,
+        }}
+      >
+        {language === 'fr' ? 'Connexion' : 'Sign in'}
+      </Text>
+    </ScrollView>
+  );
+}
  function Signup({ onNavigate, language, setLanguage }) {
   
 const [email, setEmail] = useState('');
