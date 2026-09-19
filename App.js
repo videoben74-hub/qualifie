@@ -3806,13 +3806,27 @@ const handleLogin = async () => {
       />
 
       <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={handleLogin}
-      >
-        <Text style={styles.primaryButtonText}>
-          {language === 'fr' ? 'Se connecter' : 'Sign in'}
-        </Text>
-      </TouchableOpacity>
+  style={{
+    backgroundColor: '#071D3A',
+    borderRadius: 14,
+    paddingVertical: 17,
+    marginTop: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  }}
+  onPress={handleLogin}
+>
+  <Text
+    style={{
+      color: '#D4AF37',
+      fontSize: 18,
+      fontWeight: '800',
+    }}
+  >
+    {language === 'fr' ? 'Se connecter  ›' : 'Sign in  ›'}
+  </Text>
+</TouchableOpacity>
     </ScrollView>
   );
 }
