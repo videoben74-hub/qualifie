@@ -1443,23 +1443,36 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   }
 };
   const saveClientProfile = async () => {
-  const clientProfile = {
-    clientName,
-    clientEmail,
-    clientPhone,
-    clientPhoto,
-  };
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  await AsyncStorage.setItem(
-    'qualiverifie_client_profile',
-    JSON.stringify(clientProfile)
-  );
+    if (!user) return;
 
-  alert(
-    language === 'fr'
-      ? 'Profil client enregistré.'
-      : 'Client profile saved.'
-  );
+    const { error } = await supabase
+      .from('profiles')
+      .upsert({
+        id: user.id,
+        full_name: clientName,
+        phone: clientPhone,
+        avatar_url: clientPhoto,
+        updated_at: new Date().toISOString(),
+      });
+
+    if (error) throw error;
+
+    setClientEmail(user.email || '');
+
+    alert(
+      language === 'fr'
+        ? 'Profil client enregistré.'
+        : 'Client profile saved.'
+    );
+  } catch (error) {
+    console.log('Erreur sauvegarde profil client :', error);
+    alert(error.message);
+  }
 };
   const pickCompanyPhoto = async () => {
   if (companyPhotos.length >= 10) {
