@@ -1439,7 +1439,37 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   });
 
   if (!result.canceled && result.assets?.length > 0) {
-    setClientPhoto(result.assets[0].uri);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const imageUri = result.assets[0].uri;
+      const response = await fetch(imageUri);
+      const arrayBuffer = await response.arrayBuffer();
+
+      const filePath = `${user.id}/avatar.jpg`;
+
+      const { error } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, arrayBuffer, {
+          contentType: 'image/jpeg',
+          upsert: true,
+        });
+
+      if (error) throw error;
+
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      setClientPhoto(data.publicUrl);
+    } catch (error) {
+      console.log('Erreur upload photo :', error);
+      alert(error.message);
+    }
   }
 };
   const saveClientProfile = async () => {
