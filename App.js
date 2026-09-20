@@ -1695,6 +1695,15 @@ borderRadius: 45,
     {language === 'fr' ? '♡ Vos favoris' : '♡ Your favorites'}
   </Text>
 </TouchableOpacity>
+
+<TouchableOpacity
+  style={[styles.primaryBtn, { marginTop: 8 }]}
+  onPress={() => setProfileSection('Abonnement')}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr' ? '🏢 Espace entreprise' : '🏢 Business area'}
+  </Text>
+</TouchableOpacity>
     <TouchableOpacity
   style={[styles.primaryBtn, { marginTop: 8, marginBottom: 70 }]}
   onPress={() => onNavigate('Accueil')}
