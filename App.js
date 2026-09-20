@@ -1337,36 +1337,51 @@ useEffect(() => {
   loadClientProfile();
 }, []);
   const saveCompanyProfile = async () => {
-    try {
-      await AsyncStorage.setItem(
-        'qualiverifie_company_profile',
-        JSON.stringify({
-          companyName,
-          profilePhoto,
-          companyDescription,
-          companyPhotos,
-          neq,
-          rbq,
-          companyCity,
-          companyAddress,
-          companyPostalCode,
-          companyPhone,
-          companyEmail,
-          companyWebsite,
-          rbqCategories,
-          ccqStatus,
-        })
-      );
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
+    if (!user) {
       alert(
         language === 'fr'
-          ? 'Modifications enregistrées avec succès.'
-          : 'Changes saved successfully.'
+          ? 'Vous devez être connecté.'
+          : 'You must be logged in.'
       );
-    } catch (error) {
-      console.log('Erreur sauvegarde profil entreprise :', error);
+      return;
     }
-  };
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        company_name: companyName,
+        company_description: companyDescription,
+        company_photos: companyPhotos,
+        neq: neq,
+        rbq: rbq,
+        company_city: companyCity,
+        company_address: companyAddress,
+        company_postal_code: companyPostalCode,
+        company_phone: companyPhone,
+        company_email: companyEmail,
+        company_website: companyWebsite,
+        rbq_categories: rbqCategories,
+        ccq_status: ccqStatus,
+      })
+      .eq('id', user.id);
+
+    if (error) throw error;
+
+    alert(
+      language === 'fr'
+        ? 'Modifications enregistrées avec succès.'
+        : 'Changes saved successfully.'
+    );
+  } catch (error) {
+    console.log('Erreur sauvegarde profil entreprise :', error);
+    alert(error.message);
+  }
+};
   const customerReviews = [
   {
     id: 1,
