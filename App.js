@@ -1518,16 +1518,8 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     console.log('Erreur sauvegarde profil client :', error);
     alert(error.message);
   }
-};
-  const pickCompanyPhoto = async () => {
-  if (companyPhotos.length >= 10) {
-    alert(
-      language === 'fr'
-        ? 'Vous pouvez ajouter un maximum de 10 photos.'
-        : 'You can add a maximum of 10 photos.'
-    );
-    return;
-  }
+const pickCompanyPhoto = async () => {
+  if (companyPhotos.length >= 10) return;
 
   const permissionResult =
     await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -1541,21 +1533,56 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     return;
   }
 
-  const remainingPhotos = 10 - companyPhotos.length;
-
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ['images'],
     allowsMultipleSelection: true,
-    selectionLimit: remainingPhotos,
+    selectionLimit: 10 - companyPhotos.length,
     quality: 0.8,
   });
 
-  if (!result.canceled && result.assets?.length > 0) {
-    const newPhotos = result.assets.map((asset) => asset.uri);
+  if (result.canceled || !result.assets?.length) return;
+
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    const uploadedPhotos = [];
+
+    for (const asset of result.assets) {
+      const response = await fetch(asset.uri);
+      const blob = await response.blob();
+
+      const extension =
+        asset.fileName?.split('.').pop()?.toLowerCase() || 'jpg';
+
+      const filePath =
+        `${user.id}/${Date.now()}-${Math.random()
+          .toString(36)
+          .substring(2)}.${extension}`;
+
+      const { error } = await supabase.storage
+        .from('company-photos')
+        .upload(filePath, blob, {
+          contentType: asset.mimeType || 'image/jpeg',
+        });
+
+      if (error) throw error;
+
+      const { data } = supabase.storage
+        .from('company-photos')
+        .getPublicUrl(filePath);
+
+      uploadedPhotos.push(data.publicUrl);
+    }
 
     setCompanyPhotos((current) =>
-      [...current, ...newPhotos].slice(0, 10)
+      [...current, ...uploadedPhotos].slice(0, 10)
     );
+  } catch (error) {
+    alert(error.message);
   }
 };
   if (profileSection) {
