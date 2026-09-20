@@ -1308,17 +1308,26 @@ setCompanyWebsite(profile.companyWebsite || '');
 useEffect(() => {
   const loadClientProfile = async () => {
     try {
-      const savedClientProfile = await AsyncStorage.getItem(
-        'qualiverifie_client_profile'
-      );
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      if (savedClientProfile) {
-        const profile = JSON.parse(savedClientProfile);
+      if (!user) return;
 
-        setClientName(profile.clientName || '');
-        setClientEmail(profile.clientEmail || '');
-        setClientPhone(profile.clientPhone || '');
-        setClientPhoto(profile.clientPhoto || null);
+      setClientEmail(user.email || '');
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('full_name, phone, avatar_url')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        setClientName(data.full_name || '');
+        setClientPhone(data.phone || '');
+        setClientPhoto(data.avatar_url || null);
       }
     } catch (error) {
       console.log('Erreur chargement profil client :', error);
