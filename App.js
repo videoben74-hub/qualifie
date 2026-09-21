@@ -420,6 +420,7 @@ function Badge() {
   setLanguage,
   userLocation,
   setUserLocation,
+    accountType,
 }) {
 
   const [showAuthOptions, setShowAuthOptions] = useState(false);
@@ -541,7 +542,7 @@ return (
 </Text>
 
   <TouchableOpacity
-  onPress={useCurrentLocation}
+  onPress={accountType ? useCurrentLocation : () => onNavigate('Login')}
   disabled={locationLoading}
   style={{
     backgroundColor: COLORS.gold,
@@ -570,7 +571,7 @@ return (
   </Text>
 </TouchableOpacity>
     <TouchableOpacity
-  onPress={() => onNavigate('Pros')}
+  onPress={() => accountType ? onNavigate('Pros') : onNavigate('Login')}
   style={{
     marginTop: 8,
     paddingVertical: 10,
@@ -4194,6 +4195,7 @@ useEffect(() => {
     setLanguage={setLanguage}
     userLocation={userLocation}
     setUserLocation={setUserLocation}
+      accountType={accountType}
   />
 ) :
 tab === 'Login' ? (
@@ -4283,7 +4285,7 @@ tab === 'Messages' ? (
   key={tabName}
   style={styles.navItem}
   onPress={() =>
-    tabName === 'Profil' && !accountType
+    (tabName === 'Profil' || tabName === 'Messages') && !accountType
       ? navigate('Login')
       : navigate(tabName)
   }
