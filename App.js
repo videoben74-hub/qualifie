@@ -1562,56 +1562,67 @@ const pickCompanyPhoto = async () => {
   }
 
   const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ['images'],
-    allowsMultipleSelection: true,
-    selectionLimit: 10 - companyPhotos.length,
-    quality: 0.8,
-  });
+  mediaTypes: ['images'],
+  allowsMultipleSelection: true,
+  selectionLimit: 10 - companyPhotos.length,
+  quality: 0.8,
+  base64: true,
+});
 
-  if (result.canceled || !result.assets?.length) return;
+if (result.canceled || !result.assets?.length) return;
 
-  try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+try {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) return;
+  if (!user) return;
 
-    const uploadedPhotos = [];
+  const uploadedPhotos = [];
 
-    for (const asset of result.assets) {
-      const response = await fetch(asset.uri);
-      const blob = await response.blob();
-
-      const extension =
-        asset.fileName?.split('.').pop()?.toLowerCase() || 'jpg';
-
-      const filePath =
-        `${user.id}/${Date.now()}-${Math.random()
-          .toString(36)
-          .substring(2)}.${extension}`;
-
-      const { error } = await supabase.storage
-        .from('company-photos')
-        .upload(filePath, blob, {
-          contentType: asset.mimeType || 'image/jpeg',
-        });
-
-      if (error) throw error;
-
-      const { data } = supabase.storage
-        .from('company-photos')
-        .getPublicUrl(filePath);
-
-      uploadedPhotos.push(data.publicUrl);
+  for (const asset of result.assets) {
+    if (!asset.base64) {
+      throw new Error('Impossible de lire la photo.');
     }
 
-    setCompanyPhotos((current) =>
-      [...current, ...uploadedPhotos].slice(0, 10)
-    );
-  } catch (error) {
-    alert(error.message);
+    const binary = atob(asset.base64);
+    const bytes = new Uint8Array(binary.length);
+
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+
+    const extension =
+      asset.fileName?.split('.').pop()?.toLowerCase() || 'jpg';
+
+    const filePath =
+      `${user.id}/${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2)}.${extension}`;
+
+    const { error } = await supabase.storage
+      .from('company-photos')
+      .upload(filePath, bytes.buffer, {
+        contentType: asset.mimeType || 'image/jpeg',
+      });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage
+      .from('company-photos')
+      .getPublicUrl(filePath);
+
+    uploadedPhotos.push(data.publicUrl);
   }
+
+  setCompanyPhotos((current) =>
+    [...current, ...uploadedPhotos].slice(0, 10)
+  );
+} catch (error) {
+  alert(error.message);
+}
+
+      
 };
   if (profileSection) {
     
