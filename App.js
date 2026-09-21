@@ -1219,7 +1219,9 @@ const [sentMessage, setSentMessage] = useState('');
   );
 }
 
-function Profile({ onNavigate, selectedPro, favorites, setFavorites, language, setLanguage, accountType }) {
+function Profile({ onNavigate, selectedPro,
+favorites, setFavorites, language, setLanguage,
+accountType, onLogout }) {
   const [profileSection, setProfileSection] =
   useState(
     selectedPro
@@ -1734,7 +1736,7 @@ borderRadius: 45,
 </TouchableOpacity>
     <TouchableOpacity
   style={[styles.primaryBtn, { marginTop: 8, marginBottom: 70 }]}
-  onPress={() => onNavigate('Accueil')}
+  onPress={onLogout}
 >
   <Text style={styles.primaryBtnText}>
     {language === 'fr' ? '🚪 Déconnexion' : '🚪 Log out'}
@@ -3307,7 +3309,7 @@ return (
     key={item.section}
     onPress={() =>
       item.section === 'Déconnexion'
-        ? onNavigate('Accueil')
+        ? onLogout()
         : setProfileSection(item.section)
     }
     style={styles.menuRow}
@@ -4166,6 +4168,13 @@ useEffect(() => {
   setFilters(newFilters);
   setTab(to);
 };
+  const handleLogout = async () => {
+  await supabase.auth.signOut();
+  await AsyncStorage.removeItem('qualiverifie_account_type');
+  setAccountType(null);
+  setSelectedPro(null);
+  setTab('Accueil');
+};
   const onDemoLogin = async (type) => {
     setAccountType(type);
     await AsyncStorage.setItem('qualiverifie_account_type', type);
@@ -4255,6 +4264,7 @@ tab === 'Messages' ? (
   language={language}
   setLanguage={setLanguage}
   accountType={accountType}
+    onLogout={handleLogout}
 />
 )
 
