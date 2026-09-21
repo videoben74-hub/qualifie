@@ -3836,8 +3836,8 @@ return (
     </ScrollView>
   );
 }
-function Login({ onNavigate, language, setLanguage }) {
-  const [email, setEmail] = useState('');
+function Login({ onNavigate, language, setLanguage, onAccountTypeChange }) {
+ const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const handleLogin = async () => {
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -3865,10 +3865,8 @@ const handleLogin = async () => {
     'qualiverifie_account_type',
     profile.account_type
   );
-
-  onNavigate(
-  profile.account_type === 'business' ? 'EnterpriseDemo' : 'Accueil'
-);
+onAccountTypeChange(profile.account_type);
+  onNavigate('Profil');
 };
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -4194,6 +4192,7 @@ tab === 'Login' ? (
     onNavigate={navigate}
     language={language}
     setLanguage={setLanguage}
+      onAccountTypeChange={setAccountType}
   />
 ) :
 tab === 'Signup' ? (
