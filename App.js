@@ -4064,7 +4064,7 @@ onAccountTypeChange(profile.account_type);
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [confirmPassword, setConfirmPassword] = useState('');
-
+const [accountType, setAccountType] = useState('client');
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader
@@ -4188,9 +4188,14 @@ onPress={async () => {
     alert(language === 'fr' ? 'Les mots de passe ne correspondent pas.' : 'Passwords do not match.');
     return;
   }
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
   email: email.trim(),
   password,
+  options: {
+    data: {
+      account_type: accountType,
+    },
+  },
 });
 
 if (error) {
