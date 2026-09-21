@@ -1518,6 +1518,7 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     console.log('Erreur sauvegarde profil client :', error);
     alert(error.message);
   }
+    };
 const pickCompanyPhoto = async () => {
   if (companyPhotos.length >= 10) return;
 
