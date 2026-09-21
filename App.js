@@ -3362,15 +3362,7 @@ return (
       Montréal • Laval • Rive-Nord • Rive-Sud
     </Text>
 
-    <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '📸 Réalisations' : '📸 Projects'}
-    </Text>
-
-    <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? '📷 Photos des réalisations à venir'
-        : '📷 Project photos coming soon'}
-    </Text>
+    
 
     <Text style={styles.sectionTitle}>
       {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
