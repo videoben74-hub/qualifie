@@ -3275,26 +3275,114 @@ return (
         : 'Wishing you success in your projects!')}
 </Text>
       </View>
-{selectedPro && <View style={styles.verifiedBadge}><Text style={styles.verifiedBadgeText}>{language === 'fr' ? '✓ QualiVérifié — Entrepreneur vérifié' : '✓ QualiVérifié — Verified contractor'}</Text></View>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🛡️ Licence et assurance vérifiées' : '🛡️ Licence and insurance verified'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🛠️ Services offerts : rénovation intérieure et finition' : '🛠️ Services offered: interior renovation and finishing'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '⭐ 4.9/5 basé sur 42 avis clients' : '⭐ 4.9/5 based on 42 customer reviews'}</Text>}
-{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? 'À propos' : 'About'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? 'Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.' : 'Constructions RL supports its clients with their interior renovation projects, providing professional, reliable and meticulous service.'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '🏆 Plus de 10 ans d’expérience' : '🏆 Over 10 years of experience'}</Text>}
-{selectedPro && <TouchableOpacity style={styles.quoteBtn} onPress={() => onNavigate('Projets', '', selectedPro)}><Text style={styles.quoteBtnText}>{language === 'fr' ? '📋 Demander une soumission' : '📋 Request a quote'}</Text></TouchableOpacity>}
-{selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => onNavigate('Messages', '', selectedPro)}><Text style={styles.contactBtnText}>{language === 'fr' ? '💬 Contacter l’entrepreneur' : '💬 Contact contractor'}</Text></TouchableOpacity>}
-       {selectedPro && <TouchableOpacity style={styles.contactBtn} onPress={() => setFavorites((prev) => prev.some((fav) => fav.id === selectedPro.id) ? prev.filter((fav) => fav.id !== selectedPro.id) : [...prev, selectedPro])}><Text style={styles.contactBtnText}>{favorites.some((fav) => fav.id === selectedPro.id) ? (language === 'fr' ? '❤️ Retirer des favoris' : '❤️ Remove from favorites') : (language === 'fr' ? '♡ Ajouter aux favoris' : '♡ Add to favorites')}</Text></TouchableOpacity>}
-{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '🛡️ Vérifications QualiVérifié' : '🛡️ QualiVérifié verifications'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '✅ Licence RBQ vérifiée' : '✅ RBQ licence verified'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '✅ Assurance responsabilité vérifiée' : '✅ Liability insurance verified'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '✅ Identité de l’entreprise vérifiée' : '✅ Company identity verified'}</Text>}
-{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '📍 Zones desservies' : '📍 Service areas'}</Text>}
-            {selectedPro && <Text style={styles.profileInfo}>Montréal • Laval • Rive-Nord • Rive-Sud</Text>}
-{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '📸 Réalisations' : '📸 Projects'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '📷 Photos des réalisations à venir' : '📷 Project photos coming soon'}</Text>}
-{selectedPro && <Text style={styles.sectionTitle}>{language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}</Text>}
-{selectedPro && <Text style={styles.profileInfo}>{language === 'fr' ? '⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié' : '⭐⭐⭐⭐⭐ Excellent work, professional and very clean. — Verified client'}</Text>}
+{selectedPro && (
+  <>
+    <View style={styles.verifiedBadge}>
+      <Text style={styles.verifiedBadgeText}>
+        {language === 'fr'
+          ? '✓ QualiVérifié — Entrepreneur vérifié'
+          : '✓ QualiVérifié — Verified contractor'}
+      </Text>
+    </View>
+
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? 'À propos' : 'About'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? 'Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.'
+        : 'Constructions RL supports its clients with professional, reliable and meticulous renovation services.'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? '🏆 Plus de 10 ans d’expérience'
+        : '🏆 Over 10 years of experience'}
+    </Text>
+
+    <TouchableOpacity
+      style={styles.quoteBtn}
+      onPress={() => onNavigate('Projets', '', selectedPro)}
+    >
+      <Text style={styles.quoteBtnText}>
+        {language === 'fr'
+          ? '📋 Demander une soumission'
+          : '📋 Request a quote'}
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={styles.contactBtn}
+      onPress={() => onNavigate('Messages', '', selectedPro)}
+    >
+      <Text style={styles.contactBtnText}>
+        {language === 'fr'
+          ? '💬 Contacter l’entrepreneur'
+          : '💬 Contact contractor'}
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={styles.contactBtn}
+      onPress={() =>
+        setFavorites((prev) =>
+          prev.some((fav) => fav.id === selectedPro.id)
+            ? prev.filter((fav) => fav.id !== selectedPro.id)
+            : [...prev, selectedPro]
+        )
+      }
+    >
+      <Text style={styles.contactBtnText}>
+        {favorites.some((fav) => fav.id === selectedPro.id)
+          ? language === 'fr'
+            ? '❤️ Retirer des favoris'
+            : '❤️ Remove from favorites'
+          : language === 'fr'
+          ? '♡ Ajouter aux favoris'
+          : '♡ Add to favorites'}
+      </Text>
+    </TouchableOpacity>
+
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '🛡️ Vérifications' : '🛡️ Verifications'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? '✅ RBQ  •  ✅ Assurance  •  ✅ Identité'
+        : '✅ RBQ  •  ✅ Insurance  •  ✅ Identity'}
+    </Text>
+
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '📍 Zones desservies' : '📍 Service areas'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      Montréal • Laval • Rive-Nord • Rive-Sud
+    </Text>
+
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '📸 Réalisations' : '📸 Projects'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? '📷 Photos des réalisations à venir'
+        : '📷 Project photos coming soon'}
+    </Text>
+
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
+    </Text>
+
+    <Text style={styles.profileInfo}>
+      {language === 'fr'
+        ? '⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié'
+        : '⭐⭐⭐⭐⭐ Excellent work, professional and very clean. — Verified client'}
+    </Text>
+  </>
+)}
 {!selectedPro && [
   
   { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
