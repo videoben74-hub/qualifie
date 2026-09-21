@@ -3839,7 +3839,7 @@ function Login({ onNavigate, language, setLanguage }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const handleLogin = async () => {
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: email.trim(),
     password,
   });
@@ -3849,7 +3849,23 @@ const handleLogin = async () => {
     return;
   }
 
-  onNavigate('Accueil');
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('account_type')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profileError) {
+    alert(profileError.message);
+    return;
+  }
+
+  await AsyncStorage.setItem(
+    'qualiverifie_account_type',
+    profile.account_type
+  );
+
+  onNavigate(profile.account_type === 'business' ? 'Profil' : 'Accueil');
 };
   return (
     <ScrollView contentContainerStyle={styles.page}>
