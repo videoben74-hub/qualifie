@@ -4117,7 +4117,62 @@ const [accountType, setAccountType] = useState('client');
           : 'Sign up to join the QualiVérifié community.'}
       </Text>
         
-      
+    <View
+  style={{
+    flexDirection: 'row',
+    marginBottom: 16,
+  }}
+>
+  <TouchableOpacity
+    onPress={() => setAccountType('client')}
+    style={{
+      flex: 1,
+      marginRight: 6,
+      paddingVertical: 15,
+      borderRadius: 14,
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: COLORS.line,
+      backgroundColor:
+        accountType === 'client' ? COLORS.gold2 : COLORS.card,
+    }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 16,
+        fontWeight: '900',
+      }}
+    >
+      {language === 'fr' ? 'Particulier' : 'Client'}
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    onPress={() => setAccountType('business')}
+    style={{
+      flex: 1,
+      marginLeft: 6,
+      paddingVertical: 15,
+      borderRadius: 14,
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: COLORS.line,
+      backgroundColor:
+        accountType === 'business' ? COLORS.gold2 : COLORS.card,
+    }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 16,
+        fontWeight: '900',
+      }}
+    >
+      {language === 'fr' ? 'Entreprise' : 'Business'}
+    </Text>
+  </TouchableOpacity>
+</View>  
   
 
   <TextInput
