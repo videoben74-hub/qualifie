@@ -3866,7 +3866,9 @@ const handleLogin = async () => {
     profile.account_type
   );
 
-  onNavigate(profile.account_type === 'business' ? 'Profil' : 'Accueil');
+  onNavigate(
+  profile.account_type === 'business' ? 'EnterpriseDemo' : 'Accueil'
+);
 };
   return (
     <ScrollView contentContainerStyle={styles.page}>
