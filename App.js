@@ -1271,32 +1271,58 @@ const [ccqStatus, setCcqStatus] = useState([]);
 useEffect(() => {
   const loadCompanyProfile = async () => {
     try {
-      const savedProfile = await AsyncStorage.getItem(
-        'qualiverifie_company_profile'
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select(`
+          company_name,
+          company_description,
+          company_photos,
+          neq,
+          rbq,
+          company_city,
+          company_address,
+          company_postal_code,
+          company_phone,
+          company_email,
+          company_website,
+          rbq_categories,
+          ccq_status
+        `)
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) return;
+
+      setCompanyName(data.company_name || '');
+      setCompanyDescription(data.company_description || '');
+      setCompanyPhotos(
+        Array.isArray(data.company_photos) ? data.company_photos : []
       );
-
-      if (savedProfile) {
-        const profile = JSON.parse(savedProfile);
-
-        setCompanyName(profile.companyName || '');
-        setProfilePhoto(profile.profilePhoto || null);
-        setCompanyDescription(profile.companyDescription || '');
-        setCompanyPhotos(
-          Array.isArray(profile.companyPhotos) ? profile.companyPhotos : []
-        );
-        setNeq(profile.neq || '');
-        setRbq(profile.rbq || '');
-        setCompanyCity(profile.companyCity || '');
-        setCompanyAddress(profile.companyAddress || '');
-setCompanyPostalCode(profile.companyPostalCode || '');
-        setCompanyPhone(profile.companyPhone || '');
-setCompanyEmail(profile.companyEmail || '');
-setCompanyWebsite(profile.companyWebsite || '');
-        setRbqCategories(
-          Array.isArray(profile.rbqCategories) ? profile.rbqCategories : []
-        );
-        setCcqStatus(Array.isArray(profile.ccqStatus) ? profile.ccqStatus : profile.ccqStatus ? [profile.ccqStatus] : []);
-      }
+      setNeq(data.neq || '');
+      setRbq(data.rbq || '');
+      setCompanyCity(data.company_city || '');
+      setCompanyAddress(data.company_address || '');
+      setCompanyPostalCode(data.company_postal_code || '');
+      setCompanyPhone(data.company_phone || '');
+      setCompanyEmail(data.company_email || '');
+      setCompanyWebsite(data.company_website || '');
+      setRbqCategories(
+        Array.isArray(data.rbq_categories) ? data.rbq_categories : []
+      );
+      setCcqStatus(
+        Array.isArray(data.ccq_status)
+          ? data.ccq_status
+          : data.ccq_status
+          ? [data.ccq_status]
+          : []
+      );
     } catch (error) {
       console.log('Erreur chargement profil entreprise :', error);
     } finally {
@@ -1304,10 +1330,8 @@ setCompanyWebsite(profile.companyWebsite || '');
     }
   };
 
-  
-
-    loadCompanyProfile();
-  }, []);
+  loadCompanyProfile();
+}, []);
 useEffect(() => {
   const loadClientProfile = async () => {
     try {
