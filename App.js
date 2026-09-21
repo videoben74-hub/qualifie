@@ -4279,7 +4279,15 @@ tab === 'Messages' ? (
   ['Messages', language === 'fr' ? 'Messages' : 'Messages', '✉'],
   ['Profil', language === 'fr' ? 'Profil' : 'Profile', '●'],
 ].map(([tabName, label, icon]) => (
-          <TouchableOpacity key={tabName} style={styles.navItem} onPress={() => navigate(tabName)}>
+          <TouchableOpacity
+  key={tabName}
+  style={styles.navItem}
+  onPress={() =>
+    tabName === 'Profil' && !accountType
+      ? navigate('Login')
+      : navigate(tabName)
+  }
+>
   <Text style={[styles.navIcon, (tab === tabName || (tabName === 'Profil' && tab === 'EntrepriseDemo')) && styles.navActive]}>{icon}</Text>
   <Text style={[styles.navText, (tab === tabName || (tabName === 'Profil' && tab === 'EntrepriseDemo')) && styles.navActive]}>{label}</Text>
 </TouchableOpacity>
