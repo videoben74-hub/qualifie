@@ -3027,7 +3027,9 @@ borderRadius: 45,
 ) : profileSection === 'Abonnement' ? (
   <>
   <TouchableOpacity
-  onPress={() => setProfileSection(null)}
+  onPress={() =>
+  setProfileSection(accountType === 'client' ? 'Profil client' : null)
+  }
   style={{
     alignSelf: 'flex-start',
     marginBottom: 12,
