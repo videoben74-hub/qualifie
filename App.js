@@ -1045,7 +1045,11 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
           distance: null,
           verified: true,
           projectTypes: [],
-          workTypes: company.ccq_status || [],
+          workTypes: Array.isArray(company.ccq_status)
+  ? company.ccq_status
+  : company.ccq_status
+  ? [company.ccq_status]
+  : [],
         };
       });
 
