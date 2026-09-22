@@ -3907,121 +3907,63 @@ return (
   );
 }
  function QuoteRequests({ onNavigate, language, setLanguage }) {
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadQuoteRequests = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+          setRequests([]);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('quote_requests')
+          .select(`
+            id,
+            client_id,
+            company_id,
+            address,
+            description,
+            status,
+            created_at
+          `)
+          .eq('company_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        setRequests(data || []);
+      } catch (error) {
+        console.log('Erreur chargement soumissions :', error);
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadQuoteRequests();
+  }, []);
+
   return (
-    <ScrollView
-      contentContainerStyle={{
-        padding: 20,
-        paddingBottom: 40,
-      }}
-    >
-      <Text
-        style={{
-          color: COLORS.navy,
-          fontSize: 27,
-          fontWeight: '900',
-          textAlign: 'center',
-          marginBottom: 8,
-        }}
-      >
-        {language === 'fr'
-          ? 'Demandes de soumission'
-          : 'Quote requests'}
-      </Text>
-
-      <Text
-        style={{
-          color: COLORS.muted,
-          fontSize: 15,
-          fontWeight: '700',
-          textAlign: 'center',
-          marginBottom: 24,
-        }}
-      >
-        {language === 'fr'
-          ? '3 nouvelles demandes'
-          : '3 new requests'}
-      </Text>
-
-      {[
-        {
-          client: 'Client #001',
-          project:
-            language === 'fr'
-              ? 'Rénovation de salle de bain'
-              : 'Bathroom renovation',
-          location: 'Montréal, QC',
-        },
-        {
-          client: 'Client #002',
-          project:
-            language === 'fr'
-              ? 'Peinture intérieure'
-              : 'Interior painting',
-          location: 'Laval, QC',
-        },
-        {
-          client: 'Client #003',
-          project:
-            language === 'fr'
-              ? 'Rénovation de cuisine'
-              : 'Kitchen renovation',
-          location: 'Longueuil, QC',
-        },
-      ].map((request, index) => (
-        <View
-          key={index}
-          style={{
-            backgroundColor: COLORS.card,
-            borderRadius: 14,
-            borderWidth: 1,
-            borderColor: COLORS.line,
-            padding: 16,
-            marginBottom: 12,
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.navy,
-              fontSize: 17,
-              fontWeight: '900',
-              marginBottom: 6,
-            }}
-          >
-            {request.project}
-          </Text>
-
-          <Text
-            style={{
-              color: COLORS.muted,
-              fontSize: 14,
-              fontWeight: '700',
-              marginBottom: 4,
-            }}
-          >
-            👤 {request.client}
-          </Text>
-
-          <Text
-            style={{
-              color: COLORS.muted,
-              fontSize: 14,
-              fontWeight: '700',
-            }}
-          >
-            📍 {request.location}
-          </Text>
-        </View>
-      ))}
+    <ScrollView contentContainerStyle={styles.page}>
+      <AppHeader
+        language={language}
+        setLanguage={setLanguage}
+        onNavigate={onNavigate}
+      />
 
       <TouchableOpacity
-        onPress={() => onNavigate('EnterpriseDemo')}
+        onPress={() => onNavigate('Profil')}
         style={{
-          backgroundColor: COLORS.gold2,
-          borderRadius: 14,
-          minHeight: 54,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: 12,
+          alignSelf: 'flex-start',
+          paddingVertical: 8,
+          marginBottom: 8,
         }}
       >
         <Text
@@ -4031,11 +3973,68 @@ return (
             fontWeight: '900',
           }}
         >
-          {language === 'fr'
-            ? 'Retour à l’espace entreprise'
-            : 'Back to business dashboard'}
+          ← {language === 'fr' ? 'Retour' : 'Back'}
         </Text>
       </TouchableOpacity>
+
+      <Text style={styles.screenTitle}>
+        {language === 'fr'
+          ? 'Demandes de soumission'
+          : 'Quote requests'}
+      </Text>
+
+      {loading ? (
+        <Text style={styles.infoText}>
+          {language === 'fr'
+            ? 'Chargement des demandes...'
+            : 'Loading requests...'}
+        </Text>
+      ) : requests.length === 0 ? (
+        <Text style={styles.infoText}>
+          {language === 'fr'
+            ? 'Aucune demande de soumission pour le moment.'
+            : 'No quote requests yet.'}
+        </Text>
+      ) : (
+        requests.map((request) => (
+          <View
+            key={request.id}
+            style={{
+              backgroundColor: COLORS.card,
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: COLORS.line,
+              padding: 16,
+              marginBottom: 12,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.navy,
+                fontSize: 17,
+                fontWeight: '900',
+                marginBottom: 8,
+              }}
+            >
+              {request.description}
+            </Text>
+
+            <Text style={styles.infoText}>
+              📍 {request.address}
+            </Text>
+
+            <Text style={[styles.infoText, { marginTop: 6 }]}>
+              {language === 'fr' ? 'Statut' : 'Status'} : {request.status}
+            </Text>
+
+            <Text style={[styles.infoText, { marginTop: 6 }]}>
+              {new Date(request.created_at).toLocaleDateString(
+                language === 'fr' ? 'fr-CA' : 'en-CA'
+              )}
+            </Text>
+          </View>
+        ))
+      )}
     </ScrollView>
   );
 }
