@@ -1575,9 +1575,18 @@ const submitReview = async () => {
         : 'Review published successfully.'
     );
   } catch (error) {
-    console.log('Erreur publication avis :', error);
+  console.log('Erreur publication avis :', error);
+
+  if (error.code === '23505') {
+    alert(
+      language === 'fr'
+        ? 'Vous avez déjà publié un avis pour cette entreprise.'
+        : 'You have already reviewed this company.'
+    );
+  } else {
     alert(error.message);
-  } finally {
+  }
+} finally {
     setReviewSaving(false);
   }
 };
