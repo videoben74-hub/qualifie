@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
   TouchableOpacity,
   StatusBar,
   Platform, BackHandler, Image,
@@ -3412,7 +3413,15 @@ borderRadius: 45,
 );
 }
 return (
-<ScrollView contentContainerStyle={styles.page}>
+<KeyboardAvoidingView
+  style={{ flex: 1 }}
+  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+>
+  <ScrollView
+    contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
+    keyboardShouldPersistTaps="handled"
+    keyboardDismissMode="on-drag"
+  >
 <AppHeader language={language} setLanguage={setLanguage} />
 <>
 {selectedPro && (
@@ -3730,7 +3739,8 @@ return (
 ))}
 
     </ScrollView>
-  );
+</KeyboardAvoidingView>
+);
 }
  function EntrepriseDemo({ onNavigate, language, setLanguage }) {
   return (
