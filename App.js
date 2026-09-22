@@ -1089,15 +1089,22 @@ const response = await fetch(
   return () => clearTimeout(timer);
 }, [addressQuery, language]);
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const c = city.trim().toLowerCase();
-    return pros.filter((p) =>
-  (!q || p.trade.toLowerCase().includes(q) || p.name.toLowerCase().includes(q)) &&
-  (!c || p.city.toLowerCase().includes(c)) &&
-  (!initialFilters.projectType || p.projectTypes?.includes(initialFilters.projectType)) &&
-  (!initialFilters.workType || p.workTypes?.includes(initialFilters.workType))
-);
-  }, [query, city, initialFilters]);
+  const q = query.trim().toLowerCase();
+  const c = city.trim().toLowerCase();
+
+  const sourcePros = realPros.length > 0 ? realPros : pros;
+
+  return sourcePros.filter((p) =>
+    (!q ||
+      p.trade?.toLowerCase().includes(q) ||
+      p.name?.toLowerCase().includes(q)) &&
+    (!c || p.city?.toLowerCase().includes(c)) &&
+    (!initialFilters.projectType ||
+      p.projectTypes?.includes(initialFilters.projectType)) &&
+    (!initialFilters.workType ||
+      p.workTypes?.includes(initialFilters.workType))
+  );
+}, [query, city, initialFilters, realPros]);
 
   return (
   <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
