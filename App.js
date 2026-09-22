@@ -2811,7 +2811,7 @@ borderRadius: 45,
 
 <Text style={styles.infoText}>
   {language === 'fr'
-    ? `${customerReviews.length} avis client${customerReviews.length > 1 ? 's' : ''}`
+    ? `${customerReviews.length} avis client${customerReviews.length !== 1 ? 's' : ''}`
     : `${customerReviews.length} customer review${customerReviews.length !== 1 ? 's' : ''}`}
 </Text>
 
