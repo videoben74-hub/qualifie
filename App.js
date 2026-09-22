@@ -1093,7 +1093,7 @@ const response = await fetch(
   const q = query.trim().toLowerCase();
   const c = city.trim().toLowerCase();
 
-  const sourcePros = realPros.length > 0 ? realPros : pros;
+  const sourcePros = realPros;
 
   return sourcePros.filter((p) =>
     (!q ||
