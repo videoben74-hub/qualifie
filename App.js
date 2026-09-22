@@ -1409,20 +1409,33 @@ useEffect(() => {
     alert(error.message);
   }
 };
-  const customerReviews = [
-  {
-    id: 1,
-    rating: 5,
-    fr: 'Excellent service. Entrepreneur professionnel et ponctuel.',
-    en: 'Excellent service. Professional and punctual contractor.',
-  },
-  {
-    id: 2,
-    rating: 5,
-    fr: 'Très satisfait du résultat. Je recommande cette entreprise.',
-    en: 'Very satisfied with the result. I recommend this company.',
-  },
-];
+  const [customerReviews, setCustomerReviews] = useState([]);
+
+useEffect(() => {
+  const loadCustomerReviews = async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('company_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setCustomerReviews(data || []);
+    } catch (error) {
+      console.log('Erreur chargement avis clients :', error);
+    }
+  };
+
+  loadCustomerReviews();
+}, []);
 
 const averageRating =
   customerReviews.length > 0
@@ -2788,49 +2801,48 @@ borderRadius: 45,
       {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
     </Text>
 
+    
+
     <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? 'Note moyenne : 5.0 / 5'
-        : 'Average rating: 5.0 / 5'}
-    </Text>
+  {language === 'fr'
+    ? `Note moyenne : ${averageRating} / 5`
+    : `Average rating: ${averageRating} / 5`}
+</Text>
 
-    <Text style={styles.infoText}>
-      {language === 'fr' ? '2 avis clients' : '2 customer reviews'}
-    </Text>
+<Text style={styles.infoText}>
+  {language === 'fr'
+    ? `${customerReviews.length} avis client${customerReviews.length > 1 ? 's' : ''}`
+    : `${customerReviews.length} customer review${customerReviews.length !== 1 ? 's' : ''}`}
+</Text>
 
-    {[
-      {
-        id: 1,
-        rating: 5,
-        fr: 'Excellent service. Entrepreneur professionnel et ponctuel.',
-        en: 'Excellent service. Professional and punctual contractor.',
-      },
-      {
-        id: 2,
-        rating: 5,
-        fr: 'Très satisfait du résultat. Je recommande cette entreprise.',
-        en: 'Very satisfied with the result. I recommend this company.',
-      },
-    ].map((review) => (
-      <View
-        key={review.id}
-        style={{
-          backgroundColor: '#FFFFFF',
-          padding: 16,
-          borderRadius: 14,
-          marginTop: 14,
-        }}
-      >
-        <Text style={{ fontSize: 20, marginBottom: 6 }}>
-          {'⭐'.repeat(review.rating)}
-        </Text>
+{customerReviews.length === 0 ? (
+  <Text style={[styles.infoText, { marginTop: 14 }]}>
+    {language === 'fr'
+      ? 'Aucun avis pour le moment.'
+      : 'No reviews yet.'}
+  </Text>
+) : (
+  customerReviews.map((review) => (
+    <View
+      key={review.id}
+      style={{
+        backgroundColor: '#FFFFFF',
+        padding: 16,
+        borderRadius: 14,
+        marginTop: 14,
+      }}
+    >
+      <Text style={{ fontSize: 20, marginBottom: 6 }}>
+        {'⭐'.repeat(review.rating)}
+      </Text>
 
-        <Text style={styles.infoText}>
-          {language === 'fr' ? review.fr : review.en}
-        </Text>
-      </View>
-    ))}
-  </>
+      <Text style={styles.infoText}>
+        {review.comment}
+      </Text>
+    </View>
+  ))
+)}
+</>
 ) : profileSection === 'Abonnement' ? (
   <>
   <TouchableOpacity
