@@ -4044,25 +4044,46 @@ return (
   const [address, setAddress] = useState('');
   const [sent, setSent] = useState(false);
 
-  const sendQuoteRequest = () => {
-    if (!description.trim() || !address.trim()) {
+  const sendQuoteRequest = async () => {
+  if (!description.trim() || !address.trim() || !selectedPro?.id) {
+    return;
+  }
+
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      alert(
+        language === 'fr'
+          ? 'Vous devez être connecté.'
+          : 'You must be logged in.'
+      );
       return;
     }
 
-    const newProject = {
-      id: Date.now(),
-      contractorId: selectedPro?.id || null,
-      contractorName: selectedPro?.name || 'Entrepreneur',
-      clientName: 'Client démo',
-      address: address.trim(),
-      description: description.trim(),
-      status: 'new',
-      createdAt: new Date().toISOString(),
-    };
+    const { data, error } = await supabase
+      .from('quote_requests')
+      .insert({
+        client_id: user.id,
+        company_id: selectedPro.id,
+        address: address.trim(),
+        description: description.trim(),
+        status: 'new',
+      })
+      .select()
+      .single();
 
-    setProjects((current) => [newProject, ...current]);
+    if (error) throw error;
+
+    setProjects((current) => [data, ...current]);
     setSent(true);
-  };
+  } catch (error) {
+    console.log('Erreur soumission :', error);
+    alert(error.message);
+  }
+};
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
