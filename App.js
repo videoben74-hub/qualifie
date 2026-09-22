@@ -1513,8 +1513,7 @@ const [reviewSaving, setReviewSaving] = useState(false);
 
   loadPublicReviews();
 }, [selectedPro]);
-useEffect(() => {
-  const submitReview = async () => {
+const submitReview = async () => {
   if (!selectedPro?.id || reviewSaving) return;
 
   if (!reviewComment.trim()) {
