@@ -1486,8 +1486,92 @@ useEffect(() => {
   }
 };
   const [customerReviews, setCustomerReviews] = useState([]);
+const [publicReviews, setPublicReviews] = useState([]);
+const [reviewRating, setReviewRating] = useState(5);
+const [reviewComment, setReviewComment] = useState('');
+const [reviewSaving, setReviewSaving] = useState(false);
+  useEffect(() => {
+  const loadPublicReviews = async () => {
+    if (!selectedPro?.id) {
+      setPublicReviews([]);
+      return;
+    }
 
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('company_id', selectedPro.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.log('Erreur chargement avis publics :', error);
+      return;
+    }
+
+    setPublicReviews(data || []);
+  };
+
+  loadPublicReviews();
+}, [selectedPro]);
 useEffect(() => {
+  const submitReview = async () => {
+  if (!selectedPro?.id || reviewSaving) return;
+
+  if (!reviewComment.trim()) {
+    alert(
+      language === 'fr'
+        ? 'Écrivez un commentaire.'
+        : 'Write a comment.'
+    );
+    return;
+  }
+
+  try {
+    setReviewSaving(true);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      alert(
+        language === 'fr'
+          ? 'Vous devez être connecté.'
+          : 'You must be logged in.'
+      );
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .insert({
+        company_id: selectedPro.id,
+        client_id: user.id,
+        rating: reviewRating,
+        comment: reviewComment.trim(),
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    setPublicReviews((current) => [data, ...current]);
+    setReviewComment('');
+    setReviewRating(5);
+
+    alert(
+      language === 'fr'
+        ? 'Avis publié avec succès.'
+        : 'Review published successfully.'
+    );
+  } catch (error) {
+    console.log('Erreur publication avis :', error);
+    alert(error.message);
+  } finally {
+    setReviewSaving(false);
+  }
+};
+  useEffect(() => {
   const loadCustomerReviews = async () => {
     try {
       const {
@@ -3488,14 +3572,135 @@ return (
     
 
     <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
+  {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
+</Text>
+
+<Text style={styles.profileInfo}>
+  {language === 'fr'
+    ? `Note moyenne : ${
+        publicReviews.length > 0
+          ? (
+              publicReviews.reduce(
+                (total, review) => total + Number(review.rating || 0),
+                0
+              ) / publicReviews.length
+            ).toFixed(1)
+          : '0.0'
+      } / 5 (${publicReviews.length} avis)`
+    : `Average rating: ${
+        publicReviews.length > 0
+          ? (
+              publicReviews.reduce(
+                (total, review) => total + Number(review.rating || 0),
+                0
+              ) / publicReviews.length
+            ).toFixed(1)
+          : '0.0'
+      } / 5 (${publicReviews.length} reviews)`}
+</Text>
+
+{publicReviews.length === 0 ? (
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? 'Aucun avis pour le moment.'
+      : 'No reviews yet.'}
+  </Text>
+) : (
+  publicReviews.map((review) => (
+    <View
+      key={review.id}
+      style={{
+        backgroundColor: '#FFFFFF',
+        padding: 16,
+        borderRadius: 14,
+        marginTop: 10,
+      }}
+    >
+      <Text style={{ fontSize: 20 }}>
+        {'⭐'.repeat(review.rating)}
+      </Text>
+
+      <Text style={styles.infoText}>
+        {review.comment}
+      </Text>
+    </View>
+  ))
+)}
+
+{accountType === 'client' && (
+  <View
+    style={{
+      backgroundColor: '#FFFFFF',
+      padding: 16,
+      borderRadius: 14,
+      marginTop: 16,
+    }}
+  >
+    <Text style={styles.infoText}>
+      {language === 'fr'
+        ? 'Votre note'
+        : 'Your rating'}
     </Text>
 
-    <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? '⭐⭐⭐⭐⭐ Excellent travail, professionnel et très propre. — Client vérifié'
-        : '⭐⭐⭐⭐⭐ Excellent work, professional and very clean. — Verified client'}
-    </Text>
+    <View
+      style={{
+        flexDirection: 'row',
+        marginVertical: 10,
+      }}
+    >
+      {[1, 2, 3, 4, 5].map((star) => (
+        <TouchableOpacity
+          key={star}
+          onPress={() => setReviewRating(star)}
+        >
+          <Text style={{ fontSize: 32 }}>
+            {star <= reviewRating ? '⭐' : '☆'}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+
+    <TextInput
+      value={reviewComment}
+      onChangeText={setReviewComment}
+      placeholder={
+        language === 'fr'
+          ? 'Écrivez votre commentaire...'
+          : 'Write your comment...'
+      }
+      multiline
+      style={[
+        styles.input,
+        {
+          minHeight: 90,
+          textAlignVertical: 'top',
+        },
+      ]}
+    />
+
+    <TouchableOpacity
+      style={[
+        styles.primaryBtn,
+        {
+          marginTop: 12,
+          opacity: reviewSaving ? 0.6 : 1,
+        },
+      ]}
+      onPress={submitReview}
+      disabled={reviewSaving}
+    >
+      <Text style={styles.primaryBtnText}>
+        {reviewSaving
+          ? language === 'fr'
+            ? 'Publication...'
+            : 'Publishing...'
+          : language === 'fr'
+          ? 'Publier mon avis'
+          : 'Publish my review'}
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
   </>
 )}
 {!selectedPro && [
