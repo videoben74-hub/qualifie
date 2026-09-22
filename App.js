@@ -1974,7 +1974,7 @@ borderRadius: 45,
 ) : profileSection === 'Informations entreprise' ? (
     <>
   <TouchableOpacity
-  onPress={() => setProfileSection(null)}
+  onPress={() => setProfileSection(accountType === 'client' ? 'Profil client' : null)}
   style={{ alignSelf: 'flex-start', marginBottom: 8 }}
 >
   <Text style={{ color: COLORS.navy, fontSize: 16, fontWeight: '700' }}>
