@@ -984,6 +984,75 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites, setFavorites, language, setLanguage }) {
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
+  const [realPros, setRealPros] = useState([]);
+
+  useEffect(() => {
+  const loadRealPros = async () => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select(`
+        id,
+        company_name,
+        company_city,
+        company_description,
+        company_photos,
+        rbq,
+        rbq_categories,
+        ccq_status
+      `)
+      .eq('account_type', 'business');
+
+    if (error) {
+      console.log('Erreur chargement entreprises :', error);
+      return;
+    }
+
+    const { data: reviewsData, error: reviewsError } = await supabase
+      .from('reviews')
+      .select('company_id, rating');
+
+    if (reviewsError) {
+      console.log('Erreur chargement avis :', reviewsError);
+    }
+
+    const formattedPros = (data || [])
+      .filter((company) => company.company_name?.trim())
+      .map((company) => {
+        const companyReviews = (reviewsData || []).filter(
+          (review) => review.company_id === company.id
+        );
+
+        const averageRating =
+          companyReviews.length > 0
+            ? companyReviews.reduce(
+                (total, review) => total + Number(review.rating || 0),
+                0
+              ) / companyReviews.length
+            : 0;
+
+        return {
+          id: company.id,
+          name: company.company_name,
+          trade: company.rbq_categories?.[0] || '',
+          trades: company.rbq_categories || [],
+          city: company.company_city || '',
+          description: company.company_description || '',
+          photos: company.company_photos || [],
+          rbq: company.rbq || '',
+          rating: averageRating,
+          reviews: companyReviews.length,
+          distance: null,
+          verified: true,
+          projectTypes: [],
+          workTypes: company.ccq_status || [],
+        };
+      });
+
+    setRealPros(formattedPros);
+  };
+
+  loadRealPros();
+}, []);
   const [addressQuery, setAddressQuery] = useState('');
 const [addressSuggestions, setAddressSuggestions] = useState([]);
 const [addressLoading, setAddressLoading] = useState(false);
