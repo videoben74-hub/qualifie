@@ -3735,23 +3735,32 @@ return (
   </>
 )}
 {!selectedPro && [
-  
+  {
+    fr: '📋 Soumissions reçues',
+    en: '📋 Quote requests',
+    section: 'QuoteRequests',
+  },
   { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
   { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
   { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
- 
-{ fr: '🏢 Informations de l’entreprise', en: '🏢 Company information', section: 'Informations entreprise' },
-{ fr: '🚪 Déconnexion', en: '🚪 Log out', section: 'Déconnexion' }, 
-  
-  
+  {
+    fr: '🏢 Informations de l’entreprise',
+    en: '🏢 Company information',
+    section: 'Informations entreprise',
+  },
+  { fr: '🚪 Déconnexion', en: '🚪 Log out', section: 'Déconnexion' },
 ].map((item) => (
   <TouchableOpacity
     key={item.section}
-    onPress={() =>
-      item.section === 'Déconnexion'
-        ? onLogout()
-        : setProfileSection(item.section)
-    }
+    onPress={() => {
+      if (item.section === 'Déconnexion') {
+        onLogout();
+      } else if (item.section === 'QuoteRequests') {
+        onNavigate('QuoteRequests');
+      } else {
+        setProfileSection(item.section);
+      }
+    }}
     style={styles.menuRow}
   >
     <Text style={styles.menuText}>
