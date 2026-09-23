@@ -3812,22 +3812,13 @@ return (
         : '🏆 Over 10 years of experience'}
     </Text>
 
-    <TouchableOpacity
-      style={styles.quoteBtn}
-      onPress={() => onNavigate('Projets', '', selectedPro)}
-    >
-      <Text style={styles.quoteBtnText}>
-        {language === 'fr'
-          ? '📋 Demander une soumission'
-          : '📋 Request a quote'}
-      </Text>
-    </TouchableOpacity>
+    
 
     <TouchableOpacity
-      style={styles.contactBtn}
+      style={styles.quoteBtn}
       onPress={() => onNavigate('Messages', '', selectedPro)}
     >
-      <Text style={styles.contactBtnText}>
+      <Text style={styles.quoteBtnText}>
         {language === 'fr'
           ? '💬 Message'
 : '💬 Message'}
@@ -3835,7 +3826,7 @@ return (
     </TouchableOpacity>
 
     <TouchableOpacity
-      style={styles.contactBtn}
+      style={styles.quoteBtn}
       onPress={() =>
         setFavorites((prev) =>
           prev.some((fav) => fav.id === selectedPro.id)
@@ -3844,7 +3835,7 @@ return (
         )
       }
     >
-      <Text style={styles.contactBtnText}>
+      <Text style={styles.quoteBtnText}>
         {favorites.some((fav) => fav.id === selectedPro.id)
           ? language === 'fr'
             ? '❤️ Retirer des favoris'
