@@ -4336,21 +4336,80 @@ return (
     }
 
     const { data, error } = await supabase
-      .from('quote_requests')
-      .insert({
-        client_id: user.id,
-        company_id: selectedPro.id,
-        address: address.trim(),
-        description: description.trim(),
-        status: 'new',
-      })
-      .select()
-      .single();
+  .from('quote_requests')
+  .insert({
+    client_id: user.id,
+    company_id: selectedPro.id,
+    address: address.trim(),
+    description: description.trim(),
+    status: 'new',
+  })
+  .select()
+  .single();
 
-    if (error) throw error;
+if (error) throw error;
 
-    setProjects((current) => [data, ...current]);
-    setSent(true);
+const user1Id =
+  user.id < selectedPro.id ? user.id : selectedPro.id;
+
+const user2Id =
+  user.id < selectedPro.id ? selectedPro.id : user.id;
+
+const {
+  data: existingConversation,
+  error: findConversationError,
+} = await supabase
+  .from('conversations')
+  .select('id')
+  .eq('user1_id', user1Id)
+  .eq('user2_id', user2Id)
+  .maybeSingle();
+
+if (findConversationError) {
+  throw findConversationError;
+}
+
+let conversationId = existingConversation?.id;
+
+if (!conversationId) {
+  const {
+    data: newConversation,
+    error: createConversationError,
+  } = await supabase
+    .from('conversations')
+    .insert({
+      user1_id: user1Id,
+      user2_id: user2Id,
+    })
+    .select('id')
+    .single();
+
+  if (createConversationError) {
+    throw createConversationError;
+  }
+
+  conversationId = newConversation.id;
+}
+
+const { error: messageError } = await supabase
+  .from('messages')
+  .insert({
+    conversation_id: conversationId,
+    sender_id: user.id,
+    content:
+      (language === 'fr'
+        ? '📋 Nouvelle demande de soumission'
+        : '📋 New quote request') +
+      '\n' +
+      description.trim() +
+      '\n📍 ' +
+      address.trim(),
+  });
+
+if (messageError) throw messageError;
+
+setProjects((current) => [data, ...current]);
+setSent(true);
   } catch (error) {
     console.log('Erreur soumission :', error);
     alert(error.message);
