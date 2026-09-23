@@ -1205,7 +1205,13 @@ const response = await fetch(
   );
 }
 
-function Messages({ selectedPro, language, setLanguage, onNavigate }) {
+function Messages({
+  selectedPro,
+  language,
+  setLanguage,
+  onNavigate,
+  onUnreadChange,
+}) {
   const [selectedChat, setSelectedChat] = useState(selectedPro?.name || null);
 const [messageText, setMessageText] = useState('');
 const [sentMessage, setSentMessage] = useState('');
@@ -1360,6 +1366,12 @@ const [messagesLoading, setMessagesLoading] = useState(true);
     }
 
     setChatMessages(data || []);
+    await supabase.rpc('mark_conversation_read', {
+  p_conversation_id: activeConversationId,
+});
+    if (onUnreadChange) {
+  onUnreadChange();
+    }
   };
 
   loadChatMessages();
@@ -1373,7 +1385,9 @@ const [messagesLoading, setMessagesLoading] = useState(true);
     if (selectedPro) {
       onNavigate('Profil', '', selectedPro);
     } else {
-      setSelectedChat(null);
+  setSelectedChat(null);
+  setActiveConversationId(null);
+  setChatMessages([]);
     }
   }}
 >
@@ -4924,9 +4938,34 @@ const [favorites, setFavorites] = useState([]);
 const [language, setLanguage] = useState('fr');
 const [userLocation, setUserLocation] = useState(null);
   const [accountType, setAccountType] = useState(null);
+ const [unreadCount, setUnreadCount] = useState(0);
   const [navProfilePhoto, setNavProfilePhoto] = useState(null);
 const [navProfileInitial, setNavProfileInitial] = useState('●');
 
+  const loadUnreadCount = async () => {
+  if (!accountType) {
+    setUnreadCount(0);
+    return;
+  }
+
+  const { data, error } = await supabase.rpc(
+    'get_unread_message_count'
+  );
+
+  if (!error) {
+    setUnreadCount(Number(data || 0));
+  }
+};
+
+useEffect(() => {
+  loadUnreadCount();
+
+  const interval = setInterval(() => {
+    loadUnreadCount();
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, [accountType]);
 useEffect(() => {
   const loadNavProfile = async () => {
     if (!accountType) {
@@ -5096,6 +5135,7 @@ tab === 'Messages' ? (
     language={language}
     setLanguage={setLanguage}
     onNavigate={navigate}
+      onUnreadChange={loadUnreadCount}
   />
 ) : (
   <Profile
@@ -5169,17 +5209,53 @@ tab === 'Messages' ? (
     </View>
   )
 ) : (
-  <Text
-    style={[
-      styles.navIcon,
-      (tab === tabName ||
-        (tabName === 'Profil' && tab === 'EntrepriseDemo')) &&
-        styles.navActive,
-    ]}
+  <View
+    style={{
+      position: 'relative',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
   >
-    {icon}
-  </Text>
+    <Text
+      style={[
+        styles.navIcon,
+        (tab === tabName ||
+          (tabName === 'Profil' && tab === 'EntrepriseDemo')) &&
+          styles.navActive,
+      ]}
+    >
+      {icon}
+    </Text>
+
+    {tabName === 'Messages' && unreadCount > 0 ? (
+      <View
+        style={{
+          position: 'absolute',
+          top: -6,
+          right: -12,
+          minWidth: 18,
+          height: 18,
+          borderRadius: 9,
+          paddingHorizontal: 4,
+          backgroundColor: COLORS.gold2,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 11,
+            fontWeight: '900',
+          }}
+        >
+          {unreadCount > 99 ? '99+' : unreadCount}
+        </Text>
+      </View>
+    ) : null}
+  </View>
 )}
+
   <Text style={[styles.navText, (tab === tabName || (tabName === 'Profil' && tab === 'EntrepriseDemo')) && styles.navActive]}>{label}</Text>
 </TouchableOpacity>
 ))}
