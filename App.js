@@ -1309,7 +1309,7 @@ const [sentMessage, setSentMessage] = useState('');
 
 function Profile({ onNavigate, selectedPro,
 favorites, setFavorites, language, setLanguage,
-accountType, onLogout }) {
+accountType, onLogout, onProfilePhotoChange }) {
   const [profileSection, setProfileSection] =
   useState(
     selectedPro
@@ -1646,10 +1646,62 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     allowsEditing: true,
     aspect: [1, 1],
     quality: 0.8,
+    base64: true,
   });
 
-  if (!result.canceled && result.assets?.length > 0) {
-    setProfilePhoto(result.assets[0].uri);
+  if (result.canceled || !result.assets?.length) return;
+
+  try {
+    const asset = result.assets[0];
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user || !asset.base64) return;
+
+    const binary = atob(asset.base64);
+    const bytes = new Uint8Array(binary.length);
+
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+
+    const filePath = `${user.id}/avatar-${Date.now()}.jpg`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, bytes.buffer, {
+        contentType: asset.mimeType || 'image/jpeg',
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
+
+    const publicUrl = data.publicUrl;
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({
+        avatar_url: publicUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', user.id);
+
+    if (profileError) throw profileError;
+
+    setProfilePhoto(publicUrl);
+    setClientPhoto(publicUrl);
+
+    if (onProfilePhotoChange) {
+      onProfilePhotoChange(publicUrl);
+    }
+  } catch (error) {
+    console.log('Erreur photo profil :', error);
+    alert(error.message);
   }
 };
   const pickClientPhoto = async () => {
@@ -4842,6 +4894,7 @@ tab === 'Messages' ? (
   language={language}
   setLanguage={setLanguage}
   accountType={accountType}
+  onProfilePhotoChange={setNavProfilePhoto}
     onLogout={handleLogout}
 />
 )
