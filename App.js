@@ -3721,7 +3721,7 @@ return (
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 >
   <ScrollView
-    contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
+    contentContainerStyle={[styles.page, { paddingBottom: 16
     keyboardShouldPersistTaps="handled"
     keyboardDismissMode="on-drag"
   >
