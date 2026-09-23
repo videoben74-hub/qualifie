@@ -4660,6 +4660,53 @@ const [favorites, setFavorites] = useState([]);
 const [language, setLanguage] = useState('fr');
 const [userLocation, setUserLocation] = useState(null);
   const [accountType, setAccountType] = useState(null);
+  const [navProfilePhoto, setNavProfilePhoto] = useState(null);
+const [navProfileInitial, setNavProfileInitial] = useState('●');
+
+useEffect(() => {
+  const loadNavProfile = async () => {
+    if (!accountType) {
+      setNavProfilePhoto(null);
+      setNavProfileInitial('●');
+      return;
+    }
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setNavProfilePhoto(null);
+      setNavProfileInitial('●');
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('avatar_url, full_name, company_name')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.log('Erreur photo barre profil :', error);
+      return;
+    }
+
+    setNavProfilePhoto(data?.avatar_url || null);
+
+    const displayName =
+      data?.full_name?.trim() ||
+      data?.company_name?.trim() ||
+      user.email?.trim() ||
+      '';
+
+    setNavProfileInitial(
+      displayName ? displayName.charAt(0).toUpperCase() : '●'
+    );
+  };
+
+  loadNavProfile();
+}, [accountType, tab]);
 useEffect(() => {
   const loadAccountType = async () => {
     const savedAccountType = await AsyncStorage.getItem(
@@ -4819,7 +4866,55 @@ tab === 'Messages' ? (
       : navigate(tabName)
   }
 >
-  <Text style={[styles.navIcon, (tab === tabName || (tabName === 'Profil' && tab === 'EntrepriseDemo')) && styles.navActive]}>{icon}</Text>
+  {tabName === 'Profil' && accountType ? (
+  navProfilePhoto ? (
+    <Image
+      source={{ uri: navProfilePhoto }}
+      style={{
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        borderWidth: 2,
+        borderColor:
+          tab === 'Profil' || tab === 'EntrepriseDemo'
+            ? COLORS.gold2
+            : '#AFB9C8',
+      }}
+    />
+  ) : (
+    <View
+      style={{
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        backgroundColor: COLORS.gold2,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontWeight: '900',
+          fontSize: 14,
+        }}
+      >
+        {navProfileInitial}
+      </Text>
+    </View>
+  )
+) : (
+  <Text
+    style={[
+      styles.navIcon,
+      (tab === tabName ||
+        (tabName === 'Profil' && tab === 'EntrepriseDemo')) &&
+        styles.navActive,
+    ]}
+  >
+    {icon}
+  </Text>
+)}
   <Text style={[styles.navText, (tab === tabName || (tabName === 'Profil' && tab === 'EntrepriseDemo')) && styles.navActive]}>{label}</Text>
 </TouchableOpacity>
 ))}
