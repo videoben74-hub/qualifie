@@ -1978,7 +1978,9 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
 
     setClientPhoto(publicUrl);
     setProfilePhoto(publicUrl);
-
+if (onProfilePhotoChange) {
+  onProfilePhotoChange(publicUrl);
+}
   } catch (error) {
     console.log('Erreur photo client :', error);
     alert(error.message);
