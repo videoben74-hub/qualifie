@@ -1216,6 +1216,161 @@ function Messages({ selectedPro, language, setLanguage, onNavigate }) {
   const [selectedChat, setSelectedChat] = useState(selectedPro?.name || null);
 const [messageText, setMessageText] = useState('');
 const [sentMessage, setSentMessage] = useState('');
+  const [conversations, setConversations] = useState([]);
+const [chatMessages, setChatMessages] = useState([]);
+const [activeConversationId, setActiveConversationId] = useState(null);
+const [currentUserId, setCurrentUserId] = useState(null);
+const [messagesLoading, setMessagesLoading] = useState(true);
+  
+    useEffect(() => {
+  const loadConversations = async () => {
+    try {
+      setMessagesLoading(true);
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setConversations([]);
+        setCurrentUserId(null);
+        return;
+      }
+
+      setCurrentUserId(user.id);
+
+      const { data, error } = await supabase
+        .from('conversations')
+        .select('*')
+        .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
+        .order('updated_at', { ascending: false });
+
+      if (error) throw error;
+
+      const rows = data || [];
+
+      const otherUserIds = rows.map((conversation) =>
+        conversation.user1_id === user.id
+          ? conversation.user2_id
+          : conversation.user1_id
+      );
+
+      if (otherUserIds.length === 0) {
+        setConversations([]);
+        return;
+      }
+
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, full_name, company_name, avatar_url')
+        .in('id', otherUserIds);
+
+      if (profilesError) throw profilesError;
+
+      const enriched = rows.map((conversation) => {
+        const otherUserId =
+          conversation.user1_id === user.id
+            ? conversation.user2_id
+            : conversation.user1_id;
+
+        const profile = profiles?.find(
+          (item) => item.id === otherUserId
+        );
+
+        return {
+          ...conversation,
+          otherUserId,
+          otherName:
+            profile?.company_name ||
+            profile?.full_name ||
+            'Utilisateur',
+          otherPhoto: profile?.avatar_url || null,
+        };
+      });
+
+      setConversations(enriched);
+    } catch (error) {
+      console.log('Erreur chargement conversations :', error);
+    } finally {
+      setMessagesLoading(false);
+    }
+  };
+
+  loadConversations();
+}, []);
+  useEffect(() => {
+  const openSelectedProConversation = async () => {
+    if (!selectedPro?.id) return;
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user || user.id === selectedPro.id) return;
+
+    setCurrentUserId(user.id);
+
+    const [user1Id, user2Id] = [user.id, selectedPro.id].sort();
+
+    const { data: existing, error: findError } = await supabase
+      .from('conversations')
+      .select('*')
+      .eq('user1_id', user1Id)
+      .eq('user2_id', user2Id)
+      .maybeSingle();
+
+    if (findError) {
+      console.log('Erreur recherche conversation :', findError);
+      return;
+    }
+
+    if (existing) {
+      setActiveConversationId(existing.id);
+      return;
+    }
+
+    const { data: created, error: createError } = await supabase
+      .from('conversations')
+      .insert({
+        user1_id: user1Id,
+        user2_id: user2Id,
+      })
+      .select()
+      .single();
+
+    if (createError) {
+      console.log('Erreur création conversation :', createError);
+      return;
+    }
+
+    setActiveConversationId(created.id);
+  };
+
+  openSelectedProConversation();
+}, [selectedPro]);
+    useEffect(() => {
+  const loadChatMessages = async () => {
+    if (!activeConversationId) {
+      setChatMessages([]);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('conversation_id', activeConversationId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.log('Erreur chargement messages :', error);
+      return;
+    }
+
+    setChatMessages(data || []);
+  };
+
+  loadChatMessages();
+}, [activeConversationId]);
   if (selectedChat) {
   return (
     <ScrollView contentContainerStyle={styles.page}>
@@ -1238,20 +1393,21 @@ const [sentMessage, setSentMessage] = useState('');
 
       <Text style={styles.screenTitle}>{selectedChat}</Text>
 
-      <View style={[styles.messageCard, { flexDirection: 'column', alignItems: 'stretch' }]}>
-        <Text style={styles.proName}>{selectedChat}</Text>
-        <Text style={styles.infoText}>
-  {language === 'fr'
-    ? 'Bonjour! Je peux vous envoyer une estimation ce soir.'
-    : 'Hello! I can send you an estimate this evening.'}
-</Text>
-      </View>
-{sentMessage ? (
-  <View style={styles.messageCard}>
-    <Text style={styles.proName}>Vous</Text>
-    <Text style={styles.infoText}>{sentMessage}</Text>
+      {chatMessages.map((message) => (
+  <View key={message.id} style={styles.messageCard}>
+    <Text style={styles.proName}>
+      {message.sender_id === currentUserId
+        ? language === 'fr'
+          ? 'Vous'
+          : 'You'
+        : selectedChat}
+    </Text>
+
+    <Text style={styles.infoText}>
+      {message.content}
+    </Text>
   </View>
-) : null}
+))}
       <TextInput
   value={messageText}
   onChangeText={setMessageText}
@@ -1262,12 +1418,34 @@ const [sentMessage, setSentMessage] = useState('');
 
       <TouchableOpacity
   style={styles.primaryBtn}
-  onPress={() => {
-    if (messageText.trim()) {
-      setSentMessage(messageText.trim());
-      setMessageText('');
-    }
-  }}
+  onPress={async () => {
+  const text = messageText.trim();
+
+  if (!text || !activeConversationId || !currentUserId) return;
+
+  const { data, error } = await supabase
+    .from('messages')
+    .insert({
+      conversation_id: activeConversationId,
+      sender_id: currentUserId,
+      content: text,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.log('Erreur envoi message :', error);
+    return;
+  }
+
+  setChatMessages((current) => [...current, data]);
+  setMessageText('');
+
+  await supabase
+    .from('conversations')
+    .update({ updated_at: new Date().toISOString() })
+    .eq('id', activeConversationId);
+}}
 >
   <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
@@ -1290,19 +1468,47 @@ const [sentMessage, setSentMessage] = useState('');
     <Text style={styles.screenTitle}>
       {language === 'fr' ? 'Messages' : 'Messages'}
     </Text>
-      {[
-        ['Finition Expert', language === 'fr' ? 'Bonjour! Je peux vous envoyer une estimation ce soir.' : 'Hello! I can send you an estimate tonight.', '10:42'],
-        ['Constructions RL', language === 'fr' ? 'Merci pour les détails du projet.' : 'Thank you for the project details.', language === 'fr' ? 'Hier' : 'Yesterday'],
-      ].map(([name,msg,time]) => (
-        <TouchableOpacity key={name} onPress={() => setSelectedChat(name)} style={styles.messageCard}>
-          <View style={styles.avatarSmall}><Text style={styles.avatarText}>{name[0]}</Text></View>
-          <View style={{flex:1}}>
-            <View style={styles.rowBetween}><Text style={styles.proName}>{name}</Text><Text style={styles.time}>{time}</Text></View>
-            <Text style={styles.infoText}>{msg}</Text>
-          </View>
-</TouchableOpacity>
-        
-      ))}
+      {messagesLoading ? (
+  <Text style={styles.infoText}>
+    {language === 'fr' ? 'Chargement...' : 'Loading...'}
+  </Text>
+) : conversations.length === 0 ? (
+  <Text style={styles.infoText}>
+    {language === 'fr'
+      ? 'Aucune conversation pour le moment.'
+      : 'No conversations yet.'}
+  </Text>
+) : (
+  conversations.map((conversation) => (
+    <TouchableOpacity
+      key={conversation.id}
+      onPress={() => {
+        setActiveConversationId(conversation.id);
+        setSelectedChat(conversation.otherName);
+      }}
+      style={styles.messageCard}
+    >
+      {conversation.otherPhoto ? (
+        <Image
+          source={{ uri: conversation.otherPhoto }}
+          style={styles.avatarSmall}
+        />
+      ) : (
+        <View style={styles.avatarSmall}>
+          <Text style={styles.avatarText}>
+            {conversation.otherName?.[0] || '?'}
+          </Text>
+        </View>
+      )}
+
+      <View style={{ flex: 1 }}>
+        <Text style={styles.proName}>
+          {conversation.otherName}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  ))
+)}
     </ScrollView>
   );
 }
