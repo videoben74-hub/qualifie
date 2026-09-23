@@ -3475,16 +3475,16 @@ return (
   style={styles.avatarLarge}
   onPress={pickProfilePhoto}
 >
-  {profilePhoto ? (
-    <Image
-      source={{ uri: profilePhoto }}
-      style={{ width: '100%', height: '100%', borderRadius: 999 }}
-    />
-  ) : (
-    <Text style={styles.avatarText}>
-      {selectedPro ? selectedPro.name.slice(0, 1) : '📷'}
-    </Text>
-  )}
+  {profilePhoto || (!selectedPro && clientPhoto) ? (
+  <Image
+    source={{ uri: profilePhoto || clientPhoto }}
+    style={{ width: '100%', height: '100%', borderRadius: 999 }}
+  />
+) : (
+  <Text style={styles.avatarText}>
+    {selectedPro ? selectedPro.name.slice(0, 1) : '📷'}
+  </Text>
+)}
 </TouchableOpacity>
 <Text style={styles.profileName}>
   {selectedPro
