@@ -4043,15 +4043,8 @@ return (
       </Text>
 
       {[
-        [
-          '📋',
-          language === 'fr'
-            ? 'Demandes de soumission'
-            : 'Quote requests',
-          language === 'fr'
-            ? '3 nouvelles demandes'
-            : '3 new requests',
-        ],
+        
+        
         [
           '💬',
           language === 'fr' ? 'Messages clients' : 'Client messages',
@@ -4085,8 +4078,11 @@ return (
         <TouchableOpacity
           key={title}
        onPress={() => {
-  if (title === (language === 'fr' ? 'Demandes de soumission' : 'Quote requests')) {
-    onNavigate('QuoteRequests');
+  if (
+    title ===
+    (language === 'fr' ? 'Messages clients' : 'Client messages')
+  ) {
+    onNavigate('Messages');
   } else if (
     title ===
     (language === 'fr'
@@ -4094,8 +4090,8 @@ return (
       : 'Company information')
   ) {
     setProfileSection('🛡 Devenir un pro vérifié');
-  
-}}}
+  }
+}}
           style={{
             backgroundColor: COLORS.card,
             borderRadius: 14,
