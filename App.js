@@ -1928,40 +1928,60 @@ const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
     allowsEditing: true,
     aspect: [1, 1],
     quality: 0.8,
+    base64: true,
   });
 
-  if (!result.canceled && result.assets?.length > 0) {
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+  if (result.canceled || !result.assets?.length) return;
 
-      if (!user) return;
+  try {
+    const asset = result.assets[0];
 
-      const imageUri = result.assets[0].uri;
-      const response = await fetch(imageUri);
-      const arrayBuffer = await response.arrayBuffer();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-      const filePath = `${user.id}/avatar.jpg`;
+    if (!user || !asset.base64) return;
 
-      const { error } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, arrayBuffer, {
-          contentType: 'image/jpeg',
-          upsert: true,
-        });
+    const binary = atob(asset.base64);
+    const bytes = new Uint8Array(binary.length);
 
-      if (error) throw error;
-
-      const { data } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
-
-      setClientPhoto(data.publicUrl);
-    } catch (error) {
-      console.log('Erreur upload photo :', error);
-      alert(error.message);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
     }
+
+    const filePath =
+      `${user.id}/avatar-${Date.now()}.jpg`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, bytes.buffer, {
+        contentType: asset.mimeType || 'image/jpeg',
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
+
+    const publicUrl = data.publicUrl;
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({
+        avatar_url: publicUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', user.id);
+
+    if (profileError) throw profileError;
+
+    setClientPhoto(publicUrl);
+    setProfilePhoto(publicUrl);
+
+  } catch (error) {
+    console.log('Erreur photo client :', error);
+    alert(error.message);
   }
 };
   const saveClientProfile = async () => {
