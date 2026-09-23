@@ -1196,14 +1196,7 @@ const response = await fetch(
   <TouchableOpacity onPress={() => onNavigate('Profil', '', p)} style={styles.secondaryBtn}>
     <Text style={styles.secondaryBtnText}>{language === 'fr' ? 'Voir le profil' : 'View profile'}</Text>
   </TouchableOpacity>
-  <TouchableOpacity
-  onPress={() => onNavigate('Projets', '', p)}
-  style={styles.smallGoldBtn}
->
-  <Text style={styles.smallGoldBtnText}>
-    {language === 'fr' ? 'Soumission' : 'Quote'}
-  </Text>
-</TouchableOpacity>
+  
           </View>
 </View>
 </View>
@@ -3798,8 +3791,8 @@ return (
     <View style={styles.verifiedBadge}>
       <Text style={styles.verifiedBadgeText}>
         {language === 'fr'
-          ? '✓ QualiVérifié — Entrepreneur vérifié'
-          : '✓ QualiVérifié — Verified contractor'}
+          ? '✓ QualiVérifié — Professionnel vérifié'
+          : '✓ QualiVérifié — Verified professional'}
       </Text>
     </View>
 
@@ -3836,8 +3829,8 @@ return (
     >
       <Text style={styles.contactBtnText}>
         {language === 'fr'
-          ? '💬 Contacter l’entrepreneur'
-          : '💬 Contact contractor'}
+          ? '💬 Message'
+: '💬 Message'}
       </Text>
     </TouchableOpacity>
 
