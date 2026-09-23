@@ -2350,8 +2350,8 @@ borderRadius: 45,
 >
   <Text style={[styles.sectionTitle, { marginBottom: 6 }]}>
     {language === 'fr'
-      ? '📝 Description de l’entreprise'
-      : '📝 Business description'}
+  ? '📝 Présentation et description'
+  : '📝 Presentation and description'}
   </Text>
 
   <Text
@@ -2575,56 +2575,7 @@ borderRadius: 45,
     </Text>
   </View>
 )}
-  <Text style={styles.sectionTitle}>
-  {language === 'fr'
-    ? 'Statut CCQ (facultatif)'
-    : 'CCQ status (optional)'}
-</Text>
-
-<View style={styles.grid}>
-  <TouchableOpacity
-    style={[
-      styles.categoryCard,
-      ccqStatus.includes('CCQ') && {
-        borderColor: COLORS.gold,
-        borderWidth: 2,
-      },
-    ]}
-    onPress={() =>
-      setCcqStatus((current) =>
-        current.includes('CCQ')
-          ? current.filter((item) => item !== 'CCQ')
-          : [...current, 'CCQ']
-      )
-    }
-  >
-    <Text style={styles.categoryText}>
-      {ccqStatus.includes('CCQ') ? '✓ ' : ''}CCQ
-    </Text>
-  </TouchableOpacity>
-
-  <TouchableOpacity
-    style={[
-      styles.categoryCard,
-      ccqStatus.includes('Hors CCQ') && {
-        borderColor: COLORS.gold,
-        borderWidth: 2,
-      },
-    ]}
-    onPress={() =>
-      setCcqStatus((current) =>
-        current.includes('Hors CCQ')
-          ? current.filter((item) => item !== 'Hors CCQ')
-          : [...current, 'Hors CCQ']
-      )
-    }
-  >
-    <Text style={styles.categoryText}>
-      {ccqStatus.includes('Hors CCQ') ? '✓ ' : ''}
-      {language === 'fr' ? 'Hors CCQ' : 'Non-CCQ'}
-    </Text>
-  </TouchableOpacity>
-</View>
+  
   <TouchableOpacity style={[styles.primaryBtn, (!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0) && { opacity: 0.4 }]} disabled={!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0} onPress={() => setProfileSection('Vérification en cours')}>
         <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Commencer la vérification' : 'Start verification'}</Text>
       </TouchableOpacity>
