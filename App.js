@@ -3714,10 +3714,10 @@ return (
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 >
   <ScrollView
-    contentContainerStyle={[styles.page, { paddingBottom: 16
-    keyboardShouldPersistTaps="handled"
-    keyboardDismissMode="on-drag"
-  >
+  contentContainerStyle={[styles.page, { paddingBottom: 16 }]}
+  keyboardShouldPersistTaps="handled"
+  keyboardDismissMode="on-drag"
+>
 <AppHeader language={language} setLanguage={setLanguage} />
 <>
 {selectedPro && (
