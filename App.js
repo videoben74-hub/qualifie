@@ -3950,11 +3950,7 @@ return (
   </>
 )}
 {!selectedPro && [
-  {
-    fr: '📋 Soumissions reçues',
-    en: '📋 Quote requests',
-    section: 'QuoteRequests',
-  },
+  
   { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
   { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
   { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
@@ -3970,8 +3966,6 @@ return (
     onPress={() => {
       if (item.section === 'Déconnexion') {
         onLogout();
-      } else if (item.section === 'QuoteRequests') {
-        onNavigate('QuoteRequests');
       } else {
         setProfileSection(item.section);
       }
