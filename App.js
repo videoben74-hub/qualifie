@@ -1400,21 +1400,58 @@ const [messagesLoading, setMessagesLoading] = useState(true);
 
       <Text style={styles.screenTitle}>{selectedChat}</Text>
 
-      {chatMessages.map((message) => (
-  <View key={message.id} style={styles.messageCard}>
-    <Text style={styles.proName}>
-      {message.sender_id === currentUserId
-        ? language === 'fr'
-          ? 'Vous'
-          : 'You'
-        : selectedChat}
-    </Text>
+      {chatMessages.map((message) => {
+  const isMine = message.sender_id === currentUserId;
 
-    <Text style={styles.infoText}>
-      {message.content}
-    </Text>
-  </View>
-))}
+  return (
+    <View
+      key={message.id}
+      style={{
+        alignSelf: isMine ? 'flex-end' : 'flex-start',
+        maxWidth: '82%',
+        marginBottom: 10,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.muted,
+          fontSize: 12,
+          fontWeight: '700',
+          marginBottom: 3,
+          textAlign: isMine ? 'right' : 'left',
+        }}
+      >
+        {isMine
+          ? language === 'fr'
+            ? 'Vous'
+            : 'You'
+          : selectedChat}
+      </Text>
+
+      <View
+        style={{
+          backgroundColor: isMine ? COLORS.gold2 : '#FFFFFF',
+          borderRadius: 16,
+          paddingVertical: 10,
+          paddingHorizontal: 14,
+          borderWidth: isMine ? 0 : 1,
+          borderColor: COLORS.line,
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.navy,
+            fontSize: 15,
+            lineHeight: 20,
+            fontWeight: '600',
+          }}
+        >
+          {message.content}
+        </Text>
+      </View>
+    </View>
+  );
+})}
       <TextInput
   value={messageText}
   onChangeText={setMessageText}
