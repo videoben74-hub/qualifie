@@ -301,8 +301,9 @@ function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
   return (
     <View style={{
       backgroundColor: COLORS.navy,
-      borderBottomLeftRadius: 22,
-      borderBottomRightRadius: 22,
+marginHorizontal: -12,
+borderBottomLeftRadius: 0,
+borderBottomRightRadius: 0,
       paddingTop: Platform.OS === 'android' ? 38 : 14,
 paddingBottom: 9,
 paddingHorizontal: 8,
@@ -1466,6 +1467,16 @@ const [messagesLoading, setMessagesLoading] = useState(true);
     </View>
   );
 })}
+  </ScrollView>
+
+<View
+  style={{
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 12,
+    backgroundColor: COLORS.bg,
+  }}
+>
       <TextInput
   value={messageText}
   onChangeText={setMessageText}
@@ -1510,7 +1521,7 @@ onFocus={() =>
 >
   <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
-    </ScrollView>
+    </View>
 </View>
   );
 }
