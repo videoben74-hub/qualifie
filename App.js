@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import {
   SafeAreaView,
   View,
@@ -1220,7 +1220,7 @@ const [chatMessages, setChatMessages] = useState([]);
 const [activeConversationId, setActiveConversationId] = useState(null);
 const [currentUserId, setCurrentUserId] = useState(null);
 const [messagesLoading, setMessagesLoading] = useState(true);
-  
+  const scrollRef = useRef(null);
     useEffect(() => {
   const loadConversations = async () => {
     try {
@@ -1380,9 +1380,15 @@ const [messagesLoading, setMessagesLoading] = useState(true);
   return (
     
   <ScrollView
+    ref={scrollRef}
     contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
     keyboardShouldPersistTaps="handled"
-  >
+  
+      onContentSizeChange={() =>
+  scrollRef.current?.scrollToEnd({ animated: false })
+        }
+        >
+        
       <AppHeader language={language} setLanguage={setLanguage} />
       <TouchableOpacity
   onPress={() => {
@@ -1462,6 +1468,9 @@ const [messagesLoading, setMessagesLoading] = useState(true);
       <TextInput
   value={messageText}
   onChangeText={setMessageText}
+onFocus={() =>
+  setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 250)
+  }
   placeholder={language === 'fr' ? 'Écrire un message...' : 'Write a message...'}
   placeholderTextColor={COLORS.muted}
   style={styles.input}
