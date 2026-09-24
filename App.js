@@ -1379,7 +1379,11 @@ const [messagesLoading, setMessagesLoading] = useState(true);
 }, [activeConversationId]);
   if (selectedChat) {
   return (
-  <View style={{ flex: 1 }}>
+  <KeyboardAvoidingView
+  style={{ flex: 1 }}
+  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  keyboardVerticalOffset={0}
+>
     <AppHeader language={language} setLanguage={setLanguage} />
 
 
@@ -1522,7 +1526,7 @@ onFocus={() =>
   <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
     </View>
-</View>
+</KeyboardAvoidingView>
   );
 }
   return (
