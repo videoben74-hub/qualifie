@@ -1378,10 +1378,7 @@ const [messagesLoading, setMessagesLoading] = useState(true);
 }, [activeConversationId]);
   if (selectedChat) {
   return (
-    <KeyboardAvoidingView
-  style={{ flex: 1 }}
-  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
->
+    
   <ScrollView
     contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
     keyboardShouldPersistTaps="handled"
@@ -1419,21 +1416,7 @@ const [messagesLoading, setMessagesLoading] = useState(true);
         marginBottom: 10,
       }}
     >
-      <Text
-        style={{
-          color: COLORS.muted,
-          fontSize: 12,
-          fontWeight: '700',
-          marginBottom: 3,
-          textAlign: isMine ? 'right' : 'left',
-        }}
-      >
-        {isMine
-          ? language === 'fr'
-            ? 'Vous'
-            : 'You'
-          : selectedChat}
-      </Text>
+      
 
       <View
   style={{
@@ -1518,7 +1501,7 @@ const [messagesLoading, setMessagesLoading] = useState(true);
   <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
     </ScrollView>
-</KeyboardAvoidingView>
+
   );
 }
   return (
