@@ -1378,18 +1378,19 @@ const [messagesLoading, setMessagesLoading] = useState(true);
 }, [activeConversationId]);
   if (selectedChat) {
   return (
-    
-  <ScrollView
-    ref={scrollRef}
-    contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
-    keyboardShouldPersistTaps="handled"
-  
+  <View style={{ flex: 1 }}>
+    <AppHeader language={language} setLanguage={setLanguage} />
+
+
+    <ScrollView
+  style={{ flex: 1 }}
+      ref={scrollRef}
+      contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
+      keyboardShouldPersistTaps="handled"
       onContentSizeChange={() =>
-  scrollRef.current?.scrollToEnd({ animated: false })
-        }
-        >
-        
-      <AppHeader language={language} setLanguage={setLanguage} />
+        scrollRef.current?.scrollToEnd({ animated: false })
+      }
+    >
       <TouchableOpacity
   onPress={() => {
     if (selectedPro) {
@@ -1510,7 +1511,7 @@ onFocus={() =>
   <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
     </ScrollView>
-
+</View>
   );
 }
   return (
