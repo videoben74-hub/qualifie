@@ -515,7 +515,7 @@ const useCurrentLocation = async () => {
 
 return (
     <ScrollView
-  contentContainerStyle={styles.page}
+  contentContainerStyle={[styles.page, { paddingTop: 0 }]}
   keyboardShouldPersistTaps="handled"
 >
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
@@ -1530,7 +1530,7 @@ onFocus={() =>
   );
 }
   return (
-  <ScrollView contentContainerStyle={styles.page}>
+  <ScrollView contentContainerStyle={[styles.page, { paddingTop: 0 }]}>
     <AppHeader language={language} setLanguage={setLanguage} />
 
     <TouchableOpacity
@@ -3749,7 +3749,7 @@ return (
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 >
   <ScrollView
-  contentContainerStyle={[styles.page, { paddingBottom: 16 }]}
+  contentContainerStyle={[styles.page, { paddingTop: 0, paddingBottom: 16 }]}
   keyboardShouldPersistTaps="handled"
   keyboardDismissMode="on-drag"
 >
