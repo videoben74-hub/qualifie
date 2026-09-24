@@ -1378,7 +1378,14 @@ const [messagesLoading, setMessagesLoading] = useState(true);
 }, [activeConversationId]);
   if (selectedChat) {
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+    <KeyboardAvoidingView
+  style={{ flex: 1 }}
+  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+>
+  <ScrollView
+    contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
+    keyboardShouldPersistTaps="handled"
+  >
       <AppHeader language={language} setLanguage={setLanguage} />
       <TouchableOpacity
   onPress={() => {
@@ -1429,26 +1436,43 @@ const [messagesLoading, setMessagesLoading] = useState(true);
       </Text>
 
       <View
-        style={{
-          backgroundColor: isMine ? COLORS.gold2 : '#FFFFFF',
-          borderRadius: 16,
-          paddingVertical: 10,
-          paddingHorizontal: 14,
-          borderWidth: isMine ? 0 : 1,
-          borderColor: COLORS.line,
-        }}
-      >
-        <Text
-          style={{
-            color: COLORS.navy,
-            fontSize: 15,
-            lineHeight: 20,
-            fontWeight: '600',
-          }}
-        >
-          {message.content}
-        </Text>
-      </View>
+  style={{
+    backgroundColor: isMine ? COLORS.gold2 : '#FFFFFF',
+    borderRadius: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderWidth: isMine ? 0 : 1,
+    borderColor: COLORS.line,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 15,
+      lineHeight: 20,
+      fontWeight: '600',
+    }}
+  >
+    {message.content}
+  </Text>
+</View>
+    <Text
+  style={{
+    color: COLORS.muted,
+    fontSize: 11,
+    marginTop: 4,
+    textAlign: isMine ? 'right' : 'left',
+  }}
+>
+  {new Date(message.created_at).toLocaleDateString(
+    language === 'fr' ? 'fr-CA' : 'en-CA',
+    { day: 'numeric', month: 'short', year: 'numeric' }
+  )}{' · '}
+  {new Date(message.created_at).toLocaleTimeString(
+    language === 'fr' ? 'fr-CA' : 'en-CA',
+    { hour: '2-digit', minute: '2-digit' }
+  )}
+</Text>
     </View>
   );
 })}
@@ -1494,6 +1518,7 @@ const [messagesLoading, setMessagesLoading] = useState(true);
   <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
     </ScrollView>
+</KeyboardAvoidingView>
   );
 }
   return (
