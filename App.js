@@ -5341,7 +5341,11 @@ tab === 'Messages' ? (
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.navy, paddingTop: Platform.OS === 'android' ? 12 : 0, paddingBottom: Platform.OS === 'android' ? 28 : 0 },
   content: { flex: 1, backgroundColor: COLORS.bg },
-  page: { padding: 12, paddingBottom: 16 },
+  page: {
+  paddingHorizontal: 12,
+  paddingTop: 0,
+  paddingBottom: 16,
+},
   header: { backgroundColor: COLORS.navy, borderRadius: 18, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 18 },
   logoCircle: { width: 50, height: 50, borderRadius: 25, backgroundColor: COLORS.gold, alignItems: 'center', justifyContent: 'center' },
   logoQ: { color: COLORS.navy, fontWeight: '900', fontSize: 19 },
