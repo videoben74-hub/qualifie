@@ -1785,7 +1785,29 @@ useEffect(() => {
       );
       return;
     }
+let companyLatitude = null;
+let companyLongitude = null;
 
+if (companyAddress.trim()) {
+  let permission =
+    await Location.getForegroundPermissionsAsync();
+
+  if (permission.status !== 'granted') {
+    permission =
+      await Location.requestForegroundPermissionsAsync();
+  }
+
+  if (permission.status === 'granted') {
+    const locations = await Location.geocodeAsync(
+      `${companyAddress}, ${companyCity}, ${companyPostalCode}, Québec, Canada`
+    );
+
+    if (locations.length > 0) {
+      companyLatitude = locations[0].latitude;
+      companyLongitude = locations[0].longitude;
+    }
+  }
+}
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -1796,6 +1818,8 @@ useEffect(() => {
         rbq: rbq,
         company_city: companyCity,
         company_address: companyAddress,
+        company_latitude: companyLatitude,
+company_longitude: companyLongitude,
         company_postal_code: companyPostalCode,
         company_phone: companyPhone,
         company_email: companyEmail,
