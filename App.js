@@ -5598,11 +5598,11 @@ categoryText: {
 },
   
   time: { color: COLORS.muted, fontSize: 11 },
-  profileCard: { alignItems: 'center', backgroundColor: COLORS.card, borderRadius: 18, padding: 24, marginBottom: 14, borderWidth: 1, borderColor: COLORS.line },
-  profileName: { color: COLORS.navy, fontWeight: '900', fontSize: 20, marginBottom: 5 },
-  menuRow: { backgroundColor: COLORS.card, borderBottomWidth: 1, borderBottomColor: COLORS.line, paddingVertical: 17, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' },
-  menuText: { color: COLORS.text, fontWeight: '700' },
-  chevron: { color: COLORS.gold, fontSize: 24 },
+  profileCard: { alignItems: 'center', backgroundColor: COLORS.navy, borderRadius: 18, padding: 24, marginBottom: 14, borderWidth: 1.5, borderColor: COLORS.gold },
+  profileName: { color: COLORS.gold2, fontWeight: '900', fontSize: 20, marginBottom: 5 },
+  menuRow: { backgroundColor: COLORS.navy, borderWidth: 1.5, borderColor: COLORS.gold, borderRadius: 14, marginBottom: 10, paddingVertical: 17, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' },
+  menuText: { color: COLORS.gold2, fontWeight: '700' },
+  chevron: { color: '#FFFFFF', fontSize: 24 },
   nav: {
   flexDirection: 'row',
   backgroundColor: COLORS.navy,
