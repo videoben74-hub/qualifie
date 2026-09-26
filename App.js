@@ -852,20 +852,38 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
 </TouchableOpacity>
 
 </View>
-    <Text
+    <View
   style={{
-    color: COLORS.muted,
-    fontSize: 11,
-    lineHeight: 15,
-    textAlign: 'center',
+    backgroundColor: COLORS.navy,
+    borderWidth: 1.5,
+    borderColor: COLORS.gold,
+    borderRadius: 12,
     marginTop: 14,
     marginHorizontal: 12,
+    paddingVertical: 11,
+    paddingHorizontal: 14,
   }}
 >
-  {language === 'fr'
-    ? 'Sous toutes réserves, les entrepreneurs s’engagent à exécuter seulement les travaux qui leur sont conférés par leur licence.'
-    : 'Subject to all applicable requirements, contractors undertake to perform only the work authorized by their licence.'}
-</Text>
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontSize: 11,
+      lineHeight: 16,
+      textAlign: 'center',
+      fontWeight: '600',
+    }}
+  >
+    <Text style={{ color: COLORS.gold, fontWeight: '800' }}>
+      {language === 'fr'
+        ? 'Sous toutes réserves, '
+        : 'Subject to all applicable requirements, '}
+    </Text>
+
+    {language === 'fr'
+      ? 'les entrepreneurs s’engagent à exécuter seulement les travaux qui leur sont conférés par leur licence.'
+      : 'contractors undertake to perform only the work authorized by their licence.'}
+  </Text>
+</View>
     </ScrollView>
   );
 }
