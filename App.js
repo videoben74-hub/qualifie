@@ -198,12 +198,33 @@ const cleaningCategories = [
   'Nettoyage de vitres',
   'Nettoyage résidentiel',
 ];
-
+const specializedSupplierCategories = [
+  'Bois sur mesure',
+  'Cabanons',
+  'Fabricant d’armoires de cuisine',
+  'Fournisseur d’asphalte',
+  'Fournisseur de béton',
+  'Fournisseur de pavé uni',
+  'Fournisseur de portes et fenêtres',
+  'Fournisseur de rampes et escaliers',
+  'Fournisseur de sable et gravier',
+  'Fournisseur de tourbe',
+];
 const tradeTranslations = {
   'Rénovation générale': 'General renovation',
     'Monteur d’acier': 'Steel erector',
   'Marketing': 'Marketing',
   'Exterminateur / gestion parasitaire': 'Exterminator / pest control',
+  'Bois sur mesure': 'Custom wood products',
+'Cabanons': 'Sheds',
+'Fabricant d’armoires de cuisine': 'Kitchen cabinet manufacturer',
+'Fournisseur d’asphalte': 'Asphalt supplier',
+'Fournisseur de béton': 'Concrete supplier',
+'Fournisseur de pavé uni': 'Interlocking paver supplier',
+'Fournisseur de portes et fenêtres': 'Doors and windows supplier',
+'Fournisseur de rampes et escaliers': 'Railings and stairs supplier',
+'Fournisseur de sable et gravier': 'Sand and gravel supplier',
+'Fournisseur de tourbe': 'Sod supplier',
 'Portes de garage': 'Garage doors',
 'Serrurerie': 'Locksmith',
 'Systèmes d’alarme et sécurité': 'Alarm and security systems',
@@ -850,7 +871,17 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
       : 'Cleaning and containers'}
   </Text>
 </TouchableOpacity>
-
+<TouchableOpacity
+  style={styles.categoryCard}
+  onPress={() => onNavigate('Metiers', 'Fournisseurs spécialisés')}
+>
+  <Text style={styles.categoryIcon}>⌂</Text>
+  <Text style={styles.categoryText}>
+    {language === 'fr'
+      ? 'Fournisseurs spécialisés'
+      : 'Specialized suppliers'}
+  </Text>
+</TouchableOpacity>
 </View>
     <View
   style={{
@@ -915,6 +946,8 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           ? 'Inspection et services professionnels'
           : initialType === 'Nettoyage et conteneur'
           ? 'Nettoyage et conteneur'
+          : initialType === 'Fournisseurs spécialisés'
+          ? 'Fournisseurs spécialisés'
           : initialType === 'Résidentiel CCQ'
           ? 'Résidentiel CCQ'
           : initialType === 'Commercial'
@@ -926,6 +959,8 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           ? 'Inspection and professional services'
           : initialType === 'Nettoyage et conteneur'
           ? 'Cleaning and containers'
+          : initialType === 'Fournisseurs spécialisés'
+          ? 'Specialized suppliers'
           : initialType === 'Résidentiel CCQ'
           ? 'Residential CCQ'
           : initialType === 'Commercial'
@@ -938,6 +973,8 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
   ? professionalServices
   : initialType === 'Nettoyage et conteneur'
   ? cleaningCategories
+    : initialType === 'Fournisseurs spécialisés'
+? specializedSupplierCategories
   : initialType === 'Commercial'
   ? commercialCategories
   : initialType === 'Résidentiel CCQ'
@@ -2915,6 +2952,7 @@ borderRadius: 45,
       'Commercial',
       'Inspection et services professionnels',
       'Nettoyage et conteneur',
+      'Fournisseurs spécialisés',
     ].map((division) => {
       const isSelected = selectedDivisions.includes(division);
 
@@ -2951,6 +2989,7 @@ borderRadius: 45,
         'Commercial': 'Commercial',
         'Inspection et services professionnels': 'Inspection and professional services',
         'Nettoyage et conteneur': 'Cleaning and container services',
+      'Fournisseurs spécialisés': 'Specialized suppliers',
       }[division] || division)}
 </Text>
         </TouchableOpacity>
@@ -3186,7 +3225,9 @@ borderRadius: 45,
   'Arpenteur-géomètre',
   'Ascenseurs et monte-charges',
   'Béton',
+      'Bois sur mesure',
   'Briqueteur',
+      'Cabanons',
   'Calfeutrage',
   'Céramique',
   'Charpente et menuiserie',
@@ -3209,11 +3250,20 @@ borderRadius: 45,
   'Escaliers et rampes',
 'Excavation',
 'Exterminateur / gestion parasitaire',
+      'Fabricant d’armoires de cuisine',
 'Ferblanterie',
   'Fissure de béton',
   'Fissure de fondation',
   'Fondation',
+      
   'Frigoriste',
+      'Fournisseur d’asphalte',
+      'Fournisseur de béton',
+      'Fournisseur de pavé uni',
+      'Fournisseur de portes et fenêtres',
+      'Fournisseur de rampes et escaliers',
+      'Fournisseur de sable et gravier',
+      'Fournisseur de tourbe',
   'Génie civil',
   'Gouttière',
   'Grutier',
