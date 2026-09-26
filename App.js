@@ -1030,7 +1030,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 
     <Text
       style={{
-        color: COLORS.navy,
+        color: '#FFFFFF',
         fontSize: 22,
         fontWeight: '700',
         marginLeft: 6,
@@ -5525,13 +5525,13 @@ whyTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 13, marginTop: 7, m
 
 categoryCard: {
   width: '48%',
-  backgroundColor: COLORS.card,
+  backgroundColor: COLORS.navy,
   minHeight: 74,
   paddingVertical: 12,
   paddingHorizontal: 12,
   borderRadius: 14,
   borderWidth: 1,
-  borderColor: COLORS.line,
+  borderColor: COLORS.navy2,
   justifyContent: 'center',
 },
 
@@ -5543,7 +5543,8 @@ categoryIcon: {
 },
 
 categoryText: {
-  color: COLORS.text,
+  color: COLORS.gold2,
+  
   fontWeight: '800',
   fontSize: 14,
   lineHeight: 18,
