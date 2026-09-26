@@ -1720,7 +1720,7 @@ console.log('ACCOUNT TYPE DANS PROFILE =', accountType);
   const [subscriptionFlow, setSubscriptionFlow] = useState(false);
   const [selectedDivisionCount, setSelectedDivisionCount] = useState(null);
   const [selectedDivisions, setSelectedDivisions] = useState([]);
-  
+  const [subscriptionStatus, setSubscriptionStatus] = useState('inactive');
 const [profilePhoto, setProfilePhoto] = useState(null);
 const [clientName, setClientName] = useState('');
 const [clientEmail, setClientEmail] = useState('');
@@ -1766,7 +1766,10 @@ useEffect(() => {
           company_email,
           company_website,
           rbq_categories,
-          ccq_status
+ccq_status,
+subscription_division_count,
+subscription_divisions,
+subscription_status
         `)
         .eq('id', user.id)
         .maybeSingle();
@@ -1797,6 +1800,13 @@ useEffect(() => {
           ? [data.ccq_status]
           : []
       );
+      setSelectedDivisionCount(data.subscription_division_count || null);
+setSelectedDivisions(
+  Array.isArray(data.subscription_divisions)
+    ? data.subscription_divisions
+    : []
+);
+setSubscriptionStatus(data.subscription_status || 'inactive');
     } catch (error) {
       console.log('Erreur chargement profil entreprise :', error);
     } finally {
@@ -1892,6 +1902,9 @@ company_longitude: companyLongitude,
         company_website: companyWebsite,
         rbq_categories: rbqCategories,
         ccq_status: ccqStatus.length > 0 ? ccqStatus[0] : null,
+        subscription_division_count: selectedDivisionCount,
+subscription_divisions: selectedDivisions,
+subscription_status: subscriptionStatus,
       })
       .eq('id', user.id);
 
@@ -3008,7 +3021,30 @@ borderRadius: 45,
       disabled={
         selectedDivisions.length !== selectedDivisionCount
       }
-      onPress={() => setProfileSection('Résumé forfait')}
+      onPress={async () => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      subscription_division_count: selectedDivisionCount,
+      subscription_divisions: selectedDivisions,
+      subscription_status: 'inactive',
+    })
+    .eq('id', user.id);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  setSubscriptionStatus('inactive');
+  setProfileSection('Résumé forfait');
+}}
     >
       <Text style={styles.primaryBtnText}>
         {language === 'fr' ? 'Continuer ›' : 'Continue ›'}
