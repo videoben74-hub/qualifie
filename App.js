@@ -3886,13 +3886,7 @@ return (
       </View>
 {selectedPro && (
   <>
-    <View style={styles.verifiedBadge}>
-      <Text style={styles.verifiedBadgeText}>
-        {language === 'fr'
-          ? '✓ QualiVérifié — Professionnel vérifié'
-          : '✓ QualiVérifié — Verified professional'}
-      </Text>
-    </View>
+    
 
     <Text style={styles.sectionTitle}>
       {language === 'fr' ? 'À propos' : 'About'}
@@ -3940,24 +3934,9 @@ return (
       </Text>
     </TouchableOpacity>
 
-    <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '🛡️ Vérifications' : '🛡️ Verifications'}
-    </Text>
+    
 
-    <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? '✅ RBQ  •  ✅ Assurance  •  ✅ Identité'
-        : '✅ RBQ  •  ✅ Insurance  •  ✅ Identity'}
-    </Text>
-
-    <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '📍 Zones desservies' : '📍 Service areas'}
-    </Text>
-
-    <Text style={styles.profileInfo}>
-      Montréal • Laval • Rive-Nord • Rive-Sud
-    </Text>
-
+    
     
 
     <Text style={styles.sectionTitle}>
