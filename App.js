@@ -995,7 +995,24 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     </ScrollView>
   );
 }
-function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites, setFavorites, language, setLanguage }) {
+function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites, setFavorites, language, setLanguage, userLocation }) {
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const earthRadius = 6371;
+  const toRadians = (value) => (value * Math.PI) / 180;
+
+  const latitudeDifference = toRadians(lat2 - lat1);
+  const longitudeDifference = toRadians(lon2 - lon1);
+
+  const a =
+    Math.sin(latitudeDifference / 2) ** 2 +
+    Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(longitudeDifference / 2) ** 2;
+
+  return Math.round(
+    earthRadius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  );
+};
   const [query, setQuery] = useState(initialCategory);
   const [city, setCity] = useState('');
   const [realPros, setRealPros] = useState([]);
@@ -1007,6 +1024,8 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
       .select(`
         id,
         company_name,
+        company_latitude,
+company_longitude,
         company_city,
         company_description,
         company_photos,
@@ -1055,7 +1074,17 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
           rbq: company.rbq || '',
           rating: averageRating,
           reviews: companyReviews.length,
-          distance: null,
+          distance:
+  userLocation &&
+  company.company_latitude != null &&
+  company.company_longitude != null
+    ? calculateDistance(
+        userLocation.latitude,
+        userLocation.longitude,
+        Number(company.company_latitude),
+        Number(company.company_longitude)
+      )
+    : null,
           verified: true,
           projectTypes: [],
           workTypes: Array.isArray(company.ccq_status)
@@ -1175,8 +1204,10 @@ const response = await fetch(
   </View>
 </View>
             <Text style={styles.proTrade}>{language === 'fr' ? p.trade : (tradeTranslations[p.trade] || p.trade)}</Text>
-            <Text style={styles.proMeta}>★ {p.rating} ({p.reviews})  •  {p.city}, QC  •  {p.distance} km</Text>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+            <Text style={styles.proMeta}>
+  ★ {p.rating} ({p.reviews}) • {p.city}, QC
+  {p.distance != null ? ` • ${p.distance} km` : ''}
+</Text>
   {p.projectTypes?.map((type) => (
   <Text key={type} style={styles.badgeText}>
     {type === 'Résidentiel' ? ' 🏠 ' : ' 🏢 '}
@@ -5177,11 +5208,16 @@ tab === 'Signup' ? (
     />
   ) :
 tab === 'Metiers' ? <Metiers onNavigate={navigate} initialType={category} language={language} setLanguage={setLanguage} /> :
-    tab === 'Pros' ? <Pros initialCategory=
-{category} initialFilters={filters} onNavigate=
-{navigate} favorites={favorites} setFavorites=
-{setFavorites} language={language} setLanguage=
-{setLanguage} /> :
+    tab === 'Pros' ? <Pros
+  initialCategory={category}
+  initialFilters={filters}
+  onNavigate={navigate}
+  favorites={favorites}
+  setFavorites={setFavorites}
+  language={language}
+  setLanguage={setLanguage}
+  userLocation={userLocation}
+/> :
 tab === 'Projets' ? (
   <Projets
     onNavigate={navigate}
