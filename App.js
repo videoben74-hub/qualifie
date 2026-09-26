@@ -1208,6 +1208,7 @@ const response = await fetch(
   ★ {p.rating} ({p.reviews}) • {p.city}, QC
   {p.distance != null ? ` • ${p.distance} km` : ''}
 </Text>
+<View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
   {p.projectTypes?.map((type) => (
   <Text key={type} style={styles.badgeText}>
     {type === 'Résidentiel' ? ' 🏠 ' : ' 🏢 '}
