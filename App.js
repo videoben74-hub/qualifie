@@ -1099,7 +1099,7 @@ company_longitude,
   };
 
   loadRealPros();
-}, []);
+}, [userLocation]);
   const [addressQuery, setAddressQuery] = useState('');
 const [addressSuggestions, setAddressSuggestions] = useState([]);
 const [addressLoading, setAddressLoading] = useState(false);
