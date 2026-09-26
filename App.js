@@ -1141,18 +1141,17 @@ const response = await fetch(
 
   const sourcePros = realPros;
 
-  return sourcePros
-    .filter(
-      (p) =>
-        (!q ||
-          p.trade?.toLowerCase().includes(q) ||
-          p.name?.toLowerCase().includes(q)) &&
-        (!c || p.city?.toLowerCase().includes(c)) &&
-        (!initialFilters.projectType ||
-          p.projectTypes?.includes(initialFilters.projectType)) &&
-        (!initialFilters.workType ||
-          p.workTypes?.includes(initialFilters.workType))
-    )
+  return sourcePros.filter(
+  (p) =>
+    (!q ||
+      p.name?.toLowerCase().includes(q) ||
+      p.trades?.some((trade) =>
+        trade.toLowerCase().includes(q)
+      )) &&
+    (!c || p.city?.toLowerCase().includes(c)) &&
+    (!initialFilters.workType ||
+      p.workTypes?.includes(initialFilters.workType))
+)
     .sort((a, b) => {
       if (a.distance == null) return 1;
       if (b.distance == null) return -1;
