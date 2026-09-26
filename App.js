@@ -1209,7 +1209,12 @@ const response = await fetch(
     </TouchableOpacity>
   </View>
 </View>
-            <Text style={styles.proTrade}>{language === 'fr' ? p.trade : (tradeTranslations[p.trade] || p.trade)}</Text>
+            <Text style={styles.proTrade}>
+  {language === 'fr'
+    ? (p.trades?.includes(query) ? query : p.trade)
+    : (tradeTranslations[p.trades?.includes(query) ? query : p.trade] ||
+       (p.trades?.includes(query) ? query : p.trade))}
+</Text>
             <Text style={styles.proMeta}>
   ★ {p.rating} ({p.reviews}) • {p.city}, QC
   {p.distance != null ? ` • ${p.distance} km` : ''}
