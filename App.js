@@ -3899,17 +3899,13 @@ return (
     </Text>
 
     <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? 'Constructions RL accompagne ses clients dans leurs projets de rénovation intérieure avec un service professionnel, fiable et soigné.'
-        : 'Constructions RL supports its clients with professional, reliable and meticulous renovation services.'}
-    </Text>
+  {selectedPro.description ||
+    (language === 'fr'
+      ? 'Aucune description disponible.'
+      : 'No description available.')}
+</Text>
 
-    <Text style={styles.profileInfo}>
-      {language === 'fr'
-        ? '🏆 Plus de 10 ans d’expérience'
-        : '🏆 Over 10 years of experience'}
-    </Text>
-
+    
     
 
     <TouchableOpacity
