@@ -3735,7 +3735,7 @@ borderRadius: 45,
   </Text>
 </View>
 </View>
-    </View>
+    
 
     
       <TouchableOpacity
