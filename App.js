@@ -678,6 +678,47 @@ return (
       : ', the right professional for every task'}
   </Text>
 </View>
+    <View
+  style={{
+    marginHorizontal: 10,
+    marginTop: 14,
+    marginBottom: 4,
+    backgroundColor: COLORS.navy,
+    borderRadius: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontSize: 15,
+      fontWeight: '900',
+      lineHeight: 21,
+      textAlign: 'center',
+    }}
+  >
+    {language === 'fr'
+      ? 'De la conception à la construction,\nde l’entretien à la vente,'
+      : 'From design to construction,\nfrom maintenance to sale,'}
+  </Text>
+
+  <Text
+    style={{
+      color: COLORS.gold,
+      fontSize: 15,
+      fontWeight: '900',
+      lineHeight: 21,
+      textAlign: 'center',
+      marginTop: 3,
+    }}
+  >
+    {language === 'fr'
+      ? 'un professionnel vous attend.'
+      : 'a professional is waiting for you.'}
+  </Text>
+</View>
    <View style={{ flex: 1, minHeight: 18 }} />
     <View style={{
   flexDirection: 'row',
