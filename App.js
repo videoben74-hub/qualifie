@@ -2386,6 +2386,29 @@ try {
 </Text>
 
     <View style={styles.profileCard}>
+    <TouchableOpacity
+  onPress={onLogout}
+  style={{
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: COLORS.gold,
+    borderRadius: 12,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    zIndex: 10,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontWeight: '900',
+      fontSize: 12,
+    }}
+  >
+    {language === 'fr' ? '🚪 Déconnexion' : '🚪 Log out'}
+  </Text>
+</TouchableOpacity>
   <TouchableOpacity onPress={pickClientPhoto}>
     {clientPhoto ? (
       <Image
@@ -2442,6 +2465,7 @@ try {
       color: COLORS.gold,
       borderColor: COLORS.gold,
       borderWidth: 2,
+      marginBottom: 6,
     },
   ]}
 />
@@ -2460,6 +2484,7 @@ try {
       color: COLORS.gold,
       borderColor: COLORS.gold,
       borderWidth: 2,
+      marginBottom: 6,
     },
   ]}
 />
@@ -2477,6 +2502,7 @@ try {
       color: COLORS.gold,
       borderColor: COLORS.gold,
       borderWidth: 2,
+      marginBottom: 6,
     },
   ]}
 />
@@ -2516,16 +2542,7 @@ try {
 
   <Text style={styles.chevron}>›</Text>
 </TouchableOpacity>
-    <TouchableOpacity
-  style={styles.menuRow}
-  onPress={onLogout}
->
-  <Text style={styles.menuText}>
-    {language === 'fr' ? '🚪 Déconnexion' : '🚪 Log out'}
-  </Text>
-
-  <Text style={styles.chevron}>›</Text>
-</TouchableOpacity>
+    
 </>
 ) : profileSection === 'Informations entreprise' ? (
     <>
