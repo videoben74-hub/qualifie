@@ -2386,89 +2386,101 @@ try {
 </Text>
 
     <View style={styles.profileCard}>
-      {clientPhoto ? (
-        <Image
-          source={{ uri: clientPhoto }}
+  <TouchableOpacity onPress={pickClientPhoto}>
+    {clientPhoto ? (
+      <Image
+        source={{ uri: clientPhoto }}
+        style={{
+          width: 90,
+          height: 90,
+          borderRadius: 45,
+        }}
+      />
+    ) : (
+      <View
+        style={{
+          width: 90,
+          height: 90,
+          borderRadius: 45,
+          backgroundColor: COLORS.navy,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text
           style={{
-            width: 90,
-height: 90,
-borderRadius: 45,
-          }}
-        />
-      ) : (
-        <View
-          style={{
-            width: 90,
-height: 90,
-borderRadius: 45,
-            backgroundColor: COLORS.navy,
-            alignItems: 'center',
-            justifyContent: 'center',
+            color: '#FFFFFF',
+            fontSize: 42,
+            fontWeight: '800',
           }}
         >
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: 42,
-              fontWeight: '800',
-            }}
-          >
-            {clientName.trim()
-              ? clientName.trim()[0].toUpperCase()
-              : '👤'}
-          </Text>
-        </View>
-      )}
-    <Text style={styles.profileName}>
-  {language === 'fr' ? 'Profil client' : 'Client Profile'}
-</Text>
+          {clientName.trim()
+            ? clientName.trim()[0].toUpperCase()
+            : '👤'}
+        </Text>
+      </View>
+    )}
+  </TouchableOpacity>
 
-<Text style={[styles.infoText, { textAlign: 'center' }]}>
-  {clientName}
-</Text>
-</View>
-<TouchableOpacity
-  style={styles.menuRow}
-  onPress={pickClientPhoto}
->
-  <Text style={styles.menuText}>
-    {language === 'fr'
-      ? clientPhoto
-        ? '📷 Modifier ma photo'
-        : '📷 Ajouter une photo'
-      : clientPhoto
-        ? '📷 Change my photo'
-        : '📷 Add a photo'}
+  <Text style={styles.profileName}>
+    {language === 'fr' ? 'Profil client' : 'Client Profile'}
   </Text>
 
-  <Text style={styles.chevron}>›</Text>
-</TouchableOpacity>
+  <Text style={[styles.infoText, { textAlign: 'center' }]}>
+    {clientName}
+  </Text>
+</View>
     <TextInput
-      value={clientName}
-      onChangeText={setClientName}
-      placeholder={language === 'fr' ? 'Nom complet' : 'Full name'}
-      placeholderTextColor={COLORS.muted}
-      style={styles.input}
-    />
+  value={clientName}
+  onChangeText={setClientName}
+  placeholder={language === 'fr' ? 'Nom complet' : 'Full name'}
+  placeholderTextColor={COLORS.gold}
+  style={[
+    styles.input,
+    {
+      backgroundColor: COLORS.navy,
+      color: COLORS.gold,
+      borderColor: COLORS.gold,
+      borderWidth: 2,
+    },
+  ]}
+/>
 
-    <TextInput
-      value={clientEmail}
-      onChangeText={setClientEmail}
-      placeholder={language === 'fr' ? 'Courriel' : 'Email'}
-      placeholderTextColor={COLORS.muted}
-      keyboardType="email-address"
-      autoCapitalize="none"
-      style={styles.input}
-    />
+<TextInput
+  value={clientEmail}
+  onChangeText={setClientEmail}
+  placeholder={language === 'fr' ? 'Courriel' : 'Email'}
+  placeholderTextColor={COLORS.gold}
+  keyboardType="email-address"
+  autoCapitalize="none"
+  style={[
+    styles.input,
+    {
+      backgroundColor: COLORS.navy,
+      color: COLORS.gold,
+      borderColor: COLORS.gold,
+      borderWidth: 2,
+    },
+  ]}
+/>
 
-    <TextInput
-      value={clientPhone}
-      onChangeText={setClientPhone}
-      placeholder={language === 'fr' ? 'Téléphone' : 'Phone'}
-      placeholderTextColor={COLORS.muted}
-      keyboardType="phone-pad"
-      style={styles.input}
-    />
+<TextInput
+  value={clientPhone}
+  onChangeText={setClientPhone}
+  placeholder={language === 'fr' ? 'Téléphone' : 'Phone'}
+  placeholderTextColor={COLORS.gold}
+  keyboardType="phone-pad"
+  style={[
+    styles.input,
+    {
+      backgroundColor: COLORS.navy,
+      color: COLORS.gold,
+      borderColor: COLORS.gold,
+      borderWidth: 2,
+    },
+  ]}
+/>
+      
       <TouchableOpacity
   style={styles.menuRow}
   onPress={saveClientProfile}
