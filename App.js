@@ -552,88 +552,84 @@ return (
   keyboardShouldPersistTaps="handled"
 >
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
-      <View style={{
-  backgroundColor: COLORS.card,
-  borderRadius: 16,
-  paddingHorizontal: 14,
-  paddingVertical: 6,
-  marginHorizontal: 10,
-  marginBottom: 5,
-}}>
-  <Text style={{
-  color: COLORS.navy,
-  fontSize: 17,
-  fontWeight: '900',
-}}>
-  {language === 'fr'
-    ? 'Entrepreneurs près de vous'
-    : 'Contractors near you'}
-</Text>
-
-<Text style={{
-  color: COLORS.muted,
-  fontSize: 11,
-  fontWeight: '700',
-  marginTop: 1,
-  marginBottom: 4,
-}}>
-  {language === 'fr'
-    ? 'Utilisez votre position pour trouver les entrepreneurs à proximité.'
-    : 'Use your location to find nearby contractors.'}
-</Text>
-
-  <TouchableOpacity
-  onPress={accountType ? useCurrentLocation : () => onNavigate('Login')}
-  disabled={locationLoading}
+      <View
   style={{
-    backgroundColor: COLORS.gold,
-    borderRadius: 10,
-    paddingVertical: 13,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 8,
-  }}
->
-  <Text
-    style={{
-      color: COLORS.navy,
-      fontSize: 15,
-      fontWeight: '900',
-    }}
-  >
-    {locationLoading
-      ? language === 'fr'
-        ? 'Localisation en cours...'
-        : 'Locating...'
-      : language === 'fr'
-        ? '📍 Utiliser ma position actuelle'
-        : '📍 Use my current location'}
-  </Text>
-</TouchableOpacity>
-    <TouchableOpacity
-  onPress={() => accountType ? onNavigate('Pros') : onNavigate('Login')}
-  style={{
-    marginTop: 8,
+    backgroundColor: COLORS.navy,
+    borderRadius: 16,
+    paddingHorizontal: 14,
     paddingVertical: 10,
-    alignItems: 'center',
+    marginHorizontal: 10,
+    marginBottom: 5,
   }}
 >
   <Text
     style={{
-      color: COLORS.navy,
-      fontSize: 14,
-      fontWeight: '800',
+      color: COLORS.gold,
+      fontSize: 17,
+      fontWeight: '900',
+      textAlign: 'center',
+      marginBottom: 8,
     }}
   >
     {language === 'fr'
-      ? '🔍 Rechercher une entreprise par nom ›'
-      : '🔍 Search for a company by name ›'}
+      ? 'Vos recherches commencent ici'
+      : 'Your search starts here'}
   </Text>
-</TouchableOpacity>
-      
 
+  <TouchableOpacity
+    onPress={accountType ? useCurrentLocation : () => onNavigate('Login')}
+    disabled={locationLoading}
+    style={{
+      backgroundColor: COLORS.gold,
+      borderRadius: 10,
+      paddingVertical: 13,
+      paddingHorizontal: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 15,
+        fontWeight: '900',
+      }}
+    >
+      {locationLoading
+        ? language === 'fr'
+          ? 'Localisation en cours...'
+          : 'Locating...'
+        : language === 'fr'
+          ? '📍 Utiliser ma position actuelle'
+          : '📍 Use my current location'}
+    </Text>
+  </TouchableOpacity>
 
+  <TouchableOpacity
+    onPress={() =>
+      accountType ? onNavigate('Pros') : onNavigate('Login')
+    }
+    style={{
+      marginTop: 10,
+      paddingVertical: 10,
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: COLORS.gold,
+      borderRadius: 10,
+    }}
+  >
+    <Text
+      style={{
+        color: COLORS.gold,
+        fontSize: 14,
+        fontWeight: '800',
+      }}
+    >
+      {language === 'fr'
+        ? '🔍 Entreprise ou professionnel ›'
+        : '🔍 Business or professional ›'}
+    </Text>
+  </TouchableOpacity>
 </View>
 
 
