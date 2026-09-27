@@ -3573,7 +3573,17 @@ borderRadius: 45,
 
     
 
-    <Text style={styles.profileInfo}>
+    <Text
+  style={[
+    styles.profileInfo,
+    {
+      backgroundColor: COLORS.navy,
+      color: COLORS.gold2,
+      borderColor: COLORS.gold,
+      borderWidth: 1.5,
+    },
+  ]}
+>
   {language === 'fr'
     ? `Note moyenne : ${averageRating} / 5`
     : `Average rating: ${averageRating} / 5`}
@@ -3596,17 +3606,19 @@ borderRadius: 45,
     <View
       key={review.id}
       style={{
-        backgroundColor: '#FFFFFF',
-        padding: 16,
-        borderRadius: 14,
-        marginTop: 14,
-      }}
+  backgroundColor: COLORS.navy,
+  padding: 16,
+  borderRadius: 14,
+  marginTop: 14,
+  borderWidth: 1.5,
+  borderColor: COLORS.gold,
+}}
     >
       <Text style={{ fontSize: 20, marginBottom: 6 }}>
         {'⭐'.repeat(review.rating)}
       </Text>
 
-      <Text style={styles.infoText}>
+      <Text style={[styles.infoText, { color: COLORS.white }]}>
         {review.comment}
       </Text>
     </View>
@@ -3636,12 +3648,22 @@ borderRadius: 45,
   </Text>
 </TouchableOpacity>
     <Text style={styles.sectionTitle}>
-      {language === 'fr'
-        ? '💳 Abonnement entreprise'
-        : '💳 Business subscription'}
-    </Text>
+  {language === 'fr'
+    ? '💳 Abonnement entreprise'
+    : '💳 Business subscription'}
+</Text>
 
-    <Text style={styles.profileInfo}>
+    <Text
+  style={[
+    styles.profileInfo,
+    {
+      backgroundColor: COLORS.navy,
+      color: COLORS.gold2,
+      borderColor: COLORS.gold,
+      borderWidth: 1.5,
+    },
+  ]}
+>
   {language === 'fr'
     ? 'Forfaits QualiVérifié'
     : 'QualiVérifié plans'}
@@ -3669,17 +3691,19 @@ borderRadius: 45,
 
     <View
       style={{
-        backgroundColor: '#FFFFFF',
-        padding: 16,
-        borderRadius: 14,
-        marginTop: 16,
-      }}
+  backgroundColor: COLORS.navy,
+  padding: 16,
+  borderRadius: 14,
+  marginTop: 16,
+  borderWidth: 1.5,
+  borderColor: COLORS.gold,
+}}
     >
       <Text style={styles.menuText}>
         {language === 'fr' ? 'Statut' : 'Status'}
       </Text>
 
-      <Text style={styles.infoText}>
+      <Text style={[styles.infoText, { color: COLORS.white }]}>
         {language === 'fr'
           ? 'Aucun abonnement entreprise actif'
 : 'No active business subscription'}
@@ -3689,20 +3713,19 @@ borderRadius: 45,
         {language === 'fr' ? '⭐ Inclus' : '⭐ Included'}
       </Text>
 
-      <View style={{ width: '100%' }}>
-  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+      <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
     {language === 'fr' ? '• Profil entreprise visible' : '• Visible business profile'}
   </Text>
-  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
     {language === 'fr' ? '• Accès aux demandes de soumission' : '• Access to quote requests'}
   </Text>
-  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
     {language === 'fr' ? '• Messagerie avec les clients' : '• Client messaging'}
   </Text>
-  <Text style={[styles.infoText, { marginBottom: 4 }]}>
+  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
     {language === 'fr' ? '• Avis clients' : '• Customer reviews'}
   </Text>
-  <Text style={styles.infoText}>
+  <Text style={[styles.infoText, { color: COLORS.white }]}>
     {language === 'fr' ? '• Présence dans les résultats de recherche' : '• Presence in search results'}
   </Text>
 </View>
