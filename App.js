@@ -205,6 +205,7 @@ const planningCategories = [
   'Aménagement de bureau',
   'Émondeur',
   'Irrigation',
+  'Paysagiste',
 ];
 const specializedSupplierCategories = [
   'Bois sur mesure',
@@ -866,7 +867,17 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
 
       <Text style={styles.screenTitle}>{language === 'fr' ? 'Division' : 'Division'}</Text>
 
-      <View style={styles.grid}>
+      <Text style={{
+  color: COLORS.navy,
+  fontSize: 20,
+  fontWeight: '800',
+  marginTop: 10,
+  marginBottom: 10,
+}}>
+  {language === 'fr' ? 'Construction — Licence RBQ' : 'Construction — RBQ Licence'}
+</Text>
+
+<View style={styles.grid}>
         <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel')}>
           <Text style={styles.categoryIcon}>⌂</Text>
           <Text style={styles.categoryText}>{language === 'fr' ? 'Résidentiel' : 'Residential'}</Text>
@@ -878,10 +889,22 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Commercial')}>
-          <Text style={styles.categoryIcon}>▦</Text>
-          <Text style={styles.categoryText}>{language === 'fr' ? 'Commercial' : 'Commercial'}</Text>
-        </TouchableOpacity>
+  <Text style={styles.categoryIcon}>▦</Text>
+  <Text style={styles.categoryText}>{language === 'fr' ? 'Commercial' : 'Commercial'}</Text>
+</TouchableOpacity>
+</View>
 
+<Text style={{
+  color: COLORS.navy,
+  fontSize: 20,
+  fontWeight: '800',
+  marginTop: 20,
+  marginBottom: 10,
+}}>
+  {language === 'fr' ? 'Services — Sans licence RBQ' : 'Services — No RBQ Licence'}
+</Text>
+
+<View style={styles.grid}>
         <TouchableOpacity
   style={styles.categoryCard}
   onPress={() => onNavigate('Metiers', 'Services professionnels')}
