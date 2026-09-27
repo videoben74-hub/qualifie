@@ -440,8 +440,8 @@ marginBottom: 8,
     }}
   >
     {language === 'fr'
-      ? 'Abonnement\nEntreprise\nÀ partir de\n27,77 $'
-      : 'Business\nSubscription\nFrom\n$27.77'}
+  ? 'Abonnement\nEntreprise\nÀ partir de\n27,77 $/mois'
+  : 'Business\nSubscription\nFrom\n$27.77/month'}
   </Text>
 </TouchableOpacity>
 </View>
@@ -4098,7 +4098,8 @@ return (
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 >
   <ScrollView
-  contentContainerStyle={[styles.page, { paddingTop: 0, paddingBottom: 140 }]}
+scrollEnabled={!!selectedPro}
+  contentContainerStyle={[styles.page, { paddingTop: 0, paddingBottom: 16 }]}
   keyboardShouldPersistTaps="handled"
   keyboardDismissMode="on-drag"
 >
@@ -5769,9 +5770,9 @@ categoryText: {
 },
   
   time: { color: COLORS.muted, fontSize: 11 },
-  profileCard: { alignItems: 'center', backgroundColor: COLORS.navy, borderRadius: 18, padding: 24, marginBottom: 14, borderWidth: 1.5, borderColor: COLORS.gold },
+  profileCard: { alignItems: 'center', backgroundColor: COLORS.navy, borderRadius: 18, padding: 14, marginBottom: 8, borderWidth: 1.5, borderColor: COLORS.gold },
   profileName: { color: COLORS.gold2, fontWeight: '900', fontSize: 20, marginBottom: 5 },
-  menuRow: { backgroundColor: COLORS.navy, borderWidth: 1.5, borderColor: COLORS.gold, borderRadius: 14, marginBottom: 10, paddingVertical: 17, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' },
+  menuRow: { backgroundColor: COLORS.navy, borderWidth: 1.5, borderColor: COLORS.gold, borderRadius: 14, marginBottom: 6, paddingVertical: 11, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' },
   menuText: { color: COLORS.gold2, fontWeight: '700' },
   chevron: { color: '#FFFFFF', fontSize: 24 },
   nav: {
