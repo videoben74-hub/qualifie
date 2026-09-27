@@ -647,18 +647,26 @@ return (
   }}
 >
   <Text
-    style={{
-      color: '#FFFFFF',
-      fontSize: 17,
-      fontWeight: '800',
-      textAlign: 'center',
-      lineHeight: 23,
-    }}
-  >
-    {language === 'fr'
-      ? 'Pour tous vos projets en matière de bâtiment à travers le Québec'
-      : 'For all your building projects across Quebec'}
-  </Text>
+  style={{
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 23,
+  }}
+>
+  {language === 'fr' ? (
+    <>
+      Pour tous vos projets en matière de bâtiment à travers le{' '}
+      <Text style={{ color: COLORS.gold }}>Québec</Text>
+    </>
+  ) : (
+    <>
+      For all your building projects across{' '}
+      <Text style={{ color: COLORS.gold }}>Quebec</Text>
+    </>
+  )}
+</Text>
 
   <Text
     style={{
@@ -717,6 +725,54 @@ return (
     {language === 'fr'
       ? 'un professionnel vous attend.'
       : 'a professional is waiting for you.'}
+  </Text>
+</View>
+    <View
+  style={{
+    marginHorizontal: 10,
+    marginTop: 14,
+    marginBottom: 4,
+    backgroundColor: COLORS.navy,
+    borderRadius: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      fontSize: 17,
+      fontWeight: '900',
+      textAlign: 'center',
+    }}
+  >
+    <Text style={{ color: '#FFFFFF' }}>Quali</Text>
+    <Text style={{ color: COLORS.gold }}>Vérifié</Text>
+  </Text>
+
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontSize: 15,
+      fontWeight: '800',
+      lineHeight: 21,
+      textAlign: 'center',
+      marginTop: 4,
+    }}
+  >
+    {language === 'fr' ? (
+      <>
+        La plateforme qui{' '}
+        <Text style={{ color: COLORS.gold }}>donne forme</Text>
+        {'\n'}à vos projets.
+      </>
+    ) : (
+      <>
+        The platform that{' '}
+        <Text style={{ color: COLORS.gold }}>brings your projects</Text>
+        {'\n'}to life.
+      </>
+    )}
   </Text>
 </View>
    <View style={{ flex: 1, minHeight: 18 }} />
