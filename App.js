@@ -2479,7 +2479,23 @@ borderRadius: 45,
     {language === 'fr' ? '← Retour au profil' : '← Back to profile'}
   </Text>
 </TouchableOpacity>
-      <Text style={styles.sectionTitle}>{language === 'fr' ? 'Informations de l’entreprise' : 'Company information'}</Text>
+      <Text
+  style={{
+    backgroundColor: COLORS.navy,
+    color: COLORS.gold,
+    fontSize: 22,
+    fontWeight: '900',
+    textAlign: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    marginBottom: 16,
+  }}
+>
+  {language === 'fr'
+    ? '🏢 Informations de l’entreprise'
+    : '🏢 Company information'}
+</Text>
 <Text style={[styles.infoText, { fontWeight: '700', marginBottom: 6 }]}>
   {language === 'fr' ? "Nom de l’entreprise" : 'Company name'}
 </Text>
@@ -2492,14 +2508,21 @@ borderRadius: 45,
    <View
   style={{
     marginTop: 18,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.navy,
     borderRadius: 16,
     padding: 16,
-    borderWidth: 1,
-    borderColor: COLORS.line,
+    borderWidth: 2,
+    borderColor: COLORS.gold,
   }}
 >
-  <Text style={[styles.sectionTitle, { marginBottom: 14 }]}>
+  <Text
+    style={{
+      color: COLORS.gold,
+      fontSize: 18,
+      fontWeight: '900',
+      marginBottom: 14,
+    }}
+  >
     {language === 'fr'
       ? '📞 Coordonnées de l’entreprise'
       : '📞 Business contact information'}
@@ -2566,30 +2589,38 @@ borderRadius: 45,
    <View
   style={{
     marginTop: 18,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: COLORS.navy,
     borderRadius: 16,
     padding: 16,
-    borderWidth: 1,
-    borderColor: COLORS.line,
+    borderWidth: 2,
+    borderColor: COLORS.gold,
   }}
 >
-  <Text style={[styles.sectionTitle, { marginBottom: 6 }]}>
+  <Text
+    style={{
+      color: COLORS.gold,
+      fontSize: 18,
+      fontWeight: '900',
+      marginBottom: 6,
+    }}
+  >
     {language === 'fr'
-  ? '📝 Présentation et description'
-  : '📝 Presentation and description'}
+      ? '📝 Présentation et description'
+      : '📝 Presentation and description'}
   </Text>
 
   <Text
-    style={[
-      styles.infoText,
-      { marginBottom: 12, lineHeight: 20 },
-    ]}
+    style={{
+      color: '#FFFFFF',
+      marginBottom: 12,
+      lineHeight: 20,
+      fontWeight: '600',
+    }}
   >
     {language === 'fr'
       ? 'Présentez vos spécialités, votre expérience et ce qui distingue votre entreprise.'
       : 'Present your specialties, experience and what makes your business stand out.'}
   </Text>
-
   <TextInput
     value={companyDescription}
     onChangeText={setCompanyDescription}
@@ -2616,31 +2647,45 @@ borderRadius: 45,
   />
 
   <Text
-    style={[
-      styles.infoText,
-      { textAlign: 'right' },
-    ]}
-  >
-    {companyDescription.length}/1000
-  </Text>
+  style={{
+    color: COLORS.gold,
+    textAlign: 'right',
+    fontWeight: '900',
+  }}
+>
+  {companyDescription.length}/1000
+</Text>
 </View>
 
-<View style={{ marginTop: 8, marginBottom: 14 }}>
+<View
+  style={{
+    marginTop: 18,
+    marginBottom: 14,
+    backgroundColor: COLORS.navy,
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 2,
+    borderColor: COLORS.gold,
+  }}
+>
   <Text
-    style={[
-      styles.sectionTitle,
-      {
-        fontSize: 28,
-        fontWeight: '900',
-        color: COLORS.navy,
-        marginBottom: 14,
-      },
-    ]}
+    style={{
+      color: COLORS.gold,
+      fontSize: 24,
+      fontWeight: '900',
+      marginBottom: 12,
+    }}
   >
     {language === 'fr' ? '👤 Profil public' : '👤 Public profile'}
   </Text>
 
-  <Text style={styles.sectionTitle}>
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontSize: 18,
+      fontWeight: '900',
+    }}
+  >
     {language === 'fr'
       ? '📸 Photos des réalisations'
       : '📸 Project photos'}
@@ -2721,8 +2766,19 @@ borderRadius: 45,
     ))}
   </View>
 )}
-      <Text style={[styles.infoText, { fontWeight: '800', marginBottom: 6 }]}>
-  {language === 'fr' ? 'NEQ' : 'NEQ'}
+      <Text
+  style={{
+    backgroundColor: COLORS.navy,
+    color: COLORS.gold,
+    fontSize: 17,
+    fontWeight: '900',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    marginBottom: 8,
+  }}
+>
+  🏢 NEQ
 </Text>
 
 <TextInput
@@ -2743,8 +2799,20 @@ borderRadius: 45,
   </Text>
 )}
 
-<Text style={[styles.infoText, { fontWeight: '800', marginTop: 8, marginBottom: 6 }]}>
-  {language === 'fr' ? 'Licence RBQ' : 'RBQ licence'}
+<Text
+  style={{
+    backgroundColor: COLORS.navy,
+    color: COLORS.gold,
+    fontSize: 17,
+    fontWeight: '900',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    marginTop: 12,
+    marginBottom: 8,
+  }}
+>
+  {language === 'fr' ? '🛡️ Licence RBQ' : '🛡️ RBQ licence'}
 </Text>
 
 <TextInput
@@ -2784,26 +2852,61 @@ borderRadius: 45,
     style={{
       marginTop: 14,
       marginBottom: 18,
-      backgroundColor: '#FFFFFF',
+      backgroundColor: COLORS.navy,
       borderRadius: 16,
       padding: 16,
+      borderWidth: 2,
+      borderColor: COLORS.gold,
     }}
   >
-    <Text style={{ fontWeight: '700', marginBottom: 8 }}>
+    <Text
+      style={{
+        color: COLORS.gold,
+        fontSize: 17,
+        fontWeight: '900',
+        marginBottom: 8,
+      }}
+    >
       {language === 'fr'
-        ? 'Métiers et services sélectionnés :'
-        : 'Selected trades and services:'}
+        ? '🛠️ Métiers et services sélectionnés :'
+        : '🛠️ Selected trades and services:'}
     </Text>
 
-    <Text style={styles.infoText}>
+    <Text
+      style={{
+        color: '#FFFFFF',
+        fontWeight: '700',
+        lineHeight: 21,
+      }}
+    >
       {rbqCategories.join(', ')}
     </Text>
   </View>
 )}
-  
-  <TouchableOpacity style={[styles.primaryBtn, (!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0) && { opacity: 0.4 }]} disabled={!companyName.trim() || !isNeqValid || !isRbqValid || !companyCity.trim() || rbqCategories.length === 0} onPress={() => setProfileSection('Vérification en cours')}>
-        <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Commencer la vérification' : 'Start verification'}</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+  style={[
+    styles.primaryBtn,
+    (!companyName.trim() ||
+      !isNeqValid ||
+      !isRbqValid ||
+      !companyCity.trim() ||
+      rbqCategories.length === 0) && { opacity: 0.4 },
+  ]}
+  disabled={
+    !companyName.trim() ||
+    !isNeqValid ||
+    !isRbqValid ||
+    !companyCity.trim() ||
+    rbqCategories.length === 0
+  }
+  onPress={() => setProfileSection('Vérification en cours')}
+>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr'
+      ? 'Commencer la vérification'
+      : 'Start verification'}
+  </Text>
+</TouchableOpacity>
   <TouchableOpacity
   style={[styles.primaryBtn, { marginTop: 18 }]}
   onPress={async () => {
