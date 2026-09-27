@@ -2514,6 +2514,7 @@ borderRadius: 45,
 
   <Text style={styles.chevron}>›</Text>
 </TouchableOpacity>
+</>
 ) : profileSection === 'Informations entreprise' ? (
     <>
   <TouchableOpacity
