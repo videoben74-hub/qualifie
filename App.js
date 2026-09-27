@@ -730,12 +730,12 @@ return (
     <View
   style={{
     marginHorizontal: 10,
-    marginTop: 14,
+    marginTop: 8,
     marginBottom: 4,
     backgroundColor: COLORS.navy,
     borderRadius: 16,
     paddingHorizontal: 18,
-    paddingVertical: 12,
+    paddingVertical: 8,
     alignItems: 'center',
   }}
 >
@@ -774,8 +774,8 @@ return (
       </>
     )}
   </Text>
-</View>
-   <View style={{ flex: 1, minHeight: 18 }} />
+      </View>
+   <View style={{ flex: 1, minHeight: 0 }} />
     <View style={{
   flexDirection: 'row',
   gap: 8,
