@@ -3713,6 +3713,7 @@ borderRadius: 45,
         {language === 'fr' ? '⭐ Inclus' : '⭐ Included'}
       </Text>
 
+      <View style={{ width: '100%' }}>
       <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
     {language === 'fr' ? '• Profil entreprise visible' : '• Visible business profile'}
   </Text>
