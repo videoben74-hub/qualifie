@@ -63,6 +63,7 @@ const residentialCategories = [
   'Escaliers et rampes',
   'Excavation',
   'Gouttières',
+  'Installation de systèmes septiques',
   'Isolation',
   'Pavage et asphalte',
   'Pavé uni',
@@ -197,9 +198,11 @@ const cleaningCategories = [
   'Nettoyage après construction',
   'Nettoyage commercial',
   'Nettoyage de conduits',
+  
   'Nettoyage de gouttières',
   'Nettoyage de tapis et meubles',
   'Nettoyage de vitres',
+  'Nettoyage et vidange de fosses septiques',
   'Nettoyage résidentiel',
 ];
 const specializedSupplierCategories = [
@@ -250,6 +253,7 @@ const tradeTranslations = {
 'Lavage à pression': 'Pressure washing',
 'Entretien ménager': 'Housekeeping',
 'Nettoyage de gouttières': 'Gutter cleaning',
+  'Nettoyage et vidange de fosses septiques': 'Septic tank cleaning and pumping',
 'Location de conteneurs': 'Container rental',
   'Charpente et menuiserie': 'Framing and carpentry',
   'Portes et fenêtres': 'Doors and windows',
@@ -276,7 +280,7 @@ const tradeTranslations = {
   'Soudure et métaux': 'Welding and metalwork',
   'Protection incendie': 'Fire protection',
   'Drain et égout': 'Drain and sewer',
-
+'Installation de systèmes septiques': 'Septic system installation',
   'Gouttières': 'Gutters',
   'Imperméabilisation': 'Waterproofing',
   'Après sinistre': 'Disaster restoration',
@@ -3441,6 +3445,7 @@ borderRadius: 45,
   'Imperméabilisation',
   'Ingénieur',
   'Inspection de bâtiment',
+      'Installation de systèmes septiques',
 'Irrigation',
 'Isolation',
   'Lavage à pression',
@@ -3453,6 +3458,7 @@ borderRadius: 45,
   'Nettoyage de gouttières',
   'Nettoyage de tapis et meubles',
   'Nettoyage de vitres',
+      'Nettoyage et vidange de fosses septiques',
   'Nettoyage résidentiel',
   'Pavage et asphalte',
   'Paysagiste',
@@ -4092,7 +4098,7 @@ return (
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 >
   <ScrollView
-  contentContainerStyle={[styles.page, { paddingTop: 0, paddingBottom: 16 }]}
+  contentContainerStyle={[styles.page, { paddingTop: 0, paddingBottom: 140 }]}
   keyboardShouldPersistTaps="handled"
   keyboardDismissMode="on-drag"
 >
