@@ -641,6 +641,7 @@ return (
       <View
   style={{
     marginHorizontal: 10,
+    marginTop: 20,
     marginBottom: 4,
     backgroundColor: COLORS.navy,
     borderRadius: 16,
