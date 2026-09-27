@@ -419,9 +419,9 @@ marginBottom: 8,
   onPress={() => onNavigate && onNavigate('Signup')}
   activeOpacity={0.8}
   style={{
-    width: 105,
-    height: 105,
-    borderRadius: 53,
+    width: 115,
+height: 115,
+borderRadius: 58,
     backgroundColor: COLORS.gold2,
     alignItems: 'center',
     justifyContent: 'center',
@@ -2381,17 +2381,11 @@ try {
   {profileSection === 'Profil client' ? (
   <>
    
-    <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '👤 Profil client' : '👤 Client profile'}
-    </Text>
+    <Text style={styles.screenTitle}>
+  {language === 'fr' ? 'Mon profil' : 'My profile'}
+</Text>
 
-    <View
-      style={{
-        alignItems: 'center',
-        marginTop: 6,
-marginBottom: 12,
-      }}
-    >
+    <View style={styles.profileCard}>
       {clientPhoto ? (
         <Image
           source={{ uri: clientPhoto }}
@@ -2425,12 +2419,19 @@ borderRadius: 45,
           </Text>
         </View>
       )}
-    </View>
+    <Text style={styles.profileName}>
+  {language === 'fr' ? 'Profil client' : 'Client Profile'}
+</Text>
+
+<Text style={[styles.infoText, { textAlign: 'center' }]}>
+  {clientName}
+</Text>
+</View>
 <TouchableOpacity
-  style={[styles.primaryBtn, { marginBottom: 20 }]}
+  style={styles.menuRow}
   onPress={pickClientPhoto}
 >
-  <Text style={styles.primaryBtnText}>
+  <Text style={styles.menuText}>
     {language === 'fr'
       ? clientPhoto
         ? '📷 Modifier ma photo'
@@ -2439,6 +2440,8 @@ borderRadius: 45,
         ? '📷 Change my photo'
         : '📷 Add a photo'}
   </Text>
+
+  <Text style={styles.chevron}>›</Text>
 </TouchableOpacity>
     <TextInput
       value={clientName}
@@ -2467,41 +2470,50 @@ borderRadius: 45,
       style={styles.input}
     />
       <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: -70 }]}
+  style={styles.menuRow}
   onPress={saveClientProfile}
 >
-  <Text style={styles.primaryBtnText}>
+  <Text style={styles.menuText}>
     {language === 'fr'
       ? '💾 Enregistrer mon profil'
       : '💾 Save my profile'}
   </Text>
+
+  <Text style={styles.chevron}>›</Text>
 </TouchableOpacity>
     <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 8 }]}
+  style={styles.menuRow}
   onPress={() => setProfileSection('Mes favoris')}
 >
-  <Text style={styles.primaryBtnText}>
+  <Text style={styles.menuText}>
     {language === 'fr' ? '♡ Vos favoris' : '♡ Your favorites'}
   </Text>
+
+  <Text style={styles.chevron}>›</Text>
 </TouchableOpacity>
 
 <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 8 }]}
+  style={styles.menuRow}
   onPress={() => setProfileSection('Abonnement')}
 >
-  <Text style={styles.primaryBtnText}>
-    {language === 'fr' ? '🏢 Espace entreprise' : '🏢 Business area'}
+  <Text style={styles.menuText}>
+    {language === 'fr'
+      ? '🏢 Espace entreprise'
+      : '🏢 Business area'}
   </Text>
+
+  <Text style={styles.chevron}>›</Text>
 </TouchableOpacity>
     <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 8, marginBottom: 70 }]}
+  style={styles.menuRow}
   onPress={onLogout}
 >
-  <Text style={styles.primaryBtnText}>
+  <Text style={styles.menuText}>
     {language === 'fr' ? '🚪 Déconnexion' : '🚪 Log out'}
   </Text>
+
+  <Text style={styles.chevron}>›</Text>
 </TouchableOpacity>
-  </>
 ) : profileSection === 'Informations entreprise' ? (
     <>
   <TouchableOpacity
