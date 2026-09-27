@@ -172,25 +172,22 @@ const commercialCategories = [
 
   
   const professionalServices = [
-  
-'Aménagement de bureau',
-'Architecture',
-'Arpentage',
-    'Courtier immobilier',
-'Design intérieur',
-'Émondeur',
-'Évaluation immobilière',
-'Gestion immobilière',
-'Ingénierie',
-'Inspection de bâtiment',
-'Irrigation',
-'Marketing',
-'Notaire',
-'Photographie immobilière',
-'Technologue en architecture',
-'Test de radon',
+  'Architecture',
+  'Arpentage',
+  'Courtier immobilier',
+  'Design intérieur',
+  'Évaluation immobilière',
+  'Gestion immobilière',
+  'Ingénierie',
+  'Inspection de bâtiment',
+  'Marketing',
+  'Notaire',
+  'Photographie immobilière',
+  'Technologue en architecture',
+  'Test de radon',
 ];
-const cleaningCategories = [
+
+  const cleaningCategories = [
   'Entretien ménager',
   'Exterminateur / gestion parasitaire',
   'Lavage à pression',
@@ -198,12 +195,16 @@ const cleaningCategories = [
   'Nettoyage après construction',
   'Nettoyage commercial',
   'Nettoyage de conduits',
-  
   'Nettoyage de gouttières',
   'Nettoyage de tapis et meubles',
   'Nettoyage de vitres',
   'Nettoyage et vidange de fosses septiques',
   'Nettoyage résidentiel',
+];
+const planningCategories = [
+  'Aménagement de bureau',
+  'Émondeur',
+  'Irrigation',
 ];
 const specializedSupplierCategories = [
   'Bois sur mesure',
@@ -863,7 +864,7 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader language={language} setLanguage={setLanguage} />
 
-      <Text style={styles.screenTitle}>{language === 'fr' ? 'Type de travaux' : 'Type of work'}</Text>
+      <Text style={styles.screenTitle}>{language === 'fr' ? 'Division' : 'Division'}</Text>
 
       <View style={styles.grid}>
         <TouchableOpacity style={styles.categoryCard} onPress={() => onNavigate('Metiers', 'Résidentiel')}>
@@ -887,10 +888,10 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
 >
   <Text style={styles.categoryIcon}>⌂</Text>
   <Text style={styles.categoryText}>
-    {language === 'fr'
-      ? 'Inspection et services professionnels'
-      : 'Inspection and professional services'}
-  </Text>
+  {language === 'fr'
+    ? 'Courtier immobilier, Inspection et services professionnels'
+    : 'Real Estate Broker, Inspection and Professional Services'}
+</Text>
 </TouchableOpacity>
 
 <TouchableOpacity
@@ -898,10 +899,21 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
   onPress={() => onNavigate('Metiers', 'Nettoyage et conteneur')}
 >
   <Text style={styles.categoryIcon}>🧹</Text>
+<Text style={styles.categoryText}>
+  {language === 'fr'
+    ? 'Nettoyage, Conteneur et Contrôle parasitaire'
+    : 'Cleaning, Containers and Pest Control'}
+</Text>
+</TouchableOpacity>
+    <TouchableOpacity
+  style={styles.categoryCard}
+  onPress={() => onNavigate('Metiers', 'Aménagement')}
+>
+  <Text style={styles.categoryIcon}>⌂</Text>
   <Text style={styles.categoryText}>
     {language === 'fr'
-      ? 'Nettoyage et conteneur'
-      : 'Cleaning and containers'}
+      ? 'Aménagement'
+      : 'Planning and Landscaping'}
   </Text>
 </TouchableOpacity>
 <TouchableOpacity
@@ -978,7 +990,9 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
         initialType === 'Services professionnels'
           ? 'Inspection et services professionnels'
           : initialType === 'Nettoyage et conteneur'
-          ? 'Nettoyage et conteneur'
+          ? 'Nettoyage, Conteneur et Contrôle parasitaire'
+          : initialType === 'Aménagement'
+          ? 'Aménagement'
           : initialType === 'Fournisseurs spécialisés'
           ? 'Fournisseurs spécialisés'
           : initialType === 'Résidentiel CCQ'
@@ -991,7 +1005,9 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
         initialType === 'Services professionnels'
           ? 'Inspection and professional services'
           : initialType === 'Nettoyage et conteneur'
-          ? 'Cleaning and containers'
+          ? 'Cleaning, Containers and Pest Control'
+          : initialType === 'Aménagement'
+          ? 'Planning and Landscaping'
           : initialType === 'Fournisseurs spécialisés'
           ? 'Specialized suppliers'
           : initialType === 'Résidentiel CCQ'
@@ -1006,8 +1022,10 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
   ? professionalServices
   : initialType === 'Nettoyage et conteneur'
   ? cleaningCategories
-    : initialType === 'Fournisseurs spécialisés'
-? specializedSupplierCategories
+  : initialType === 'Aménagement'
+  ? planningCategories
+  : initialType === 'Fournisseurs spécialisés'
+  ? specializedSupplierCategories
   : initialType === 'Commercial'
   ? commercialCategories
   : initialType === 'Résidentiel CCQ'
@@ -3138,13 +3156,14 @@ try {
     </Text>
 
     {[
-      'Résidentiel',
-      'Résidentiel – CCQ',
-      'Commercial',
-      'Inspection et services professionnels',
-      'Nettoyage et conteneur',
-      'Fournisseurs spécialisés',
-    ].map((division) => {
+  'Aménagement',
+  'Résidentiel',
+  'Résidentiel – CCQ',
+  'Commercial',
+  'Inspection et services professionnels',
+  'Nettoyage et conteneur',
+  'Fournisseurs spécialisés',
+].map((division) => {
       const isSelected = selectedDivisions.includes(division);
 
       return (
@@ -3175,13 +3194,16 @@ try {
   {language === 'fr'
     ? division
     : ({
-        'Résidentiel': 'Residential',
-        'Résidentiel - CCQ': 'Residential - CCQ',
-        'Commercial': 'Commercial',
-        'Inspection et services professionnels': 'Inspection and professional services',
-        'Nettoyage et conteneur': 'Cleaning and container services',
-      'Fournisseurs spécialisés': 'Specialized suppliers',
-      }[division] || division)}
+    'Aménagement': 'Planning and Landscaping',
+    'Résidentiel': 'Residential',
+    'Résidentiel – CCQ': 'Residential – CCQ',
+    'Commercial': 'Commercial',
+    'Inspection et services professionnels':
+      'Inspection and professional services',
+    'Nettoyage et conteneur':
+      'Cleaning, Containers and Pest Control',
+    'Fournisseurs spécialisés': 'Specialized suppliers',
+  }[division] || division)}
 </Text>
         </TouchableOpacity>
       );
