@@ -3257,43 +3257,83 @@ try {
     </Text>
 
     <View
-      style={{
-        backgroundColor: '#FFFFFF',
-        padding: 20,
-        borderRadius: 16,
-        marginTop: 10,
-      }}
-    >
-      <Text style={[styles.profileInfo, { textAlign: 'center' }]}>
-  {selectedDivisionCount === 1
-    ? '1 division'
-    : `${selectedDivisionCount} divisions`}
-</Text>
-      <Text style={[styles.infoText, { textAlign: 'center', marginTop: 10 }]}>
-  {language === 'fr' ? 'Divisions : ' : 'Divisions: '}
-  {selectedDivisions.join(', ')}
-</Text>
-
-<Text
-  style={[
-    styles.sectionTitle,
-    { textAlign: 'center', marginTop: 18 },
-  ]}
+  style={{
+    backgroundColor: COLORS.navy,
+    padding: 20,
+    borderRadius: 16,
+    marginTop: 10,
+    borderWidth: 2,
+    borderColor: COLORS.gold,
+  }}
 >
-  {selectedDivisionCount === 1
-    ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
-    : selectedDivisionCount === 2
-    ? (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')
-    : (language === 'fr' ? '47,77 $ / mois' : '$47.77 / month')}
-</Text>
-      
+  <Text
+    style={[
+      styles.profileInfo,
+      {
+        textAlign: 'center',
+        backgroundColor: COLORS.navy,
+        color: COLORS.gold,
+        borderColor: COLORS.gold,
+        borderWidth: 2,
+      },
+    ]}
+  >
+    {selectedDivisionCount === 1
+      ? '1 division'
+      : `${selectedDivisionCount} divisions`}
+  </Text>
 
-      <Text style={[styles.infoText, { textAlign: 'center' }]}>
-        {language === 'fr'
-          ? 'Abonnement entreprise QualiVérifié'
-          : 'QualiVérifié business subscription'}
-      </Text>
-    </View>
+  <Text
+    style={[
+      styles.infoText,
+      {
+        textAlign: 'center',
+        marginTop: 10,
+        color: '#FFFFFF',
+      },
+    ]}
+  >
+    {language === 'fr' ? 'Divisions : ' : 'Divisions: '}
+    {selectedDivisions.join(', ')}
+  </Text>
+
+  <Text
+    style={[
+      styles.sectionTitle,
+      {
+        textAlign: 'center',
+        marginTop: 18,
+        color: COLORS.gold,
+      },
+    ]}
+  >
+    {selectedDivisionCount === 1
+      ? language === 'fr'
+        ? '27,77 $ / mois'
+        : '$27.77 / month'
+      : selectedDivisionCount === 2
+      ? language === 'fr'
+        ? '37,77 $ / mois'
+        : '$37.77 / month'
+      : language === 'fr'
+      ? '47,77 $ / mois'
+      : '$47.77 / month'}
+  </Text>
+
+  <Text
+    style={[
+      styles.infoText,
+      {
+        textAlign: 'center',
+        color: '#FFFFFF',
+      },
+    ]}
+  >
+    {language === 'fr'
+      ? 'Abonnement entreprise QualiVérifié'
+      : 'QualiVérifié business subscription'}
+  </Text>
+</View>
 
     <TouchableOpacity
       style={[styles.primaryBtn, { marginTop: 20 }]}
