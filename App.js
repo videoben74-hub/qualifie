@@ -542,7 +542,13 @@ const useCurrentLocation = async () => {
 
 return (
     <ScrollView
-  contentContainerStyle={[styles.page, { paddingTop: 0 }]}
+  contentContainerStyle={[
+  styles.page,
+  {
+    paddingTop: 0,
+    flexGrow: 1,
+  },
+]}
   keyboardShouldPersistTaps="handled"
 >
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
@@ -638,75 +644,44 @@ return (
     marginBottom: 4,
     backgroundColor: COLORS.navy,
     borderRadius: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-  }}
->
-  <Text
-  style={{
-    color: COLORS.gold2,
-    fontSize: 11,
-    fontWeight: '700',
-    lineHeight: 13,
-  }}
->
-    {language === 'fr'
-      ? "Dans un monde où les avis d’aujourd’hui sont devenus le bouche-à-oreille d’hier, la confiance est plus importante que jamais. ⭐⭐⭐⭐⭐"
-      : "In a world where today's reviews have become yesterday's word of mouth, trust is more important than ever. ⭐⭐⭐⭐⭐"}
-  </Text>
-
-  <Text
-    style={{
-  color: COLORS.gold2,
-  fontSize: 11,
-  fontWeight: '700',
-  lineHeight: 13,
-  marginTop: 2,
-}}
-  >
-    {language === 'fr'
-      ? "QualiVérifié vous permet de trouver des entrepreneurs détenant les licences nécessaires pour vos projets de construction et de rénovation."
-      : "QualiVérifié helps you find contractors holding the required licences for your construction and renovation projects."}
-  </Text>
-
-  <Text
-  style={{
-    color: COLORS.gold2,
-    fontSize: 11,
-    fontWeight: '700',
-    lineHeight: 13,
-    marginTop: 2,
-  }}
->
-    {language === 'fr'
-      ? "La plateforme rassemble également les services, professionnels et ventes liés au domaine du bâtiment, afin de vous aider à trouver les bonnes personnes pour votre projet."
-      : "The platform also brings together services, professionals and sales related to the building industry, helping you find the right people for your project."}
-  </Text>
-</View>
-   <View
-  style={{
+    paddingHorizontal: 18,
+    paddingVertical: 18,
     alignItems: 'center',
-    marginHorizontal: 10,
-    marginTop: 4,
-    marginBottom: 6,
   }}
 >
   <Text
-    numberOfLines={1}
-    adjustsFontSizeToFit
     style={{
-      color: COLORS.gold,
+      color: '#FFFFFF',
       fontSize: 17,
-      fontWeight: '900',
-      fontStyle: 'italic',
+      fontWeight: '800',
       textAlign: 'center',
+      lineHeight: 23,
     }}
   >
     {language === 'fr'
-      ? 'Des travaux à exécuter ? QualiVérifié !'
-      : 'Work to be done? QualiVérifié!'}
+      ? 'Pour tous vos projets en matière de bâtiment à travers le Québec'
+      : 'For all your building projects across Quebec'}
+  </Text>
+
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontSize: 18,
+      fontWeight: '900',
+      textAlign: 'center',
+      lineHeight: 24,
+      marginTop: 10,
+    }}
+  >
+    {language === 'fr' ? 'Avec ' : 'With '}
+    <Text style={{ color: '#FFFFFF' }}>Quali</Text>
+    <Text style={{ color: COLORS.gold }}>Vérifié</Text>
+    {language === 'fr'
+      ? ', à chaque tâche son professionnel'
+      : ', the right professional for every task'}
   </Text>
 </View>
+   <View style={{ flex: 1, minHeight: 18 }} />
     <View style={{
   flexDirection: 'row',
   gap: 8,
@@ -773,55 +748,7 @@ return (
   </TouchableOpacity>
 </View>
         
-    <View
-  style={{
-    marginTop: 28,
-    marginHorizontal: 24,
-    alignItems: 'center',
-  }}
->
-  <Text
-    style={{
-      color: COLORS.navy,
-      fontSize: 18,
-      fontWeight: '900',
-      textAlign: 'center',
-      lineHeight: 25,
-    }}
-  >
-    {language === 'fr'
-      ? 'Chaque grand projet commence par une première étape.'
-      : 'Every great project begins with a first step.'}
-  </Text>
-
-  <Text
-    style={{
-      color: COLORS.gold,
-      fontSize: 15,
-      fontWeight: '800',
-      textAlign: 'center',
-      marginTop: 6,
-    }}
-  >
-    {language === 'fr'
-      ? 'La vôtre commence ici.'
-      : 'Yours starts here.'}
-  </Text>
-    <Text
-  style={{
-    color: COLORS.navy,
-    fontSize: 17,
-    fontWeight: '900',
-    textAlign: 'center',
-    marginTop: 24,
-    lineHeight: 23,
-  }}
->
-  {language === 'fr'
-    ? 'Vos travaux simplifiés avec QualiVérifié.'
-    : 'Your projects made easier with QualiVérifié.'}
-</Text>
-</View>
+    
 </ScrollView>
   );
 }
