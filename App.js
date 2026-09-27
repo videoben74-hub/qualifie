@@ -3033,7 +3033,7 @@ borderRadius: 45,
   ) : profileSection === 'Sélection divisions' ? (
   <>
     <TouchableOpacity
-  onPress={() => setProfileSection('Choix forfait')}
+  onPress={() => setProfileSection('Choix divisions')}
   style={{
     alignSelf: 'flex-start',
     marginBottom: 12,
@@ -3618,7 +3618,7 @@ borderRadius: 45,
         {'⭐'.repeat(review.rating)}
       </Text>
 
-      <Text style={[styles.infoText, { color: COLORS.white }]}>
+      <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
         {review.comment}
       </Text>
     </View>
@@ -3703,7 +3703,7 @@ borderRadius: 45,
         {language === 'fr' ? 'Statut' : 'Status'}
       </Text>
 
-      <Text style={[styles.infoText, { color: COLORS.white }]}>
+      <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
         {language === 'fr'
           ? 'Aucun abonnement entreprise actif'
 : 'No active business subscription'}
@@ -3714,21 +3714,26 @@ borderRadius: 45,
       </Text>
 
       <View style={{ width: '100%' }}>
-      <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
+  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Profil entreprise visible' : '• Visible business profile'}
   </Text>
-  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
+
+  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Accès aux demandes de soumission' : '• Access to quote requests'}
   </Text>
-  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
+
+  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Messagerie avec les clients' : '• Client messaging'}
   </Text>
-  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.white }]}>
+
+  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Avis clients' : '• Customer reviews'}
   </Text>
-  <Text style={[styles.infoText, { color: COLORS.white }]}>
+
+  <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Présence dans les résultats de recherche' : '• Presence in search results'}
   </Text>
+</View>
 </View>
     </View>
 
