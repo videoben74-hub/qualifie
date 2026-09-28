@@ -2343,11 +2343,11 @@ const pickRbqPhoto = async () => {
   }
 
   const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ['images'],
-    allowsEditing: false,
-    quality: 0.8,
-    base64: true,
-  });
+  mediaTypes: ['images'],
+  allowsEditing: true,
+  quality: 0.8,
+  base64: true,
+});
 
   if (result.canceled || !result.assets?.length) return;
 
@@ -3061,9 +3061,14 @@ try {
     : 'Required only for divisions subject to an RBQ licence. The photo must show the name and expiry date. It will appear on your public profile. Update it when renewed. A non-compliant photo may lead to suspension of an active subscription.'}
 </Text>
 
-<TouchableOpacity style={styles.primaryBtn} onPress={pickRbqPhoto}>
-  <Text style={styles.primaryBtnText}>
-    {language === 'fr' ? '📷 Ajouter ou remplacer la photo' : '📷 Add or replace photo'}
+<TouchableOpacity
+  style={[styles.primaryBtn, { backgroundColor: COLORS.navy }]}
+  onPress={pickRbqPhoto}
+>
+  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
+    {language === 'fr'
+      ? '📷 Ajouter ou remplacer la photo'
+      : '📷 Add or replace photo'}
   </Text>
 </TouchableOpacity>
 
@@ -3075,40 +3080,20 @@ try {
   />
 )}
 
-    
-      <TouchableOpacity
-  style={[
-    styles.primaryBtn,
-    (!companyName.trim() ||
-      !isNeqValid ||
-      !companyCity.trim() ||
-      rbqCategories.length === 0) && { opacity: 0.4 },
-  ]}
-  disabled={
-    !companyName.trim() ||
-    !isNeqValid ||
-    !companyCity.trim() ||
-    rbqCategories.length === 0
-  }
-  onPress={() => setProfileSection('Vérification en cours')}
->
-  <Text style={styles.primaryBtnText}>
-    {language === 'fr'
-      ? 'Commencer la vérification'
-      : 'Start verification'}
-  </Text>
-</TouchableOpacity>
   <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 18 }]}
+  style={[styles.primaryBtn, {
+    marginTop: 18,
+    backgroundColor: COLORS.navy,
+  }]}
   onPress={async () => {
-  await saveCompanyProfile();
+    await saveCompanyProfile();
 
-  if (subscriptionFlow) {
-    setProfileSection('Choix divisions');
-  }
-}}
+    if (subscriptionFlow) {
+      setProfileSection('Choix divisions');
+    }
+  }}
 >
-  <Text style={styles.primaryBtnText}>
+  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
     {language === 'fr'
       ? '💾 Enregistrer les modifications'
       : '💾 Save changes'}
