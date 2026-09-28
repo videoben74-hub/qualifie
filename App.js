@@ -906,7 +906,7 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
 <View style={styles.grid}>
         <TouchableOpacity
   style={styles.categoryCard}
-  onPress={() => onNavigate('Metiers', 'Services professionnels')}
+  onPress={() => onNavigate('Metiers', 'Inspection et services professionnels')}
 >
   <Text style={styles.categoryIcon}>⌂</Text>
   <Text style={styles.categoryText}>
@@ -988,7 +988,7 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
 
 function Metiers({ onNavigate, initialType, language, setLanguage }) {
   const [projectType, setProjectType] = useState(initialType || '');
-const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel — CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
+const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel \u2013 CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
   <ScrollView
     contentContainerStyle={styles.page}
@@ -1009,7 +1009,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
 <Text style={styles.screenTitle}>
   {language === 'fr'
     ? `Choisissez un métier – ${
-        initialType === 'Services professionnels'
+        initialType === 'Inspection et services professionnels'
           ? 'Inspection et services professionnels'
           : initialType === 'Nettoyage et conteneur'
           ? 'Nettoyage, Conteneur et Contrôle parasitaire'
@@ -1017,14 +1017,14 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           ? 'Aménagement'
           : initialType === 'Fournisseurs spécialisés'
           ? 'Fournisseurs spécialisés'
-          : initialType === 'Résidentiel CCQ'
-          ? 'Résidentiel CCQ'
+          initialType === 'Résidentiel \u2013 CCQ'
+          ? 'Résidentiel \u2013 CCQ'
           : initialType === 'Commercial'
           ? 'Commercial'
           : 'Résidentiel'
       }`
     : `Choose a trade – ${
-        initialType === 'Services professionnels'
+        initialType === 'Inspection et services professionnels'
           ? 'Inspection and professional services'
           : initialType === 'Nettoyage et conteneur'
           ? 'Cleaning, Containers and Pest Control'
@@ -1032,15 +1032,15 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           ? 'Planning and Landscaping'
           : initialType === 'Fournisseurs spécialisés'
           ? 'Specialized suppliers'
-          : initialType === 'Résidentiel CCQ'
-          ? 'Residential CCQ'
+          : initialType === 'Résidentiel \u2013 CCQ'
+          ? 'Residential \u2013 CCQ'
           : initialType === 'Commercial'
           ? 'Commercial'
           : 'Residential'
       }`}
 </Text>
         <View style={styles.grid}>
-  {(initialType === 'Services professionnels'
+  {(initialType === 'Inspection et services professionnels'
   ? professionalServices
   : initialType === 'Nettoyage et conteneur'
   ? cleaningCategories
@@ -1050,7 +1050,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
   ? specializedSupplierCategories
   : initialType === 'Commercial'
   ? commercialCategories
-  : initialType === 'Résidentiel CCQ'
+  : initialType === 'Résidentiel \u2013 CCQ'
   ? residentialCcqCategories
   : residentialCategories
 ).map((c) => (
@@ -3539,14 +3539,16 @@ try {
   'Décontamination',
   'Démolition',
   'Designer intérieur',
-  'Drain français',
-  'Ébéniste',
+'Drain et égout',
+'Drain français',
+'Ébéniste',
   'Électricité',
 'Émondeur',
 'Entrepreneur général',
   'Entretien ménager',
   'Époxy',
   'Escaliers et rampes',
+'Évaluation immobilière',
 'Excavation',
 'Exterminateur / gestion parasitaire',
       'Fabricant d’armoires de cuisine',
@@ -3564,7 +3566,8 @@ try {
 'Fournisseur de thermopompes',
 'Fournisseur de tourbe',
   'Génie civil',
-  'Gouttières',
+'Gestion immobilière',
+'Gouttières',
   'Grutier',
   'Imperméabilisation',
   'Ingénieur',
@@ -3585,8 +3588,10 @@ try {
   'Nettoyage de vitres',
       'Nettoyage et vidange de fosses septiques',
   'Nettoyage résidentiel',
-  'Pavage et asphalte',
-  'Paysagiste',
+'Notaire',
+'Pavage et asphalte',
+'Pavé uni',
+'Paysagiste',
   'Peinture',
   'Photographie immobilière',
   'Piscine et spa',
