@@ -2344,7 +2344,7 @@ const pickRbqPhoto = async () => {
 
   const result = await ImagePicker.launchImageLibraryAsync({
   mediaTypes: ['images'],
-  allowsEditing: true,
+  allowsEditing: false,
   quality: 0.8,
   base64: true,
 });
