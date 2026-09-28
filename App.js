@@ -92,6 +92,7 @@ const residentialCcqCategories = [
   'Aluminium',
   'Après sinistre',
   'Armoires de cuisine',
+  'Ascenseurs et monte-charges',
   'Béton',
   'Briqueteur',
   'Calfeutrage',
@@ -115,7 +116,6 @@ const residentialCcqCategories = [
   'Imperméabilisation',
   'Isolation',
   'Maçonnerie',
-  'Ascenseurs et monte-charges',
   'Monteur d’acier',
   'Pavage et asphalte',
   'Pavé uni',
@@ -139,6 +139,7 @@ const residentialCcqCategories = [
 
 const commercialCategories = [
   'Après sinistre',
+  'Ascenseurs et monte-charges',
   'Béton',
   'Céramique',
   'Charpente et menuiserie',
@@ -158,7 +159,6 @@ const commercialCategories = [
   'Imperméabilisation',
   'Isolation',
   'Maçonnerie',
-  'Ascenseurs et monte-charges',
   'Monteur d’acier',
   'Peinture',
   'Plomberie',
@@ -168,10 +168,10 @@ const commercialCategories = [
 'Propane et gaz',
   'Protection incendie',
 'Rénovation',
-  'Revêtement extérieur',
   'Revêtement de plancher',
-  'Serrurerie',
-  'Soudure et métaux',
+'Revêtement extérieur',
+'Serrurerie',
+'Soudure et métaux',
   'Systèmes d’alarme et sécurité',
   'Systèmes intérieurs',
   'Tireur de joint et plâtrier',
@@ -185,11 +185,11 @@ const commercialCategories = [
   'Arpenteur-géomètre',
   'Courtier immobilier',
   'Designer intérieur',
-    'Ébéniste',
-  'Évaluation immobilière',
-  'Gestion immobilière',
-    'Génie civil',
-  'Ingénieur',
+'Ébéniste',
+'Évaluation immobilière',
+'Génie civil',
+'Gestion immobilière',
+'Ingénieur',
   'Inspection de bâtiment',
   'Marketing',
   'Notaire',
@@ -1010,7 +1010,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
   {language === 'fr'
     ? `Choisissez un métier – ${
         initialType === 'Inspection et services professionnels'
-          ? 'Inspection et services professionnels'
+          ? 'Courtier immobilier, Inspection et services professionnels'
           : initialType === 'Nettoyage et conteneur'
           ? 'Nettoyage, Conteneur et Contrôle parasitaire'
           : initialType === 'Aménagement'
@@ -1025,7 +1025,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
       }`
     : `Choose a trade – ${
         initialType === 'Inspection et services professionnels'
-          ? 'Inspection and professional services'
+          ? 'Real Estate Broker, Inspection and Professional Services'
           : initialType === 'Nettoyage et conteneur'
           ? 'Cleaning, Containers and Pest Control'
           : initialType === 'Aménagement'
@@ -3214,14 +3214,19 @@ try {
           <Text style={styles.categoryText}>
   {isSelected ? '✓ ' : ''}
   {language === 'fr'
-    ? division
+  ? ({
+      'Inspection et services professionnels':
+        'Courtier immobilier, Inspection et services professionnels',
+      'Nettoyage et conteneur':
+        'Nettoyage, Conteneur et Contrôle parasitaire',
+    }[division] || division)
     : ({
     'Aménagement': 'Planning and Landscaping',
     'Résidentiel': 'Residential',
     'Résidentiel – CCQ': 'Residential – CCQ',
     'Commercial': 'Commercial',
     'Inspection et services professionnels':
-      'Inspection and professional services',
+      'Real Estate Broker, Inspection and Professional Services',
     'Nettoyage et conteneur':
       'Cleaning, Containers and Pest Control',
     'Fournisseurs spécialisés': 'Specialized suppliers',
@@ -3338,7 +3343,28 @@ try {
     ]}
   >
     {language === 'fr' ? 'Divisions : ' : 'Divisions: '}
-    {selectedDivisions.join(', ')}
+    {selectedDivisions
+  .map((division) =>
+    language === 'fr'
+      ? ({
+          'Inspection et services professionnels':
+            'Courtier immobilier, Inspection et services professionnels',
+          'Nettoyage et conteneur':
+            'Nettoyage, Conteneur et Contrôle parasitaire',
+        }[division] || division)
+      : ({
+          'Aménagement': 'Planning and Landscaping',
+          'Résidentiel': 'Residential',
+          'Résidentiel – CCQ': 'Residential – CCQ',
+          'Commercial': 'Commercial',
+          'Inspection et services professionnels':
+            'Real Estate Broker, Inspection and Professional Services',
+          'Nettoyage et conteneur':
+            'Cleaning, Containers and Pest Control',
+          'Fournisseurs spécialisés': 'Specialized suppliers',
+        }[division] || division)
+  )
+  .join(', ')}
   </Text>
 
   <Text
