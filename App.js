@@ -3943,9 +3943,7 @@ try {
       {language === 'fr' ? '⚙️ Paramètres' : '⚙️ Settings'}
     </Text>
 
-    <Text style={styles.menuText}>
-      {language === 'fr' ? '🌐 Langue' : '🌐 Language'}
-    </Text>
+    
 
     
 
