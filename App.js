@@ -4747,7 +4747,7 @@ scrollEnabled={!!selectedPro}
 : 'Saving...'
           : language === 'fr'
           ? 'Enregistrer ma note'
-: 'Save my rating'
+: 'Save my rating'}
       </Text>
     </TouchableOpacity>
   </View>
