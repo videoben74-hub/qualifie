@@ -861,7 +861,13 @@ return (
 }
 function TypeTravaux({ onNavigate, language, setLanguage }) {
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+    <ScrollView
+  style={{ flex: 1 }}
+  contentContainerStyle={[styles.page, { paddingBottom: 20 }]}
+  showsVerticalScrollIndicator={false}
+  bounces={false}
+  overScrollMode="never"
+>
       <AppHeader language={language} setLanguage={setLanguage} />
 
       <Text style={styles.screenTitle}>{language === 'fr' ? 'Division' : 'Division'}</Text>
@@ -991,9 +997,11 @@ function Metiers({ onNavigate, initialType, language, setLanguage }) {
 const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel \u2013 CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
   <ScrollView
-  contentContainerStyle={styles.page}
-  contentInsetAdjustmentBehavior="automatic"
+  style={{ flex: 1 }}
+  contentContainerStyle={[styles.page, { paddingBottom: 20 }]}
   showsVerticalScrollIndicator={false}
+  bounces={false}
+  overScrollMode="never"
 >
     <AppHeader language={language} setLanguage={setLanguage} />
 
@@ -3947,8 +3955,7 @@ try {
       styles.primaryBtn,
       {
         flex: 1,
-        backgroundColor:
-          language === 'fr' ? COLORS.gold : COLORS.navy,
+        backgroundColor: COLORS.navy,
       },
     ]}
     onPress={() => setLanguage('fr')}
@@ -3956,7 +3963,7 @@ try {
     <Text
       style={[
         styles.primaryBtnText,
-        { color: language === 'fr' ? COLORS.navy : '#FFFFFF' },
+        { color: COLORS.gold },
       ]}
     >
       FR
@@ -3968,8 +3975,7 @@ try {
       styles.primaryBtn,
       {
         flex: 1,
-        backgroundColor:
-          language === 'en' ? COLORS.gold : COLORS.navy,
+        backgroundColor: COLORS.navy,
       },
     ]}
     onPress={() => setLanguage('en')}
@@ -3977,7 +3983,7 @@ try {
     <Text
       style={[
         styles.primaryBtnText,
-        { color: language === 'en' ? COLORS.navy : '#FFFFFF' },
+        { color: COLORS.gold },
       ]}
     >
       EN
@@ -3986,23 +3992,36 @@ try {
 </View>
 
     <TouchableOpacity
-      style={[styles.primaryBtn, { marginTop: 22 }]}
-      onPress={() =>
-        alert(
-          language === 'fr'
-            ? 'La gestion des notifications sera disponible prochainement.'
-            : 'Notification management will be available soon.'
-        )
-      }
-    >
-      <Text style={styles.primaryBtnText}>
-        {language === 'fr'
-          ? '🔔 Gérer les notifications'
-          : '🔔 Manage notifications'}
-        </Text>
+  style={[
+    styles.primaryBtn,
+    {
+      marginTop: 22,
+      backgroundColor: COLORS.navy,
+    },
+  ]}
+  onPress={() =>
+    alert(
+      language === 'fr'
+        ? 'La gestion des notifications sera disponible prochainement.'
+        : 'Notification management will be available soon.'
+    )
+  }
+>
+  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
+    {language === 'fr'
+      ? '🔔 Gérer les notifications'
+      : '🔔 Manage notifications'}
+  </Text>
 </TouchableOpacity>
-      <TouchableOpacity
-  style={[styles.primaryBtn, { marginTop: 14 }]}
+
+<TouchableOpacity
+  style={[
+    styles.primaryBtn,
+    {
+      marginTop: 14,
+      backgroundColor: COLORS.navy,
+    },
+  ]}
   onPress={() =>
     alert(
       language === 'fr'
@@ -4011,7 +4030,7 @@ try {
     )
   }
 >
-  <Text style={styles.primaryBtnText}>
+  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
     {language === 'fr'
       ? '🔒 Sécurité du compte'
       : '🔒 Account security'}
