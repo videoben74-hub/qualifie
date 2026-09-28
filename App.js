@@ -861,7 +861,7 @@ return (
 }
 function TypeTravaux({ onNavigate, language, setLanguage }) {
   return (
-    <ScrollView contentContainerStyle={[styles.page, { paddingBottom: 140 }]}>
+    <ScrollView contentContainerStyle={styles.page}>
       <AppHeader language={language} setLanguage={setLanguage} />
 
       <Text style={styles.screenTitle}>{language === 'fr' ? 'Division' : 'Division'}</Text>
@@ -991,10 +991,10 @@ function Metiers({ onNavigate, initialType, language, setLanguage }) {
 const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel \u2013 CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
   <ScrollView
-    contentContainerStyle={[styles.page, { paddingBottom: 140 }]}
-    contentInsetAdjustmentBehavior="automatic"
-    showsVerticalScrollIndicator={false}
-  >
+  contentContainerStyle={styles.page}
+  contentInsetAdjustmentBehavior="automatic"
+  showsVerticalScrollIndicator={false}
+>
     <AppHeader language={language} setLanguage={setLanguage} />
 
 <TouchableOpacity
@@ -2124,7 +2124,10 @@ const averageRating =
     : '0.0';
 const isNeqValid = /^\d{10}$/.test(neq.trim());
 const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
-  const toggleRbqCategory = (category) => setRbqCategories((current) => current.includes(category) ? current.filter((item) => item !== category) : [...current, category]);
+  const toggleRbqCategory = (category) =>
+  setRbqCategories((current) =>
+    current.includes(category) ? [] : [category]
+  );
   const pickProfilePhoto = async () => {
   const permissionResult =
     await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -2946,42 +2949,7 @@ try {
   </Text>
 )}
 
-    {rbqCategories.length > 0 && (
-  <View
-    style={{
-      marginTop: 14,
-      marginBottom: 18,
-      backgroundColor: COLORS.navy,
-      borderRadius: 16,
-      padding: 16,
-      borderWidth: 2,
-      borderColor: COLORS.gold,
-    }}
-  >
-    <Text
-      style={{
-        color: COLORS.gold,
-        fontSize: 17,
-        fontWeight: '900',
-        marginBottom: 8,
-      }}
-    >
-      {language === 'fr'
-        ? '🛠️ Métiers et services sélectionnés :'
-        : '🛠️ Selected trades and services:'}
-    </Text>
-
-    <Text
-      style={{
-        color: '#FFFFFF',
-        fontWeight: '700',
-        lineHeight: 21,
-      }}
-    >
-      {rbqCategories.join(', ')}
-    </Text>
-  </View>
-)}
+    
       <TouchableOpacity
   style={[
     styles.primaryBtn,
@@ -3974,26 +3942,48 @@ try {
     
 
     <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
-      <TouchableOpacity
-        style={[
-          styles.primaryBtn,
-          { flex: 1, opacity: language === 'fr' ? 1 : 0.6 },
-        ]}
-        onPress={() => setLanguage('fr')}
-      >
-        <Text style={styles.primaryBtnText}>FR</Text>
-      </TouchableOpacity>
+  <TouchableOpacity
+    style={[
+      styles.primaryBtn,
+      {
+        flex: 1,
+        backgroundColor:
+          language === 'fr' ? COLORS.gold : COLORS.navy,
+      },
+    ]}
+    onPress={() => setLanguage('fr')}
+  >
+    <Text
+      style={[
+        styles.primaryBtnText,
+        { color: language === 'fr' ? COLORS.navy : '#FFFFFF' },
+      ]}
+    >
+      FR
+    </Text>
+  </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[
-          styles.primaryBtn,
-          { flex: 1, opacity: language === 'en' ? 1 : 0.6 },
-        ]}
-        onPress={() => setLanguage('en')}
-      >
-        <Text style={styles.primaryBtnText}>EN</Text>
-      </TouchableOpacity>
-    </View>
+  <TouchableOpacity
+    style={[
+      styles.primaryBtn,
+      {
+        flex: 1,
+        backgroundColor:
+          language === 'en' ? COLORS.gold : COLORS.navy,
+      },
+    ]}
+    onPress={() => setLanguage('en')}
+  >
+    <Text
+      style={[
+        styles.primaryBtnText,
+        { color: language === 'en' ? COLORS.navy : '#FFFFFF' },
+      ]}
+    >
+      EN
+    </Text>
+  </TouchableOpacity>
+</View>
 
     <TouchableOpacity
       style={[styles.primaryBtn, { marginTop: 22 }]}
