@@ -1160,6 +1160,7 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
       .select(`
         id,
         company_name,
+        avatar_url,
         company_latitude,
 company_longitude,
         company_city,
@@ -1203,6 +1204,7 @@ company_longitude,
         return {
           id: company.id,
           name: company.company_name,
+          photo: company.avatar_url || null,
           trade: company.rbq_categories?.[0] || '',
           trades: company.rbq_categories || [],
           city: company.company_city || '',
@@ -2014,7 +2016,6 @@ subscription_status: subscriptionStatus,
   const [customerReviews, setCustomerReviews] = useState([]);
 const [publicReviews, setPublicReviews] = useState([]);
 const [reviewRating, setReviewRating] = useState(5);
-const [reviewComment, setReviewComment] = useState('');
 const [reviewSaving, setReviewSaving] = useState(false);
   useEffect(() => {
   const loadPublicReviews = async () => {
@@ -2042,15 +2043,6 @@ const [reviewSaving, setReviewSaving] = useState(false);
 const submitReview = async () => {
   if (!selectedPro?.id || reviewSaving) return;
 
-  if (!reviewComment.trim()) {
-    alert(
-      language === 'fr'
-        ? 'Écrivez un commentaire.'
-        : 'Write a comment.'
-    );
-    return;
-  }
-
   try {
     setReviewSaving(true);
 
@@ -2059,11 +2051,9 @@ const submitReview = async () => {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      alert(
-        language === 'fr'
-          ? 'Vous devez être connecté.'
-          : 'You must be logged in.'
-      );
+      alert(language === 'fr'
+        ? 'Vous devez être connecté.'
+        : 'You must be logged in.');
       return;
     }
 
@@ -2073,7 +2063,7 @@ const submitReview = async () => {
         company_id: selectedPro.id,
         client_id: user.id,
         rating: reviewRating,
-        comment: reviewComment.trim(),
+        comment: '',
       })
       .select()
       .single();
@@ -2081,27 +2071,19 @@ const submitReview = async () => {
     if (error) throw error;
 
     setPublicReviews((current) => [data, ...current]);
-    setReviewComment('');
     setReviewRating(5);
-
-    alert(
-      language === 'fr'
-        ? 'Avis publié avec succès.'
-        : 'Review published successfully.'
-    );
+    alert(language === 'fr'
+      ? 'Note enregistrée avec succès.'
+      : 'Rating saved successfully.');
   } catch (error) {
-  console.log('Erreur publication avis :', error);
-
-  if (error.code === '23505') {
-    alert(
-      language === 'fr'
-        ? 'Vous avez déjà publié un avis pour cette entreprise.'
-        : 'You have already reviewed this company.'
-    );
-  } else {
-    alert(error.message);
-  }
-} finally {
+    if (error.code === '23505') {
+      alert(language === 'fr'
+        ? 'Vous avez déjà noté cette entreprise.'
+        : 'You have already rated this company.');
+    } else {
+      alert(error.message);
+    }
+  } finally {
     setReviewSaving(false);
   }
 };
@@ -3846,7 +3828,7 @@ try {
   </Text>
 </TouchableOpacity>
     <Text style={styles.sectionTitle}>
-      {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
+      {language === 'fr' ? '⭐ Notes clients' : '⭐ Customer ratings'}
     </Text>
 
     
@@ -3869,16 +3851,16 @@ try {
 
 <Text style={styles.infoText}>
   {language === 'fr'
-    ? `${customerReviews.length} avis client${customerReviews.length !== 1 ? 's' : ''}`
-    : `${customerReviews.length} customer review${customerReviews.length !== 1 ? 's' : ''}`}
+    ? `${customerReviews.length} note${customerReviews.length !== 1 ? 's' : ''} client${customerReviews.length !== 1 ? 's' : ''}`
+    : `${customerReviews.length} customer rating${customerReviews.length !== 1 ? 's' : ''}`}
 </Text>
 
 {customerReviews.length === 0 ? (
   <Text style={[styles.infoText, { marginTop: 14 }]}>
     {language === 'fr'
-      ? 'Aucun avis pour le moment.'
-      : 'No reviews yet.'}
-  </Text>
+  ? 'Aucune note pour le moment.'
+  : 'No ratings yet.'}
+</Text>
 ) : (
   customerReviews.map((review) => (
     <View
@@ -3896,9 +3878,7 @@ try {
         {'⭐'.repeat(review.rating)}
       </Text>
 
-      <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
-        {review.comment}
-      </Text>
+      
     </View>
   ))
 )}
@@ -4005,7 +3985,7 @@ try {
   </Text>
 
   <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
-    {language === 'fr' ? '• Avis clients' : '• Customer reviews'}
+    {language === 'fr' ? '• Notes clients' : '• Customer ratings'}
   </Text>
 
   <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
@@ -4368,10 +4348,10 @@ try {
   </>
 )}
     <Text style={styles.infoText}>
-      {language === 'fr'
-        ? `⭐ Note : ${averageRating} / 5 (${customerReviews.length} avis)`
-        : `⭐ Rating: ${averageRating} / 5 (${customerReviews.length} reviews)`}
-    </Text>
+  {language === 'fr'
+    ? `⭐ Note : ${averageRating} / 5 (${customerReviews.length} notes)`
+    : `⭐ Rating: ${averageRating} / 5 (${customerReviews.length} ratings)`}
+</Text>
 
     
       {companyAddress.trim() !== '' && (
@@ -4541,48 +4521,60 @@ scrollEnabled={!!selectedPro}
 </Text>
 </>
 <View style={styles.profileCard}>
-<TouchableOpacity
-  style={styles.avatarLarge}
-  onPress={pickProfilePhoto}
->
-  {profilePhoto || (!selectedPro && clientPhoto) ? (
-  <Image
-    source={{ uri: profilePhoto || clientPhoto }}
-    style={{ width: '100%', height: '100%', borderRadius: 999 }}
-  />
-) : (
-  <Text style={styles.avatarText}>
-    {selectedPro ? selectedPro.name.slice(0, 1) : '📷'}
-  </Text>
-)}
-</TouchableOpacity>
-<Text style={styles.profileName}>
-  {selectedPro
-  ? selectedPro.name
-  
-  : (language === 'fr' ? 'Menu Entreprise' : 'Business Menu')}
-</Text>
+  <TouchableOpacity
+    style={styles.avatarLarge}
+    onPress={selectedPro ? undefined : pickProfilePhoto}
+    disabled={!!selectedPro}
+  >
+    {(selectedPro ? selectedPro.photo : profilePhoto || clientPhoto) ? (
+      <Image
+        source={{
+          uri: selectedPro
+            ? selectedPro.photo
+            : profilePhoto || clientPhoto,
+        }}
+        style={{ width: '100%', height: '100%', borderRadius: 999 }}
+      />
+    ) : (
+      <Text style={styles.avatarText}>
+        {selectedPro ? selectedPro.name.slice(0, 1) : '📷'}
+      </Text>
+    )}
+  </TouchableOpacity>
 
-<Text
-  style={[
-    styles.infoText,
-    {
-      textAlign: 'center',
-      width: '100%',
-      paddingHorizontal: 10,
-    },
-  ]}
->
-  {selectedPro
-    ? `${language === 'fr'
-        ? selectedPro.trade
-        : (tradeTranslations[selectedPro.trade] || selectedPro.trade)
-      } • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} ${language === 'fr' ? 'avis' : 'reviews'})`
-    : (language === 'fr'
-        ? 'Bon succès dans vos projets !'
-        : 'Wishing you success in your projects!')}
-</Text>
-      </View>
+  <Text style={styles.profileName}>
+    {selectedPro
+      ? selectedPro.name
+      : language === 'fr'
+      ? 'Menu Entreprise'
+      : 'Business Menu'}
+  </Text>
+
+  <Text
+    style={[
+      styles.infoText,
+      {
+        textAlign: 'center',
+        width: '100%',
+        paddingHorizontal: 10,
+        color: COLORS.gold,
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+      },
+    ]}
+  >
+    {selectedPro
+      ? `${language === 'fr'
+          ? selectedPro.trade
+          : tradeTranslations[selectedPro.trade] || selectedPro.trade
+        } • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} ${
+          language === 'fr' ? 'avis' : 'reviews'
+        })`
+      : language === 'fr'
+      ? 'Bon succès dans vos projets !'
+      : 'Wishing you success in your projects!'}
+  </Text>
+</View>
 {selectedPro && (
   <>
     
@@ -4650,7 +4642,7 @@ scrollEnabled={!!selectedPro}
     
 
     <Text style={styles.sectionTitle}>
-  {language === 'fr' ? '⭐ Avis clients' : '⭐ Customer reviews'}
+  {language === 'fr' ? '⭐ Notes clients' : '⭐ Customer ratings'}
 </Text>
 
 <Text style={styles.profileInfo}>
@@ -4664,7 +4656,7 @@ scrollEnabled={!!selectedPro}
               ) / publicReviews.length
             ).toFixed(1)
           : '0.0'
-      } / 5 (${publicReviews.length} avis)`
+      } / 5 (${publicReviews.length} notes)`
     : `Average rating: ${
         publicReviews.length > 0
           ? (
@@ -4674,14 +4666,14 @@ scrollEnabled={!!selectedPro}
               ) / publicReviews.length
             ).toFixed(1)
           : '0.0'
-      } / 5 (${publicReviews.length} reviews)`}
+      } / 5 (${publicReviews.length} ratings)`}
 </Text>
 
 {publicReviews.length === 0 ? (
   <Text style={styles.infoText}>
     {language === 'fr'
-      ? 'Aucun avis pour le moment.'
-      : 'No reviews yet.'}
+  ? 'Aucune note pour le moment.'
+  : 'No ratings yet.'}
   </Text>
 ) : (
   publicReviews.map((review) => (
@@ -4698,9 +4690,7 @@ scrollEnabled={!!selectedPro}
         {'⭐'.repeat(review.rating)}
       </Text>
 
-      <Text style={styles.infoText}>
-        {review.comment}
-      </Text>
+      
     </View>
   ))
 )}
@@ -4738,23 +4728,6 @@ scrollEnabled={!!selectedPro}
       ))}
     </View>
 
-    <TextInput
-      value={reviewComment}
-      onChangeText={setReviewComment}
-      placeholder={
-        language === 'fr'
-          ? 'Écrivez votre commentaire...'
-          : 'Write your comment...'
-      }
-      multiline
-      style={[
-        styles.input,
-        {
-          minHeight: 90,
-          textAlignVertical: 'top',
-        },
-      ]}
-    />
 
     <TouchableOpacity
       style={[
@@ -4770,11 +4743,11 @@ scrollEnabled={!!selectedPro}
       <Text style={styles.primaryBtnText}>
         {reviewSaving
           ? language === 'fr'
-            ? 'Publication...'
-            : 'Publishing...'
+            ? 'Enregistrement...'
+: 'Saving...'
           : language === 'fr'
-          ? 'Publier mon avis'
-          : 'Publish my review'}
+          ? 'Enregistrer ma note'
+: 'Save my rating'
       </Text>
     </TouchableOpacity>
   </View>
@@ -4783,7 +4756,7 @@ scrollEnabled={!!selectedPro}
 )}
 {!selectedPro && [
   
-  { fr: '⭐ Avis', en: '⭐ Reviews', section: 'Mes avis' },
+  { fr: '⭐ Notes', en: '⭐ Ratings', section: 'Mes avis' },
   { fr: '💳 Abonnement', en: '💳 Subscription', section: 'Abonnement' },
   { fr: '⚙️ Paramètres', en: '⚙️ Settings', section: 'Paramètres' },
   {
