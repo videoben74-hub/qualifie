@@ -3049,7 +3049,7 @@ try {
   marginBottom: 12,
 }}>
   <Image
-  source={require('./assets/rbq-exemple.png')}
+  source={require('./file_00000000b7e481f5a802b803e96d3458.png')}
   resizeMode="contain"
   style={{ width: '100%', height: 220, borderRadius: 10 }}
 />
