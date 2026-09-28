@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   StatusBar,
-  Platform, BackHandler, Image,
+  Platform, BackHandler, Image, Switch,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -1786,7 +1786,11 @@ accountType, onLogout, onProfilePhotoChange }) {
       ? 'Profil client'
       : null
   );
-
+const [messageNotifications, setMessageNotifications] = useState(true);
+const [reviewNotifications, setReviewNotifications] = useState(true);
+const [accountNotifications, setAccountNotifications] = useState(true);
+  const [newPassword, setNewPassword] = useState('');
+const [confirmNewPassword, setConfirmNewPassword] = useState('');
 useEffect(() => {
   if (selectedPro) {
     setProfileSection(null);
@@ -2399,7 +2403,43 @@ try {
       
 };
   if (profileSection) {
-    
+    const updateAccountPassword = async () => {
+  if (newPassword.length < 6) {
+    alert(
+      language === 'fr'
+        ? 'Le mot de passe doit contenir au moins 6 caractères.'
+        : 'The password must contain at least 6 characters.'
+    );
+    return;
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    alert(
+      language === 'fr'
+        ? 'Les mots de passe ne correspondent pas.'
+        : 'Passwords do not match.'
+    );
+    return;
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  setNewPassword('');
+  setConfirmNewPassword('');
+
+  alert(
+    language === 'fr'
+      ? 'Mot de passe modifié avec succès.'
+      : 'Password changed successfully.'
+  );
+};
     
   return (
     <ScrollView
@@ -3945,50 +3985,6 @@ try {
 
     
 
-    
-
-    <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
-  <TouchableOpacity
-    style={[
-      styles.primaryBtn,
-      {
-        flex: 1,
-        backgroundColor: COLORS.navy,
-      },
-    ]}
-    onPress={() => setLanguage('fr')}
-  >
-    <Text
-      style={[
-        styles.primaryBtnText,
-        { color: COLORS.gold },
-      ]}
-    >
-      FR
-    </Text>
-  </TouchableOpacity>
-
-  <TouchableOpacity
-    style={[
-      styles.primaryBtn,
-      {
-        flex: 1,
-        backgroundColor: COLORS.navy,
-      },
-    ]}
-    onPress={() => setLanguage('en')}
-  >
-    <Text
-      style={[
-        styles.primaryBtnText,
-        { color: COLORS.gold },
-      ]}
-    >
-      EN
-    </Text>
-  </TouchableOpacity>
-</View>
-
     <TouchableOpacity
   style={[
     styles.primaryBtn,
@@ -3997,13 +3993,7 @@ try {
       backgroundColor: COLORS.navy,
     },
   ]}
-  onPress={() =>
-    alert(
-      language === 'fr'
-        ? 'La gestion des notifications sera disponible prochainement.'
-        : 'Notification management will be available soon.'
-    )
-  }
+  onPress={() => setProfileSection('Notifications')}
 >
   <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
     {language === 'fr'
@@ -4011,7 +4001,6 @@ try {
       : '🔔 Manage notifications'}
   </Text>
 </TouchableOpacity>
-
 <TouchableOpacity
   style={[
     styles.primaryBtn,
@@ -4020,13 +4009,7 @@ try {
       backgroundColor: COLORS.navy,
     },
   ]}
-  onPress={() =>
-    alert(
-      language === 'fr'
-        ? 'Les options de sécurité du compte seront disponibles prochainement.'
-        : 'Account security options will be available soon.'
-    )
-  }
+  onPress={() => setProfileSection('Sécurité')}
 >
   <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
     {language === 'fr'
@@ -4036,6 +4019,202 @@ try {
 </TouchableOpacity>
 </>
       
+) : profileSection === 'Sécurité' ? (
+  <>
+    <TouchableOpacity
+      onPress={() => setProfileSection('Paramètres')}
+      style={{
+        alignSelf: 'flex-start',
+        marginBottom: 12,
+        paddingVertical: 8,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 16,
+          fontWeight: '800',
+        }}
+      >
+        {language === 'fr' ? '← Retour' : '← Back'}
+      </Text>
+    </TouchableOpacity>
+
+    <Text style={styles.sectionTitle}>
+      {language === 'fr'
+        ? '🔒 Sécurité du compte'
+        : '🔒 Account security'}
+    </Text>
+
+    <View
+      style={{
+        backgroundColor: COLORS.navy,
+        borderRadius: 16,
+        padding: 16,
+        marginTop: 12,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.gold,
+          fontSize: 17,
+          fontWeight: '800',
+          marginBottom: 12,
+        }}
+      >
+        {language === 'fr'
+          ? 'Modifier le mot de passe'
+          : 'Change password'}
+      </Text>
+
+      <TextInput
+        value={newPassword}
+        onChangeText={setNewPassword}
+        secureTextEntry
+        placeholder={
+          language === 'fr'
+            ? 'Nouveau mot de passe'
+            : 'New password'
+        }
+        placeholderTextColor="#9CA3AF"
+        style={[
+          styles.input,
+          {
+            backgroundColor: COLORS.card,
+            marginBottom: 12,
+          },
+        ]}
+      />
+
+      <TextInput
+        value={confirmNewPassword}
+        onChangeText={setConfirmNewPassword}
+        secureTextEntry
+        placeholder={
+          language === 'fr'
+            ? 'Confirmer le mot de passe'
+            : 'Confirm password'
+        }
+        placeholderTextColor="#9CA3AF"
+        style={[
+          styles.input,
+          {
+            backgroundColor: COLORS.card,
+            marginBottom: 14,
+          },
+        ]}
+      />
+
+      <TouchableOpacity
+        style={[
+          styles.primaryBtn,
+          {
+            backgroundColor: COLORS.gold,
+          },
+        ]}
+        onPress={updateAccountPassword}
+      >
+        <Text
+          style={[
+            styles.primaryBtnText,
+            {
+              color: COLORS.navy,
+            },
+          ]}
+        >
+          {language === 'fr'
+            ? 'Enregistrer le nouveau mot de passe'
+            : 'Save new password'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  </>
+
+) : profileSection === 'Notifications' ? (
+  <>
+    <TouchableOpacity
+      onPress={() => setProfileSection('Paramètres')}
+      style={{
+        alignSelf: 'flex-start',
+        marginBottom: 12,
+        paddingVertical: 8,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.navy,
+          fontSize: 16,
+          fontWeight: '800',
+        }}
+      >
+        {language === 'fr' ? '← Retour' : '← Back'}
+      </Text>
+    </TouchableOpacity>
+
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '🔔 Notifications' : '🔔 Notifications'}
+    </Text>
+
+    {[
+      {
+        key: 'messages',
+        fr: 'Nouveaux messages',
+        en: 'New messages',
+        value: messageNotifications,
+        setter: setMessageNotifications,
+      },
+      {
+        key: 'reviews',
+        fr: 'Nouveaux avis',
+        en: 'New reviews',
+        value: reviewNotifications,
+        setter: setReviewNotifications,
+      },
+      {
+        key: 'account',
+        fr: 'Activité du compte',
+        en: 'Account activity',
+        value: accountNotifications,
+        setter: setAccountNotifications,
+      },
+    ].map((item) => (
+      <View
+        key={item.key}
+        style={{
+          backgroundColor: COLORS.navy,
+          borderRadius: 16,
+          paddingVertical: 14,
+          paddingHorizontal: 16,
+          marginTop: 12,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Text
+          style={{
+            color: COLORS.gold,
+            fontSize: 16,
+            fontWeight: '800',
+            flex: 1,
+          }}
+        >
+          {language === 'fr' ? item.fr : item.en}
+        </Text>
+
+        <Switch
+          value={item.value}
+          onValueChange={item.setter}
+          trackColor={{
+            false: '#9CA3AF',
+            true: COLORS.gold,
+          }}
+          thumbColor={COLORS.card}
+        />
+      </View>
+    ))}
+  </>
+
 ) : profileSection === 'Profil public' ? (
   <>
   <TouchableOpacity
