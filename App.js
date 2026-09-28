@@ -1017,7 +1017,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           ? 'Aménagement'
           : initialType === 'Fournisseurs spécialisés'
           ? 'Fournisseurs spécialisés'
-          initialType === 'Résidentiel \u2013 CCQ'
+          : initialType === 'Résidentiel \u2013 CCQ'
           ? 'Résidentiel \u2013 CCQ'
           : initialType === 'Commercial'
           ? 'Commercial'
