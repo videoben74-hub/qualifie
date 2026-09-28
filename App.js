@@ -1165,7 +1165,8 @@ company_longitude,
         company_city,
         company_description,
         company_photos,
-        rbq,
+                rbq,
+        rbq_photo_url,
         rbq_categories,
         ccq_status
       `)
@@ -1207,7 +1208,8 @@ company_longitude,
           city: company.company_city || '',
           description: company.company_description || '',
           photos: company.company_photos || [],
-          rbq: company.rbq || '',
+                    rbq: company.rbq || '',
+          rbqPhotoUrl: company.rbq_photo_url || '',
           rating: averageRating,
           reviews: companyReviews.length,
           distance:
@@ -1816,6 +1818,7 @@ const [companyDescription, setCompanyDescription] = useState('');
 const [companyPhotos, setCompanyPhotos] = useState([]);
 const [neq, setNeq] = useState('');
 const [rbq, setRbq] = useState('');
+const [rbqPhotoUrl, setRbqPhotoUrl] = useState('');
 const [companyCity, setCompanyCity] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
 const [companyPostalCode, setCompanyPostalCode] = useState('');
@@ -1842,8 +1845,9 @@ useEffect(() => {
           company_name,
           company_description,
           company_photos,
-          neq,
+                    neq,
           rbq,
+          rbq_photo_url,
           company_city,
           company_address,
           company_postal_code,
@@ -1867,8 +1871,9 @@ subscription_status
       setCompanyPhotos(
         Array.isArray(data.company_photos) ? data.company_photos : []
       );
-      setNeq(data.neq || '');
+            setNeq(data.neq || '');
       setRbq(data.rbq || '');
+      setRbqPhotoUrl(data.rbq_photo_url || '');
       setCompanyCity(data.company_city || '');
       setCompanyAddress(data.company_address || '');
       setCompanyPostalCode(data.company_postal_code || '');
@@ -1975,8 +1980,9 @@ if (companyAddress.trim()) {
         company_name: companyName,
         company_description: companyDescription,
         company_photos: companyPhotos,
-        neq: neq,
+                neq: neq,
         rbq: rbq,
+        rbq_photo_url: rbqPhotoUrl,
         company_city: companyCity,
         company_address: companyAddress,
         company_latitude: companyLatitude,
@@ -2324,6 +2330,59 @@ if (onProfilePhotoChange) {
     alert(error.message);
   }
     };
+const pickRbqPhoto = async () => {
+  const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (!permission.granted) {
+    alert(
+      language === 'fr'
+        ? 'Autorisez l’accès aux photos pour ajouter votre licence.'
+        : 'Allow photo access to add your licence.'
+    );
+    return;
+  }
+
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ['images'],
+    allowsEditing: false,
+    quality: 0.8,
+    base64: true,
+  });
+
+  if (result.canceled || !result.assets?.length) return;
+
+  try {
+    const asset = result.assets[0];
+    if (!asset.base64) throw new Error('Impossible de lire la photo.');
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Vous devez être connecté.');
+
+    const binary = atob(asset.base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+
+    const filePath = `${user.id}/rbq-${Date.now()}.jpg`;
+    const { error: uploadError } = await supabase.storage
+      .from('company-photos')
+      .upload(filePath, bytes.buffer, {
+        contentType: asset.mimeType || 'image/jpeg',
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from('company-photos')
+      .getPublicUrl(filePath);
+
+    setRbqPhotoUrl(data.publicUrl);
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
 const pickCompanyPhoto = async () => {
   if (companyPhotos.length >= 10) return;
 
@@ -2975,26 +3034,45 @@ try {
     paddingHorizontal: 12,
     borderRadius: 10,
     marginTop: 12,
-    marginBottom: 8,
+    marginBottom: 10,
   }}
 >
-  {language === 'fr' ? '🛡️ Licence RBQ' : '🛡️ RBQ licence'}
+  {language === 'fr' ? '🛡️ Photo de la licence RBQ' : '🛡️ RBQ licence photo'}
 </Text>
 
-<TextInput
-  value={rbq}
-  onChangeText={setRbq}
-  placeholder={language === 'fr' ? 'Ex. 1234-5678-01' : 'Ex. 1234-5678-01'}
-  placeholderTextColor={COLORS.muted}
-  style={[styles.input, { width: '100%' }]}
+<View style={{
+  backgroundColor: COLORS.navy,
+  borderColor: COLORS.gold,
+  borderWidth: 2,
+  borderRadius: 12,
+  padding: 14,
+  marginBottom: 12,
+}}>
+  <Image
+  source={require('./assets/rbq-exemple.png')}
+  resizeMode="contain"
+  style={{ width: '100%', height: 220, borderRadius: 10 }}
 />
+</View>
 
-{rbq.trim() !== '' && !isRbqValid && (
-  <Text style={[styles.infoText, { marginBottom: 12 }]}>
-    {language === 'fr'
-      ? 'Format RBQ attendu : 1234-5678-01.'
-      : 'Expected RBQ format: 1234-5678-01.'}
+<Text style={[styles.infoText, { marginBottom: 10 }]}>
+  {language === 'fr'
+    ? 'Champ obligatoire seulement pour les divisions assujetties à une licence RBQ. La photo doit montrer le nom et la date de validité. Elle apparaîtra sur votre profil public. Vous devez la mettre à jour lors du renouvellement. Une photo non conforme peut entraîner la suspension de l’abonnement actif.'
+    : 'Required only for divisions subject to an RBQ licence. The photo must show the name and expiry date. It will appear on your public profile. Update it when renewed. A non-compliant photo may lead to suspension of an active subscription.'}
+</Text>
+
+<TouchableOpacity style={styles.primaryBtn} onPress={pickRbqPhoto}>
+  <Text style={styles.primaryBtnText}>
+    {language === 'fr' ? '📷 Ajouter ou remplacer la photo' : '📷 Add or replace photo'}
   </Text>
+</TouchableOpacity>
+
+{!!rbqPhotoUrl && (
+  <Image
+    source={{ uri: rbqPhotoUrl }}
+    resizeMode="contain"
+    style={{ width: '100%', height: 220, marginTop: 12, borderRadius: 10 }}
+  />
 )}
 
     
@@ -3003,14 +3081,12 @@ try {
     styles.primaryBtn,
     (!companyName.trim() ||
       !isNeqValid ||
-      !isRbqValid ||
       !companyCity.trim() ||
       rbqCategories.length === 0) && { opacity: 0.4 },
   ]}
   disabled={
     !companyName.trim() ||
     !isNeqValid ||
-    !isRbqValid ||
     !companyCity.trim() ||
     rbqCategories.length === 0
   }
@@ -3710,7 +3786,18 @@ try {
     <Text style={styles.sectionTitle}>{language === 'fr' ? 'Vérification en cours' : 'Verification in progress'}</Text>
     <Text style={styles.profileInfo}>{language === 'fr' ? 'Entreprise' : 'Company'} : {companyName}</Text>
     <Text style={styles.profileInfo}>NEQ : {neq}</Text>
-    <Text style={styles.profileInfo}>{language === 'fr' ? 'Licence RBQ' : 'RBQ licence'} : {rbq}</Text>
+    {!!rbqPhotoUrl && (
+  <View style={{ marginVertical: 12 }}>
+    <Text style={styles.profileInfo}>
+      {language === 'fr' ? 'Licence RBQ' : 'RBQ licence'}
+    </Text>
+    <Image
+      source={{ uri: rbqPhotoUrl }}
+      resizeMode="contain"
+      style={{ width: '100%', height: 220, borderRadius: 10 }}
+    />
+  </View>
+)}
     <Text style={styles.profileInfo}>
   {language === 'fr' ? 'Métiers et services' : 'Trades and services'} : {rbqCategories.join(', ')}
 </Text>
@@ -4346,17 +4433,20 @@ try {
       : `🌐 Website: ${companyWebsite}`}
   </Text>
 )}
-    <Text style={styles.infoText}>
-  {language === 'fr'
-    ? `🪪 Licence RBQ : ${rbq && rbq.trim() ? rbq : 'Non renseignée'}`
-    : `🪪 RBQ licence: ${rbq && rbq.trim() ? rbq : 'Not provided'}`}
-</Text>
-
-    <Text style={styles.infoText}>
-      {language === 'fr'
-        ? `👷 Statut CCQ : ${ccqStatus && ccqStatus.trim() ? ccqStatus : 'Non renseigné'}`
-        : `👷 CCQ status: ${ccqStatus && ccqStatus.trim() ? ccqStatus : 'Not provided'}`}
+    {!!rbqPhotoUrl && (
+  <View style={{ marginTop: 12, marginBottom: 12 }}>
+    <Text style={[styles.menuText, { marginBottom: 10 }]}>
+      {language === 'fr' ? '🛡️ Licence RBQ' : '🛡️ RBQ licence'}
     </Text>
+    <Image
+      source={{ uri: rbqPhotoUrl }}
+      resizeMode="contain"
+      style={{ width: '100%', height: 240, borderRadius: 12 }}
+    />
+  </View>
+)}
+
+    
 
     <Text style={[styles.menuText, { marginTop: 14 }]}>
       {language === 'fr' ? '🛠 Services' : '🛠 Services'}
@@ -4522,7 +4612,18 @@ scrollEnabled={!!selectedPro}
       ? 'Aucune description disponible.'
       : 'No description available.')}
 </Text>
-
+{!!selectedPro.rbqPhotoUrl && (
+  <View style={{ marginTop: 16, marginBottom: 16 }}>
+    <Text style={[styles.menuText, { marginBottom: 10 }]}>
+      {language === 'fr' ? '🛡️ Licence RBQ' : '🛡️ RBQ licence'}
+    </Text>
+    <Image
+      source={{ uri: selectedPro.rbqPhotoUrl }}
+      resizeMode="contain"
+      style={{ width: '100%', height: 240, borderRadius: 12 }}
+    />
+  </View>
+)}
     
     
 
