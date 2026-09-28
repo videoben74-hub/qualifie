@@ -861,7 +861,7 @@ return (
 }
 function TypeTravaux({ onNavigate, language, setLanguage }) {
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+    <ScrollView contentContainerStyle={[styles.page, { paddingBottom: 140 }]}>
       <AppHeader language={language} setLanguage={setLanguage} />
 
       <Text style={styles.screenTitle}>{language === 'fr' ? 'Division' : 'Division'}</Text>
@@ -991,7 +991,7 @@ function Metiers({ onNavigate, initialType, language, setLanguage }) {
 const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors CCQ' : initialType === 'Résidentiel \u2013 CCQ' || initialType === 'Commercial' ? 'CCQ' : '');
   return (
   <ScrollView
-    contentContainerStyle={styles.page}
+    contentContainerStyle={[styles.page, { paddingBottom: 140 }]}
     contentInsetAdjustmentBehavior="automatic"
     showsVerticalScrollIndicator={false}
   >
@@ -2945,23 +2945,7 @@ try {
       : 'Expected RBQ format: 1234-5678-01.'}
   </Text>
 )}
-<TouchableOpacity
-  style={[
-    styles.primaryBtn,
-    {
-      marginTop: 18,
-      marginBottom: 18,
-      width: '100%',
-    },
-  ]}
-  onPress={() => setProfileSection('Métiers et services')}
->
-  <Text style={styles.primaryBtnText}>
-    {language === 'fr'
-      ? '🛠️ Métiers et services professionnels  ›'
-      : '🛠️ Trades and professional services  ›'}
-  </Text>
-</TouchableOpacity>
+
     {rbqCategories.length > 0 && (
   <View
     style={{
@@ -3270,7 +3254,7 @@ try {
   }
 
   setSubscriptionStatus('inactive');
-  setProfileSection('Résumé forfait');
+  setProfileSection('Métiers et services');
 }}
     >
       <Text style={styles.primaryBtnText}>
@@ -3281,7 +3265,7 @@ try {
 ) : profileSection === 'Résumé forfait' ? (
   <>
     <TouchableOpacity
-  onPress={() => setProfileSection('Choix divisions')}
+  onPress={() => setProfileSection('Métiers et services')}
   style={{
     alignSelf: 'flex-start',
     marginBottom: 12,
@@ -3509,7 +3493,11 @@ try {
 ) : profileSection === 'Métiers et services' ? (
 <>
   <TouchableOpacity
-  onPress={() => setProfileSection('Informations entreprise')}
+  onPress={() =>
+  setProfileSection(
+    subscriptionFlow ? 'Sélection divisions' : 'Informations entreprise'
+  )
+  }
   style={{
     alignSelf: 'flex-start',
     marginBottom: 12,
@@ -3528,10 +3516,10 @@ try {
   </Text>
 </TouchableOpacity>
     <Text style={styles.sectionTitle}>
-      {language === 'fr'
-        ? '🛠️ Métiers et services professionnels'
-        : '🛠️ Trades and professional services'}
-    </Text>
+  {language === 'fr'
+    ? '🛠️ Sélectionnez votre champ d’expertise'
+    : '🛠️ Select your field of expertise'}
+</Text>
 
     <Text style={[styles.infoText, { marginBottom: 16 }]}>
       {language === 'fr'
@@ -3668,7 +3656,13 @@ try {
 
     <TouchableOpacity
       style={[styles.primaryBtn, { marginTop: 18 }]}
-      onPress={() => setProfileSection('Informations entreprise')}
+      onPress={async () => {
+  await saveCompanyProfile();
+
+  setProfileSection(
+    subscriptionFlow ? 'Résumé forfait' : 'Informations entreprise'
+  );
+}}
     >
       <Text style={styles.primaryBtnText}>
         {language === 'fr'
