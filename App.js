@@ -1751,33 +1751,48 @@ onFocus={() =>
 ) : (
   conversations.map((conversation) => (
     <TouchableOpacity
-      key={conversation.id}
-      onPress={() => {
-        setActiveConversationId(conversation.id);
-        setSelectedChat(conversation.otherName);
-      }}
-      style={styles.messageCard}
-    >
-      {conversation.otherPhoto ? (
-        <Image
-          source={{ uri: conversation.otherPhoto }}
-          style={styles.avatarSmall}
-        />
-      ) : (
-        <View style={styles.avatarSmall}>
-          <Text style={styles.avatarText}>
-            {conversation.otherName?.[0] || '?'}
-          </Text>
-        </View>
-      )}
+  key={conversation.id}
+  onPress={() => {
+    setActiveConversationId(conversation.id);
+    setSelectedChat(conversation.otherName);
+  }}
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    backgroundColor: COLORS.navy,
+    borderColor: COLORS.gold,
+    borderWidth: 2,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+  }}
+>
+  {conversation.otherPhoto ? (
+    <Image
+      source={{ uri: conversation.otherPhoto }}
+      style={{ width: 52, height: 52, borderRadius: 26 }}
+    />
+  ) : (
+    <View style={[styles.avatarSmall, { width: 52, height: 52, borderRadius: 26 }]}>
+      <Text style={styles.avatarText}>
+        {conversation.otherName?.[0] || '?'}
+      </Text>
+    </View>
+  )}
 
-      <View style={{ flex: 1 }}>
-        <Text style={styles.proName}>
-          {conversation.otherName}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  ))
+  <View style={{ flex: 1 }}>
+    <Text style={{ color: COLORS.gold, fontSize: 17, fontWeight: '900' }}>
+      {conversation.otherName}
+    </Text>
+    <Text style={{ color: COLORS.gold, marginTop: 3 }}>
+      {language === 'fr' ? 'Ouvrir la conversation' : 'Open conversation'}
+    </Text>
+  </View>
+
+  <Text style={{ color: COLORS.gold, fontSize: 28 }}>›</Text>
+</TouchableOpacity>
+))
 )}
     </ScrollView>
   );
