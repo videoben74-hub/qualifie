@@ -4180,6 +4180,19 @@ try {
         </Text>
       </TouchableOpacity>
     </View>
+                <TouchableOpacity
+      style={[
+        styles.primaryBtn,
+        { marginTop: 18, backgroundColor: COLORS.navy },
+      ]}
+      onPress={deleteAccount}
+    >
+      <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
+        {language === 'fr'
+          ? 'Supprimer mon compte'
+          : 'Delete my account'}
+      </Text>
+    </TouchableOpacity>
   </>
 
 ) : profileSection === 'Notifications' ? (
