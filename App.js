@@ -3358,7 +3358,7 @@ try {
     .update({
       subscription_division_count: selectedDivisionCount,
       subscription_divisions: selectedDivisions,
-      subscription_status: 'inactive',
+      
     })
     .eq('id', user.id);
 
@@ -3367,7 +3367,7 @@ try {
     return;
   }
 
-  setSubscriptionStatus('inactive');
+  
   setProfileSection('Métiers et services');
 }}
     >
