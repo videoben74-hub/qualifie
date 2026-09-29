@@ -3,15 +3,19 @@
     "version": ">= 16.0.0"
   },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
-    },
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {}
+  "development": {
+    "developmentClient": true,
+    "distribution": "internal",
+    "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
   },
+  "preview": {
+    "distribution": "internal",
+    "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
+  },
+  "production": {
+    "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
+  }
+},
   "submit": {
     "production": {}
   }
