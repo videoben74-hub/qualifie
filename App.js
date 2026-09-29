@@ -4672,40 +4672,45 @@ scrollEnabled={!!selectedPro}
     
 
     <TouchableOpacity
-      style={styles.quoteBtn}
-      onPress={() => onNavigate('Messages', '', selectedPro)}
-    >
-      <Text style={styles.quoteBtnText}>
-        {language === 'fr'
-          ? '💬 Message'
-: '💬 Message'}
-      </Text>
-    </TouchableOpacity>
+  style={[styles.quoteBtn, {
+    backgroundColor: COLORS.navy,
+    borderWidth: 1.5,
+    borderColor: COLORS.gold,
+  }]}
+  onPress={() => onNavigate('Messages', '', selectedPro)}
+>
+  <Text style={[styles.quoteBtnText, { color: COLORS.gold }]}>
+    {language === 'fr'
+      ? '💬 Message'
+      : '💬 Message'}
+  </Text>
+</TouchableOpacity>
 
     <TouchableOpacity
-      style={styles.quoteBtn}
-      onPress={() =>
-        setFavorites((prev) =>
-          prev.some((fav) => fav.id === selectedPro.id)
-            ? prev.filter((fav) => fav.id !== selectedPro.id)
-            : [...prev, selectedPro]
-        )
-      }
-    >
-      <Text style={styles.quoteBtnText}>
-        {favorites.some((fav) => fav.id === selectedPro.id)
-          ? language === 'fr'
-            ? '❤️ Retirer des favoris'
-            : '❤️ Remove from favorites'
-          : language === 'fr'
-          ? '♡ Ajouter aux favoris'
-          : '♡ Add to favorites'}
-      </Text>
-    </TouchableOpacity>
+  style={[styles.quoteBtn, {
+    backgroundColor: COLORS.navy,
+    borderWidth: 1.5,
+    borderColor: COLORS.gold,
+  }]}
+  onPress={() =>
+    setFavorites((prev) =>
+      prev.some((fav) => fav.id === selectedPro.id)
+        ? prev.filter((fav) => fav.id !== selectedPro.id)
+        : [...prev, selectedPro]
+    )
+  }
+>
+  <Text style={[styles.quoteBtnText, { color: COLORS.gold }]}>
+    {favorites.some((fav) => fav.id === selectedPro.id)
+      ? language === 'fr'
+        ? '❤️ Retirer des favoris'
+        : '❤️ Remove from favorites'
+      : language === 'fr'
+      ? '♡ Ajouter aux favoris'
+      : '♡ Add to favorites'}
+  </Text>
+</TouchableOpacity>
 
-    
-
-    
     
 
     <Text style={styles.sectionTitle}>
@@ -4797,26 +4802,29 @@ scrollEnabled={!!selectedPro}
 
 
     <TouchableOpacity
-      style={[
-        styles.primaryBtn,
-        {
-          marginTop: 12,
-          opacity: reviewSaving ? 0.6 : 1,
-        },
-      ]}
-      onPress={submitReview}
-      disabled={reviewSaving}
-    >
-      <Text style={styles.primaryBtnText}>
-        {reviewSaving
-          ? language === 'fr'
-            ? 'Enregistrement...'
-: 'Saving...'
-          : language === 'fr'
-          ? 'Enregistrer ma note'
-: 'Save my rating'}
-      </Text>
-    </TouchableOpacity>
+  style={[
+    styles.primaryBtn,
+    {
+      marginTop: 12,
+      opacity: reviewSaving ? 0.6 : 1,
+      backgroundColor: COLORS.navy,
+      borderWidth: 1.5,
+      borderColor: COLORS.gold,
+    },
+  ]}
+  onPress={submitReview}
+  disabled={reviewSaving}
+>
+  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
+    {reviewSaving
+      ? language === 'fr'
+        ? 'Enregistrement...'
+        : 'Saving...'
+      : language === 'fr'
+      ? 'Enregistrer ma note'
+      : 'Save my rating'}
+  </Text>
+</TouchableOpacity>
   </View>
 )}
   </>
