@@ -1153,7 +1153,8 @@ company_longitude,
                 rbq,
         rbq_photo_url,
         rbq_categories,
-        ccq_status
+ccq_status,
+is_verified
       `)
       .eq('account_type', 'business');
 
@@ -1209,7 +1210,7 @@ company_longitude,
         Number(company.company_longitude)
       )
     : null,
-          verified: true,
+          verified: company.is_verified === true,
           projectTypes: [],
           workTypes: Array.isArray(company.ccq_status)
   ? company.ccq_status
