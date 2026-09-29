@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   StatusBar,
-  Platform, BackHandler, Image, Switch,
+  Platform, BackHandler, Image, Switch, Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -2481,7 +2481,41 @@ try {
       : 'Password changed successfully.'
   );
 };
-    
+    const deleteAccount = () => {
+  Alert.alert(
+    language === 'fr' ? 'Supprimer mon compte ?' : 'Delete my account?',
+    language === 'fr'
+      ? 'Cette action est définitive. Votre compte et vos données seront supprimés.'
+      : 'This is permanent. Your account and data will be deleted.',
+    [
+      {
+        text: language === 'fr' ? 'Annuler' : 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: language === 'fr' ? 'Supprimer' : 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            const { data, error } = await supabase.functions.invoke('delete-account');
+
+            if (error || data?.error) {
+              throw new Error(data?.error || error?.message);
+            }
+
+            await supabase.auth.signOut();
+            onLogout();
+          } catch (err) {
+            Alert.alert(
+              language === 'fr' ? 'Erreur de suppression' : 'Deletion error',
+              err.message
+            );
+          }
+        },
+      },
+    ]
+  );
+};
   return (
     <ScrollView
   contentContainerStyle={styles.page}
