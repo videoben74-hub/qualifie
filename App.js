@@ -2001,7 +2001,7 @@ company_longitude: companyLongitude,
         ccq_status: ccqStatus.length > 0 ? ccqStatus[0] : null,
         subscription_division_count: selectedDivisionCount,
 subscription_divisions: selectedDivisions,
-subscription_status: subscriptionStatus,
+
       })
       .eq('id', user.id);
 
