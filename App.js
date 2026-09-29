@@ -1371,14 +1371,9 @@ const response = await fetch(
   </Text>
 ))}
 
-{p.workTypes?.map((type) => (
+{p.workTypes?.filter((type) => type !== 'Hors CCQ').map((type) => (
   <Text key={type} style={styles.badgeText}>
-    {type === 'CCQ' ? ' 👷 ' : ' 🔨 '}
-    {language === 'fr'
-      ? type
-      : type === 'Hors CCQ'
-      ? 'Non-CCQ'
-      : type}
+    👷 {type}
   </Text>
 ))}
 </View>
@@ -3533,13 +3528,13 @@ try {
 
     <View
       style={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: COLORS.navy,
         padding: 20,
         borderRadius: 16,
         marginTop: 10,
       }}
     >
-      <Text style={[styles.profileInfo, { textAlign: 'center' }]}>
+      <Text style={[styles.profileInfo, { textAlign: 'center', color: COLORS.gold }]}>
         {language === 'fr'
           ? 'Abonnement entreprise QualiVérifié'
           : 'QualiVérifié business subscription'}
@@ -3548,7 +3543,7 @@ try {
       <Text
         style={[
           styles.sectionTitle,
-          { textAlign: 'center', marginTop: 18 },
+          { textAlign: 'center', marginTop: 18, color: COLORS.gold },
         ]}
       >
         {selectedDivisionCount === 1
@@ -3561,7 +3556,7 @@ try {
       <Text
         style={[
           styles.infoText,
-          { textAlign: 'center', marginTop: 12 },
+          { textAlign: 'center', marginTop: 12, color: COLORS.gold },
         ]}
       >
         {language === 'fr'
@@ -3571,10 +3566,10 @@ try {
     </View>
 
     <TouchableOpacity
-      style={[styles.primaryBtn, { marginTop: 20, opacity: 0.5 }]}
+      style={[styles.primaryBtn, { marginTop: 20, opacity: 0.5, backgroundColor: COLORS.navy }]}
       disabled={true}
     >
-      <Text style={styles.primaryBtnText}>
+      <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
         {language === 'fr'
           ? '🔒 Paiement sécurisé'
           : '🔒 Secure payment'}
