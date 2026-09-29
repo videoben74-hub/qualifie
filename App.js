@@ -577,7 +577,7 @@ return (
 >
   <Text
     style={{
-      color: COLORS.gold,
+      color: '#DCE1E8',
       fontSize: 17,
       fontWeight: '900',
       textAlign: 'center',
@@ -681,23 +681,7 @@ return (
   )}
 </Text>
 
-  <Text
-    style={{
-      color: '#FFFFFF',
-      fontSize: 18,
-      fontWeight: '900',
-      textAlign: 'center',
-      lineHeight: 24,
-      marginTop: 10,
-    }}
-  >
-    {language === 'fr' ? 'Avec ' : 'With '}
-    <Text style={{ color: '#FFFFFF' }}>Quali</Text>
-    <Text style={{ color: COLORS.gold }}>Vérifié</Text>
-    {language === 'fr'
-      ? ', à chaque tâche son professionnel'
-      : ', the right professional for every task'}
-  </Text>
+  
 </View>
     <View
   style={{
