@@ -1326,7 +1326,16 @@ const response = await fetch(
       <Text style={styles.resultCount}>{results.length} {language === 'fr' ? 'résultat(s)' : 'result(s)'}</Text>
  {results.map((p) => (
         <View key={p.id} style={styles.proCard}>
-          <View style={styles.avatar}><Text style={styles.avatarText}>{p.name.slice(0,1)}</Text></View>
+          <View style={styles.avatar}>
+  {p.photo ? (
+    <Image
+      source={{ uri: p.photo }}
+      style={{ width: 52, height: 52, borderRadius: 26 }}
+    />
+  ) : (
+    <Text style={styles.avatarText}>{p.name.slice(0, 1)}</Text>
+  )}
+</View>
           <View style={{flex:1}}>
             <View style={styles.rowBetween}>
   <Text style={styles.proName}>{p.name}</Text>
