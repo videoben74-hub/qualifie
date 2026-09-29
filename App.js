@@ -1343,7 +1343,7 @@ const response = await fetch(
         )
       }
     >
-      <Text style={{ fontSize: 28 }}>
+      <Text style={{ fontSize: 28, color: COLORS.gold }}>
         {favorites.some((fav) => fav.id === p.id) ? '♥️' : '♡'}
       </Text>
     </TouchableOpacity>
@@ -2547,6 +2547,23 @@ try {
 </Text>
 
     <View style={styles.profileCard}>
+    <TouchableOpacity
+  onPress={() => setProfileSection('Paramètres')}
+  style={{
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    backgroundColor: COLORS.gold,
+    borderRadius: 12,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    zIndex: 10,
+  }}
+>
+  <Text style={{ color: COLORS.navy, fontWeight: '900', fontSize: 12 }}>
+    {language === 'fr' ? '⚙️ Paramètres' : '⚙️ Settings'}
+  </Text>
+</TouchableOpacity>
     <TouchableOpacity
   onPress={onLogout}
   style={{
@@ -4043,7 +4060,7 @@ try {
 ) : profileSection === 'Paramètres' ? (
   <>
   <TouchableOpacity
-  onPress={() => setProfileSection(null)}
+  onPress={() => setProfileSection(accountType === 'client' ? 'Profil client' : null)}
   style={{
     alignSelf: 'flex-start',
     marginBottom: 12,
@@ -6179,15 +6196,15 @@ categoryText: {
 },
   textArea: { minHeight: 130, textAlignVertical: 'top' },
   resultCount: { color: COLORS.muted, marginVertical: 8, fontWeight: '700' },
-  proCard: { flexDirection: 'row', gap: 12, backgroundColor: COLORS.card, padding: 14, borderRadius: 16, marginBottom: 12, borderWidth: 1, borderColor: COLORS.line },
+  proCard: { flexDirection: 'row', gap: 12, backgroundColor: COLORS.navy, padding: 14, borderRadius: 16, marginBottom: 12, borderWidth: 2, borderColor: COLORS.gold },
   avatar: { width: 52, height: 52, borderRadius: 26, backgroundColor: COLORS.navy2, alignItems: 'center', justifyContent: 'center' },
   avatarSmall: { width: 42, height: 42, borderRadius: 21, backgroundColor: COLORS.navy2, alignItems: 'center', justifyContent: 'center' },
   avatarLarge: { width: 78, height: 78, borderRadius: 39, backgroundColor: COLORS.navy2, alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
   avatarText: { color: '#fff', fontWeight: '900', fontSize: 20 },
   rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 6 },
-  proName: { color: COLORS.text, fontWeight: '900', fontSize: 15, flexShrink: 1 },
-  proTrade: { color: COLORS.navy2, fontWeight: '700', marginTop: 3 },
-  proMeta: { color: COLORS.muted, fontSize: 12, marginTop: 5 },
+  proName: { color: COLORS.gold, fontWeight: '900', fontSize: 15, flexShrink: 1 },
+  proTrade: { color: COLORS.gold, fontWeight: '700', marginTop: 3 },
+proMeta: { color: COLORS.gold, fontSize: 12, marginTop: 5 },
   badge: { backgroundColor: '#E6F6EF', borderRadius: 999, paddingHorizontal: 8, paddingVertical: 4 },
   badgeText: { color: COLORS.green, fontWeight: '900', fontSize: 10 },
   verifiedBadge: { backgroundColor: '#E6F6EF', padding: 12, borderRadius: 12, marginTop: 14 },
@@ -6198,8 +6215,8 @@ categoryText: {
   contactBtnText: { color: COLORS.navy, fontWeight: '900', fontSize: 16 },
   profileInfo: { backgroundColor: COLORS.card, color: COLORS.navy, fontWeight: '700', fontSize: 14, padding: 12, borderRadius: 12, marginTop: 8, borderWidth: 1, borderColor: COLORS.line },
   cardActions: { flexDirection: 'row', gap: 8, marginTop: 10 },
-  secondaryBtn: { borderWidth: 1, borderColor: COLORS.navy, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 10 },
-  secondaryBtnText: { color: COLORS.navy, fontWeight: '800', fontSize: 12 },
+  secondaryBtn: { borderWidth: 1, borderColor: COLORS.gold, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 10 },
+secondaryBtnText: { color: COLORS.gold, fontWeight: '800', fontSize: 12 },
   smallGoldBtn: { backgroundColor: COLORS.gold, borderRadius: 9, paddingVertical: 8, paddingHorizontal: 14 },
   smallGoldBtnText: {
   color: COLORS.navy,
