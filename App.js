@@ -4657,6 +4657,29 @@ scrollEnabled={!!selectedPro}
       ? 'Aucune description disponible.'
       : 'No description available.')}
 </Text>
+{Array.isArray(selectedPro.photos) && selectedPro.photos.length > 0 && (
+  <View style={{ marginTop: 16, marginBottom: 16 }}>
+    <Text style={styles.sectionTitle}>
+      {language === 'fr' ? '📸 Réalisations' : '📸 Projects'}
+    </Text>
+
+    {selectedPro.photos.map((photo, index) => (
+      <Image
+        key={`${photo}-${index}`}
+        source={{ uri: photo }}
+        resizeMode="contain"
+        style={{
+          width: '100%',
+          height: 240,
+          marginBottom: 12,
+          borderRadius: 12,
+          backgroundColor: COLORS.navy,
+        }}
+      />
+    ))}
+  </View>
+)}
+
 {!!selectedPro.rbqPhotoUrl && (
   <View style={{ marginTop: 16, marginBottom: 16 }}>
     <Text style={[styles.menuText, { marginBottom: 10 }]}>
