@@ -3837,7 +3837,23 @@ try {
     ) : (
       favorites.map((fav) => (
         <View key={fav.id} style={[styles.proCard, { flexDirection: 'column', alignItems: 'stretch', width: '100%' }]}>
-          <Text style={styles.proName}>{fav.name}</Text>
+          {fav.photo && (
+  <Image
+    source={{ uri: fav.photo }}
+    resizeMode="cover"
+    style={{
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      alignSelf: 'center',
+      marginBottom: 12,
+      borderWidth: 2,
+      borderColor: COLORS.gold,
+    }}
+  />
+)}
+
+<Text style={styles.proName}>{fav.name}</Text>
 <Text style={styles.proTrade}>{language === 'fr' ? fav.trade : (tradeTranslations[fav.trade] || fav.trade)}</Text>
 <Text style={styles.proMeta}>★ {fav.rating} • {fav.city}, QC</Text>
 
