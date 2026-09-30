@@ -5857,14 +5857,185 @@ const [category, setCategory] = useState('');
 const [selectedPro, setSelectedPro] = useState(null);
   const [projects, setProjects] = useState([]);
   const [filters, setFilters] = useState({});
-const [favorites, setFavorites] = useState([]);
+const [favorites, setFavoritesState] = useState([]);
+const favoritesRef = useRef([]);
+const favoritesBusy = useRef(false);
+
+const setFavorites = async (update) => {
+  if (favoritesBusy.current) return;
+  favoritesBusy.current = true;
+
+  try {
+    const { data: { user }, error: authError } =
+      await supabase.auth.getUser();
+
+    if (authError) throw authError;
+    if (!user) {
+      throw new Error(
+        language === 'fr'
+          ? 'Connectez-vous pour gérer vos favoris.'
+          : 'Sign in to manage your favorites.'
+      );
+    }
+
+    const previous = favoritesRef.current;
+    const next =
+      typeof update === 'function' ? update(previous) : update;
+
+    const added = next.filter(
+      (item) => !previous.some((fav) => fav.id === item.id)
+    );
+    const removed = previous.filter(
+      (item) => !next.some((fav) => fav.id === item.id)
+    );
+
+    for (const item of added) {
+      const { error } = await supabase
+        .from('favorites')
+        .upsert(
+  { client_id: user.id, company_id: item.id },
+  {
+    onConflict: 'client_id,company_id',
+    ignoreDuplicates: true,
+  }
+);
+
+      if (error) throw error;
+    }
+
+    for (const item of removed) {
+      const { error } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('client_id', user.id)
+        .eq('company_id', item.id);
+
+      if (error) throw error;
+    }
+
+    favoritesRef.current = next;
+    setFavoritesState(next);
+  } catch (error) {
+    Alert.alert(
+      language === 'fr' ? 'Favoris' : 'Favorites',
+      error.message
+    );
+  } finally {
+    favoritesBusy.current = false;
+  }
+};
 const [language, setLanguage] = useState('fr');
 const [userLocation, setUserLocation] = useState(null);
   const [accountType, setAccountType] = useState(null);
  const [unreadCount, setUnreadCount] = useState(0);
   const [navProfilePhoto, setNavProfilePhoto] = useState(null);
 const [navProfileInitial, setNavProfileInitial] = useState('●');
+useEffect(() => {
+  let cancelled = false;
+  favoritesRef.current = [];
+  setFavoritesState([]);
 
+  if (!accountType) return;
+
+  favoritesBusy.current = true;
+
+  const loadFavorites = async () => {
+    try {
+      const { data: { user }, error: authError } =
+        await supabase.auth.getUser();
+
+      if (authError) throw authError;
+      if (!user || cancelled) return;
+
+      const { data: rows, error } = await supabase
+        .from('favorites')
+        .select('company_id')
+        .eq('client_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const ids = (rows || []).map((row) => row.company_id);
+      if (!ids.length || cancelled) return;
+
+      const { data: companies, error: profilesError } =
+        await supabase
+          .from('profiles')
+          .select(`
+            id, company_name, avatar_url, rbq_categories,
+            company_city, company_description, company_photos,
+            rbq, rbq_photo_url, is_verified, ccq_status
+          `)
+          .in('id', ids);
+
+      if (profilesError) throw profilesError;
+
+      const { data: ratings, error: ratingsError } =
+        await supabase
+          .from('reviews')
+          .select('company_id, rating')
+          .in('company_id', ids);
+
+      if (ratingsError) throw ratingsError;
+
+      const loaded = ids.map((id) => {
+        const company = companies?.find((item) => item.id === id);
+        if (!company) return null;
+
+        const reviews = (ratings || []).filter(
+          (item) => item.company_id === id
+        );
+
+        return {
+          id: company.id,
+          name: company.company_name || '',
+          photo: company.avatar_url || null,
+          trade: company.rbq_categories?.[0] || '',
+          trades: company.rbq_categories || [],
+          city: company.company_city || '',
+          description: company.company_description || '',
+          photos: company.company_photos || [],
+          rbq: company.rbq || '',
+          rbqPhotoUrl: company.rbq_photo_url || '',
+          verified: company.is_verified === true,
+          rating: reviews.length
+            ? reviews.reduce(
+                (total, item) => total + Number(item.rating || 0),
+                0
+              ) / reviews.length
+            : 0,
+          reviews: reviews.length,
+          distance: null,
+          projectTypes: [],
+          workTypes: Array.isArray(company.ccq_status)
+            ? company.ccq_status
+            : company.ccq_status ? [company.ccq_status] : [],
+        };
+      }).filter(Boolean);
+
+      if (cancelled) return;
+
+      favoritesRef.current = loaded;
+      setFavoritesState(loaded);
+    } catch (error) {
+      if (!cancelled) {
+        Alert.alert(
+          language === 'fr' ? 'Favoris' : 'Favorites',
+          error.message
+        );
+      }
+    } finally {
+      if (!cancelled) favoritesBusy.current = false;
+    }
+  };
+
+  loadFavorites();
+
+  return () => {
+    cancelled = true;
+    favoritesBusy.current = false;
+  };
+}, [accountType]);
   const loadUnreadCount = async () => {
   if (!accountType) {
     setUnreadCount(0);
