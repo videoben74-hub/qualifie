@@ -696,19 +696,22 @@ return (
     …
   </Text>
 
-  <Text
-    style={{
-      color: COLORS.navy,
-      fontSize: 21,
-      lineHeight: 25,
-      fontWeight: '900',
-      textAlign: 'center',
-    }}
-  >
-    {language === 'fr'
-      ? 'j’ai trouvé !'
-      : 'found my pro!'}
-  </Text>
+<Text
+  numberOfLines={1}
+  adjustsFontSizeToFit
+  style={{
+    color: COLORS.navy,
+    fontSize: 21,
+    lineHeight: 25,
+    fontWeight: '900',
+    textAlign: 'center',
+    width: '100%',
+  }}
+>
+  {language === 'fr'
+    ? "j’ai trouvé !"
+    : "found my pro!"}
+</Text>
 </View>
     <View
   style={{
