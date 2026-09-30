@@ -3010,11 +3010,44 @@ try {
         />
 
         <TouchableOpacity
-          onPress={() =>
-            setCompanyPhotos((current) =>
-              current.filter((_, photoIndex) => photoIndex !== index)
-            )
-          }
+                    onPress={async () => {
+            try {
+              const marker = '/object/public/company-photos/';
+              const encodedPath = photo.split(marker)[1];
+
+              if (!encodedPath) {
+                throw new Error(
+                  language === 'fr'
+                    ? 'Chemin de la photo introuvable.'
+                    : 'Photo path not found.'
+                );
+              }
+
+              const filePath = decodeURIComponent(
+                encodedPath.split('?')[0]
+              );
+
+              const { data, error } = await supabase.storage
+                .from('company-photos')
+                .remove([filePath]);
+
+              if (error) throw error;
+
+              if (!data?.length) {
+                throw new Error(
+                  language === 'fr'
+                    ? 'Suppression non confirmée. Vérifiez les permissions du stockage.'
+                    : 'Deletion not confirmed. Check storage permissions.'
+                );
+              }
+
+              setCompanyPhotos((current) =>
+                current.filter((item) => item !== photo)
+              );
+            } catch (error) {
+              alert(error.message);
+            }
+          }}
           style={{
             marginTop: 6,
             alignItems: 'center',
