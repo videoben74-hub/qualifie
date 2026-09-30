@@ -650,38 +650,59 @@ return (
       <View
   style={{
     marginHorizontal: 10,
-    marginTop: 20,
+    marginTop: 12,
     marginBottom: 4,
-    backgroundColor: COLORS.navy,
+    backgroundColor: COLORS.gold,
     borderRadius: 16,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     alignItems: 'center',
   }}
 >
   <Text
-  style={{
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '800',
-    textAlign: 'center',
-    lineHeight: 23,
-  }}
->
-  {language === 'fr' ? (
-    <>
-      Pour tous vos projets en matière de bâtiment à travers le{' '}
-      <Text style={{ color: COLORS.gold }}>Québec</Text>
-    </>
-  ) : (
-    <>
-      For all your building projects across{' '}
-      <Text style={{ color: COLORS.gold }}>Quebec</Text>
-    </>
-  )}
-</Text>
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      lineHeight: 20,
+      fontWeight: '800',
+      textAlign: 'center',
+    }}
+  >
+    {language === 'fr'
+      ? 'Avec QualiVérifié,'
+      : 'With QualiVérifié,'}
+  </Text>
 
-  
+  <Text
+    numberOfLines={1}
+    adjustsFontSizeToFit
+    style={{
+      color: COLORS.navy,
+      fontSize: 27,
+      lineHeight: 36,
+      fontWeight: '900',
+      textAlign: 'center',
+      width: '100%',
+    }}
+  >
+    CLIC CLIC{' '}
+    <Text style={{ fontSize: 34 }}>BOOM</Text>
+    …
+  </Text>
+
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 21,
+      lineHeight: 25,
+      fontWeight: '900',
+      textAlign: 'center',
+    }}
+  >
+    {language === 'fr'
+      ? 'j’ai trouvé !'
+      : 'found my pro!'}
+  </Text>
 </View>
     <View
   style={{
