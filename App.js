@@ -3859,7 +3859,12 @@ try {
 
 <TouchableOpacity
   style={[styles.contactBtn, { alignSelf: 'flex-start', width: '100%', marginTop: 10 }]}
-  onPress={() => onNavigate('Profil', '', fav)}
+  onPress={() =>
+  onNavigate('Profil', '', {
+    ...fav,
+    fromFavorites: true,
+  })
+    }
 >
   <Text style={styles.contactBtnText}>{language === 'fr' ? 'Voir le profil' : 'View profile'}</Text>
 </TouchableOpacity>
