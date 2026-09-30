@@ -590,33 +590,39 @@ return (
   </Text>
 
   <TouchableOpacity
-    onPress={accountType ? useCurrentLocation : () => onNavigate('Login')}
-    disabled={locationLoading}
+  onPress={
+    accountType
+      ? useCurrentLocation
+      : () => onNavigate('Login')
+  }
+  disabled={locationLoading}
+  style={{
+    backgroundColor: COLORS.navy,
+    borderWidth: 2,
+    borderColor: COLORS.gold,
+    borderRadius: 10,
+    paddingVertical: 11,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  <Text
     style={{
-      backgroundColor: COLORS.gold,
-      borderRadius: 10,
-      paddingVertical: 13,
-      paddingHorizontal: 16,
-      alignItems: 'center',
-      justifyContent: 'center',
+      color: COLORS.gold,
+      fontSize: 15,
+      fontWeight: '900',
     }}
   >
-    <Text
-      style={{
-        color: COLORS.navy,
-        fontSize: 15,
-        fontWeight: '900',
-      }}
-    >
-      {locationLoading
-        ? language === 'fr'
-          ? 'Localisation en cours...'
-          : 'Locating...'
-        : language === 'fr'
-          ? '📍 Utiliser ma position actuelle'
-          : '📍 Use my current location'}
-    </Text>
-  </TouchableOpacity>
+    {locationLoading
+      ? language === 'fr'
+        ? 'Localisation en cours...'
+        : 'Locating...'
+      : language === 'fr'
+        ? '📍 Utiliser ma position actuelle'
+        : '📍 Use my current location'}
+  </Text>
+</TouchableOpacity>
 
   <TouchableOpacity
     onPress={() =>
@@ -806,58 +812,60 @@ return (
   style={{
     flex: 1,
     minHeight: 42,
+    backgroundColor: COLORS.navy,
     borderWidth: 2,
-    borderColor: COLORS.navy,
+    borderColor: COLORS.gold,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   }}
 >
-    <Text style={{
-      color: COLORS.navy,
-      fontSize: 14,
-      fontWeight: '900',
-    }}>
-      Connectez-vous
-    </Text>
-    <Text style={{
-      color: COLORS.muted,
-      fontSize: 11,
-      fontWeight: '700',
-      marginTop: 2,
-    }}>
-      Sign in
-    </Text>
-  </TouchableOpacity>
+  <Text style={{
+    color: COLORS.gold,
+    fontSize: 14,
+    fontWeight: '900',
+  }}>
+    Connectez-vous
+  </Text>
+  <Text style={{
+    color: COLORS.gold,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
+  }}>
+    Sign in
+  </Text>
+</TouchableOpacity>
 
-  <TouchableOpacity
+<TouchableOpacity
   onPress={() => onNavigate('Signup')}
   style={{
     flex: 1,
     minHeight: 42,
-    backgroundColor: COLORS.gold2,
+    backgroundColor: COLORS.navy,
+    borderWidth: 2,
+    borderColor: COLORS.gold,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   }}
 >
-  
-    <Text style={{
-      color: COLORS.navy,
-      fontSize: 14,
-      fontWeight: '900',
-    }}>
-      Inscrivez-vous
-    </Text>
-    <Text style={{
-      color: COLORS.muted,
-      fontSize: 11,
-      fontWeight: '700',
-      marginTop: 2,
-    }}>
-      Sign up
-    </Text>
-  </TouchableOpacity>
+  <Text style={{
+    color: COLORS.gold,
+    fontSize: 14,
+    fontWeight: '900',
+  }}>
+    Inscrivez-vous
+  </Text>
+  <Text style={{
+    color: COLORS.gold,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
+  }}>
+    Sign up
+  </Text>
+</TouchableOpacity>
 </View>
         
     
