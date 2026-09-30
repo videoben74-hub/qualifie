@@ -4588,7 +4588,13 @@ scrollEnabled={!!selectedPro}
 <>
 {selectedPro && (
   <TouchableOpacity
-    onPress={() => onNavigate('Pros', selectedPro.trade)}
+    onPress={() => {
+      if (selectedPro.fromFavorites) {
+        setProfileSection('Mes favoris');
+      } else {
+        onNavigate('Pros', selectedPro.trade);
+      }
+    }}
     style={{ marginBottom: 10 }}
   >
     <Text
@@ -4598,7 +4604,13 @@ scrollEnabled={!!selectedPro}
         fontWeight: '800',
       }}
     >
-      {language === 'fr' ? '‹ Retour aux pros' : '‹ Back to pros'}
+      {selectedPro.fromFavorites
+        ? language === 'fr'
+          ? '‹ Retour aux favoris'
+          : '‹ Back to favorites'
+        : language === 'fr'
+          ? '‹ Retour aux pros'
+          : '‹ Back to pros'}
     </Text>
   </TouchableOpacity>
 )}
