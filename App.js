@@ -6403,11 +6403,29 @@ useEffect(() => {
   setTab(to);
 };
   const handleLogout = async () => {
-  await supabase.auth.signOut();
-  await AsyncStorage.removeItem('qualiverifie_account_type');
-  setAccountType(null);
-  setSelectedPro(null);
-  setTab('Accueil');
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    setAccountType(null);
+    setSelectedPro(null);
+    setUnreadCount(0);
+    setNavProfilePhoto(null);
+    setNavProfileInitial('●');
+    setTab('Accueil');
+
+    await AsyncStorage.removeItem(
+      'qualiverifie_account_type'
+    );
+  } catch (error) {
+    Alert.alert(
+      language === 'fr'
+        ? 'Erreur de déconnexion'
+        : 'Logout error',
+      error.message
+    );
+  }
 };
   const onDemoLogin = async (type) => {
     setAccountType(type);
