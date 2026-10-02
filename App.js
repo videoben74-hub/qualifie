@@ -4822,12 +4822,22 @@ scrollEnabled={!!selectedPro}
       },
     ]}
   >
-    {selectedPro
+  
+              {selectedPro
       ? `${language === 'fr'
           ? selectedPro.trade
           : tradeTranslations[selectedPro.trade] || selectedPro.trade
-        } • ${selectedPro.city}, QC • ⭐ ${selectedPro.rating} (${selectedPro.reviews} ${
-          language === 'fr' ? 'avis' : 'reviews'
+        } • ${selectedPro.city}, QC • ⭐ ${
+          publicReviews.length > 0
+            ? (
+                publicReviews.reduce(
+                  (total, review) => total + Number(review.rating || 0),
+                  0
+                ) / publicReviews.length
+              ).toFixed(1)
+            : '0.0'
+        } (${publicReviews.length} ${
+          language === 'fr' ? 'notes' : 'ratings'
         })`
       : language === 'fr'
       ? 'Bon succès dans vos projets !'
@@ -4929,117 +4939,167 @@ scrollEnabled={!!selectedPro}
     
 
     <Text style={styles.sectionTitle}>
-  {language === 'fr' ? '⭐ Notes clients' : '⭐ Customer ratings'}
-</Text>
-
-<Text style={styles.profileInfo}>
   {language === 'fr'
-    ? `Note moyenne : ${
-        publicReviews.length > 0
-          ? (
-              publicReviews.reduce(
-                (total, review) => total + Number(review.rating || 0),
-                0
-              ) / publicReviews.length
-            ).toFixed(1)
-          : '0.0'
-      } / 5 (${publicReviews.length} notes)`
-    : `Average rating: ${
-        publicReviews.length > 0
-          ? (
-              publicReviews.reduce(
-                (total, review) => total + Number(review.rating || 0),
-                0
-              ) / publicReviews.length
-            ).toFixed(1)
-          : '0.0'
-      } / 5 (${publicReviews.length} ratings)`}
+    ? '⭐ Notes clients'
+    : '⭐ Customer ratings'}
 </Text>
 
-{publicReviews.length === 0 ? (
-  <Text style={styles.infoText}>
-    {language === 'fr'
-  ? 'Aucune note pour le moment.'
-  : 'No ratings yet.'}
+<View
+  style={{
+    backgroundColor: COLORS.navy,
+    borderWidth: 1.5,
+    borderColor: COLORS.gold,
+    borderRadius: 18,
+    padding: 20,
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.gold,
+      fontSize: 36,
+      fontWeight: '800',
+      textAlign: 'center',
+    }}
+  >
+    {publicReviews.length > 0
+      ? (
+          publicReviews.reduce(
+            (total, review) => total + Number(review.rating || 0),
+            0
+          ) / publicReviews.length
+        ).toFixed(1)
+      : '0.0'}
+    {' / 5'}
   </Text>
-) : (
-  publicReviews.map((review) => (
-    <View
-      key={review.id}
-      style={{
-        backgroundColor: '#FFFFFF',
-        padding: 16,
-        borderRadius: 14,
-        marginTop: 10,
-      }}
-    >
-      <Text style={{ fontSize: 20 }}>
-        {'⭐'.repeat(review.rating)}
-      </Text>
 
-      
-    </View>
-  ))
-)}
-
-{accountType === 'client' && (
   <View
     style={{
-      backgroundColor: '#FFFFFF',
-      padding: 16,
-      borderRadius: 14,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginVertical: 8,
+    }}
+  >
+    {[1, 2, 3, 4, 5].map((star) => {
+      const mean = publicReviews.length > 0
+        ? publicReviews.reduce(
+            (total, review) => total + Number(review.rating || 0),
+            0
+          ) / publicReviews.length
+        : 0;
+
+      return (
+        <Text
+          key={star}
+          style={{
+            color: COLORS.gold,
+            fontSize: 34,
+            marginHorizontal: 3,
+          }}
+        >
+          {star <= Math.round(mean) ? '★' : '☆'}
+        </Text>
+      );
+    })}
+  </View>
+
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontSize: 15,
+      textAlign: 'center',
+    }}
+  >
+    {publicReviews.length === 0
+      ? language === 'fr'
+        ? 'Aucune note pour le moment'
+        : 'No ratings yet'
+      : language === 'fr'
+        ? `${publicReviews.length} note${publicReviews.length > 1 ? 's' : ''} client${publicReviews.length > 1 ? 's' : ''}`
+        : `${publicReviews.length} customer rating${publicReviews.length > 1 ? 's' : ''}`}
+  </Text>
+</View>
+
+{accountType === 'client' && (
+    <View
+    style={{
+      backgroundColor: COLORS.navy,
+      borderWidth: 1.5,
+      borderColor: COLORS.gold,
+      padding: 18,
+      borderRadius: 18,
       marginTop: 16,
     }}
   >
-    <Text style={styles.infoText}>
-      {language === 'fr'
-        ? 'Votre note'
-        : 'Your rating'}
+    <Text
+      style={{
+        color: COLORS.gold,
+        fontSize: 22,
+        fontWeight: '800',
+        textAlign: 'center',
+      }}
+    >
+      {language === 'fr' ? 'Votre note' : 'Your rating'}
     </Text>
 
-    <View
+        <View
       style={{
         flexDirection: 'row',
-        marginVertical: 10,
+        justifyContent: 'center',
+        marginVertical: 14,
       }}
     >
       {[1, 2, 3, 4, 5].map((star) => (
         <TouchableOpacity
           key={star}
           onPress={() => setReviewRating(star)}
+          disabled={reviewSaving}
+          accessibilityLabel={`${star} / 5`}
+          style={{ paddingHorizontal: 4, paddingVertical: 6 }}
         >
-          <Text style={{ fontSize: 32 }}>
-            {star <= reviewRating ? '⭐' : '☆'}
+          <Text
+            style={{
+              fontSize: 38,
+              color: COLORS.gold,
+            }}
+          >
+            {star <= reviewRating ? '★' : '☆'}
           </Text>
         </TouchableOpacity>
       ))}
     </View>
 
-
     <TouchableOpacity
-  style={[
-    styles.primaryBtn,
-    {
-      marginTop: 12,
-      opacity: reviewSaving ? 0.6 : 1,
-      backgroundColor: COLORS.navy,
-      borderWidth: 1.5,
-      borderColor: COLORS.gold,
-    },
-  ]}
-  onPress={submitReview}
-  disabled={reviewSaving}
->
-  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
-    {reviewSaving
-      ? language === 'fr'
-        ? 'Enregistrement...'
-        : 'Saving...'
-      : language === 'fr'
-      ? 'Enregistrer ma note'
-      : 'Save my rating'}
-  </Text>
-</TouchableOpacity>
+      style={[
+        styles.primaryBtn,
+        {
+          marginTop: 8,
+          backgroundColor: COLORS.gold,
+          borderWidth: 0,
+          borderRadius: 12,
+          opacity: reviewSaving ? 0.6 : 1,
+        },
+      ]}
+      onPress={submitReview}
+      disabled={reviewSaving}
+    >
+      <Text
+        style={[
+          styles.primaryBtnText,
+          { color: COLORS.navy, fontWeight: '800' },
+        ]}
+      >
+        {reviewSaving
+          ? language === 'fr'
+            ? 'Enregistrement...'
+            : 'Saving...'
+          : language === 'fr'
+            ? 'Enregistrer ma note'
+            : 'Save my rating'}
+      </Text>
+    </TouchableOpacity>
   </View>
 )}
   </>
