@@ -1309,7 +1309,8 @@ const response = await fetch(
     (!initialFilters.workType ||
       p.workTypes?.includes(initialFilters.workType))
 )
-    .sort((a, b) => {
+        .sort((a, b) => {
+      if (a.distance == null && b.distance == null) return 0;
       if (a.distance == null) return 1;
       if (b.distance == null) return -1;
       return a.distance - b.distance;
