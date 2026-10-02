@@ -1829,6 +1829,89 @@ accountType, onLogout, onProfilePhotoChange }) {
 const [messageNotifications, setMessageNotifications] = useState(true);
 const [reviewNotifications, setReviewNotifications] = useState(true);
 const [accountNotifications, setAccountNotifications] = useState(true);
+
+useEffect(() => {
+  let cancelled = false;
+
+  const loadNotificationPreferences = async () => {
+    try {
+      const { data: { user }, error: authError } =
+        await supabase.auth.getUser();
+
+      if (authError) throw authError;
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select(
+          'message_notifications,review_notifications,account_notifications'
+        )
+        .eq('id', user.id)
+        .single();
+
+      if (error) throw error;
+      if (cancelled) return;
+
+      setMessageNotifications(data.message_notifications);
+      setReviewNotifications(data.review_notifications);
+      setAccountNotifications(data.account_notifications);
+    } catch (error) {
+      console.log('Erreur préférences notifications :', error.message);
+    }
+  };
+
+  loadNotificationPreferences();
+
+  return () => {
+    cancelled = true;
+  };
+}, [accountType]);
+  const [notificationSaving, setNotificationSaving] = useState(false);
+
+const saveNotificationPreference = async (key, value, setter) => {
+  if (notificationSaving) return;
+
+  const columns = {
+    messages: 'message_notifications',
+    reviews: 'review_notifications',
+    account: 'account_notifications',
+  };
+
+  const column = columns[key];
+  if (!column) return;
+
+  try {
+    setNotificationSaving(true);
+
+    const { data: { user }, error: authError } =
+      await supabase.auth.getUser();
+
+    if (authError) throw authError;
+    if (!user) throw new Error(
+      language === 'fr'
+        ? 'Vous devez être connecté.'
+        : 'You must be logged in.'
+    );
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ [column]: value })
+      .eq('id', user.id)
+      .select(column)
+      .single();
+
+    if (error) throw error;
+
+    setter(data[column]);
+  } catch (error) {
+    Alert.alert(
+      language === 'fr' ? 'Sauvegarde impossible' : 'Unable to save',
+      error.message
+    );
+  } finally {
+    setNotificationSaving(false);
+  }
+};
   const [newPassword, setNewPassword] = useState('');
 const [confirmNewPassword, setConfirmNewPassword] = useState('');
 useEffect(() => {
@@ -4415,9 +4498,12 @@ try {
           {language === 'fr' ? item.fr : item.en}
         </Text>
 
-        <Switch
+                <Switch
           value={item.value}
-          onValueChange={item.setter}
+          disabled={notificationSaving}
+          onValueChange={(value) =>
+            saveNotificationPreference(item.key, value, item.setter)
+          }
           trackColor={{
             false: '#9CA3AF',
             true: COLORS.gold,
