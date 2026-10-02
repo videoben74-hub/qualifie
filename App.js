@@ -1647,7 +1647,67 @@ const [messagesLoading, setMessagesLoading] = useState(true);
   </Text>
 </TouchableOpacity>
 
-      <Text style={styles.screenTitle}>{selectedChat}</Text>
+      <View
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 16,
+  }}
+>
+  {(conversations.find(
+    (item) => item.id === activeConversationId
+  )?.otherPhoto || selectedPro?.photo) ? (
+    <Image
+      source={{
+        uri:
+          conversations.find(
+            (item) => item.id === activeConversationId
+          )?.otherPhoto || selectedPro?.photo,
+      }}
+      style={{
+        width: 54,
+        height: 54,
+        borderRadius: 27,
+        borderWidth: 2,
+        borderColor: COLORS.gold2,
+        marginRight: 12,
+      }}
+    />
+  ) : (
+    <View
+      style={{
+        width: 54,
+        height: 54,
+        borderRadius: 27,
+        backgroundColor: COLORS.navy,
+        borderWidth: 2,
+        borderColor: COLORS.gold2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 12,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.gold2,
+          fontSize: 24,
+          fontWeight: 'bold',
+        }}
+      >
+        {selectedChat?.[0]?.toUpperCase() || '?'}
+      </Text>
+    </View>
+  )}
+
+  <Text
+    style={[
+      styles.screenTitle,
+      { flex: 1, marginBottom: 0, marginTop: 0 },
+    ]}
+  >
+    {selectedChat}
+  </Text>
+</View>
 
       {chatMessages.map((message) => {
   const isMine = message.sender_id === currentUserId;
