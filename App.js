@@ -725,7 +725,8 @@ return (
     alignItems: 'center',
   }}
 >
-  <Text
+
+    <Text
     style={{
       color: '#FFFFFF',
       fontSize: 15,
@@ -734,24 +735,28 @@ return (
       textAlign: 'center',
     }}
   >
+    {language === 'fr' ? "QualiVérifié, c’est " : 'QualiVérifié brings '}
+    <Text style={{ color: COLORS.gold }}>
+      {language === 'fr' ? 'la visibilité' : 'visibility'}
+    </Text>
     {language === 'fr'
-      ? 'De la conception à la construction,\nde l’entretien à la vente,'
-      : 'From design to construction,\nfrom maintenance to sale,'}
+      ? ' de plus d’une centaine de branches d’entreprises et de professionnels.'
+      : ' to over a hundred business and professional specialties.'}
   </Text>
 
   <Text
     style={{
-      color: COLORS.gold,
+      color: '#FFFFFF',
       fontSize: 15,
       fontWeight: '900',
       lineHeight: 21,
       textAlign: 'center',
-      marginTop: 3,
+      marginTop: 8,
     }}
   >
     {language === 'fr'
-      ? 'un professionnel vous attend.'
-      : 'a professional is waiting for you.'}
+      ? 'De la conception à la construction,\nde l’entretien à la vente.'
+      : 'From design to construction,\nfrom maintenance to sale.'}
   </Text>
 </View>
     <View
