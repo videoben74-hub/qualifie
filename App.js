@@ -1729,6 +1729,8 @@ onFocus={() =>
 
   if (!text || !activeConversationId || !currentUserId) return;
 
+    const sentDraft = messageText;
+
   const { data, error } = await supabase
     .from('messages')
     .insert({
@@ -1740,12 +1742,22 @@ onFocus={() =>
     .single();
 
   if (error) {
-    console.log('Erreur envoi message :', error);
+    Alert.alert(
+      language === 'fr' ? 'Message non envoyé' : 'Message not sent',
+      error.message
+    );
     return;
   }
 
-  setChatMessages((current) => [...current, data]);
-  setMessageText('');
+  setChatMessages((current) =>
+    current.some((message) => message.id === data.id)
+      ? current
+      : [...current, data]
+  );
+
+  setMessageText((current) =>
+    current === sentDraft ? '' : current
+  );
 
   await supabase
     .from('conversations')
