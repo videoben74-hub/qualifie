@@ -6376,9 +6376,9 @@ useEffect(() => {
 
       const type = profile?.account_type;
 
-      if (type !== 'client' && type !== 'entreprise') {
+            if (type !== 'client' && type !== 'business') {
         throw new Error('Type de compte invalide.');
-      }
+            }
 
       await AsyncStorage.setItem(
         'qualiverifie_account_type',
