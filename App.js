@@ -5192,20 +5192,30 @@ scrollEnabled={!!selectedPro}
       {language === 'fr' ? '📸 Réalisations' : '📸 Projects'}
     </Text>
 
-    {selectedPro.photos.map((photo, index) => (
-      <Image
-        key={`${photo}-${index}`}
-        source={{ uri: photo }}
-        resizeMode="contain"
-        style={{
-          width: '100%',
-          height: 240,
-          marginBottom: 12,
-          borderRadius: 12,
-          backgroundColor: COLORS.navy,
-        }}
-      />
-    ))}
+        <View
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+      }}
+    >
+      {selectedPro.photos.map((photo, index) => (
+        <Image
+          key={`${photo}-${index}`}
+          source={{ uri: photo }}
+          resizeMode="contain"
+          style={{
+            width: '48%',
+            height: 120,
+            marginBottom: 10,
+            borderRadius: 12,
+            backgroundColor: COLORS.navy,
+            borderWidth: 1,
+            borderColor: COLORS.gold,
+          }}
+        />
+      ))}
+    </View>
   </View>
 )}
 
