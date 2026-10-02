@@ -1786,7 +1786,17 @@ onFocus={() =>
 />
 
       <TouchableOpacity
-  style={styles.primaryBtn}
+  style={{
+    backgroundColor: COLORS.navy,
+    borderWidth: 1.5,
+    borderColor: COLORS.gold2,
+    borderRadius: 24,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    marginTop: 8,
+  }}
     onPress={async () => {
     const text = messageText.trim();
 
@@ -1844,7 +1854,15 @@ onFocus={() =>
     }
   }}
 >
-  <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
+  <Text
+  style={{
+    color: COLORS.gold2,
+    fontSize: 16,
+    fontWeight: '700',
+  }}
+>
+  {language === 'fr' ? 'Envoyer ➤' : 'Send ➤'}
+</Text>
 </TouchableOpacity>
     </View>
 </KeyboardAvoidingView>
