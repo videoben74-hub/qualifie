@@ -1432,6 +1432,8 @@ const [chatMessages, setChatMessages] = useState([]);
 const [activeConversationId, setActiveConversationId] = useState(null);
 const [currentUserId, setCurrentUserId] = useState(null);
 const [messagesLoading, setMessagesLoading] = useState(true);
+const [messagePhoto, setMessagePhoto] = useState(null);
+const [photoSending, setPhotoSending] = useState(false);
     const scrollRef = useRef(null);
   const messageSendingRef = useRef(false);
     useEffect(() => {
@@ -1774,6 +1776,88 @@ const [messagesLoading, setMessagesLoading] = useState(true);
     backgroundColor: COLORS.bg,
   }}
 >
+  <TouchableOpacity
+  disabled={photoSending}
+  onPress={async () => {
+    try {
+      const permission =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (!permission.granted) {
+        Alert.alert(
+          language === 'fr' ? 'Accès aux photos' : 'Photo access',
+          language === 'fr'
+            ? 'Autorise l’accès aux photos pour joindre une image.'
+            : 'Allow photo access to attach an image.'
+        );
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: false,
+        quality: 0.8,
+        base64: true,
+      });
+
+      if (result.canceled || !result.assets?.[0]) return;
+
+      const photo = result.assets[0];
+
+      if (
+        !photo.base64 ||
+        photo.base64.length * 0.75 > 10485760
+      ) {
+        Alert.alert(
+          language === 'fr' ? 'Photo trop volumineuse' : 'Photo too large',
+          language === 'fr'
+            ? 'Choisis une photo de moins de 10 Mo.'
+            : 'Choose a photo smaller than 10 MB.'
+        );
+        return;
+      }
+
+      setMessagePhoto(photo);
+    } catch (error) {
+      Alert.alert(
+        language === 'fr' ? 'Photo non sélectionnée' : 'Photo not selected',
+        error.message
+      );
+    }
+  }}
+  style={{
+    alignSelf: 'flex-start',
+    backgroundColor: COLORS.navy,
+    borderWidth: 1,
+    borderColor: COLORS.gold2,
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginBottom: 8,
+  }}
+>
+  <Text style={{ color: COLORS.gold2, fontWeight: '700' }}>
+    {language === 'fr' ? '+ Photo' : '+ Photo'}
+  </Text>
+</TouchableOpacity>
+
+{messagePhoto && (
+  <View style={{ marginBottom: 8 }}>
+    <Image
+      source={{ uri: messagePhoto.uri }}
+      style={{ width: 90, height: 90, borderRadius: 12 }}
+    />
+    <TouchableOpacity
+      disabled={photoSending}
+      onPress={() => setMessagePhoto(null)}
+      style={{ paddingVertical: 8 }}
+    >
+      <Text style={{ color: COLORS.navy }}>
+        {language === 'fr' ? '✕ Retirer la photo' : '✕ Remove photo'}
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
       <TextInput
   value={messageText}
   onChangeText={setMessageText}
