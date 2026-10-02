@@ -1417,7 +1417,47 @@ const response = await fetch(
   );
 }
 
-function Messages({
+class MessagesDiagnostic extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
+  componentDidCatch(error, info) {
+    console.log('Erreur écran Messages :', error, info);
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <ScrollView contentContainerStyle={{ padding: 24 }}>
+          <Text style={{ color: COLORS.navy, fontSize: 20 }}>
+            Erreur Messages
+          </Text>
+          <Text selectable style={{ marginTop: 16 }}>
+            {String(this.state.error)}
+          </Text>
+        </ScrollView>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+function Messages(props) {
+  return (
+    <MessagesDiagnostic>
+      <MessagesContent {...props} />
+    </MessagesDiagnostic>
+  );
+}
+
+function MessagesContent({
   selectedPro,
   language,
   setLanguage,
