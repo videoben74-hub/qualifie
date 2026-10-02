@@ -6323,17 +6323,59 @@ useEffect(() => {
   loadNavProfile();
 }, [accountType, tab]);
 useEffect(() => {
-  const loadAccountType = async () => {
-    const savedAccountType = await AsyncStorage.getItem(
-      'qualiverifie_account_type'
-    );
+  let cancelled = false;
 
-    if (savedAccountType) {
-      setAccountType(savedAccountType);
+  const loadAccountType = async () => {
+    try {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError) throw authError;
+
+      if (!user) {
+        await AsyncStorage.removeItem(
+          'qualiverifie_account_type'
+        );
+        if (!cancelled) setAccountType(null);
+        return;
+      }
+
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('account_type')
+        .eq('id', user.id)
+        .single();
+
+      if (error) throw error;
+
+      const type = profile?.account_type;
+
+      if (type !== 'client' && type !== 'entreprise') {
+        throw new Error('Type de compte invalide.');
+      }
+
+      await AsyncStorage.setItem(
+        'qualiverifie_account_type',
+        type
+      );
+
+      if (!cancelled) setAccountType(type);
+    } catch (error) {
+      console.log(
+        'Vérification de connexion :',
+        error.message
+      );
+      if (!cancelled) setAccountType(null);
     }
   };
 
   loadAccountType();
+
+  return () => {
+    cancelled = true;
+  };
 }, []);
   useEffect(() => {
  
