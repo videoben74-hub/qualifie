@@ -2093,20 +2093,27 @@ const submitReview = async () => {
       return;
     }
 
-    const { data, error } = await supabase
+        const { data, error } = await supabase
       .from('reviews')
-      .insert({
-        company_id: selectedPro.id,
-        client_id: user.id,
-        rating: reviewRating,
-        comment: '',
-      })
+      .upsert(
+        {
+          company_id: selectedPro.id,
+          client_id: user.id,
+          rating: reviewRating,
+          comment: '',
+        },
+        {
+          onConflict: 'company_id,client_id',
+        }
+      )
       .select()
       .single();
-
     if (error) throw error;
 
-    setPublicReviews((current) => [data, ...current]);
+        setPublicReviews((current) => [
+      data,
+      ...current.filter((review) => review.id !== data.id),
+    ]);
     setReviewRating(5);
     alert(language === 'fr'
       ? 'Note enregistrée avec succès.'
