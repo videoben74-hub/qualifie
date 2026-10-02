@@ -1432,7 +1432,8 @@ const [chatMessages, setChatMessages] = useState([]);
 const [activeConversationId, setActiveConversationId] = useState(null);
 const [currentUserId, setCurrentUserId] = useState(null);
 const [messagesLoading, setMessagesLoading] = useState(true);
-  const scrollRef = useRef(null);
+    const scrollRef = useRef(null);
+  const messageSendingRef = useRef(false);
     useEffect(() => {
   const loadConversations = async () => {
     try {
@@ -1726,46 +1727,62 @@ onFocus={() =>
 
       <TouchableOpacity
   style={styles.primaryBtn}
-  onPress={async () => {
-  const text = messageText.trim();
+    onPress={async () => {
+    const text = messageText.trim();
 
-  if (!text || !activeConversationId || !currentUserId) return;
+    if (
+      !text ||
+      !activeConversationId ||
+      !currentUserId ||
+      messageSendingRef.current
+    ) return;
 
+    messageSendingRef.current = true;
     const sentDraft = messageText;
 
-  const { data, error } = await supabase
-    .from('messages')
-    .insert({
-      conversation_id: activeConversationId,
-      sender_id: currentUserId,
-      content: text,
-    })
-    .select()
-    .single();
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .insert({
+          conversation_id: activeConversationId,
+          sender_id: currentUserId,
+          content: text,
+        })
+        .select()
+        .single();
 
-  if (error) {
-    Alert.alert(
-      language === 'fr' ? 'Message non envoyé' : 'Message not sent',
-      error.message
-    );
-    return;
-  }
+      if (error) throw error;
 
-  setChatMessages((current) =>
-    current.some((message) => message.id === data.id)
-      ? current
-      : [...current, data]
-  );
+      setChatMessages((current) =>
+        current.some((message) => message.id === data.id)
+          ? current
+          : [...current, data]
+      );
 
-  setMessageText((current) =>
-    current === sentDraft ? '' : current
-  );
+      setMessageText((current) =>
+        current === sentDraft ? '' : current
+      );
+    } catch (error) {
+      Alert.alert(
+        language === 'fr'
+          ? 'Message non envoyé'
+          : 'Message not sent',
+        error.message
+      );
+      return;
+    } finally {
+      messageSendingRef.current = false;
+    }
 
-  await supabase
-    .from('conversations')
-    .update({ updated_at: new Date().toISOString() })
-    .eq('id', activeConversationId);
-}}
+    const { error: updateError } = await supabase
+      .from('conversations')
+      .update({ updated_at: new Date().toISOString() })
+      .eq('id', activeConversationId);
+
+    if (updateError) {
+      console.log('Erreur date conversation :', updateError);
+    }
+  }}
 >
   <Text style={styles.primaryBtnText}>{language === 'fr' ? 'Envoyer' : 'Send'}</Text>
 </TouchableOpacity>
