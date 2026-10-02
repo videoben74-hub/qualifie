@@ -1882,51 +1882,93 @@ onFocus={() =>
     marginTop: 8,
   }}
     onPress={async () => {
-    const text = messageText.trim();
+  const text = messageText.trim();
+  const photo = messagePhoto;
 
-    if (
-      !text ||
-      !activeConversationId ||
-      !currentUserId ||
-      messageSendingRef.current
-    ) return;
+  if (
+    (!text && !photo) ||
+    !activeConversationId ||
+    !currentUserId ||
+    messageSendingRef.current
+  ) return;
 
-    messageSendingRef.current = true;
-    const sentDraft = messageText;
+  messageSendingRef.current = true;
+  setPhotoSending(true);
 
-    try {
-      const { data, error } = await supabase
-        .from('messages')
-        .insert({
-          conversation_id: activeConversationId,
-          sender_id: currentUserId,
-          content: text,
-        })
-        .select()
-        .single();
+  const sentDraft = messageText;
+  let imagePath = null;
 
-      if (error) throw error;
+  try {
+    if (photo) {
+      if (!photo.base64) {
+        throw new Error(
+          language === 'fr'
+            ? 'Impossible de lire la photo.'
+            : 'Unable to read the photo.'
+        );
+      }
 
-      setChatMessages((current) =>
-        current.some((message) => message.id === data.id)
-          ? current
-          : [...current, data]
-      );
+      const binary = atob(photo.base64);
+      const bytes = new Uint8Array(binary.length);
 
-      setMessageText((current) =>
-        current === sentDraft ? '' : current
-      );
-    } catch (error) {
-      Alert.alert(
-        language === 'fr'
-          ? 'Message non envoyé'
-          : 'Message not sent',
-        error.message
-      );
-      return;
-    } finally {
-      messageSendingRef.current = false;
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      const mime = photo.mimeType || 'image/jpeg';
+      const extension =
+        mime === 'image/png'
+          ? 'png'
+          : mime === 'image/webp'
+            ? 'webp'
+            : 'jpg';
+
+      imagePath =
+        `${activeConversationId}/${currentUserId}/` +
+        `${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('message-photos')
+        .upload(imagePath, bytes.buffer, {
+          contentType: mime,
+          upsert: false,
+        });
+
+      if (uploadError) throw uploadError;
     }
+
+    const { data, error } = await supabase
+      .from('messages')
+      .insert({
+        conversation_id: activeConversationId,
+        sender_id: currentUserId,
+        content: text || '📷 Photo',
+        image_path: imagePath,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      if (imagePath) {
+        await supabase.storage
+          .from('message-photos')
+          .remove([imagePath]);
+      }
+      throw error;
+    }
+
+    setChatMessages((current) =>
+      current.some((message) => message.id === data.id)
+        ? current
+        : [...current, data]
+    );
+
+    setMessageText((current) =>
+      current === sentDraft ? '' : current
+    );
+    setMessagePhoto((current) =>
+      current === photo ? null : current
+    );
 
     const { error: updateError } = await supabase
       .from('conversations')
@@ -1936,7 +1978,16 @@ onFocus={() =>
     if (updateError) {
       console.log('Erreur date conversation :', updateError);
     }
-  }}
+  } catch (error) {
+    Alert.alert(
+      language === 'fr' ? 'Message non envoyé' : 'Message not sent',
+      error.message
+    );
+  } finally {
+    messageSendingRef.current = false;
+    setPhotoSending(false);
+  }
+}}
 >
   <Text
   style={{
