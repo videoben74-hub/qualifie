@@ -2241,7 +2241,7 @@ const submitReview = async () => {
       data,
       ...current.filter((review) => review.id !== data.id),
     ]);
-    setReviewRating(5);
+    
     alert(language === 'fr'
       ? 'Note enregistrée avec succès.'
       : 'Rating saved successfully.');
