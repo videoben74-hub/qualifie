@@ -1559,33 +1559,52 @@ const [messagesLoading, setMessagesLoading] = useState(true);
   openSelectedProConversation();
 }, [selectedPro]);
     useEffect(() => {
+  let cancelled = false;
+  let loading = false;
+
+  setChatMessages([]);
+
+  if (!activeConversationId) return;
+
   const loadChatMessages = async () => {
-    if (!activeConversationId) {
-      setChatMessages([]);
-      return;
-    }
+    if (loading || cancelled) return;
+    loading = true;
 
-    const { data, error } = await supabase
-      .from('messages')
-      .select('*')
-      .eq('conversation_id', activeConversationId)
-      .order('created_at', { ascending: true });
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('conversation_id', activeConversationId)
+        .order('created_at', { ascending: true });
 
-    if (error) {
+      if (error) throw error;
+      if (cancelled) return;
+
+      setChatMessages(data || []);
+
+      const { error: readError } = await supabase.rpc(
+        'mark_conversation_read',
+        { p_conversation_id: activeConversationId }
+      );
+
+      if (readError) throw readError;
+      if (!cancelled && onUnreadChange) {
+        onUnreadChange();
+      }
+    } catch (error) {
       console.log('Erreur chargement messages :', error);
-      return;
-    }
-
-    setChatMessages(data || []);
-    await supabase.rpc('mark_conversation_read', {
-  p_conversation_id: activeConversationId,
-});
-    if (onUnreadChange) {
-  onUnreadChange();
+    } finally {
+      loading = false;
     }
   };
 
   loadChatMessages();
+  const interval = setInterval(loadChatMessages, 5000);
+
+  return () => {
+    cancelled = true;
+    clearInterval(interval);
+  };
 }, [activeConversationId]);
   if (selectedChat) {
   return (
