@@ -1627,13 +1627,15 @@ const [messagesLoading, setMessagesLoading] = useState(true);
       }
     >
       <TouchableOpacity
-  onPress={() => {
+    onPress={() => {
+    setMessageText('');
+
     if (selectedPro) {
       onNavigate('Profil', '', selectedPro);
     } else {
-  setSelectedChat(null);
-  setActiveConversationId(null);
-  setChatMessages([]);
+      setSelectedChat(null);
+      setActiveConversationId(null);
+      setChatMessages([]);
     }
   }}
 >
