@@ -6254,29 +6254,53 @@ useEffect(() => {
     favoritesBusy.current = false;
   };
 }, [accountType]);
-  const loadUnreadCount = async () => {
+  useEffect(() => {
+  let cancelled = false;
+  let loading = false;
+
   if (!accountType) {
     setUnreadCount(0);
     return;
   }
 
-  const { data, error } = await supabase.rpc(
-    'get_unread_message_count'
-  );
+  const loadUnreadCount = async () => {
+    if (cancelled || loading) return;
 
-  if (!error) {
-    setUnreadCount(Number(data || 0));
-  }
-};
+    loading = true;
 
-useEffect(() => {
+    try {
+      const { data, error } = await supabase.rpc(
+        'get_unread_message_count'
+      );
+
+      if (error) throw error;
+
+      if (!cancelled) {
+        setUnreadCount(Number(data || 0));
+      }
+    } catch (error) {
+      if (!cancelled) {
+        console.log(
+          'Erreur compteur messages :',
+          error.message
+        );
+      }
+    } finally {
+      loading = false;
+    }
+  };
+
   loadUnreadCount();
 
-  const interval = setInterval(() => {
-    loadUnreadCount();
-  }, 5000);
+  const interval = setInterval(
+    loadUnreadCount,
+    5000
+  );
 
-  return () => clearInterval(interval);
+  return () => {
+    cancelled = true;
+    clearInterval(interval);
+  };
 }, [accountType]);
 useEffect(() => {
   const loadNavProfile = async () => {
