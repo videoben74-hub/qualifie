@@ -6869,12 +6869,11 @@ tab === 'QuoteRequests' ? (
   />
 ) :
 tab === 'Messages' ? (
-  <Messages
+    <Messages
     selectedPro={selectedPro}
     language={language}
     setLanguage={setLanguage}
     onNavigate={navigate}
-      onUnreadChange={loadUnreadCount}
   />
 ) : (
   <Profile
