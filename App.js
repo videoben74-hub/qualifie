@@ -2092,8 +2092,32 @@ useEffect(() => {
       );
       return;
     }
-let companyLatitude = null;
-let companyLongitude = null;
+const { data: savedProfile, error: locationError } = await supabase
+  .from('profiles')
+  .select(`
+    company_address,
+    company_city,
+    company_postal_code,
+    company_latitude,
+    company_longitude
+  `)
+  .eq('id', user.id)
+  .single();
+
+if (locationError) throw locationError;
+
+const sameAddress =
+  (savedProfile.company_address || '').trim() === companyAddress.trim() &&
+  (savedProfile.company_city || '').trim() === companyCity.trim() &&
+  (savedProfile.company_postal_code || '').trim() === companyPostalCode.trim();
+
+let companyLatitude = sameAddress
+  ? savedProfile.company_latitude ?? null
+  : null;
+
+let companyLongitude = sameAddress
+  ? savedProfile.company_longitude ?? null
+  : null;
 
 if (companyAddress.trim()) {
   let permission =
