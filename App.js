@@ -2112,7 +2112,15 @@ onFocus={() =>
   presentationStyle="fullScreen"
   onRequestClose={() => setFullScreenPhoto(null)}
 >
-  <SafeAreaView style={{ flex: 1, backgroundColor: '#000000' }}>
+  <SafeAreaView
+  style={{
+    flex: 1,
+    backgroundColor: '#000000',
+    paddingTop: Platform.OS === 'android'
+      ? (StatusBar.currentHeight || 24) + 12
+      : 12,
+  }}
+>
     <TouchableOpacity
       onPress={() => setFullScreenPhoto(null)}
       style={{
