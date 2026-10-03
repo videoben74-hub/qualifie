@@ -759,10 +759,32 @@ return (
       : 'From design to construction,\nfrom maintenance to sale.'}
   </Text>
 </View>
+    
+
     <View
   style={{
-    
-   <View style={{ flex: 1, minHeight: 0 }} />
+    flex: 1,
+    minHeight: 0,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      fontWeight: '800',
+      textAlign: 'center',
+      lineHeight: 22,
+    }}
+  >
+    {language === 'fr'
+      ? 'L’industrie du bâtiment au Québec se construit une valeur à la fois.'
+      : 'Québec’s building industry is built one value at a time.'}
+  </Text>
+</View>
+   
     <View style={{
   flexDirection: 'row',
   gap: 8,
