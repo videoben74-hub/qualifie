@@ -1181,7 +1181,8 @@ function Pros({ initialCategory = '', initialFilters = {}, onNavigate, favorites
       .select(`
         id,
         company_name,
-        avatar_url,
+is_hiring,
+avatar_url,
         company_latitude,
 company_longitude,
         company_city,
@@ -1226,7 +1227,8 @@ is_verified
         return {
           id: company.id,
           name: company.company_name,
-          photo: company.avatar_url || null,
+isHiring: company.is_hiring === true,
+photo: company.avatar_url || null,
           trade: company.rbq_categories?.[0] || '',
           trades: company.rbq_categories || [],
           city: company.company_city || '',
@@ -1392,6 +1394,21 @@ const response = await fetch(
   {p.distance != null ? ` • ${p.distance} km` : ''}
 </Text>
 <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+  {p.isHiring && (
+    <Text
+      style={{
+        backgroundColor: COLORS.gold,
+        color: COLORS.navy,
+        fontSize: 13,
+        fontWeight: '800',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 8,
+      }}
+    >
+      {language === 'fr' ? 'Nous recrutons' : "We're hiring"}
+    </Text>
+  )}
   {p.projectTypes?.map((type) => (
   <Text key={type} style={styles.badgeText}>
     {type === 'Résidentiel' ? ' 🏠 ' : ' 🏢 '}
@@ -2283,6 +2300,8 @@ const [clientEmail, setClientEmail] = useState('');
 const [clientPhone, setClientPhone] = useState('');
 const [clientPhoto, setClientPhoto] = useState(null);
 const [companyName, setCompanyName] = useState('');
+const [isHiring, setIsHiring] = useState(false);
+const [hiringSaving, setHiringSaving] = useState(false);
 const [companyDescription, setCompanyDescription] = useState('');
 const [companyPhotos, setCompanyPhotos] = useState([]);
 const [neq, setNeq] = useState('');
@@ -2311,7 +2330,8 @@ useEffect(() => {
       const { data, error } = await supabase
         .from('profiles')
         .select(`
-          company_name,
+                    company_name,
+          is_hiring,
           company_description,
           company_photos,
                     neq,
@@ -2336,7 +2356,8 @@ subscription_status
       if (!data) return;
 
       setCompanyName(data.company_name || '');
-      setCompanyDescription(data.company_description || '');
+setIsHiring(data.is_hiring === true);
+setCompanyDescription(data.company_description || '');
       setCompanyPhotos(
         Array.isArray(data.company_photos) ? data.company_photos : []
       );
@@ -2406,6 +2427,40 @@ useEffect(() => {
 
   loadClientProfile();
 }, []);
+    const saveHiringStatus = async (value) => {
+    if (hiringSaving) return;
+
+    setHiringSaving(true);
+
+    try {
+      const { data: { user }, error: authError } =
+        await supabase.auth.getUser();
+
+      if (authError) throw authError;
+      if (!user) throw new Error('Connexion requise');
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({ is_hiring: value })
+        .eq('id', user.id)
+        .select('is_hiring')
+        .single();
+
+      if (error) throw error;
+
+      setIsHiring(data.is_hiring === true);
+    } catch (error) {
+      Alert.alert(
+        language === 'fr' ? 'Erreur' : 'Error',
+        language === 'fr'
+          ? 'Impossible de sauvegarder le statut de recrutement.'
+          : 'Unable to save hiring status.'
+      );
+    } finally {
+      setHiringSaving(false);
+    }
+  };
+
   const saveCompanyProfile = async () => {
   try {
     const {
@@ -5152,6 +5207,51 @@ scrollEnabled={!!selectedPro}
 </Text>
 </>
 <View style={styles.profileCard}>
+  {selectedPro?.isHiring && (
+    <Text
+      style={{
+        alignSelf: 'flex-start',
+        backgroundColor: COLORS.gold,
+        color: COLORS.navy,
+        fontSize: 13,
+        fontWeight: '800',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 8,
+        marginBottom: 10,
+      }}
+    >
+      {language === 'fr' ? 'Nous recrutons' : "We're hiring"}
+    </Text>
+  )}
+  {!selectedPro && accountType === 'business' && (
+    <View
+      style={{
+        alignSelf: 'flex-start',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+      }}
+    >
+      <Text
+        style={{
+          color: COLORS.gold,
+          fontSize: 15,
+          fontWeight: '800',
+          marginRight: 8,
+        }}
+      >
+        {language === 'fr' ? 'Nous recrutons' : "We're hiring"}
+      </Text>
+      <Switch
+        value={isHiring}
+        onValueChange={saveHiringStatus}
+        disabled={hiringSaving}
+        trackColor={{ false: '#64748B', true: COLORS.gold }}
+        thumbColor="#FFFFFF"
+      />
+    </View>
+  )}
   <TouchableOpacity
     style={styles.avatarLarge}
     onPress={selectedPro ? undefined : pickProfilePhoto}
@@ -6562,7 +6662,7 @@ useEffect(() => {
         await supabase
           .from('profiles')
           .select(`
-            id, company_name, avatar_url, rbq_categories,
+            id, company_name, is_hiring, avatar_url, rbq_categories,
             company_city, company_description, company_photos,
             rbq, rbq_photo_url, is_verified, ccq_status
           `)
@@ -6589,7 +6689,8 @@ useEffect(() => {
         return {
           id: company.id,
           name: company.company_name || '',
-          photo: company.avatar_url || null,
+isHiring: company.is_hiring === true,
+photo: company.avatar_url || null,
           trade: company.rbq_categories?.[0] || '',
           trades: company.rbq_categories || [],
           city: company.company_city || '',
