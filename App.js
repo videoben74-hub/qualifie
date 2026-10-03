@@ -726,23 +726,6 @@ return (
   }}
 >
 
-    <Text
-    style={{
-      color: '#FFFFFF',
-      fontSize: 15,
-      fontWeight: '900',
-      lineHeight: 21,
-      textAlign: 'center',
-    }}
-  >
-    {language === 'fr' ? "QualiVérifié, c’est " : 'QualiVérifié brings '}
-    <Text style={{ color: COLORS.gold }}>
-      {language === 'fr' ? 'la visibilité' : 'visibility'}
-    </Text>
-    {language === 'fr'
-      ? ' de plus d’une centaine de branches d’entreprises et de professionnels.'
-      : ' to over a hundred business and professional specialties.'}
-  </Text>
 
   <Text
     style={{
