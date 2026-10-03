@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   StatusBar,
-  Platform, BackHandler, Image, Switch, Alert,
+    Platform, BackHandler, Image, Switch, Alert, Modal,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -1486,6 +1486,7 @@ const [activeConversationId, setActiveConversationId] = useState(null);
 const [currentUserId, setCurrentUserId] = useState(null);
 const [messagesLoading, setMessagesLoading] = useState(true);
 const [messagePhoto, setMessagePhoto] = useState(null);
+const [fullScreenPhoto, setFullScreenPhoto] = useState(null);
 const [photoSending, setPhotoSending] = useState(false);
     const scrollRef = useRef(null);
   const messageSendingRef = useRef(false);
@@ -1826,16 +1827,24 @@ setChatMessages(messagesWithPhotos);
   }}
 >
   {message.image_url && (
-  <Image
-    source={{ uri: message.image_url }}
-    style={{
-      width: 210,
-      height: 160,
-      borderRadius: 12,
-      marginBottom: 6,
-    }}
-    resizeMode="cover"
-  />
+  <TouchableOpacity
+    onPress={() => setFullScreenPhoto(message.image_url)}
+    activeOpacity={0.8}
+    accessibilityLabel={
+      language === 'fr' ? 'Agrandir la photo' : 'Enlarge photo'
+    }
+  >
+    <Image
+      source={{ uri: message.image_url }}
+      style={{
+        width: 210,
+        height: 160,
+        borderRadius: 12,
+        marginBottom: 6,
+      }}
+      resizeMode="cover"
+    />
+  </TouchableOpacity>
 )}
 
 {!!message.content &&
@@ -2114,6 +2123,39 @@ onFocus={() =>
 </Text>
 </TouchableOpacity>
     </View>
+      <Modal
+  visible={!!fullScreenPhoto}
+  animationType="fade"
+  presentationStyle="fullScreen"
+  onRequestClose={() => setFullScreenPhoto(null)}
+>
+  <SafeAreaView style={{ flex: 1, backgroundColor: '#000000' }}>
+    <TouchableOpacity
+      onPress={() => setFullScreenPhoto(null)}
+      style={{
+        alignSelf: 'flex-end',
+        paddingHorizontal: 20,
+        paddingVertical: 16,
+      }}
+    >
+      <Text style={{
+        color: COLORS.gold2,
+        fontSize: 18,
+        fontWeight: '800',
+      }}>
+        {language === 'fr' ? '✕ Fermer' : '✕ Close'}
+      </Text>
+    </TouchableOpacity>
+
+    {fullScreenPhoto && (
+      <Image
+        source={{ uri: fullScreenPhoto }}
+        style={{ flex: 1, width: '100%' }}
+        resizeMode="contain"
+      />
+    )}
+  </SafeAreaView>
+</Modal>
 </KeyboardAvoidingView>
   );
 }
