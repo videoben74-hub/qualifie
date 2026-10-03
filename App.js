@@ -843,7 +843,7 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
 >
       <AppHeader language={language} setLanguage={setLanguage} />
 
-      <Text style={styles.screenTitle}>{language === 'fr' ? 'Division' : 'Division'}</Text>
+      
 
       <Text style={{
   color: COLORS.navy,
