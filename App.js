@@ -1629,7 +1629,30 @@ const [photoSending, setPhotoSending] = useState(false);
       if (error) throw error;
       if (cancelled) return;
 
-      setChatMessages(data || []);
+      const messagesWithPhotos = await Promise.all(
+  (data || []).map(async (message) => {
+    if (!message.image_path) return message;
+
+    const { data: signedPhoto, error: photoError } =
+      await supabase.storage
+        .from('message-photos')
+        .createSignedUrl(message.image_path, 3600);
+
+    if (photoError) {
+      console.log('Erreur photo conversation :', photoError);
+      return message;
+    }
+
+    return {
+      ...message,
+      image_url: signedPhoto.signedUrl,
+    };
+  })
+);
+
+if (cancelled) return;
+
+setChatMessages(messagesWithPhotos);
 
       const { error: readError } = await supabase.rpc(
         'mark_conversation_read',
@@ -1780,16 +1803,32 @@ const [photoSending, setPhotoSending] = useState(false);
     borderColor: COLORS.line,
   }}
 >
-  <Text
+  {message.image_url && (
+  <Image
+    source={{ uri: message.image_url }}
     style={{
-      color: COLORS.navy,
-      fontSize: 15,
-      lineHeight: 20,
-      fontWeight: '600',
+      width: 210,
+      height: 160,
+      borderRadius: 12,
+      marginBottom: 6,
     }}
-  >
-    {message.content}
-  </Text>
+    resizeMode="cover"
+  />
+)}
+
+{!!message.content &&
+  !(message.image_url && message.content === '📷 Photo') && (
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 15,
+        lineHeight: 20,
+        fontWeight: '600',
+      }}
+    >
+      {message.content}
+    </Text>
+  )}
 </View>
     <Text
   style={{
