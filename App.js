@@ -2059,10 +2059,16 @@ onFocus={() =>
     }
 
     setChatMessages((current) =>
-      current.some((message) => message.id === data.id)
-        ? current
-        : [...current, data]
-    );
+  current.some((message) => message.id === data.id)
+    ? current
+    : [
+        ...current,
+        {
+          ...data,
+          image_url: photo?.uri || null,
+        },
+      ]
+);
 
     setMessageText((current) =>
       current === sentDraft ? '' : current
