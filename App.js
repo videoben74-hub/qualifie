@@ -625,13 +625,66 @@ return (
       : 'found my pro!'}
   </Text>
 </View>
+    <View
+  style={{
+    marginHorizontal: 20,
+    paddingVertical: 18,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 17,
+      lineHeight: 24,
+      fontWeight: '700',
+      textAlign: 'center',
+    }}
+  >
+    {language === 'fr'
+      ? 'QualiVérifié rassemble '
+      : 'QualiVérifié brings together '}
+    <Text style={{ color: COLORS.gold, fontWeight: '900' }}>
+      {language === 'fr'
+        ? 'plus d’une centaine de branches d’expertise'
+        : 'over a hundred specialties'}
+    </Text>
+    {language === 'fr'
+      ? ' pour vous accompagner dans tous vos projets immobiliers '
+      : ' to support all your property projects '}
+    <Text style={{ color: COLORS.gold, fontWeight: '900' }}>
+      {language === 'fr' ? 'au Québec' : 'in Québec'}
+    </Text>
+    {'.'}
+  </Text>
+
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 17,
+      lineHeight: 24,
+      fontWeight: '600',
+      textAlign: 'center',
+      marginTop: 14,
+    }}
+  >
+    <Text style={{ color: COLORS.gold, fontWeight: '900' }}>
+      {language === 'fr'
+        ? 'En deux seuls clics'
+        : 'In just two clicks'}
+    </Text>
+    {language === 'fr'
+      ? ', trouvez votre professionnel : construction, rénovation, transactions immobilières, fournisseurs ou entretien de votre maison ou bâtiment.'
+      : ', find your professional: construction, renovation, real estate transactions, suppliers or maintenance for your home or building.'}
+  </Text>
+</View>
       <View
   style={{
     backgroundColor: COLORS.navy,
     borderRadius: 16,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    marginHorizontal: 10,
+        marginHorizontal: 10,
+    marginTop: 'auto',
     marginBottom: 5,
   }}
 >
@@ -702,9 +755,6 @@ return (
       
     <View
   style={{
-    flex: 1,
-    minHeight: 0,
-    justifyContent: 'flex-end',
     paddingHorizontal: 20,
     paddingTop: 14,
     paddingBottom: 12,
