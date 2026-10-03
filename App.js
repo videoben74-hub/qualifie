@@ -217,6 +217,7 @@ const planningCategories = [
   'Émondeur',
   'Irrigation',
   'Paysagiste',
+  'Traitement de pelouse',
 ];
 const specializedSupplierCategories = [
   'Bois sur mesure',
@@ -224,6 +225,7 @@ const specializedSupplierCategories = [
   'Fabricant d’armoires de cuisine',
   'Fournisseur d’asphalte',
   'Fournisseur de béton',
+  'Fournisseur de marbre et de quartz',
   'Fournisseur de pavé uni',
   'Fournisseur de portes et fenêtres',
   'Fournisseur de rampes et escaliers',
