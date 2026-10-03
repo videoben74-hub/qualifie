@@ -761,52 +761,7 @@ return (
 </View>
     <View
   style={{
-    marginHorizontal: 10,
-    marginTop: 8,
-    marginBottom: 4,
-    backgroundColor: COLORS.navy,
-    borderRadius: 16,
-    paddingHorizontal: 18,
-    paddingVertical: 8,
-    alignItems: 'center',
-  }}
->
-  <Text
-    style={{
-      fontSize: 17,
-      fontWeight: '900',
-      textAlign: 'center',
-    }}
-  >
-    <Text style={{ color: '#FFFFFF' }}>Quali</Text>
-    <Text style={{ color: COLORS.gold }}>Vérifié</Text>
-  </Text>
-
-  <Text
-    style={{
-      color: '#FFFFFF',
-      fontSize: 15,
-      fontWeight: '800',
-      lineHeight: 21,
-      textAlign: 'center',
-      marginTop: 4,
-    }}
-  >
-    {language === 'fr' ? (
-      <>
-        La plateforme qui{' '}
-        <Text style={{ color: COLORS.gold }}>donne forme</Text>
-        {'\n'}à vos projets.
-      </>
-    ) : (
-      <>
-        The platform that{' '}
-        <Text style={{ color: COLORS.gold }}>brings your projects</Text>
-        {'\n'}to life.
-      </>
-    )}
-  </Text>
-      </View>
+    
    <View style={{ flex: 1, minHeight: 0 }} />
     <View style={{
   flexDirection: 'row',
@@ -1498,6 +1453,7 @@ const [messagePhoto, setMessagePhoto] = useState(null);
 const [photoSending, setPhotoSending] = useState(false);
     const scrollRef = useRef(null);
   const messageSendingRef = useRef(false);
+const messagePhotoCache = useRef(new Map());
     useEffect(() => {
   const loadConversations = async () => {
     try {
@@ -1650,15 +1606,28 @@ const [photoSending, setPhotoSending] = useState(false);
   (data || []).map(async (message) => {
     if (!message.image_path) return message;
 
+    const cached = messagePhotoCache.current.get(
+      message.image_path
+    );
+
+    if (cached && cached.expiresAt > Date.now()) {
+      return { ...message, image_url: cached.url };
+    }
+
     const { data: signedPhoto, error: photoError } =
       await supabase.storage
         .from('message-photos')
         .createSignedUrl(message.image_path, 3600);
 
-    if (photoError) {
+    if (photoError || !signedPhoto?.signedUrl) {
       console.log('Erreur photo conversation :', photoError);
       return message;
     }
+
+    messagePhotoCache.current.set(message.image_path, {
+      url: signedPhoto.signedUrl,
+      expiresAt: Date.now() + 3500 * 1000,
+    });
 
     return {
       ...message,
@@ -1922,20 +1891,22 @@ setChatMessages(messagesWithPhotos);
     } catch (error) {
       Alert.alert(
         language === 'fr' ? 'Photo non sélectionnée' : 'Photo not selected',
-        error.message
-      );
-    }
-  }}
-  style={{
-    alignSelf: 'flex-start',
-    backgroundColor: COLORS.navy,
-    borderWidth: 1,
-    borderColor: COLORS.gold2,
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginBottom: 8,
-  }}
+                  error.message
+        );
+      }
+    }}
+    style={{
+      position: 'absolute',
+      left: 12,
+      bottom: 12,
+      backgroundColor: COLORS.navy,
+      borderWidth: 1,
+      borderColor: COLORS.gold2,
+      borderRadius: 20,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      zIndex: 1,
+    }}
 >
   <Text style={{ color: COLORS.gold2, fontWeight: '700' }}>
     {language === 'fr' ? '+ Photo' : '+ Photo'}
