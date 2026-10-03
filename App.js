@@ -563,6 +563,7 @@ return (
   },
 ]}
   keyboardShouldPersistTaps="handled"
+      scrollEnabled={false}
 >
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
     <View
