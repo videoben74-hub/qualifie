@@ -565,6 +565,66 @@ return (
   keyboardShouldPersistTaps="handled"
 >
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
+    <View
+  style={{
+    marginHorizontal: 10,
+    marginTop: 12,
+    marginBottom: 4,
+    backgroundColor: COLORS.gold,
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 16,
+      lineHeight: 20,
+      fontWeight: '800',
+      textAlign: 'center',
+    }}
+  >
+    {language === 'fr'
+      ? 'Avec QualiVérifié,'
+      : 'With QualiVérifié,'}
+  </Text>
+
+  <Text
+    numberOfLines={1}
+    adjustsFontSizeToFit
+    style={{
+      color: COLORS.navy,
+      fontSize: 27,
+      lineHeight: 36,
+      fontWeight: '900',
+      textAlign: 'center',
+      width: '100%',
+    }}
+  >
+    CLIC CLIC{' '}
+    <Text style={{ fontSize: 34 }}>BOOM</Text>
+    …
+  </Text>
+
+  <Text
+    numberOfLines={1}
+    adjustsFontSizeToFit
+    style={{
+      color: COLORS.navy,
+      fontSize: 21,
+      lineHeight: 25,
+      fontWeight: '900',
+      textAlign: 'center',
+      width: '100%',
+    }}
+  >
+    {language === 'fr'
+      ? 'j’ai trouvé !'
+      : 'found my pro!'}
+  </Text>
+</View>
       <View
   style={{
     backgroundColor: COLORS.navy,
@@ -575,19 +635,7 @@ return (
     marginBottom: 5,
   }}
 >
-  <Text
-    style={{
-      color: '#DCE1E8',
-      fontSize: 17,
-      fontWeight: '900',
-      textAlign: 'center',
-      marginBottom: 8,
-    }}
-  >
-    {language === 'fr'
-      ? 'Vos recherches commencent ici'
-      : 'Your search starts here'}
-  </Text>
+
 
   <TouchableOpacity
   onPress={
@@ -651,120 +699,29 @@ return (
   </TouchableOpacity>
 </View>
 
-
-
-      <View
-  style={{
-    marginHorizontal: 10,
-    marginTop: 12,
-    marginBottom: 4,
-    backgroundColor: COLORS.gold,
-    borderRadius: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    alignItems: 'center',
-  }}
->
-  <Text
-    style={{
-      color: COLORS.navy,
-      fontSize: 16,
-      lineHeight: 20,
-      fontWeight: '800',
-      textAlign: 'center',
-    }}
-  >
-    {language === 'fr'
-      ? 'Avec QualiVérifié,'
-      : 'With QualiVérifié,'}
-  </Text>
-
-  <Text
-    numberOfLines={1}
-    adjustsFontSizeToFit
-    style={{
-      color: COLORS.navy,
-      fontSize: 27,
-      lineHeight: 36,
-      fontWeight: '900',
-      textAlign: 'center',
-      width: '100%',
-    }}
-  >
-    CLIC CLIC{' '}
-    <Text style={{ fontSize: 34 }}>BOOM</Text>
-    …
-  </Text>
-
-<Text
-  numberOfLines={1}
-  adjustsFontSizeToFit
-  style={{
-    color: COLORS.navy,
-    fontSize: 21,
-    lineHeight: 25,
-    fontWeight: '900',
-    textAlign: 'center',
-    width: '100%',
-  }}
->
-  {language === 'fr'
-    ? "j’ai trouvé !"
-    : "found my pro!"}
-</Text>
-</View>
-    <View
-  style={{
-    marginHorizontal: 10,
-    marginTop: 14,
-    marginBottom: 4,
-    backgroundColor: COLORS.navy,
-    borderRadius: 16,
-    paddingHorizontal: 18,
-    paddingVertical: 14,
-    alignItems: 'center',
-  }}
->
-
-
-  <Text
-    style={{
-      color: '#FFFFFF',
-      fontSize: 15,
-      fontWeight: '900',
-      lineHeight: 21,
-      textAlign: 'center',
-      marginTop: 8,
-    }}
-  >
-    {language === 'fr'
-      ? 'De la conception à la construction,\nde l’entretien à la vente.'
-      : 'From design to construction,\nfrom maintenance to sale.'}
-  </Text>
-</View>
-    
-
+      
     <View
   style={{
     flex: 1,
     minHeight: 0,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     paddingHorizontal: 20,
-    paddingVertical: 8,
+    paddingTop: 14,
+    paddingBottom: 12,
   }}
 >
   <Text
     style={{
       color: COLORS.navy,
-      fontSize: 16,
-      fontWeight: '800',
+      fontSize: 21,
+      fontWeight: '900',
       textAlign: 'center',
-      lineHeight: 22,
+      lineHeight: 27,
     }}
   >
     {language === 'fr'
-      ? 'Avec QualiVérifié, vous trouverez votre professionnel parmi plus d’une centaine de branches d’expertise du Québec.'
-      : 'With QualiVérifié, find your professional among over a hundred specialties across Québec.'}
+      ? 'Vos travaux commencent ici'
+      : 'Your projects start here'}
   </Text>
 </View>
   
