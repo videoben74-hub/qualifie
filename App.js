@@ -628,13 +628,18 @@ return (
 </View>
     <View
   style={{
-    marginHorizontal: 20,
-    paddingVertical: 18,
+    marginHorizontal: 10,
+    marginTop: 12,
+    marginBottom: 12,
+    backgroundColor: COLORS.navy,
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
   }}
 >
   <Text
     style={{
-      color: COLORS.navy,
+          color: '#FFFFFF',
       fontSize: 17,
       lineHeight: 24,
       fontWeight: '700',
@@ -660,7 +665,7 @@ return (
 
   <Text
     style={{
-      color: COLORS.navy,
+          color: '#FFFFFF',
       fontSize: 17,
       lineHeight: 24,
       fontWeight: '600',
