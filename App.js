@@ -2353,6 +2353,7 @@ const [companyPhotos, setCompanyPhotos] = useState([]);
 const [neq, setNeq] = useState('');
 const [rbq, setRbq] = useState('');
 const [rbqPhotoUrl, setRbqPhotoUrl] = useState('');
+const [licencePhotoOpen, setLicencePhotoOpen] = useState(false);
 const [companyCity, setCompanyCity] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
 const [companyPostalCode, setCompanyPostalCode] = useState('');
@@ -5414,11 +5415,62 @@ scrollEnabled={!!selectedPro}
     <Text style={[styles.menuText, { marginBottom: 10 }]}>
       {language === 'fr' ? '🛡️ Licence RBQ' : '🛡️ RBQ licence'}
     </Text>
-    <Image
-      source={{ uri: selectedPro.rbqPhotoUrl }}
-      resizeMode="contain"
-      style={{ width: '100%', height: 240, borderRadius: 12 }}
-    />
+
+    <TouchableOpacity
+      onPress={() => setLicencePhotoOpen(true)}
+      accessibilityRole="button"
+      accessibilityLabel={
+        language === 'fr' ? 'Agrandir la licence' : 'Enlarge licence'
+      }
+    >
+      <Image
+        source={{ uri: selectedPro.rbqPhotoUrl }}
+        resizeMode="contain"
+        style={{ width: '100%', height: 240, borderRadius: 12 }}
+      />
+    </TouchableOpacity>
+
+    <Modal
+      visible={licencePhotoOpen}
+      animationType="fade"
+      presentationStyle="fullScreen"
+      onRequestClose={() => setLicencePhotoOpen(false)}
+    >
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.navy,
+          paddingTop: 60,
+          paddingBottom: 30,
+          paddingHorizontal: 12,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => setLicencePhotoOpen(false)}
+          style={{
+            alignSelf: 'flex-end',
+            padding: 14,
+            marginBottom: 12,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.gold,
+              fontSize: 18,
+              fontWeight: '900',
+            }}
+          >
+            {language === 'fr' ? '✕ Fermer' : '✕ Close'}
+          </Text>
+        </TouchableOpacity>
+
+        <Image
+          source={{ uri: selectedPro.rbqPhotoUrl }}
+          resizeMode="contain"
+          style={{ flex: 1, width: '100%' }}
+        />
+      </View>
+    </Modal>
   </View>
 )}
     
