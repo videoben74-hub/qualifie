@@ -758,28 +758,7 @@ return (
   </TouchableOpacity>
 </View>
 
-      
-    <View
-  style={{
-    paddingHorizontal: 20,
-    paddingTop: 14,
-    paddingBottom: 12,
-  }}
->
-  <Text
-    style={{
-      color: COLORS.navy,
-      fontSize: 21,
-      fontWeight: '900',
-      textAlign: 'center',
-      lineHeight: 27,
-    }}
-  >
-    {language === 'fr'
-      ? 'Vos travaux commencent ici'
-      : 'Your projects start here'}
-  </Text>
-</View>
+
   
     <View style={{
   flexDirection: 'row',
