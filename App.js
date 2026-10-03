@@ -763,25 +763,11 @@ return (
     }}
   >
     {language === 'fr'
-      ? 'L’industrie du bâtiment au Québec se construit une valeur à la fois.'
-      : 'Québec’s building industry is built one value at a time.'}
+      ? 'Avec QualiVérifié, vous trouverez votre professionnel parmi plus d’une centaine de branches d’expertise du Québec.'
+      : 'With QualiVérifié, find your professional among over a hundred specialties across Québec.'}
   </Text>
 </View>
-   <Text
-  style={{
-    color: COLORS.navy,
-    fontSize: 14,
-    fontWeight: '700',
-    textAlign: 'center',
-    lineHeight: 20,
-    marginHorizontal: 18,
-    marginBottom: 10,
-  }}
->
-  {language === 'fr'
-    ? 'Un projet pour votre bâtiment? Avec QualiVérifié, vous trouverez votre professionnel parmi plus d’une centaine de branches d’expertise du Québec. Utilisez votre position pour trouver les entreprises près de vous.'
-    : 'Have a project for your building? With QualiVérifié, find your professional among over a hundred specialties across Québec. Use your location to find businesses near you.'}
-</Text>
+  
     <View style={{
   flexDirection: 'row',
   gap: 8,
