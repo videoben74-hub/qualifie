@@ -18,8 +18,8 @@ import * as Location from 'expo-location';
 import { supabase } from './supabase';
 import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 
-// RevenueCat : clé de test uniquement.
-const REVENUECAT_TEST_API_KEY = 'test_rgUKSuaNKgDaDRlXcyuekktDqFU';
+// RevenueCat : clé publique Google Play (Android).
+const REVENUECAT_TEST_API_KEY = 'goog_wxoILOcNAXonpfLEfDPjYXACahi';
 const COLORS = {
   navy: '#0B1F3A',
   navy2: '#15345D',
