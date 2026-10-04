@@ -2516,6 +2516,56 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
       setPurchaseLoading(false);
     }
   };
+    const handleRestorePurchases = async () => {
+    if (purchaseBusyRef.current) return;
+
+    const isFrench = language === 'fr';
+    purchaseBusyRef.current = true;
+    setPurchaseLoading(true);
+
+    try {
+      if (Platform.OS !== 'android' && Platform.OS !== 'ios') {
+        throw new Error(
+          isFrench ? 'Utilisez l’application mobile.' : 'Use the mobile app.'
+        );
+      }
+
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) throw error;
+      if (!user) {
+        throw new Error(
+          isFrench ? 'Connectez-vous d’abord.' : 'Sign in first.'
+        );
+      }
+
+      if (!(await Purchases.isConfigured())) {
+        Purchases.configure({ apiKey: REVENUECAT_TEST_API_KEY });
+      }
+
+      await Purchases.logIn(user.id);
+      const customerInfo = await Purchases.restorePurchases();
+      const entitlement = customerInfo.entitlements.active['qualivérifié_pro'];
+
+      Alert.alert(
+        isFrench ? 'Restaurer les achats' : 'Restore purchases',
+        entitlement
+          ? (isFrench
+              ? 'Abonnement retrouvé. La validation serveur reste à brancher.'
+              : 'Subscription found. Server validation still needs to be connected.')
+          : (isFrench
+              ? 'Aucun abonnement actif retrouvé.'
+              : 'No active subscription found.')
+      );
+    } catch (error) {
+      Alert.alert(
+        isFrench ? 'Restauration' : 'Restore purchases',
+        error?.message || (isFrench ? 'Réessayez.' : 'Please try again.')
+      );
+    } finally {
+      purchaseBusyRef.current = false;
+      setPurchaseLoading(false);
+    }
+  };
 useEffect(() => {
   const loadClientProfile = async () => {
     try {
