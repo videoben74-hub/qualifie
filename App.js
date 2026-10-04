@@ -4294,15 +4294,23 @@ try {
     </View>
 
     <TouchableOpacity
-      style={[styles.primaryBtn, { marginTop: 20, opacity: 0.5, backgroundColor: COLORS.navy }]}
-      disabled={true}
-    >
-      <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
-        {language === 'fr'
-          ? '🔒 Paiement sécurisé'
-          : '🔒 Secure payment'}
-      </Text>
-    </TouchableOpacity>
+  style={[
+    styles.primaryBtn,
+    {
+      marginTop: 20,
+      opacity: purchaseLoading ? 0.5 : 1,
+      backgroundColor: COLORS.navy,
+    },
+  ]}
+  disabled={purchaseLoading}
+  onPress={handleSubscriptionPurchase}
+>
+  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
+    {purchaseLoading
+      ? (language === 'fr' ? 'Veuillez patienter…' : 'Please wait…')
+            : (language === 'fr' ? '🔒 Tester le paiement' : '🔒 Test payment')}
+  </Text>
+</TouchableOpacity>
 
     
 </>
