@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { supabase } from './supabase';
+import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 const COLORS = {
   navy: '#0B1F3A',
   navy2: '#15345D',
