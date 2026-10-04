@@ -6646,6 +6646,25 @@ onNavigate('Accueil');
 }
 
 export default function App() {
+  useEffect(() => {
+    if (Platform.OS !== 'android' && Platform.OS !== 'ios') return;
+
+    const initializePurchases = async () => {
+      try {
+        await Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+
+        if (!(await Purchases.isConfigured())) {
+          Purchases.configure({
+            apiKey: REVENUECAT_TEST_API_KEY,
+          });
+        }
+      } catch (error) {
+        console.warn('RevenueCat initialization failed:', error);
+      }
+    };
+
+    initializePurchases();
+  }, []);
   const [tab, setTab] = useState('Accueil');
 const [category, setCategory] = useState('');
 const [selectedPro, setSelectedPro] = useState(null);
