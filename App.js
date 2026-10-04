@@ -4361,7 +4361,27 @@ try {
             : (language === 'fr' ? '🔒 Tester le paiement' : '🔒 Test payment')}
   </Text>
 </TouchableOpacity>
-
+<TouchableOpacity
+  onPress={handleRestorePurchases}
+  disabled={purchaseLoading}
+  style={{
+    marginTop: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    opacity: purchaseLoading ? 0.5 : 1,
+  }}
+>
+  <Text style={{
+    color: COLORS.navy,
+    fontSize: 16,
+    fontWeight: '700',
+    textDecorationLine: 'underline',
+  }}>
+    {language === 'fr'
+      ? 'Restaurer les achats'
+      : 'Restore purchases'}
+  </Text>
+</TouchableOpacity>
     
 </>
 ) : profileSection === 'Métiers et services' ? (
