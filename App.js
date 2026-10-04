@@ -2439,6 +2439,83 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
 
   loadCompanyProfile();
 }, []);
+    const handleSubscriptionPurchase = async () => {
+    if (purchaseBusyRef.current) return;
+
+    const isFrench = language === 'fr';
+    const productId = {
+      1: 'monthly',
+      2: 'monthly_2',
+      3: 'monthly_3',
+    }[selectedDivisionCount];
+
+    if (!productId) {
+      Alert.alert(
+        isFrench ? 'Forfait requis' : 'Plan required',
+        isFrench ? 'Choisissez votre forfait.' : 'Choose your plan.'
+      );
+      return;
+    }
+
+    purchaseBusyRef.current = true;
+    setPurchaseLoading(true);
+
+    try {
+      if (Platform.OS !== 'android' && Platform.OS !== 'ios') {
+        throw new Error(
+          isFrench ? 'Utilisez l’application mobile.' : 'Use the mobile app.'
+        );
+      }
+
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) throw error;
+      if (!user) {
+        throw new Error(
+          isFrench ? 'Connectez-vous avant de payer.' : 'Sign in before purchasing.'
+        );
+      }
+
+      if (!(await Purchases.isConfigured())) {
+        Purchases.configure({ apiKey: REVENUECAT_TEST_API_KEY });
+      }
+
+      await Purchases.logIn(user.id);
+
+      const offerings = await Purchases.getOfferings();
+      const packageToBuy = offerings.all.default?.availablePackages.find(
+        (item) => item.product.identifier === productId
+      );
+
+      if (!packageToBuy) {
+        throw new Error(
+          isFrench ? 'Ce forfait est indisponible.' : 'This plan is unavailable.'
+        );
+      }
+            const { customerInfo } = await Purchases.purchasePackage(packageToBuy);
+      const entitlement = customerInfo.entitlements.active['qualivérifié_pro'];
+
+      Alert.alert(
+        isFrench ? 'Achat de test' : 'Test purchase',
+        entitlement
+          ? (isFrench
+              ? 'Achat confirmé. La validation serveur reste à brancher.'
+              : 'Purchase confirmed. Server validation still needs to be connected.')
+          : (isFrench
+              ? 'L’abonnement n’est pas encore confirmé.'
+              : 'The subscription is not confirmed yet.')
+      );
+    } catch (error) {
+      if (!error?.userCancelled) {
+        Alert.alert(
+          isFrench ? 'Paiement' : 'Payment',
+          error?.message || (isFrench ? 'Réessayez.' : 'Please try again.')
+        );
+      }
+    } finally {
+      purchaseBusyRef.current = false;
+      setPurchaseLoading(false);
+    }
+  };
 useEffect(() => {
   const loadClientProfile = async () => {
     try {
