@@ -2350,6 +2350,7 @@ const [neq, setNeq] = useState('');
 const [rbq, setRbq] = useState('');
 const [rbqPhotoUrl, setRbqPhotoUrl] = useState('');
 const [licencePhotoOpen, setLicencePhotoOpen] = useState(false);
+const [projectPhotoOpen, setProjectPhotoOpen] = useState(null);
 const [companyCity, setCompanyCity] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
 const [companyPostalCode, setCompanyPostalCode] = useState('');
@@ -5536,7 +5537,7 @@ scrollEnabled={!!selectedPro}
       {language === 'fr' ? '📸 Réalisations' : '📸 Projects'}
     </Text>
 
-        <View
+    <View
       style={{
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -5544,10 +5545,13 @@ scrollEnabled={!!selectedPro}
       }}
     >
       {selectedPro.photos.map((photo, index) => (
-        <Image
+        <TouchableOpacity
           key={`${photo}-${index}`}
-          source={{ uri: photo }}
-          resizeMode="contain"
+          onPress={() => setProjectPhotoOpen(photo)}
+          accessibilityRole="button"
+          accessibilityLabel={
+            language === 'fr' ? 'Agrandir la photo' : 'Enlarge photo'
+          }
           style={{
             width: '48%',
             height: 120,
@@ -5556,10 +5560,61 @@ scrollEnabled={!!selectedPro}
             backgroundColor: COLORS.navy,
             borderWidth: 1,
             borderColor: COLORS.gold,
+            overflow: 'hidden',
           }}
-        />
+        >
+          <Image
+            source={{ uri: photo }}
+            resizeMode="contain"
+            style={{ width: '100%', height: '100%' }}
+          />
+        </TouchableOpacity>
       ))}
     </View>
+
+    <Modal
+      visible={!!projectPhotoOpen}
+      animationType="fade"
+      presentationStyle="fullScreen"
+      onRequestClose={() => setProjectPhotoOpen(null)}
+    >
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.navy,
+          paddingTop: 60,
+          paddingBottom: 30,
+          paddingHorizontal: 12,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => setProjectPhotoOpen(null)}
+          style={{
+            alignSelf: 'flex-end',
+            padding: 14,
+            marginBottom: 12,
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.gold,
+              fontSize: 18,
+              fontWeight: '900',
+            }}
+          >
+            {language === 'fr' ? '✕ Fermer' : '✕ Close'}
+          </Text>
+        </TouchableOpacity>
+
+        {projectPhotoOpen && (
+          <Image
+            source={{ uri: projectPhotoOpen }}
+            resizeMode="contain"
+            style={{ flex: 1, width: '100%' }}
+          />
+        )}
+      </View>
+    </Modal>
   </View>
 )}
 
