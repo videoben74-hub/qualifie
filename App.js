@@ -1697,87 +1697,7 @@ setChatMessages(messagesWithPhotos);
         scrollRef.current?.scrollToEnd({ animated: false })
       }
     >
-      <TouchableOpacity
-    onPress={() => {
-    setMessageText('');
-
-    if (selectedPro) {
-      onNavigate('Profil', '', selectedPro);
-    } else {
-      setSelectedChat(null);
-      setActiveConversationId(null);
-      setChatMessages([]);
-    }
-  }}
->
-  <Text style={styles.proTrade}>
-    {selectedPro
-      ? (language === 'fr' ? '‹ Retour au profil' : '‹ Back to profile')
-      : (language === 'fr' ? '‹ Retour aux messages' : '‹ Back to messages')}
-  </Text>
-</TouchableOpacity>
-
-      <View
-  style={{
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 16,
-  }}
->
-  {(conversations.find(
-    (item) => item.id === activeConversationId
-  )?.otherPhoto || selectedPro?.photo) ? (
-    <Image
-      source={{
-        uri:
-          conversations.find(
-            (item) => item.id === activeConversationId
-          )?.otherPhoto || selectedPro?.photo,
-      }}
-      style={{
-        width: 54,
-        height: 54,
-        borderRadius: 27,
-        borderWidth: 2,
-        borderColor: COLORS.gold2,
-        marginRight: 12,
-      }}
-    />
-  ) : (
-    <View
-      style={{
-        width: 54,
-        height: 54,
-        borderRadius: 27,
-        backgroundColor: COLORS.navy,
-        borderWidth: 2,
-        borderColor: COLORS.gold2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 12,
-      }}
-    >
-      <Text
-        style={{
-          color: COLORS.gold2,
-          fontSize: 24,
-          fontWeight: 'bold',
-        }}
-      >
-        {selectedChat?.[0]?.toUpperCase() || '?'}
-      </Text>
-    </View>
-  )}
-
-  <Text
-    style={[
-      styles.screenTitle,
-      { flex: 1, marginBottom: 0, marginTop: 0 },
-    ]}
-  >
-    {selectedChat}
-  </Text>
-</View>
+      
 
       {chatMessages.map((message) => {
   const isMine = message.sender_id === currentUserId;
@@ -2096,9 +2016,103 @@ onFocus={() =>
     fontWeight: '700',
   }}
 >
-  {language === 'fr' ? 'Envoyer ➤' : 'Send ➤'}
+    {language === 'fr' ? 'Envoyer ➤' : 'Send ➤'}
 </Text>
 </TouchableOpacity>
+
+<View
+  style={{
+    position: 'absolute',
+    left: 100,
+    right: 130,
+    bottom: 12,
+    height: 52,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}
+>
+  <View
+    style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+    }}
+  >
+    {(conversations.find(
+      (item) => item.id === activeConversationId
+    )?.otherPhoto || selectedPro?.photo) ? (
+      <Image
+        source={{
+          uri: conversations.find(
+            (item) => item.id === activeConversationId
+          )?.otherPhoto || selectedPro?.photo,
+        }}
+        style={{
+          width: 26,
+          height: 26,
+          borderRadius: 13,
+          borderWidth: 1,
+          borderColor: COLORS.gold2,
+          marginRight: 4,
+        }}
+      />
+    ) : (
+      <View
+        style={{
+          width: 26,
+          height: 26,
+          borderRadius: 13,
+          backgroundColor: COLORS.navy,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 4,
+        }}
+      >
+        <Text style={{ color: COLORS.gold2 }}>
+          {selectedChat?.[0]?.toUpperCase() || '?'}
+        </Text>
+      </View>
+    )}
+
+    <Text
+      numberOfLines={1}
+      style={{
+        color: COLORS.navy,
+        fontSize: 12,
+        fontWeight: '800',
+        flexShrink: 1,
+      }}
+    >
+      {selectedChat}
+    </Text>
+  </View>
+
+  <TouchableOpacity
+    style={{ paddingVertical: 5, paddingHorizontal: 8 }}
+    onPress={() => {
+      setMessageText('');
+
+      if (selectedPro) {
+        onNavigate('Profil', '', selectedPro);
+      } else {
+        setSelectedChat(null);
+        setActiveConversationId(null);
+        setChatMessages([]);
+      }
+    }}
+  >
+    <Text
+      style={{
+        color: COLORS.navy,
+        fontSize: 12,
+        fontWeight: '700',
+      }}
+    >
+      {language === 'fr' ? '‹ Retour' : '‹ Back'}
+    </Text>
+  </TouchableOpacity>
+</View>
     </View>
       <Modal
   visible={!!fullScreenPhoto}
