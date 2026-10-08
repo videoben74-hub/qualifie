@@ -1652,10 +1652,20 @@ setChatMessages(
       return message;
     }
 
+        if (cancelled) return message;
+
     messagePhotoCache.current.set(message.image_path, {
       url: signedPhoto.signedUrl,
       expiresAt: Date.now() + 3500 * 1000,
     });
+
+    setChatMessages((current) =>
+      current.map((item) =>
+        item.id === message.id
+          ? { ...item, image_url: signedPhoto.signedUrl }
+          : item
+      )
+    );
 
     return {
       ...message,
