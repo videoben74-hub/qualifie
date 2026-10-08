@@ -1615,7 +1615,21 @@ const messagePhotoCache = useRef(new Map());
 
       if (error) throw error;
       if (cancelled) return;
+setChatMessages(
+  (data || []).map((message) => {
+    const cached = messagePhotoCache.current.get(
+      message.image_path
+    );
 
+    return {
+      ...message,
+      image_url:
+        cached && cached.expiresAt > Date.now()
+          ? cached.url
+          : null,
+    };
+  })
+);
       const messagesWithPhotos = await Promise.all(
   (data || []).map(async (message) => {
     if (!message.image_path) return message;
@@ -1688,14 +1702,21 @@ setChatMessages(messagesWithPhotos);
     <AppHeader language={language} setLanguage={setLanguage} />
 
 
-    <ScrollView
-  style={{ flex: 1 }}
+        <ScrollView
+      style={{ flex: 1 }}
       ref={scrollRef}
-      contentContainerStyle={[styles.page, { paddingBottom: 180 }]}
+      contentContainerStyle={[styles.page, { paddingBottom: 20 }]}
       keyboardShouldPersistTaps="handled"
-      onContentSizeChange={() =>
-        scrollRef.current?.scrollToEnd({ animated: false })
-      }
+      onLayout={() => {
+        requestAnimationFrame(() => {
+          scrollRef.current?.scrollToEnd({ animated: false });
+        });
+      }}
+      onContentSizeChange={() => {
+        requestAnimationFrame(() => {
+          scrollRef.current?.scrollToEnd({ animated: false });
+        });
+      }}
     >
       
 
