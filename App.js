@@ -1630,53 +1630,55 @@ setChatMessages(
     };
   })
 );
-      const messagesWithPhotos = await Promise.all(
-  (data || []).map(async (message) => {
-    if (!message.image_path) return message;
+      const photoPaths = [...new Set(
+  (data || [])
+    .map((message) => message.image_path)
+    .filter((path) => {
+      if (!path) return false;
+      const cached = messagePhotoCache.current.get(path);
+      return !cached || cached.expiresAt <= Date.now();
+    })
+)];
 
+if (photoPaths.length > 0) {
+  const { data: signedPhotos, error: photoError } =
+    await supabase.storage
+      .from('message-photos')
+      .createSignedUrls(photoPaths, 3600);
+
+  if (cancelled) return;
+
+  if (photoError) {
+    console.log('Erreur photos conversation :', photoError);
+  } else {
+    (signedPhotos || []).forEach((photo) => {
+      if (!photo.path || !photo.signedUrl) return;
+
+      messagePhotoCache.current.set(photo.path, {
+        url: photo.signedUrl,
+        expiresAt: Date.now() + 3500 * 1000,
+      });
+    });
+  }
+}
+
+if (cancelled) return;
+
+setChatMessages(
+  (data || []).map((message) => {
     const cached = messagePhotoCache.current.get(
       message.image_path
     );
 
-    if (cached && cached.expiresAt > Date.now()) {
-      return { ...message, image_url: cached.url };
-    }
-
-    const { data: signedPhoto, error: photoError } =
-      await supabase.storage
-        .from('message-photos')
-        .createSignedUrl(message.image_path, 3600);
-
-    if (photoError || !signedPhoto?.signedUrl) {
-      console.log('Erreur photo conversation :', photoError);
-      return message;
-    }
-
-        if (cancelled) return message;
-
-    messagePhotoCache.current.set(message.image_path, {
-      url: signedPhoto.signedUrl,
-      expiresAt: Date.now() + 3500 * 1000,
-    });
-
-    setChatMessages((current) =>
-      current.map((item) =>
-        item.id === message.id
-          ? { ...item, image_url: signedPhoto.signedUrl }
-          : item
-      )
-    );
-
     return {
       ...message,
-      image_url: signedPhoto.signedUrl,
+      image_url:
+        cached && cached.expiresAt > Date.now()
+          ? cached.url
+          : null,
     };
   })
 );
-
-if (cancelled) return;
-
-setChatMessages(messagesWithPhotos);
 
       const { error: readError } = await supabase.rpc(
         'mark_conversation_read',
