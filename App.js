@@ -1754,24 +1754,39 @@ setChatMessages(messagesWithPhotos);
     borderColor: COLORS.line,
   }}
 >
-  {message.image_url && (
+  {(message.image_path || message.image_url) && (
   <TouchableOpacity
+    disabled={!message.image_url}
     onPress={() => setFullScreenPhoto(message.image_url)}
     activeOpacity={0.8}
     accessibilityLabel={
       language === 'fr' ? 'Agrandir la photo' : 'Enlarge photo'
     }
   >
-    <Image
-      source={{ uri: message.image_url }}
+    <View
       style={{
         width: 210,
         height: 160,
         borderRadius: 12,
         marginBottom: 6,
+        backgroundColor: '#E8EDF2',
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
-      resizeMode="cover"
-    />
+    >
+      {message.image_url ? (
+        <Image
+          source={{ uri: message.image_url }}
+          style={{ width: 210, height: 160 }}
+          resizeMode="cover"
+        />
+      ) : (
+        <Text style={{ color: COLORS.navy }}>
+          {language === 'fr' ? 'Chargement…' : 'Loading…'}
+        </Text>
+      )}
+    </View>
   </TouchableOpacity>
 )}
 
