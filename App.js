@@ -12,6 +12,8 @@ import {
     Platform, BackHandler, Image, Switch, Alert, Modal,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { Image as ExpoImage } from 'expo-image';
+import * as ImageManipulator from 'expo-image-manipulator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
@@ -1778,10 +1780,15 @@ setChatMessages(
       }}
     >
       {message.image_url ? (
-        <Image
-          source={{ uri: message.image_url }}
+                <ExpoImage
+          source={{
+            uri: message.image_url,
+            cacheKey: message.image_path || message.image_url,
+          }}
           style={{ width: 210, height: 160 }}
-          resizeMode="cover"
+          contentFit="cover"
+          cachePolicy="memory-disk"
+          transition={0}
         />
       ) : (
         <Text style={{ color: COLORS.navy }}>
@@ -1853,16 +1860,36 @@ setChatMessages(
         return;
       }
 
-      const result = await ImagePicker.launchImageLibraryAsync({
+            const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsEditing: false,
-        quality: 0.8,
-        base64: true,
+        quality: 1,
+        base64: false,
       });
 
       if (result.canceled || !result.assets?.[0]) return;
 
-      const photo = result.assets[0];
+      const original = result.assets[0];
+      const actions = [];
+
+      if (Math.max(original.width, original.height) > 1600) {
+        actions.push({
+          resize:
+            original.width >= original.height
+              ? { width: 1600 }
+              : { height: 1600 },
+        });
+      }
+
+      const photo = await ImageManipulator.manipulateAsync(
+        original.uri,
+        actions,
+        {
+          compress: 0.7,
+          format: ImageManipulator.SaveFormat.JPEG,
+          base64: true,
+        }
+      );
 
       if (
         !photo.base64 ||
@@ -1877,7 +1904,10 @@ setChatMessages(
         return;
       }
 
-      setMessagePhoto(photo);
+      setMessagePhoto({
+        ...photo,
+        mimeType: 'image/jpeg',
+      });
     } catch (error) {
       Alert.alert(
         language === 'fr' ? 'Photo non sélectionnée' : 'Photo not selected',
