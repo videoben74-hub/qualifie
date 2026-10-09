@@ -17,9 +17,10 @@
     "ACCESS_FINE_LOCATION"
   ]
 },
-    "ios": {
+        "ios": {
       "bundleIdentifier": "ca.qualiverifie.app",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "icon": "./file_0000000056b881f5b326834cb96b1484.png"
     },
     "plugins": [
   [
