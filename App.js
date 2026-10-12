@@ -7675,14 +7675,14 @@ secondaryBtnText: { color: COLORS.gold, fontWeight: '800', fontSize: 12 },
   menuRow: { backgroundColor: COLORS.navy, borderWidth: 1.5, borderColor: COLORS.gold, borderRadius: 14, marginBottom: 6, paddingVertical: 11, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between' },
   menuText: { color: COLORS.gold2, fontWeight: '700' },
   chevron: { color: '#FFFFFF', fontSize: 24 },
-  nav: {
-  flexDirection: 'row',
-  backgroundColor: COLORS.navy,
-  paddingTop: 12,
-  paddingBottom: Platform.OS === 'ios' ? 18 : 18,
-  minHeight: 180,
-  alignItems: 'center',
-},
+    nav: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.navy,
+    paddingTop: 12,
+    paddingBottom: 18,
+    minHeight: Platform.OS === 'ios' ? 72 : 180,
+    alignItems: 'center',
+  },
 
 navItem: {
   flex: 1,
