@@ -1,21 +1,25 @@
 {
   "cli": {
-    "version": ">= 16.0.0"
+    "version": ">= 16.0.0",
+    "appVersionSource": "remote"
   },
   "build": {
-  "development": {
-    "developmentClient": true,
-    "distribution": "internal",
-    "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
+    },
+    "production": {
+      "ios": {
+        "autoIncrement": true
+      },
+      "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
+    }
   },
-  "preview": {
-    "distribution": "internal",
-    "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
-  },
-  "production": {
-    "env": { "EAS_NO_FROZEN_LOCKFILE": "1" }
-  }
-},
   "submit": {
     "production": {}
   }
