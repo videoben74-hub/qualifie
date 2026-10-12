@@ -31,6 +31,49 @@ const TextInput = React.forwardRef((props, ref) => (
     }
   />
 ));
+function IPhoneLayout({ children }) {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  if (Platform.OS !== 'ios') {
+    return children;
+  }
+
+  const scale =
+    size.width > 0 && size.height > 0
+      ? Math.min(size.width / 450, size.height / 760)
+      : 1;
+
+  const canvasHeight = size.height / scale;
+
+  return (
+    <View
+      style={{ flex: 1, overflow: 'hidden' }}
+      onLayout={({ nativeEvent }) => {
+        const { width, height } = nativeEvent.layout;
+        setSize(previous =>
+          previous.width === width && previous.height === height
+            ? previous
+            : { width, height }
+        );
+      }}
+    >
+      {size.width > 0 && size.height > 0 && (
+        <View
+          style={{
+            position: 'absolute',
+            width: 450,
+            height: canvasHeight,
+            left: (size.width - 450) / 2,
+            top: (size.height - canvasHeight) / 2,
+            transform: [{ scale }],
+          }}
+        >
+          {children}
+        </View>
+      )}
+    </View>
+  );
+}
 import * as ImagePicker from 'expo-image-picker';
 import { Image as ExpoImage } from 'expo-image';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -7474,7 +7517,11 @@ tab === 'Messages' ? (
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.navy} />
-      <View style={styles.content}>{content}</View>
+      <View style={styles.content}>
+  <IPhoneLayout>
+    {content}
+  </IPhoneLayout>
+</View>
       <View style={styles.nav}>
         {[
   ['Accueil', language === 'fr' ? 'Accueil' : 'Home', '⌂'],
