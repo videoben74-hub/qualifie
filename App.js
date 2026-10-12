@@ -6,7 +6,8 @@ import {
   StyleSheet,
   ScrollView,
   TextInput as NativeTextInput,
-  KeyboardAvoidingView,
+    KeyboardAvoidingView,
+  Keyboard,
   TouchableOpacity,
   StatusBar,
   Platform, BackHandler, Image, Switch, Alert, Modal,
@@ -31,22 +32,87 @@ const TextInput = React.forwardRef((props, ref) => (
     }
   />
 ));
+const IPhoneKeyboardContext = React.createContext(null);
+
+function MessageKeyboardLayout({ children, style, ...props }) {
+  const layout = React.useContext(IPhoneKeyboardContext);
+  const [keyboardPadding, setKeyboardPadding] = useState(0);
+
+  useEffect(() => {
+    if (Platform.OS !== 'ios' || !layout) return;
+
+    let active = true;
+    let revision = 0;
+
+    const change = Keyboard.addListener(
+      'keyboardWillChangeFrame',
+      event => {
+        const currentRevision = ++revision;
+
+        layout.viewportRef.current?.measureInWindow(
+          (x, y, width, height) => {
+            if (!active || currentRevision !== revision) return;
+
+            const overlap = Math.max(
+              0,
+              y + height - event.endCoordinates.screenY
+            );
+
+            setKeyboardPadding(overlap / layout.scale);
+          }
+        );
+      }
+    );
+
+    const hide = Keyboard.addListener('keyboardWillHide', () => {
+      revision += 1;
+      setKeyboardPadding(0);
+    });
+
+    return () => {
+      active = false;
+      change.remove();
+      hide.remove();
+    };
+  }, [layout]);
+
+  if (Platform.OS !== 'ios' || !layout) {
+    return (
+      <KeyboardAvoidingView style={style} {...props}>
+        {children}
+      </KeyboardAvoidingView>
+    );
+  }
+
+  return (
+    <View style={[style, { paddingBottom: keyboardPadding }]}>
+      {children}
+    </View>
+  );
+}
+
 function IPhoneLayout({ children }) {
   const [size, setSize] = useState({ width: 0, height: 0 });
-
-  if (Platform.OS !== 'ios') {
-    return children;
-  }
+  const viewportRef = useRef(null);
 
   const scale =
     size.width > 0 && size.height > 0
       ? Math.min(size.width / 450, size.height / 760)
       : 1;
 
-  const canvasHeight = size.height / scale;
+    const canvasHeight = size.height / scale;
+
+  const keyboardLayout = useMemo(
+    () => ({ scale, viewportRef }),
+    [scale]
+  );
+
+  if (Platform.OS !== 'ios') return children;
 
   return (
     <View
+      ref={viewportRef}
+      collapsable={false}
       style={{ flex: 1, overflow: 'hidden' }}
       onLayout={({ nativeEvent }) => {
         const { width, height } = nativeEvent.layout;
@@ -68,7 +134,9 @@ function IPhoneLayout({ children }) {
             transform: [{ scale }],
           }}
         >
-          {children}
+                    <IPhoneKeyboardContext.Provider value={keyboardLayout}>
+            {children}
+          </IPhoneKeyboardContext.Provider>
         </View>
       )}
     </View>
@@ -1771,7 +1839,7 @@ setChatMessages(
 }, [activeConversationId]);
   if (selectedChat) {
   return (
-  <KeyboardAvoidingView
+  <MessageKeyboardLayout
   style={{ flex: 1 }}
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
   keyboardVerticalOffset={0}
@@ -2296,7 +2364,7 @@ onFocus={() =>
     )}
   </SafeAreaView>
 </Modal>
-</KeyboardAvoidingView>
+</MessageKeyboardLayout>
   );
 }
   return (
