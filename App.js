@@ -2,15 +2,35 @@ import React, { useEffect, useMemo, useState, useRef } from 'react';
 import {
   SafeAreaView,
   View,
-  Text,
+  Text as NativeText,
   StyleSheet,
   ScrollView,
-  TextInput,
+  TextInput as NativeTextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
   StatusBar,
-    Platform, BackHandler, Image, Switch, Alert, Modal,
+  Platform, BackHandler, Image, Switch, Alert, Modal,
 } from 'react-native';
+
+const Text = React.forwardRef((props, ref) => (
+  <NativeText
+    {...props}
+    ref={ref}
+    allowFontScaling={
+      Platform.OS === 'ios' ? false : props.allowFontScaling
+    }
+  />
+));
+
+const TextInput = React.forwardRef((props, ref) => (
+  <NativeTextInput
+    {...props}
+    ref={ref}
+    allowFontScaling={
+      Platform.OS === 'ios' ? false : props.allowFontScaling
+    }
+  />
+));
 import * as ImagePicker from 'expo-image-picker';
 import { Image as ExpoImage } from 'expo-image';
 import * as ImageManipulator from 'expo-image-manipulator';
