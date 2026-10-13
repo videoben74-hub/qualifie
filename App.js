@@ -10,7 +10,7 @@ import {
   Keyboard,
   TouchableOpacity,
   StatusBar,
-  Platform, BackHandler, Image, Switch, Alert, Modal,
+    Platform, BackHandler, Image, Switch, Alert, Modal, Linking,
 } from 'react-native';
 
 const Text = React.forwardRef((props, ref) => (
@@ -6739,8 +6739,56 @@ setSent(true);
   );
 }
 function Login({ onNavigate, language, setLanguage, onAccountTypeChange }) {
- const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [resetSending, setResetSending] = useState(false);
+  const resetBusy = useRef(false);
+
+  const handleForgotPassword = async () => {
+    if (resetBusy.current) return;
+
+    const address = email.trim();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) {
+      Alert.alert(
+        language === 'fr' ? 'Courriel requis' : 'Email required',
+        language === 'fr'
+          ? 'Inscrivez votre adresse courriel dans le champ Courriel.'
+          : 'Enter your email address in the Email field.'
+      );
+      return;
+    }
+
+    resetBusy.current = true;
+    setResetSending(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        address,
+        { redirectTo: 'qualiverifie://reset-password' }
+      );
+
+      if (error) throw error;
+
+      Alert.alert(
+        language === 'fr' ? 'Vérifiez vos courriels' : 'Check your email',
+        language === 'fr'
+          ? 'Si un compte utilise cette adresse, vous recevrez un lien pour réinitialiser votre mot de passe. Vérifiez aussi les indésirables.'
+          : 'If an account uses this address, you will receive a password reset link. Also check your spam folder.'
+      );
+    } catch {
+      Alert.alert(
+        language === 'fr' ? 'Envoi impossible' : 'Unable to send',
+        language === 'fr'
+          ? 'Veuillez réessayer dans quelques instants.'
+          : 'Please try again shortly.'
+      );
+    } finally {
+      resetBusy.current = false;
+      setResetSending(false);
+    }
+  };
+
 const handleLogin = async () => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email.trim(),
@@ -6828,6 +6876,30 @@ onAccountTypeChange(profile.account_type);
   secureTextEntry
   style={styles.input}
 />
+
+<TouchableOpacity
+  onPress={handleForgotPassword}
+  disabled={resetSending}
+  style={{
+    alignSelf: 'flex-end',
+    paddingVertical: 12,
+    paddingHorizontal: 4,
+    opacity: resetSending ? 0.5 : 1,
+  }}
+>
+  <Text style={{
+    color: COLORS.navy,
+    fontSize: 15,
+    fontWeight: '700',
+    textDecorationLine: 'underline',
+  }}>
+    {resetSending
+      ? (language === 'fr' ? 'Envoi en cours…' : 'Sending…')
+      : (language === 'fr'
+          ? 'Mot de passe oublié ?'
+          : 'Forgot password?')}
+  </Text>
+</TouchableOpacity>
 
       <TouchableOpacity
   style={{
@@ -7080,7 +7152,290 @@ onNavigate('Accueil');
   );
 }
 
+function PasswordRecovery({ status, userId, language, onClose }) {
+  const [password, setPassword] = useState('');
+  const [confirmation, setConfirmation] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState('');
+  const [done, setDone] = useState(false);
+  const busyRef = useRef(false);
+  const fr = language === 'fr';
+
+  const savePassword = async () => {
+    if (busyRef.current || status !== 'ready' || done) return;
+
+    if (password.length < 8) {
+      setMessage(fr
+        ? 'Choisissez au moins 8 caractères.'
+        : 'Choose at least 8 characters.');
+      return;
+    }
+
+    if (password !== confirmation) {
+      setMessage(fr
+        ? 'Les deux mots de passe doivent être identiques.'
+        : 'Both passwords must match.');
+      return;
+    }
+
+    busyRef.current = true;
+    setBusy(true);
+    setMessage('');
+
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !userId || data.user?.id !== userId) {
+        throw new Error('INVALID_SESSION');
+      }
+
+      const result = await supabase.auth.updateUser({ password });
+      if (result.error) throw result.error;
+
+      setPassword('');
+      setConfirmation('');
+      setDone(true);
+    } catch {
+      setMessage(fr
+        ? 'Modification impossible. Vérifiez votre connexion ou demandez un nouveau lien. Le mot de passe doit aussi respecter les exigences du compte.'
+        : 'Unable to update. Check your connection or request a new link. The password must also meet account requirements.');
+    } finally {
+      busyRef.current = false;
+      setBusy(false);
+    }
+  };
+
+  const close = async () => {
+    if (busyRef.current) return;
+    busyRef.current = true;
+    setBusy(true);
+    setMessage('');
+
+    try {
+      await onClose();
+    } catch {
+      setMessage(fr
+        ? 'Impossible de terminer. Réessayez.'
+        : 'Unable to finish. Please try again.');
+    } finally {
+      busyRef.current = false;
+      setBusy(false);
+    }
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.bg }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={{ padding: 24, flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text style={{
+            color: COLORS.navy,
+            fontSize: 26,
+            fontWeight: '900',
+            marginBottom: 24,
+          }}>
+            {fr ? 'Nouveau mot de passe' : 'New password'}
+          </Text>
+
+          {status === 'checking' && (
+            <Text>{fr ? 'Vérification du lien…' : 'Checking link…'}</Text>
+          )}
+
+          {status === 'error' && (
+            <Text>{fr
+              ? 'Ce lien est invalide ou expiré. Retournez à Connexion pour en demander un nouveau.'
+              : 'This link is invalid or expired. Return to Sign in to request a new one.'}
+            </Text>
+          )}
+
+          {status === 'ready' && !done && (
+            <>
+              <TextInput
+                value={password}
+                onChangeText={setPassword}
+                placeholder={fr ? 'Nouveau mot de passe' : 'New password'}
+                placeholderTextColor={COLORS.muted}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                editable={!busy}
+                style={styles.input}
+              />
+              <TextInput
+                value={confirmation}
+                onChangeText={setConfirmation}
+                placeholder={fr ? 'Confirmer le mot de passe' : 'Confirm password'}
+                placeholderTextColor={COLORS.muted}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                editable={!busy}
+                style={styles.input}
+              />
+              <TouchableOpacity
+                onPress={savePassword}
+                disabled={busy}
+                style={{
+                  backgroundColor: COLORS.navy,
+                  borderRadius: 14,
+                  padding: 18,
+                  alignItems: 'center',
+                  opacity: busy ? 0.5 : 1,
+                }}
+              >
+                <Text style={{ color: COLORS.gold, fontWeight: '900' }}>
+                  {busy
+                    ? (fr ? 'Enregistrement…' : 'Saving…')
+                    : (fr ? 'Enregistrer' : 'Save')}
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+
+          {done && (
+            <Text>{fr
+              ? 'Mot de passe modifié ! Reconnectez-vous avec votre nouveau mot de passe.'
+              : 'Password updated! Sign in again with your new password.'}
+            </Text>
+          )}
+
+          {!!message && (
+            <Text style={{ color: COLORS.red, marginTop: 16 }}>
+              {message}
+            </Text>
+          )}
+
+          {status !== 'checking' && (
+            <TouchableOpacity
+              onPress={close}
+              disabled={busy}
+              style={{ paddingVertical: 20 }}
+            >
+              <Text style={{ color: COLORS.navy, fontWeight: '800' }}>
+                {fr ? '← Retour à Connexion' : '← Back to Sign in'}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}
+
 export default function App() {
+  const [recoveryStatus, setRecoveryStatus] = useState(null);
+  const [recoveryUserId, setRecoveryUserId] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    const handledLinks = new Set();
+
+    const readParameters = (text) => {
+      const result = {};
+
+      for (const part of text.split('&')) {
+        if (!part) continue;
+        const separator = part.indexOf('=');
+        if (separator < 0) continue;
+
+        const key = decodeURIComponent(part.slice(0, separator));
+        const value = decodeURIComponent(part.slice(separator + 1));
+        result[key] = value;
+      }
+
+      return result;
+    };
+
+    const handleRecoveryLink = async (url) => {
+      if (!url || !active) return;
+
+      const base = url.split(/[?#]/)[0];
+      if (base !== 'qualiverifie://reset-password') return;
+      if (handledLinks.has(url)) return;
+
+      handledLinks.add(url);
+      setRecoveryUserId(null);
+      setRecoveryStatus('checking');
+
+      try {
+        const hashIndex = url.indexOf('#');
+        const queryIndex = url.indexOf('?');
+
+        const query = queryIndex >= 0
+          ? url.slice(
+              queryIndex + 1,
+              hashIndex >= 0 ? hashIndex : url.length
+            )
+          : '';
+
+        const fragment = hashIndex >= 0
+          ? url.slice(hashIndex + 1)
+          : '';
+
+        const parameters = {
+          ...readParameters(query),
+          ...readParameters(fragment),
+        };
+
+        if (parameters.error || parameters.error_code) {
+          throw new Error('INVALID_RECOVERY_LINK');
+        }
+
+        let response;
+
+        if (parameters.code) {
+          response = await supabase.auth.exchangeCodeForSession(
+            parameters.code
+          );
+        } else {
+          if (
+            parameters.type !== 'recovery' ||
+            !parameters.access_token ||
+            !parameters.refresh_token
+          ) {
+            throw new Error('INVALID_RECOVERY_LINK');
+          }
+
+          response = await supabase.auth.setSession({
+            access_token: parameters.access_token,
+            refresh_token: parameters.refresh_token,
+          });
+        }
+
+        if (response.error) throw response.error;
+
+        const userId = response.data.session?.user?.id;
+        if (!userId) throw new Error('NO_RECOVERY_SESSION');
+
+        if (active) {
+          setRecoveryUserId(userId);
+          setRecoveryStatus('ready');
+        }
+      } catch {
+        if (active) setRecoveryStatus('error');
+      }
+    };
+
+    const subscription = Linking.addEventListener(
+      'url',
+      ({ url }) => handleRecoveryLink(url)
+    );
+
+    Linking.getInitialURL()
+      .then(handleRecoveryLink)
+      .catch(() => {
+        if (active) setRecoveryStatus('error');
+      });
+
+    return () => {
+      active = false;
+      subscription.remove();
+    };
+  }, []);
   useEffect(() => {
     if (Platform.OS !== 'android' && Platform.OS !== 'ios') return;
 
@@ -7696,7 +8051,38 @@ tab === 'Messages' ? (
 ))}
 </View>
 
+<Modal
+  visible={recoveryStatus !== null}
+  animationType="slide"
+  presentationStyle="fullScreen"
+  onRequestClose={() => {}}
+>
+  {recoveryStatus !== null && (
+    <PasswordRecovery
+      key={recoveryUserId || recoveryStatus}
+      status={recoveryStatus}
+      userId={recoveryUserId}
+      language={language}
+      onClose={async () => {
+        const { error } = await supabase.auth.signOut({
+          scope: 'local',
+        });
+        if (error) throw error;
 
+        await AsyncStorage.removeItem('qualiverifie_account_type');
+
+        setAccountType(null);
+        setSelectedPro(null);
+        setUnreadCount(0);
+        setNavProfilePhoto(null);
+        setNavProfileInitial('●');
+        setTab('Login');
+        setRecoveryUserId(null);
+        setRecoveryStatus(null);
+      }}
+    />
+  )}
+</Modal>
 
 </SafeAreaView>
     
