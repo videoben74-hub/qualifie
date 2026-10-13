@@ -5150,6 +5150,33 @@ try {
       : '🔒 Account security'}
   </Text>
 </TouchableOpacity>
+    <TouchableOpacity
+  style={[
+    styles.primaryBtn,
+    { marginTop: 14, backgroundColor: COLORS.navy },
+  ]}
+  onPress={async () => {
+    try {
+      await Linking.openURL(
+        'mailto:qualiverifie@gmail.com?subject=' +
+        encodeURIComponent('Contact QualiVérifié')
+      );
+    } catch {
+      Alert.alert(
+        language === 'fr' ? 'Joindre QualiVérifié' : 'Contact QualiVérifié',
+        language === 'fr'
+          ? 'Écrivez-nous à qualiverifie@gmail.com'
+          : 'Email us at qualiverifie@gmail.com'
+      );
+    }
+  }}
+>
+  <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
+    {language === 'fr'
+      ? '✉️ Joindre QualiVérifié'
+      : '✉️ Contact QualiVérifié'}
+  </Text>
+</TouchableOpacity>
 </>
       
 ) : profileSection === 'Sécurité' ? (
