@@ -569,9 +569,9 @@ marginBottom: 8,
   onPress={() => onNavigate && onNavigate('Signup')}
   activeOpacity={0.8}
   style={{
-    width: 115,
-height: 115,
-borderRadius: 58,
+        width: Platform.OS === 'ios' ? 90 : 115,
+    height: Platform.OS === 'ios' ? 90 : 115,
+    borderRadius: Platform.OS === 'ios' ? 45 : 58,
     backgroundColor: COLORS.gold2,
     alignItems: 'center',
     justifyContent: 'center',
