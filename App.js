@@ -743,7 +743,6 @@ return (
 
   <Text
     numberOfLines={1}
-    adjustsFontSizeToFit
     style={{
       color: COLORS.navy,
       fontSize: 27,
