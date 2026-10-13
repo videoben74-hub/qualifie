@@ -58,7 +58,7 @@ function MessageKeyboardLayout({ children, style, ...props }) {
               y + height - event.endCoordinates.screenY
             );
 
-            setKeyboardPadding(overlap / layout.scale);
+            setKeyboardPadding(Math.max(0, overlap / layout.scale - 12));
           }
         );
       }
