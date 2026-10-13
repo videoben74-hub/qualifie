@@ -493,10 +493,10 @@ function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
 marginHorizontal: -12,
 borderBottomLeftRadius: 0,
 borderBottomRightRadius: 0,
-      paddingTop: Platform.OS === 'android' ? 38 : 14,
-paddingBottom: 9,
-paddingHorizontal: 8,
-marginBottom: 8,
+            paddingTop: Platform.OS === 'android' ? 38 : 2,
+      paddingBottom: Platform.OS === 'ios' ? 2 : 9,
+      paddingHorizontal: 8,
+      marginBottom: Platform.OS === 'ios' ? 3 : 8,
     }}>
       <View style={{
         flexDirection: 'row',
