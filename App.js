@@ -582,11 +582,11 @@ borderBottomRightRadius: 0,
     style={{
       width: '100%',
       color: COLORS.navy,
-      fontSize: 13,
+      fontSize: Platform.OS === 'ios' ? 10 : 13,
       fontWeight: '900',
       textAlign: 'center',
       textAlignVertical: 'center',
-      lineHeight: 16,
+      lineHeight: Platform.OS === 'ios' ? 12 : 16,
     }}
   >
     {language === 'fr'
