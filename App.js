@@ -1843,9 +1843,166 @@ setChatMessages(
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
   keyboardVerticalOffset={0}
 >
+    
+
     <AppHeader language={language} setLanguage={setLanguage} />
 
+    <TouchableOpacity
+      accessibilityRole="button"
+      accessibilityLabel={
+        language === 'fr'
+          ? 'Paramètres de la discussion'
+          : 'Conversation settings'
+      }
+      style={{
+        alignSelf: 'flex-start',
+        marginLeft: 16,
+        padding: 10,
+      }}
+      onPress={async () => {
+        const fr = language === 'fr';
 
+        try {
+          if (!activeConversationId) return;
+
+          const {
+            data: { user },
+            error: authError,
+          } = await supabase.auth.getUser();
+
+          if (authError) throw authError;
+          if (!user) return;
+
+          const { data: conversation, error: chatError } =
+            await supabase
+              .from('conversations')
+              .select('user1_id, user2_id')
+              .eq('id', activeConversationId)
+              .single();
+
+          if (chatError) throw chatError;
+
+          if (
+            conversation.user1_id !== user.id &&
+            conversation.user2_id !== user.id
+          ) return;
+
+          const otherId =
+            conversation.user1_id === user.id
+              ? conversation.user2_id
+              : conversation.user1_id;
+
+          const { data: block, error: blockError } =
+            await supabase
+              .from('user_blocks')
+              .select('blocked_id')
+              .eq('blocker_id', user.id)
+              .eq('blocked_id', otherId)
+              .maybeSingle();
+
+          if (blockError) throw blockError;
+
+          const blocked = !!block;
+          const action = blocked
+            ? (fr ? 'Débloquer' : 'Unblock')
+            : (fr ? 'Bloquer' : 'Block');
+
+          Alert.alert(
+            fr ? 'Paramètres de la discussion' : 'Conversation settings',
+            selectedChat || '',
+            [
+              {
+                text: fr ? 'Annuler' : 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: `${action} ${
+                  fr ? 'cet utilisateur' : 'this user'
+                }`,
+                style: blocked ? 'default' : 'destructive',
+                onPress: () => {
+                  Alert.alert(
+                    fr ? `${action} cet utilisateur ?`
+                       : `${action} this user?`,
+                    blocked
+                      ? (fr
+                          ? 'Vous pourrez échanger à nouveau, sauf si cette personne vous a aussi bloqué.'
+                          : 'You can exchange messages again, unless this person has also blocked you.')
+                      : (fr
+                          ? 'Aucun nouveau message ne pourra être envoyé dans les deux sens. Les anciens messages seront conservés.'
+                          : 'Neither person will be able to send new messages. Previous messages will be kept.'),
+                    [
+                      {
+                        text: fr ? 'Annuler' : 'Cancel',
+                        style: 'cancel',
+                      },
+                      {
+                        text: action,
+                        style: blocked ? 'default' : 'destructive',
+                        onPress: async () => {
+                          try {
+                            let result;
+
+                            if (blocked) {
+                              result = await supabase
+                                .from('user_blocks')
+                                .delete()
+                                .eq('blocker_id', user.id)
+                                .eq('blocked_id', otherId)
+                                .select('blocked_id');
+                            } else {
+                              result = await supabase
+                                .from('user_blocks')
+                                .insert({
+                                  blocker_id: user.id,
+                                  blocked_id: otherId,
+                                })
+                                .select('blocked_id');
+                            }
+
+                            if (result.error) throw result.error;
+                            if (!result.data?.length) {
+                              throw new Error(
+                                fr
+                                  ? 'Modification non confirmée. Réessayez.'
+                                  : 'Change not confirmed. Please try again.'
+                              );
+                            }
+
+                            Alert.alert(
+                              fr ? 'Confirmation' : 'Confirmation',
+                              blocked
+                                ? (fr ? 'Utilisateur débloqué.' : 'User unblocked.')
+                                : (fr ? 'Utilisateur bloqué.' : 'User blocked.')
+                            );
+                          } catch (error) {
+                            Alert.alert(
+                              fr ? 'Erreur' : 'Error',
+                              error.message
+                            );
+                          }
+                        },
+                      },
+                    ]
+                  );
+                },
+              },
+            ]
+          );
+        } catch (error) {
+          Alert.alert(
+            fr ? 'Erreur' : 'Error',
+            error.message
+          );
+        }
+      }}
+    >
+      <Text style={{ fontSize: 24, color: COLORS.navy }}>
+        ⚙️
+      </Text>
+    </TouchableOpacity>
+
+    
         <ScrollView
       style={{ flex: 1 }}
       ref={scrollRef}
