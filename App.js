@@ -1909,11 +1909,91 @@ setChatMessages(
 
           Alert.alert(
             fr ? 'Paramètres de la discussion' : 'Conversation settings',
-            selectedChat || '',
+                        selectedChat || '',
             [
               {
                 text: fr ? 'Annuler' : 'Cancel',
                 style: 'cancel',
+              },
+              {
+                text: fr
+                  ? 'Signaler cet utilisateur'
+                  : 'Report this user',
+                onPress: () => {
+                  const reportConversationId = activeConversationId;
+
+                  const submitReport = (reason) => {
+                    Alert.alert(
+                      fr ? 'Confirmer le signalement'
+                         : 'Confirm report',
+                      fr
+                        ? 'Envoyer ce signalement à QualiVérifié ?'
+                        : 'Send this report to QualiVérifié?',
+                      [
+                        {
+                          text: fr ? 'Annuler' : 'Cancel',
+                          style: 'cancel',
+                        },
+                        {
+                          text: fr ? 'Envoyer' : 'Send',
+                          onPress: async () => {
+                            try {
+                              const { error } = await supabase
+                                .from('user_reports')
+                                .insert({
+                                  reporter_id: user.id,
+                                  reported_id: otherId,
+                                  conversation_id: reportConversationId,
+                                  reason,
+                                });
+
+                              if (error) throw error;
+
+                              Alert.alert(
+                                fr ? 'Signalement envoyé'
+                                   : 'Report sent',
+                                fr
+                                  ? 'QualiVérifié examinera votre signalement. Vous pouvez aussi bloquer cet utilisateur dans le menu de la discussion.'
+                                  : 'QualiVérifié will review your report. You can also block this user in the conversation menu.'
+                              );
+                            } catch (error) {
+                              Alert.alert(
+                                fr ? 'Erreur' : 'Error',
+                                fr
+                                  ? 'Le signalement n’a pas pu être envoyé. Veuillez réessayer.'
+                                  : 'The report could not be sent. Please try again.'
+                              );
+                            }
+                          },
+                        },
+                      ]
+                    );
+                  };
+
+                  Alert.alert(
+                    fr ? 'Motif du signalement'
+                       : 'Reason for reporting',
+                    fr ? 'Choisissez un motif.'
+                       : 'Choose a reason.',
+                    [
+                      {
+                        text: fr ? 'Harcèlement' : 'Harassment',
+                        onPress: () => submitReport('harassment'),
+                      },
+                      {
+                        text: fr
+                          ? 'Fraude ou arnaque'
+                          : 'Fraud or scam',
+                        onPress: () => submitReport('fraud'),
+                      },
+                      {
+                        text: fr ? 'Autre motif' : 'Other reason',
+                        onPress: () => submitReport('other'),
+                      },
+                    ],
+                    { cancelable: true }
+                  );
+                },
               },
               {
                 text: `${action} ${
