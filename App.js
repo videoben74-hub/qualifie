@@ -486,6 +486,40 @@ const tradeTranslations = {
 'Technologue': 'Architectural technologist',
   'Architecte': 'Architect',
 };
+const QV_TERMS_VERSION = '2026-10-17';
+
+function TermsAccess({ language, buttonStyle, textStyle }) {
+  const openTerms = async () => {
+    try {
+      await Linking.openURL(
+        'https://qualiverifie.videoben74.chatgpt.site/conditions.html'
+      );
+    } catch {
+      Alert.alert(
+        language === 'fr'
+          ? 'Conditions générales'
+          : 'Terms of use',
+        language === 'fr'
+          ? 'Impossible d’ouvrir la page. Vérifiez votre connexion et réessayez.'
+          : 'Unable to open the page. Check your connection and try again.'
+      );
+    }
+  };
+
+  return (
+    <TouchableOpacity
+      accessibilityRole="link"
+      onPress={openTerms}
+      style={buttonStyle}
+    >
+      <Text style={textStyle}>
+        {language === 'fr'
+          ? 'Conditions générales'
+          : 'Terms of use'}
+      </Text>
+    </TouchableOpacity>
+  );
+}
 function AppHeader({ language = 'fr', setLanguage, onNavigate }) {
   return (
     <View style={{
@@ -5352,7 +5386,20 @@ try {
     <Text style={styles.sectionTitle}>
       {language === 'fr' ? '⚙️ Paramètres' : '⚙️ Settings'}
     </Text>
-
+<TermsAccess
+  language={language}
+  buttonStyle={[
+    styles.primaryBtn,
+    {
+      marginTop: 14,
+      backgroundColor: COLORS.navy,
+    },
+  ]}
+  textStyle={[
+    styles.primaryBtnText,
+    { color: COLORS.gold },
+  ]}
+/>
     
 
     <TouchableOpacity
@@ -7195,6 +7242,7 @@ const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [confirmPassword, setConfirmPassword] = useState('');
 const [accountType, setAccountType] = useState('client');
+   const [termsAccepted, setTermsAccepted] = useState(false);
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <AppHeader
@@ -7362,8 +7410,64 @@ onChangeText={setConfirmPassword}
     marginBottom: 12,
   }}
 />
+  <TermsAccess
+  language={language}
+  buttonStyle={{ paddingVertical: 12 }}
+  textStyle={{
+    color: COLORS.navy,
+    fontSize: 16,
+    fontWeight: '800',
+    textDecorationLine: 'underline',
+  }}
+/>
+
+<TouchableOpacity
+  accessibilityRole="checkbox"
+  accessibilityState={{ checked: termsAccepted }}
+  onPress={() => setTermsAccepted(value => !value)}
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    marginBottom: 8,
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 25,
+      marginRight: 12,
+    }}
+  >
+    {termsAccepted ? '☑' : '☐'}
+  </Text>
+
+  <Text
+    style={{
+      color: COLORS.navy,
+      fontSize: 15,
+      lineHeight: 22,
+      flex: 1,
+    }}
+  >
+    {language === 'fr'
+      ? 'J’ai lu et j’accepte les conditions générales.'
+      : 'I have read and accept the terms of use.'}
+  </Text>
+</TouchableOpacity>
   <TouchableOpacity
 onPress={async () => {
+    if (!termsAccepted) {
+    Alert.alert(
+      language === 'fr'
+        ? 'Conditions générales'
+        : 'Terms of use',
+      language === 'fr'
+        ? 'Veuillez lire et accepter les conditions générales avant de créer votre compte.'
+        : 'Please read and accept the terms of use before creating your account.'
+    );
+    return;
+    }
   if (!email || !password || !confirmPassword) {
     alert(language === 'fr' ? 'Veuillez remplir tous les champs obligatoires.' : 'Please fill in all required fields.');
     return;
@@ -7379,6 +7483,8 @@ onPress={async () => {
   options: {
     data: {
       account_type: accountType,
+            terms_version: QV_TERMS_VERSION,
+      terms_accepted_at: new Date().toISOString(),
     },
   },
 });
