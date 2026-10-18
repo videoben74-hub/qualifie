@@ -547,7 +547,7 @@ borderBottomRightRadius: 0,
             fontSize: 25,
             fontWeight: '900',
           }}>
-            Quali<Text style={{ color: COLORS.gold2 }}>Vérifié</Text>
+            Quali<Text style={{ color: COLORS.gold2 }}>Boom</Text>
           </Text>
 
           <Text style={{
@@ -639,7 +639,7 @@ borderBottomRightRadius: 0,
 function Badge() {
   return (
     <View style={styles.badge}>
-      <Text style={styles.badgeText}>✓ QualiVérifié</Text>
+      <Text style={styles.badgeText}>✓ QualiBoom</Text>
     </View>
   );
 }
@@ -771,8 +771,8 @@ return (
     }}
   >
     {language === 'fr'
-      ? 'Avec QualiVérifié,'
-      : 'With QualiVérifié,'}
+      ? 'Avec QualiBoom,'
+: 'With QualiBoom,'}
   </Text>
 
   <Text
@@ -829,8 +829,8 @@ return (
     }}
   >
     {language === 'fr'
-      ? 'QualiVérifié rassemble '
-      : 'QualiVérifié brings together '}
+      ? 'QualiBoom rassemble '
+: 'QualiBoom brings together '}
     <Text style={{ color: COLORS.gold, fontWeight: '900' }}>
       {language === 'fr'
         ? 'plus d’une centaine de branches d’expertise'
@@ -1961,8 +1961,8 @@ setChatMessages(
                       fr ? 'Confirmer le signalement'
                          : 'Confirm report',
                       fr
-                        ? 'Envoyer ce signalement à QualiVérifié ?'
-                        : 'Send this report to QualiVérifié?',
+                        ? 'Envoyer ce signalement à QualiBoom ?'
+: 'Send this report to QualiBoom?',
                       [
                         {
                           text: fr ? 'Annuler' : 'Cancel',
@@ -1987,8 +1987,8 @@ setChatMessages(
                                 fr ? 'Signalement envoyé'
                                    : 'Report sent',
                                 fr
-                                  ? 'QualiVérifié examinera votre signalement. Vous pouvez aussi bloquer cet utilisateur dans le menu de la discussion.'
-                                  : 'QualiVérifié will review your report. You can also block this user in the conversation menu.'
+                                  ? 'QualiBoom examinera votre signalement. Vous pouvez aussi bloquer cet utilisateur dans le menu de la discussion.'
+: 'QualiBoom will review your report. You can also block this user in the conversation menu.'
                               );
                             } catch (error) {
                               Alert.alert(
@@ -4744,8 +4744,8 @@ try {
     ]}
   >
     {language === 'fr'
-      ? 'Abonnement entreprise QualiVérifié'
-      : 'QualiVérifié business subscription'}
+      ? 'Abonnement entreprise QualiBoom'
+: 'QualiBoom business subscription'}
   </Text>
 </View>
 
@@ -4808,8 +4808,8 @@ try {
     >
       <Text style={[styles.profileInfo, { textAlign: 'center', color: COLORS.gold }]}>
         {language === 'fr'
-          ? 'Abonnement entreprise QualiVérifié'
-          : 'QualiVérifié business subscription'}
+          ? 'Abonnement entreprise QualiBoom'
+: 'QualiBoom business subscription'}
       </Text>
 
       <Text
@@ -5104,7 +5104,7 @@ try {
   {language === 'fr' ? 'Statut CCQ' : 'CCQ status'} : {ccqStatus.length > 0 ? ccqStatus.join(', ') : (language === 'fr' ? 'Non renseigné' : 'Not specified')}
 </Text>
 <Text style={styles.profileInfo}>{language === 'fr' ? 'Ville' : 'City'} : {companyCity}</Text>
-<Text style={styles.infoText}>{language === 'fr' ? '🛡️ Votre demande est prête à être vérifiée par QualiVérifié.' : '🛡️ Your application is ready to be verified by QualiVérifié.'}</Text>
+<Text style={styles.infoText}>{language === 'fr' ? '🛡️ Votre demande est prête à être vérifiée par QualiBoom.' : '🛡️ Your application is ready to be verified by QualiBoom.'}</Text>
 </>
 ) : profileSection === 'Mes favoris' ? (
 <>
@@ -5275,8 +5275,8 @@ try {
   ]}
 >
   {language === 'fr'
-    ? 'Forfaits QualiVérifié'
-    : 'QualiVérifié plans'}
+    ? 'Forfaits QualiBoom'
+: 'QualiBoom plans'}
 </Text>
 
 <Text style={[styles.infoText, { textAlign: 'center' }]}>
@@ -5443,11 +5443,11 @@ try {
     try {
       await Linking.openURL(
         'mailto:qualiverifie@gmail.com?subject=' +
-        encodeURIComponent('Contact QualiVérifié')
+        encodeURIComponent('Contact QualiBoom')
       );
     } catch {
       Alert.alert(
-        language === 'fr' ? 'Joindre QualiVérifié' : 'Contact QualiVérifié',
+        language === 'fr' ? 'Joindre QualiBoom' : 'Contact QualiBoom',
         language === 'fr'
           ? 'Écrivez-nous à qualiverifie@gmail.com'
           : 'Email us at qualiverifie@gmail.com'
@@ -5457,8 +5457,8 @@ try {
 >
   <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
     {language === 'fr'
-      ? '✉️ Joindre QualiVérifié'
-      : '✉️ Contact QualiVérifié'}
+      ? '✉️ Joindre QualiBoom'
+: '✉️ Contact QualiBoom'}
   </Text>
 </TouchableOpacity>
 </>
@@ -5835,8 +5835,8 @@ try {
 
     <Text style={[styles.infoText, { marginTop: 14 }]}>
   {language === 'fr'
-    ? 'Ces informations représentent ce que les clients verront sur votre profil QualiVérifié.'
-    : 'This information represents what clients will see on your QualiVérifié profile.'}
+    ? 'Ces informations représentent ce que les clients verront sur votre profil QualiBoom.'
+: 'This information represents what clients will see on your QualiBoom profile.'}
 </Text>
 </>
 
@@ -5884,8 +5884,8 @@ try {
 ) : (
   <Text style={styles.infoText}>
     {language === 'fr'
-      ? 'Cette section sera bientôt disponible dans QualiVérifié.'
-      : 'This section will be available soon in QualiVérifié.'}
+      ? 'Cette section sera bientôt disponible dans QualiBoom.'
+: 'This section will be available soon in QualiBoom.'}
   </Text>
 )}
 
@@ -5936,8 +5936,8 @@ scrollEnabled={!!selectedPro}
 
 <Text style={styles.screenTitle}>
   {language === 'fr'
-    ? (selectedPro ? 'Profil QualiVérifié' : 'Mon profil')
-    : (selectedPro ? 'QualiVérifié Profile' : 'My profile')}
+    ? (selectedPro ? 'Profil QualiBoom' : 'Mon profil')
+: (selectedPro ? 'QualiBoom Profile' : 'My profile')}
 </Text>
 </>
 <View style={styles.profileCard}>
@@ -7291,8 +7291,8 @@ const [accountType, setAccountType] = useState('client');
         }}
       >
         {language === 'fr'
-          ? 'Inscrivez-vous pour faire partie de la communauté QualiVérifié.'
-          : 'Sign up to join the QualiVérifié community.'}
+          ? 'Inscrivez-vous pour faire partie de la communauté QualiBoom.'
+: 'Sign up to join the QualiBoom community.'}
       </Text>
         
     <View
