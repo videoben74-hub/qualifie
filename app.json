@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "QualiVérifié",
+    "name": "QualiBoom",
     "slug": "qualiverifie",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,7 +26,7 @@
   [
     "expo-location",
     {
-      "locationWhenInUsePermission": "QualiVérifié utilise votre position pour trouver les entrepreneurs près de vous."
+      "locationWhenInUsePermission": "QualiBoom utilise votre position pour trouver les entrepreneurs près de vous."
     }
       ],
     "expo-iap"
