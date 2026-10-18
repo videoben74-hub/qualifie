@@ -754,59 +754,24 @@ return (
     marginHorizontal: 10,
     marginTop: 12,
     marginBottom: 4,
-    backgroundColor: COLORS.gold,
+    height: 145,
+    backgroundColor: COLORS.navy,
     borderRadius: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    alignItems: 'center',
+    overflow: 'hidden',
   }}
 >
-  <Text
-    style={{
-      color: COLORS.navy,
-      fontSize: 16,
-      lineHeight: 20,
-      fontWeight: '800',
-      textAlign: 'center',
+  <Image
+    source={{
+      uri: 'https://htimquvctbepnhplxjhn.supabase.co/storage/v1/object/public/branding/file_00000000ff8081f5b5a1d101488c646d.png',
     }}
-  >
-    {language === 'fr'
-      ? 'Avec QualiBoom,'
-: 'With QualiBoom,'}
-  </Text>
-
-  <Text
-    numberOfLines={1}
     style={{
-      color: COLORS.navy,
-      fontSize: 27,
-      lineHeight: 36,
-      fontWeight: '900',
-      textAlign: 'center',
       width: '100%',
+      height: '100%',
     }}
-  >
-    CLIC CLIC{' '}
-    <Text style={{ fontSize: 34 }}>BOOM</Text>
-    …
-  </Text>
-
-  <Text
-    numberOfLines={1}
-    adjustsFontSizeToFit
-    style={{
-      color: COLORS.navy,
-      fontSize: 21,
-      lineHeight: 25,
-      fontWeight: '900',
-      textAlign: 'center',
-      width: '100%',
-    }}
-  >
-    {language === 'fr'
-      ? 'j’ai trouvé !'
-      : 'found my pro!'}
-  </Text>
+    resizeMode="contain"
+    accessible
+    accessibilityLabel="Clic Clic QualiBoom"
+  />
 </View>
     <View
   style={{
