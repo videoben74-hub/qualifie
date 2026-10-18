@@ -6,21 +6,26 @@
     "orientation": "portrait",
     "scheme": "qualiverifie",
     "android": {
-  "package": "ca.qualiverifie.app",
-  "icon": "./file_0000000056b881f5b326834cb96b1484.png",
-  "adaptiveIcon": {
-    "foregroundImage": "./file_0000000056b881f5b326834cb96b1484.png",
-    "backgroundColor": "#071D3A"
-  },
-  "permissions": [
-    "ACCESS_COARSE_LOCATION",
-    "ACCESS_FINE_LOCATION"
-  ]
-},
-        "ios": {
+      "package": "ca.qualiverifie.app",
+      "icon": "./file_0000000056b881f5b326834cb96b1484.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./file_0000000056b881f5b326834cb96b1484.png",
+        "backgroundColor": "#071D3A"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
+    },
+    "ios": {
       "bundleIdentifier": "ca.qualiverifie.app",
       "supportsTablet": true,
-      "icon": "./file_0000000056b881f5b326834cb96b1484.png"
+      "icon": "./file_0000000056b881f5b326834cb96b1484.png",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "plugins": [
   [
@@ -29,8 +34,8 @@
       "locationWhenInUsePermission": "QualiBoom utilise votre position pour trouver les entrepreneurs près de vous."
     }
       ],
-    "expo-iap"
-  ],
+      "expo-iap"
+    ],
     "extra": {
       "eas": {
         "projectId": "a23799a9-262e-41b2-9e5a-6283cd497f80"
