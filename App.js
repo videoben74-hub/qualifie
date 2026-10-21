@@ -4189,45 +4189,70 @@ try {
 
         <TouchableOpacity
                     onPress={async () => {
-            try {
-              const marker = '/object/public/company-photos/';
-              const encodedPath = photo.split(marker)[1];
+  try {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
 
-              if (!encodedPath) {
-                throw new Error(
-                  language === 'fr'
-                    ? 'Chemin de la photo introuvable.'
-                    : 'Photo path not found.'
-                );
-              }
+    if (userError) throw userError;
+    if (!user) {
+      throw new Error(
+        language === 'fr'
+          ? 'Veuillez vous reconnecter.'
+          : 'Please sign in again.'
+      );
+    }
 
-              const filePath = decodeURIComponent(
-                encodedPath.split('?')[0]
-              );
+    const remainingPhotos = companyPhotos.filter(
+      (item) => item !== photo
+    );
 
-              const { data, error } = await supabase.storage
-                .from('company-photos')
-                .remove([filePath]);
+    const marker = '/object/public/company-photos/';
+    const encodedPath =
+      typeof photo === 'string'
+        ? photo.split(marker)[1]
+        : null;
 
-              if (error) throw error;
+    if (encodedPath) {
+      const filePath = decodeURIComponent(
+        encodedPath.split('?')[0]
+      );
 
-              if (!data?.length) {
-                throw new Error(
-                  language === 'fr'
-                    ? 'Suppression non confirmée. Vérifiez les permissions du stockage.'
-                    : 'Deletion not confirmed. Check storage permissions.'
-                );
-              }
+      const { error: storageError } = await supabase.storage
+        .from('company-photos')
+        .remove([filePath]);
 
-              setCompanyPhotos((current) =>
-                current.filter((item) => item !== photo)
-              );
-            } catch (error) {
-              alert(error.message);
-            }
-          }}
-          style={{
-            marginTop: 6,
+      if (storageError) throw storageError;
+    }
+
+    const { data: updatedProfile, error: updateError } =
+      await supabase
+        .from('profiles')
+        .update({ company_photos: remainingPhotos })
+        .eq('id', user.id)
+        .select('id')
+        .single();
+
+    if (updateError) throw updateError;
+    if (!updatedProfile) {
+      throw new Error(
+        language === 'fr'
+          ? 'La suppression n’a pas pu être enregistrée.'
+          : 'The deletion could not be saved.'
+      );
+    }
+
+    setCompanyPhotos(remainingPhotos);
+  } catch (error) {
+    Alert.alert(
+      language === 'fr' ? 'Erreur' : 'Error',
+      error.message
+    );
+  }
+}}
+style={{
+  marginTop: 6,
             alignItems: 'center',
           }}
         >
