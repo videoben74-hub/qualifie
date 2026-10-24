@@ -21,7 +21,7 @@
     },
     "ios": {
       "bundleIdentifier": "ca.qualiverifie.app",
-      "supportsTablet": true,
+      "supportsTablet": false,
       "icon": "./file_0000000056b881f5b326834cb96b1484.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
