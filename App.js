@@ -2953,16 +2953,30 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
             const { customerInfo } = await Purchases.purchasePackage(packageToBuy);
       const entitlement = customerInfo.entitlements.active['qualivérifié_pro'];
 
-      Alert.alert(
-        isFrench ? 'Achat de test' : 'Test purchase',
-        entitlement
-          ? (isFrench
-              ? 'Achat confirmé. La validation serveur reste à brancher.'
-              : 'Purchase confirmed. Server validation still needs to be connected.')
-          : (isFrench
-              ? 'L’abonnement n’est pas encore confirmé.'
-              : 'The subscription is not confirmed yet.')
-      );
+            const { data: verification, error: verificationError } =
+        await supabase.functions.invoke('verify-subscription', {
+          body: {},
+        });
+
+      if (verificationError || !verification?.synced) {
+        Alert.alert(
+          isFrench ? 'Vérification en attente' : 'Verification pending',
+          isFrench
+            ? 'Achat reçu. La vérification serveur reste à confirmer. Ne payez pas une deuxième fois.'
+            : 'Purchase received. Server verification is still pending. Do not pay again.'
+        );
+      } else {
+        Alert.alert(
+          isFrench ? 'Abonnement' : 'Subscription',
+          verification.status === 'active'
+            ? (isFrench
+                ? 'Votre abonnement a été vérifié et activé.'
+                : 'Your subscription has been verified and activated.')
+            : (isFrench
+                ? 'Aucun abonnement actif confirmé.'
+                : 'No active subscription confirmed.')
+        );
+      }
     } catch (error) {
       if (!error?.userCancelled) {
         Alert.alert(
