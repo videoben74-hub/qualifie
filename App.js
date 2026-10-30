@@ -2942,7 +2942,7 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
 
       const offerings = await Purchases.getOfferings();
       const packageToBuy = offerings.all.default?.availablePackages.find(
-        (item) => item.product.identifier === productId
+        (item) => (Platform.OS === 'android' ? item.product.identifier.split(':')[0] : item.product.identifier) === productId
       );
 
       if (!packageToBuy) {
