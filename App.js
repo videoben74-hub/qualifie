@@ -2965,7 +2965,13 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
             ? 'Achat reçu. La vérification serveur reste à confirmer. Ne payez pas une deuxième fois.'
             : 'Purchase received. Server verification is still pending. Do not pay again.'
         );
-      } else {
+            } else {
+        setSubscriptionStatus(verification.status);
+
+        if (verification.status === 'active') {
+          setSelectedDivisionCount(verification.division_count);
+        }
+
         Alert.alert(
           isFrench ? 'Abonnement' : 'Subscription',
           verification.status === 'active'
