@@ -5344,9 +5344,15 @@ style={{
       </Text>
 
       <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
-        {language === 'fr'
-          ? 'Aucun abonnement entreprise actif'
-: 'No active business subscription'}
+        {
+  subscriptionStatus === 'active'
+    ? (language === 'fr'
+        ? 'Abonnement entreprise actif'
+        : 'Active business subscription')
+    : (language === 'fr'
+        ? 'Aucun abonnement entreprise actif'
+        : 'No active business subscription')
+}
       </Text>
 
       <Text style={[styles.menuText, { marginTop: 14 }]}>
@@ -5392,6 +5398,32 @@ style={{
 : 'Get a business subscription'}
 </Text>
     </TouchableOpacity>
+{Platform.OS === 'android' && (
+  <TouchableOpacity
+    style={[styles.primaryBtn, { marginTop: 16 }]}
+    onPress={async () => {
+      try {
+        await require('react-native').Linking.openURL(
+          'https://play.google.com/store/account/subscriptions'
+        );
+      } catch {
+        Alert.alert(
+          language === 'fr' ? 'Abonnement' : 'Subscription',
+          language === 'fr'
+            ? 'Ouvrez Google Play, puis Paiements et abonnements > Abonnements.'
+            : 'Open Google Play, then Payments and subscriptions > Subscriptions.'
+        );
+      }
+    }}
+  >
+    <Text style={styles.primaryBtnText}>
+      {language === 'fr'
+        ? 'Gérer / annuler mon abonnement'
+        : 'Manage / cancel my subscription'}
+    </Text>
+  </TouchableOpacity>
+)}
+
   </>
 ) : profileSection === 'Paramètres' ? (
   <>
