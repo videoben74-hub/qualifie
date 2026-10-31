@@ -3037,7 +3037,13 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
             ? 'La vérification est indisponible. Réessayez « Restaurer les achats » dans un instant. Ne payez pas une deuxième fois.'
             : 'Verification is unavailable. Try restoring purchases again shortly. Do not pay again.'
         );
-      } else {
+            } else {
+        setSubscriptionStatus(verification.status);
+
+        if (verification.status === 'active') {
+          setSelectedDivisionCount(verification.division_count);
+        }
+
         Alert.alert(
           isFrench ? 'Restaurer les achats' : 'Restore purchases',
           verification.status === 'active'
