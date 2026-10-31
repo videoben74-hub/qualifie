@@ -3019,16 +3019,30 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
       const customerInfo = await Purchases.restorePurchases();
       const entitlement = customerInfo.entitlements.active['qualivérifié_pro'];
 
-      Alert.alert(
-        isFrench ? 'Restaurer les achats' : 'Restore purchases',
-        entitlement
-          ? (isFrench
-              ? 'Abonnement retrouvé. La validation serveur reste à brancher.'
-              : 'Subscription found. Server validation still needs to be connected.')
-          : (isFrench
-              ? 'Aucun abonnement actif retrouvé.'
-              : 'No active subscription found.')
-      );
+            const { data: verification, error: verificationError } =
+        await supabase.functions.invoke('verify-subscription', {
+          body: {},
+        });
+
+      if (verificationError || !verification?.synced) {
+        Alert.alert(
+          isFrench ? 'Vérification en attente' : 'Verification pending',
+          isFrench
+            ? 'La vérification est indisponible. Réessayez « Restaurer les achats » dans un instant. Ne payez pas une deuxième fois.'
+            : 'Verification is unavailable. Try restoring purchases again shortly. Do not pay again.'
+        );
+      } else {
+        Alert.alert(
+          isFrench ? 'Restaurer les achats' : 'Restore purchases',
+          verification.status === 'active'
+            ? (isFrench
+                ? 'Votre abonnement a été vérifié et activé.'
+                : 'Your subscription has been verified and activated.')
+            : (isFrench
+                ? 'Aucun abonnement actif confirmé.'
+                : 'No active subscription confirmed.')
+        );
+      }
     } catch (error) {
       Alert.alert(
         isFrench ? 'Restauration' : 'Restore purchases',
