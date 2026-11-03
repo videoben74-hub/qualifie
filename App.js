@@ -2680,7 +2680,7 @@ onFocus={() =>
 
 function Profile({ onNavigate, selectedPro,
 favorites, setFavorites, language, setLanguage,
-accountType, onLogout, onProfilePhotoChange }) {
+accountType, onLogout, onProfilePhotoChange, onAccountTypeChange }) {
   const [profileSection, setProfileSection] =
   useState(
     selectedPro
@@ -2968,9 +2968,28 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
             } else {
         setSubscriptionStatus(verification.status);
 
-        if (verification.status === 'active') {
+                if (verification.status === 'active') {
           setSelectedDivisionCount(verification.division_count);
-        }
+
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('account_type')
+            .eq('id', user.id)
+            .single();
+
+          if (profileError) throw profileError;
+
+          const type = profile?.account_type;
+
+          if (type === 'client' || type === 'business') {
+            await AsyncStorage.setItem('qualiverifie_account_type', type);
+            onAccountTypeChange(type);
+
+            if (type === 'business') {
+              setProfileSection(null);
+            }
+          }
+                }
 
         Alert.alert(
           isFrench ? 'Abonnement' : 'Subscription',
@@ -3040,9 +3059,28 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
             } else {
         setSubscriptionStatus(verification.status);
 
-        if (verification.status === 'active') {
+                if (verification.status === 'active') {
           setSelectedDivisionCount(verification.division_count);
-        }
+
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('account_type')
+            .eq('id', user.id)
+            .single();
+
+          if (profileError) throw profileError;
+
+          const type = profile?.account_type;
+
+          if (type === 'client' || type === 'business') {
+            await AsyncStorage.setItem('qualiverifie_account_type', type);
+            onAccountTypeChange(type);
+
+            if (type === 'business') {
+              setProfileSection(null);
+            }
+          }
+                }
 
         Alert.alert(
           isFrench ? 'Restaurer les achats' : 'Restore purchases',
@@ -8363,6 +8401,7 @@ tab === 'Messages' ? (
   language={language}
   setLanguage={setLanguage}
   accountType={accountType}
+  onAccountTypeChange={setAccountType}
   onProfilePhotoChange={setNavProfilePhoto}
     onLogout={handleLogout}
 />
