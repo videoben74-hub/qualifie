@@ -352,6 +352,7 @@ const commercialCategories = [
 const planningCategories = [
   'Ébéniste',
   'Aménagement de bureau',
+  'Asphaltage d’entrées résidentielles',
   'Émondeur',
   'Irrigation',
   'Paysagiste',
@@ -390,6 +391,7 @@ const displayTradeName = (trade, language) => {
 };
 
 const tradeTranslations = {
+  'Asphaltage d’entrées résidentielles': 'Residential driveway asphalt paving',
   'Pompage de béton': 'Concrete pumping',
   'Scellant d’asphalte': 'Asphalt sealing',
   'Signalisation routière': 'Road signage and traffic control',
@@ -1052,7 +1054,7 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
   marginTop: 20,
   marginBottom: 10,
 }}>
-  {language === 'fr' ? 'Services — Sans licence RBQ' : 'Services — No RBQ Licence'}
+  {language === 'fr' ? "Services — Autres activités" : "Services — Other activities"}
 </Text>
 
 <View style={styles.grid}>
@@ -1130,8 +1132,8 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
     </Text>
 
     {language === 'fr'
-      ? 'les entrepreneurs s’engagent à exécuter seulement les travaux qui leur sont conférés par leur licence.'
-      : 'contractors undertake to perform only the work authorized by their licence.'}
+      ? "Chaque entreprise est responsable de choisir les catégories correspondant à ses activités et de détenir les licences et autorisations requises pour les travaux qu’elle propose."
+      : "Each business is responsible for choosing categories that match its activities and holding the licences and permits required for the work it offers."}
   </Text>
 </View>
     </ScrollView>
@@ -5003,15 +5005,16 @@ style={{
     : '🛠️ Select your field of expertise'}
 </Text>
 
-    <Text style={[styles.infoText, { marginBottom: 16 }]}>
+    <Text style={[styles.readableInfoText, { marginBottom: 16 }]}>
       {language === 'fr'
-        ? 'Sélectionnez tous les métiers et services offerts par votre entreprise.'
-        : 'Select all trades and services offered by your business.'}
+        ? "Sélectionnez les métiers et services offerts par votre entreprise.\n\nChaque entreprise est responsable de choisir les catégories correspondant à ses activités et de détenir les licences et autorisations requises pour les travaux qu’elle propose."
+        : "Select the trades and services offered by your business.\n\nEach business is responsible for choosing categories that match its activities and holding the licences and permits required for the work it offers."}
     </Text>
 
         {[
       'Aluminium et ferblanterie',
       'Aménagement de bureau',
+  'Asphaltage d’entrées résidentielles',
       'Après sinistre',
       'Architecte',
       'Armoires de cuisine',
