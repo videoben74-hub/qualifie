@@ -152,7 +152,7 @@ import { supabase } from './supabase';
 import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 
 // RevenueCat : clé publique Google Play (Android).
-const REVENUECAT_TEST_API_KEY = 'goog_wxoILOcNAXonpfLEfDPjYXACahi';
+const REVENUECAT_TEST_API_KEY = Platform.OS === "ios" ? "appl_VQvHMGUmRNIPbzpAJVdfFHFfmNo" : "goog_wxoILOcNAXonpfLEfDPjYXACahi";
 const COLORS = {
   navy: '#0B1F3A',
   navy2: '#15345D',
@@ -178,6 +178,8 @@ const categories = ['Rénovation', 'Tireur de joint', 'Peinture', 'Plomberie', '
 
 
 const residentialCategories = [
+  'Chauffage',
+  'Charpente et menuiserie',
     'Aluminium et ferblanterie',
   'Après sinistre',
   'Armoires de cuisine',
@@ -219,7 +221,6 @@ const residentialCategories = [
   'Revêtement de plancher',
   'Revêtement extérieur',
   'Serrurerie',
-  'Soudure et métaux',
   'Systèmes d’alarme et sécurité',
     'Tireur de joint et plâtrier',
   'Toiture',
@@ -227,6 +228,8 @@ const residentialCategories = [
 ];
 
 const residentialCcqCategories = [
+  'Chauffage',
+  'Charpente et menuiserie',
     'Aluminium et ferblanterie',
   'Après sinistre',
   'Armoires de cuisine',
@@ -254,7 +257,6 @@ const residentialCcqCategories = [
   'Imperméabilisation',
   'Isolation',
   'Maçonnerie',
-  'Monteur d’acier',
   'Pavage et asphalte',
   'Pavé uni',
   'Peinture',
@@ -268,7 +270,6 @@ const residentialCcqCategories = [
   'Revêtement de plancher',
   'Revêtement extérieur',
   'Serrurerie',
-  'Soudure et métaux',
   'Systèmes d’alarme et sécurité',
   'Systèmes intérieurs',
   'Tireur de joint et plâtrier',
@@ -276,6 +277,7 @@ const residentialCcqCategories = [
 ];
 
 const commercialCategories = [
+  'Aluminium et ferblanterie',
   'Après sinistre',
   'Ascenseurs et monte-charges',
   'Béton',
@@ -323,7 +325,6 @@ const commercialCategories = [
   'Arpenteur-géomètre',
   'Courtier immobilier',
   'Designer intérieur',
-'Ébéniste',
 'Évaluation immobilière',
 'Génie civil',
 'Gestion immobilière',
@@ -351,6 +352,7 @@ const commercialCategories = [
   'Nettoyage résidentiel',
 ];
 const planningCategories = [
+  'Ébéniste',
   'Aménagement de bureau',
   'Émondeur',
   'Irrigation',
@@ -624,8 +626,8 @@ borderBottomRightRadius: 0,
     }}
   >
     {language === 'fr'
-  ? 'Abonnement\nEntreprise\nÀ partir de\n27,77 $/mois'
-  : 'Business\nSubscription\nFrom\n$27.77/month'}
+  ? 'Abonnement\nEntreprise\nÀ partir de\n27,49 $/mois'
+  : 'Business\nSubscription\nFrom\n$27.49/month'}
   </Text>
 </TouchableOpacity>
 </View>
@@ -1060,8 +1062,8 @@ function TypeTravaux({ onNavigate, language, setLanguage }) {
   <Text style={styles.categoryIcon}>⌂</Text>
   <Text style={styles.categoryText}>
     {language === 'fr'
-      ? 'Aménagement'
-      : 'Planning and Landscaping'}
+      ? 'Services divers'
+      : 'Miscellaneous services'}
   </Text>
 </TouchableOpacity>
 <TouchableOpacity
@@ -1142,7 +1144,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           : initialType === 'Nettoyage et conteneur'
           ? 'Nettoyage, Conteneur et Contrôle parasitaire'
           : initialType === 'Aménagement'
-          ? 'Aménagement'
+          ? 'Services divers'
           : initialType === 'Fournisseurs spécialisés'
           ? 'Fournisseurs spécialisés'
           : initialType === 'Résidentiel \u2013 CCQ'
@@ -1157,7 +1159,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
           : initialType === 'Nettoyage et conteneur'
           ? 'Cleaning, Containers and Pest Control'
           : initialType === 'Aménagement'
-          ? 'Planning and Landscaping'
+          ? 'Miscellaneous services'
           : initialType === 'Fournisseurs spécialisés'
           ? 'Specialized suppliers'
           : initialType === 'Résidentiel \u2013 CCQ'
@@ -2680,7 +2682,7 @@ onFocus={() =>
 
 function Profile({ onNavigate, selectedPro,
 favorites, setFavorites, language, setLanguage,
-accountType, onLogout, onProfilePhotoChange }) {
+accountType, onLogout, onProfilePhotoChange, onAccountTypeChange }) {
   const [profileSection, setProfileSection] =
   useState(
     selectedPro
@@ -2938,6 +2940,7 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
         Purchases.configure({ apiKey: REVENUECAT_TEST_API_KEY });
       }
 
+
       await Purchases.logIn(user.id);
 
       const offerings = await Purchases.getOfferings();
@@ -2970,6 +2973,24 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
 
         if (verification.status === 'active') {
           setSelectedDivisionCount(verification.division_count);
+
+          const { data: refreshedProfile, error: profileError } = await supabase
+            .from('profiles')
+            .select('account_type')
+            .eq('id', user.id)
+            .single();
+
+          if (profileError) throw profileError;
+          const refreshedType = refreshedProfile?.account_type;
+          if (!['client', 'business'].includes(refreshedType)) {
+            throw new Error(isFrench
+              ? 'Profil indisponible. Réessayez « Restaurer les achats ».'
+              : 'Profile unavailable. Try restoring purchases again.');
+          }
+
+          await AsyncStorage.setItem('qualiverifie_account_type', refreshedType);
+          onAccountTypeChange(refreshedType);
+          if (refreshedType === 'business') setProfileSection(null);
         }
 
         Alert.alert(
@@ -3042,6 +3063,24 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
 
         if (verification.status === 'active') {
           setSelectedDivisionCount(verification.division_count);
+
+          const { data: refreshedProfile, error: profileError } = await supabase
+            .from('profiles')
+            .select('account_type')
+            .eq('id', user.id)
+            .single();
+
+          if (profileError) throw profileError;
+          const refreshedType = refreshedProfile?.account_type;
+          if (!['client', 'business'].includes(refreshedType)) {
+            throw new Error(isFrench
+              ? 'Profil indisponible. Réessayez « Restaurer les achats ».'
+              : 'Profile unavailable. Try restoring purchases again.');
+          }
+
+          await AsyncStorage.setItem('qualiverifie_account_type', refreshedType);
+          onAccountTypeChange(refreshedType);
+          if (refreshedType === 'business') setProfileSection(null);
         }
 
         Alert.alert(
@@ -4460,8 +4499,8 @@ style={{
       <Text style={styles.categoryText}>
         {selectedDivisionCount === 1 ? '✓ ' : ''}
         {language === 'fr'
-          ? '1 division — 27,77 $ / mois'
-          : '1 division — $27.77 / month'}
+          ? '1 division — 27,49 $ / mois'
+          : '1 division — $27.49 / month'}
       </Text>
     </TouchableOpacity>
 
@@ -4479,8 +4518,8 @@ style={{
       <Text style={styles.categoryText}>
         {selectedDivisionCount === 2 ? '✓ ' : ''}
         {language === 'fr'
-          ? '2 divisions — 37,77 $ / mois'
-          : '2 divisions — $37.77 / month'}
+          ? '2 divisions — 37,49 $ / mois'
+          : '2 divisions — $37.49 / month'}
       </Text>
     </TouchableOpacity>
       <TouchableOpacity
@@ -4497,8 +4536,8 @@ style={{
   <Text style={styles.categoryText}>
     {selectedDivisionCount === 3 ? '✓ ' : ' '}
     {language === 'fr'
-      ? '3 divisions – 47,77 $ / mois'
-      : '3 divisions – $47.77 / month'}
+      ? '3 divisions – 47,49 $ / mois'
+      : '3 divisions – $47.49 / month'}
   </Text>
 </TouchableOpacity>
 <TouchableOpacity
@@ -4593,9 +4632,9 @@ style={{
         'Courtier immobilier, Inspection et services professionnels',
       'Nettoyage et conteneur':
         'Nettoyage, Conteneur et Contrôle parasitaire',
-    }[division] || division)
+    }[division] || (division === 'Aménagement' ? 'Services divers' : division))
     : ({
-    'Aménagement': 'Planning and Landscaping',
+    'Aménagement': 'Miscellaneous services',
     'Résidentiel': 'Residential',
     'Résidentiel – CCQ': 'Residential – CCQ',
     'Commercial': 'Commercial',
@@ -4604,7 +4643,7 @@ style={{
     'Nettoyage et conteneur':
       'Cleaning, Containers and Pest Control',
     'Fournisseurs spécialisés': 'Specialized suppliers',
-  }[division] || division)}
+  }[division] || (division === 'Aménagement' ? 'Services divers' : division))}
 </Text>
         </TouchableOpacity>
       );
@@ -4725,9 +4764,9 @@ style={{
             'Courtier immobilier, Inspection et services professionnels',
           'Nettoyage et conteneur':
             'Nettoyage, Conteneur et Contrôle parasitaire',
-        }[division] || division)
+        }[division] || (division === 'Aménagement' ? 'Services divers' : division))
       : ({
-          'Aménagement': 'Planning and Landscaping',
+          'Aménagement': 'Miscellaneous services',
           'Résidentiel': 'Residential',
           'Résidentiel – CCQ': 'Residential – CCQ',
           'Commercial': 'Commercial',
@@ -4736,7 +4775,7 @@ style={{
           'Nettoyage et conteneur':
             'Cleaning, Containers and Pest Control',
           'Fournisseurs spécialisés': 'Specialized suppliers',
-        }[division] || division)
+        }[division] || (division === 'Aménagement' ? 'Services divers' : division))
   )
   .join(', ')}
   </Text>
@@ -4753,15 +4792,15 @@ style={{
   >
     {selectedDivisionCount === 1
       ? language === 'fr'
-        ? '27,77 $ / mois'
-        : '$27.77 / month'
+        ? '27,49 $ / mois'
+        : '$27.49 / month'
       : selectedDivisionCount === 2
       ? language === 'fr'
-        ? '37,77 $ / mois'
-        : '$37.77 / month'
+        ? '37,49 $ / mois'
+        : '$37.49 / month'
       : language === 'fr'
-      ? '47,77 $ / mois'
-      : '$47.77 / month'}
+      ? '47,49 $ / mois'
+      : '$47.49 / month'}
   </Text>
 
   <Text
@@ -4849,10 +4888,10 @@ style={{
         ]}
       >
         {selectedDivisionCount === 1
-  ? (language === 'fr' ? '27,77 $ / mois' : '$27.77 / month')
+  ? (language === 'fr' ? '27,49 $ / mois' : '$27.49 / month')
   : selectedDivisionCount === 2
-  ? (language === 'fr' ? '37,77 $ / mois' : '$37.77 / month')
-  : (language === 'fr' ? '47,77 $ / mois' : '$47.77 / month')}
+  ? (language === 'fr' ? '37,49 $ / mois' : '$37.49 / month')
+  : (language === 'fr' ? '47,49 $ / mois' : '$47.49 / month')}
       </Text>
 
       <Text
@@ -4882,7 +4921,7 @@ style={{
   <Text style={[styles.primaryBtnText, { color: COLORS.gold }]}>
     {purchaseLoading
       ? (language === 'fr' ? 'Veuillez patienter…' : 'Please wait…')
-            : (language === 'fr' ? '🔒 Tester le paiement' : '🔒 Test payment')}
+            : (language === 'fr' ? '🔒 S’abonner' : '🔒 Subscribe')}
   </Text>
 </TouchableOpacity>
 <TouchableOpacity
@@ -5311,19 +5350,19 @@ style={{
 
 <Text style={[styles.infoText, { textAlign: 'center' }]}>
   {language === 'fr'
-    ? '1 division — 27,77 $ / mois'
-    : '1 division — $27.77 / month'}
+    ? '1 division — 27,49 $ / mois'
+    : '1 division — $27.49 / month'}
 </Text>
 
 <Text style={[styles.infoText, { marginTop: 8, textAlign: 'center' }]}>
   {language === 'fr'
-    ? '2 divisions — 37,77 $ / mois'
-    : '2 divisions — $37.77 / month'}
+    ? '2 divisions — 37,49 $ / mois'
+    : '2 divisions — $37.49 / month'}
 </Text>
   <Text style={[styles.infoText, { marginTop: 8, textAlign: 'center' }]}>
   {language === 'fr'
-    ? '3 divisions — 47,77 $ / mois'
-    : '3 divisions — $47.77 / month'}
+    ? '3 divisions — 47,49 $ / mois'
+    : '3 divisions — $47.49 / month'}
 </Text>
 
 
@@ -5384,7 +5423,8 @@ style={{
     
 
     
-      <TouchableOpacity
+      {subscriptionStatus !== 'active' && (
+<TouchableOpacity
   style={[styles.primaryBtn, { marginTop: 18 }]}
   onPress={() => {
   setSubscriptionFlow(true);
@@ -5398,20 +5438,27 @@ style={{
 : 'Get a business subscription'}
 </Text>
     </TouchableOpacity>
-{Platform.OS === 'android' && (
+)}
+{(Platform.OS === 'android' || Platform.OS === 'ios') && (
   <TouchableOpacity
     style={[styles.primaryBtn, { marginTop: 16 }]}
     onPress={async () => {
       try {
         await require('react-native').Linking.openURL(
-          'https://play.google.com/store/account/subscriptions'
+          Platform.OS === 'ios'
+            ? 'https://apps.apple.com/account/subscriptions'
+            : 'https://play.google.com/store/account/subscriptions'
         );
       } catch {
         Alert.alert(
           language === 'fr' ? 'Abonnement' : 'Subscription',
           language === 'fr'
-            ? 'Ouvrez Google Play, puis Paiements et abonnements > Abonnements.'
-            : 'Open Google Play, then Payments and subscriptions > Subscriptions.'
+            ? (Platform.OS === 'ios'
+              ? 'Ouvrez Réglages, puis votre nom > Abonnements.'
+              : 'Ouvrez Google Play, puis Paiements et abonnements > Abonnements.')
+            : (Platform.OS === 'ios'
+              ? 'Open Settings, then your name > Subscriptions.'
+              : 'Open Google Play, then Payments and subscriptions > Subscriptions.')
         );
       }
     }}
@@ -5423,6 +5470,22 @@ style={{
     </Text>
   </TouchableOpacity>
 )}
+
+<TouchableOpacity
+  onPress={handleRestorePurchases}
+  disabled={purchaseLoading}
+  style={[
+    styles.primaryBtn,
+    { marginTop: 16, opacity: purchaseLoading ? 0.5 : 1 },
+  ]}
+>
+  <Text style={styles.primaryBtnText}>
+    {purchaseLoading
+      ? (language === 'fr' ? 'Veuillez patienter…' : 'Please wait…')
+      : (language === 'fr' ? 'Restaurer les achats' : 'Restore purchases')}
+  </Text>
+</TouchableOpacity>
+
 
   </>
 ) : profileSection === 'Paramètres' ? (
@@ -5932,7 +5995,8 @@ style={{
         : 'Create your business profile and choose the categories in which you want to appear.'}
     </Text>
 
-    <TouchableOpacity
+    {subscriptionStatus !== 'active' && (
+<TouchableOpacity
       onPress={() => setProfileSection('Informations entreprise')}
       style={styles.quoteBtn}
     >
@@ -5942,6 +6006,7 @@ style={{
           : '💳 Get a business subscription'}
       </Text>
     </TouchableOpacity>
+)}
   </>
 ) : (
   <Text style={styles.infoText}>
@@ -8356,6 +8421,7 @@ tab === 'Messages' ? (
   />
 ) : (
   <Profile
+    onAccountTypeChange={setAccountType}
   onNavigate={navigate}
   selectedPro={selectedPro}
   favorites={favorites}
