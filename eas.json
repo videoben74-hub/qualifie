@@ -27,6 +27,16 @@
       "android": {
         "autoIncrement": true
       }
+    },
+    "preview-test": {
+      "extends": "preview",
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "test"
+      },
+      "android": {
+        "buildType": "apk"
+      }
     }
   },
   "submit": {

@@ -292,7 +292,6 @@ const commercialCategories = [
   'Électricité',
   'Entrepreneur général',
   'Excavation',
-  'Ferblanterie',
   'Frigoriste',
   'Grutier',
   'Imperméabilisation',
@@ -376,6 +375,7 @@ const specializedSupplierCategories = [
   'Pompage de béton',
 ];
 const displayTradeName = (trade, language) => {
+  if (trade === 'Ferblanterie') trade = 'Aluminium et ferblanterie';
   if (['Coffrage', 'Fondation', 'Coffrage et fondations'].includes(trade)) {
     return language === 'fr'
       ? 'Coffrage et fondations'
@@ -1435,7 +1435,9 @@ const response = await fetch(
     (!q ||
       p.name?.toLowerCase().includes(q) ||
       p.trades?.some((trade) =>
-        (trade.toLowerCase().includes(q) ||
+        ((trade.toLowerCase().includes(q) ||
+      (['aluminium et ferblanterie', 'ferblanterie'].includes(q) &&
+       ['Aluminium et ferblanterie', 'Ferblanterie'].includes(trade))) ||
         (['coffrage', 'fondation', 'coffrage et fondations'].includes(q) &&
          ['Coffrage', 'Fondation', 'Coffrage et fondations'].includes(trade)))
       )) &&
@@ -1511,7 +1513,7 @@ const response = await fetch(
   </View>
 </View>
             <Text style={styles.proTrade}>
-  {displayTradeName((p.trades?.includes(query) || (query === 'Coffrage' && p.trades?.includes('Fondation'))) ? query : p.trade, language)}
+  {displayTradeName(((p.trades?.includes(query) || (query === 'Aluminium et ferblanterie' && p.trades?.includes('Ferblanterie'))) || (query === 'Coffrage' && p.trades?.includes('Fondation'))) ? query : p.trade, language)}
 </Text>
             <Text style={styles.proMeta}>
   ★ {p.rating} ({p.reviews}) • {p.city}, QC
@@ -3410,7 +3412,7 @@ const isNeqValid = /^\d{10}$/.test(neq.trim());
 const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   const toggleRbqCategory = (category) =>
   setRbqCategories((current) =>
-    (current.includes(category) || (category === 'Coffrage' && current.includes('Fondation'))) ? [] : [category]
+    ((current.includes(category) || (category === 'Aluminium et ferblanterie' && current.includes('Ferblanterie'))) || (category === 'Coffrage' && current.includes('Fondation'))) ? [] : [category]
   );
   const pickProfilePhoto = async () => {
   const permissionResult =
@@ -5045,7 +5047,6 @@ style={{
       'Excavation',
       'Exterminateur / gestion parasitaire',
       'Fabricant d’armoires de cuisine',
-      'Ferblanterie',
       'Fissure de béton',
       'Fournisseur d’asphalte',
       'Fournisseur de béton',
@@ -5119,7 +5120,7 @@ style={{
             width: '100%',
             marginBottom: 10,
           },
-          (rbqCategories.includes(category) || (category === 'Coffrage' && rbqCategories.includes('Fondation'))) && {
+          ((rbqCategories.includes(category) || (category === 'Aluminium et ferblanterie' && rbqCategories.includes('Ferblanterie'))) || (category === 'Coffrage' && rbqCategories.includes('Fondation'))) && {
             borderColor: COLORS.gold,
             borderWidth: 2,
           },
@@ -5127,7 +5128,7 @@ style={{
         onPress={() => toggleRbqCategory(category)}
       >
         <Text style={styles.categoryText}>
-          {(rbqCategories.includes(category) || (category === 'Coffrage' && rbqCategories.includes('Fondation'))) ? '✓ ' : ''}
+          {((rbqCategories.includes(category) || (category === 'Aluminium et ferblanterie' && rbqCategories.includes('Ferblanterie'))) || (category === 'Coffrage' && rbqCategories.includes('Fondation'))) ? '✓ ' : ''}
           {displayTradeName(category, language)}
         </Text>
       </TouchableOpacity>
@@ -5368,18 +5369,18 @@ style={{
 : 'QualiBoom plans'}
 </Text>
 
-<Text style={[styles.infoText, { textAlign: 'center' }]}>
+<Text style={[styles.readableInfoText, { textAlign: 'center' }]}>
   {language === 'fr'
     ? '1 division — 27,49 $ / mois'
     : '1 division — $27.49 / month'}
 </Text>
 
-<Text style={[styles.infoText, { marginTop: 8, textAlign: 'center' }]}>
+<Text style={[styles.readableInfoText, { marginTop: 8, textAlign: 'center' }]}>
   {language === 'fr'
     ? '2 divisions — 37,49 $ / mois'
     : '2 divisions — $37.49 / month'}
 </Text>
-  <Text style={[styles.infoText, { marginTop: 8, textAlign: 'center' }]}>
+  <Text style={[styles.readableInfoText, { marginTop: 8, textAlign: 'center' }]}>
   {language === 'fr'
     ? '3 divisions — 47,49 $ / mois'
     : '3 divisions — $47.49 / month'}
@@ -5402,7 +5403,7 @@ style={{
         {language === 'fr' ? 'Statut' : 'Status'}
       </Text>
 
-      <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
+      <Text style={[styles.readableInfoText, { color: COLORS.gold2 }]}>
         {
   subscriptionStatus === 'active'
     ? (language === 'fr'
@@ -5419,23 +5420,23 @@ style={{
       </Text>
 
       <View style={{ width: '100%' }}>
-  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
+  <Text style={[styles.readableInfoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Profil entreprise visible' : '• Visible business profile'}
   </Text>
 
-  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
+  <Text style={[styles.readableInfoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Accès aux demandes de soumission' : '• Access to quote requests'}
   </Text>
 
-  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
+  <Text style={[styles.readableInfoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Messagerie avec les clients' : '• Client messaging'}
   </Text>
 
-  <Text style={[styles.infoText, { marginBottom: 4, color: COLORS.gold2 }]}>
+  <Text style={[styles.readableInfoText, { marginBottom: 4, color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Notes clients' : '• Customer ratings'}
   </Text>
 
-  <Text style={[styles.infoText, { color: COLORS.gold2 }]}>
+  <Text style={[styles.readableInfoText, { color: COLORS.gold2 }]}>
     {language === 'fr' ? '• Présence dans les résultats de recherche' : '• Presence in search results'}
   </Text>
 </View>
