@@ -24,17 +24,24 @@
       "supportsTablet": false,
       "icon": "./file_0000000056b881f5b326834cb96b1484.png",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "QualiBoom utilise les photos que vous sélectionnez pour ajouter des images à votre profil d’entreprise ou envoyer une photo dans la messagerie. / QualiBoom uses the photos you select to add images to your business profile or send a photo in messaging."
       }
     },
     "plugins": [
-  [
-    "expo-location",
-    {
-      "locationWhenInUsePermission": "QualiBoom utilise votre position pour trouver les entrepreneurs près de vous."
-    }
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "QualiBoom utilise votre position pour trouver les entrepreneurs près de vous."
+        }
       ],
-      "expo-iap"
+      "expo-iap",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "QualiBoom utilise les photos que vous sélectionnez pour ajouter des images à votre profil d’entreprise ou envoyer une photo dans la messagerie. / QualiBoom uses the photos you select to add images to your business profile or send a photo in messaging."
+        }
+      ]
     ],
     "extra": {
       "eas": {

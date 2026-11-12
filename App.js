@@ -293,7 +293,6 @@ const commercialCategories = [
   'Entrepreneur général',
   'Excavation',
   'Ferblanterie',
-  'Fondation',
   'Frigoriste',
   'Grutier',
   'Imperméabilisation',
@@ -376,6 +375,20 @@ const specializedSupplierCategories = [
   'Fournisseur de tourbe',
   'Pompage de béton',
 ];
+const displayTradeName = (trade, language) => {
+  if (['Coffrage', 'Fondation', 'Coffrage et fondations'].includes(trade)) {
+    return language === 'fr'
+      ? 'Coffrage et fondations'
+      : 'Formwork and foundations';
+  }
+  if (trade === 'Béton') {
+    return language === 'fr'
+      ? 'Béton — mise en place et finition'
+      : 'Concrete — placement and finishing';
+  }
+  return language === 'fr' ? trade : (tradeTranslations[trade] || trade);
+};
+
 const tradeTranslations = {
   'Pompage de béton': 'Concrete pumping',
   'Scellant d’asphalte': 'Asphalt sealing',
@@ -647,7 +660,34 @@ function Badge() {
 }
 
 
-  function Home({
+  const requestLocationPermissionWithExplanation = async (language) => {
+  const current = await Location.getForegroundPermissionsAsync();
+  if (current.status === 'granted' || current.canAskAgain === false) {
+    return current;
+  }
+  const message = language === 'fr'
+    ? 'QualiBoom utilise votre position pour trouver les entreprises près de vous et afficher leur distance.'
+    : 'QualiBoom uses your location to find nearby businesses and display their distance.';
+
+  if (Platform.OS === 'web') {
+    alert(message);
+  } else {
+    await new Promise((resolve) => {
+      Alert.alert(
+        language === 'fr' ? 'Votre position' : 'Your location',
+        message,
+        [{
+          text: language === 'fr' ? 'Continuer' : 'Continue',
+          onPress: () => resolve(),
+        }],
+        { cancelable: false }
+      );
+    });
+  }
+  return await Location.requestForegroundPermissionsAsync();
+};
+
+function Home({
   onNavigate,
   language,
   setLanguage,
@@ -680,7 +720,7 @@ const useCurrentLocation = async () => {
 
     if (permission.status !== 'granted') {
       permission =
-        await Location.requestForegroundPermissionsAsync();
+        await requestLocationPermissionWithExplanation(language);
     }
 
     if (permission.status !== 'granted') {
@@ -934,15 +974,7 @@ return (
     fontSize: 14,
     fontWeight: '900',
   }}>
-    Connectez-vous
-  </Text>
-  <Text style={{
-    color: COLORS.gold,
-    fontSize: 11,
-    fontWeight: '700',
-    marginTop: 2,
-  }}>
-    Sign in
+    {language === 'fr' ? 'Connectez-vous' : 'Sign in'}
   </Text>
 </TouchableOpacity>
 
@@ -964,15 +996,7 @@ return (
     fontSize: 14,
     fontWeight: '900',
   }}>
-    Inscrivez-vous
-  </Text>
-  <Text style={{
-    color: COLORS.gold,
-    fontSize: 11,
-    fontWeight: '700',
-    marginTop: 2,
-  }}>
-    Sign up
+    {language === 'fr' ? 'Inscrivez-vous' : 'Sign up'}
   </Text>
 </TouchableOpacity>
 </View>
@@ -1228,7 +1252,7 @@ const [workType, setWorkType] = useState(initialType === 'Résidentiel' ? 'Hors 
     },
   ]}
 >
-  {language === 'fr' ? c : (tradeTranslations[c] || c)}
+  {displayTradeName(c, language)}
 </Text>
 
     <Text
@@ -1411,7 +1435,9 @@ const response = await fetch(
     (!q ||
       p.name?.toLowerCase().includes(q) ||
       p.trades?.some((trade) =>
-        trade.toLowerCase().includes(q)
+        (trade.toLowerCase().includes(q) ||
+        (['coffrage', 'fondation', 'coffrage et fondations'].includes(q) &&
+         ['Coffrage', 'Fondation', 'Coffrage et fondations'].includes(trade)))
       )) &&
     (!c || p.city?.toLowerCase().includes(c)) &&
     (!initialFilters.workType ||
@@ -1442,7 +1468,7 @@ const response = await fetch(
       {language === 'fr' ? 'Trouver un pro' : 'Find a pro'}
     </Text>
       <TextInput
-  value={language === 'fr' ? query : (tradeTranslations[query] || query)}
+  value={displayTradeName(query, language)}
   onChangeText={setQuery}
   placeholder={language === 'fr' ? 'Métier ou entreprise' : 'Trade or company'}
   style={styles.input}
@@ -1485,10 +1511,7 @@ const response = await fetch(
   </View>
 </View>
             <Text style={styles.proTrade}>
-  {language === 'fr'
-    ? (p.trades?.includes(query) ? query : p.trade)
-    : (tradeTranslations[p.trades?.includes(query) ? query : p.trade] ||
-       (p.trades?.includes(query) ? query : p.trade))}
+  {displayTradeName((p.trades?.includes(query) || (query === 'Coffrage' && p.trades?.includes('Fondation'))) ? query : p.trade, language)}
 </Text>
             <Text style={styles.proMeta}>
   ★ {p.rating} ({p.reviews}) • {p.city}, QC
@@ -2625,7 +2648,7 @@ onFocus={() =>
     {language === 'fr' ? 'Chargement...' : 'Loading...'}
   </Text>
 ) : conversations.length === 0 ? (
-  <Text style={styles.infoText}>
+  <Text style={styles.readableInfoText}>
     {language === 'fr'
       ? 'Aucune conversation pour le moment.'
       : 'No conversations yet.'}
@@ -3216,7 +3239,7 @@ if (companyAddress.trim()) {
 
   if (permission.status !== 'granted') {
     permission =
-      await Location.requestForegroundPermissionsAsync();
+      await requestLocationPermissionWithExplanation(language);
   }
 
   if (permission.status === 'granted') {
@@ -3387,7 +3410,7 @@ const isNeqValid = /^\d{10}$/.test(neq.trim());
 const isRbqValid = /^\d{4}-\d{4}-\d{2}$/.test(rbq.trim());
   const toggleRbqCategory = (category) =>
   setRbqCategories((current) =>
-    current.includes(category) ? [] : [category]
+    (current.includes(category) || (category === 'Coffrage' && current.includes('Fondation'))) ? [] : [category]
   );
   const pickProfilePhoto = async () => {
   const permissionResult =
@@ -4479,10 +4502,10 @@ style={{
         : '🏗️ Choose your plan'}
     </Text>
 
-    <Text style={[styles.infoText, { marginBottom: 16 }]}>
+    <Text style={[styles.readableInfoText, { marginBottom: 16 }]}>
       {language === 'fr'
-        ? 'Sélectionnez le nombre de divisions pour votre entreprise.'
-        : 'Select the number of divisions for your business.'}
+        ? "Votre abonnement rend votre profil d’entreprise visible dans les divisions choisies. Présentez votre entreprise et vos photos, et échangez avec les clients dans la messagerie.\n\nLes mêmes fonctionnalités sont incluses dans les trois forfaits. Seul le nombre de divisions où votre entreprise est présentée change :\n\n• 1 division : 27,49 $ par mois\n• 2 divisions : 37,49 $ par mois\n• 3 divisions : 47,49 $ par mois\n\nSélectionnez le nombre de divisions souhaité."
+        : "Your subscription makes your business profile visible in your selected divisions. Present your business and photos, and communicate with customers through messaging.\n\nAll three plans include the same features. Only the number of divisions where your business is listed changes:\n\n• 1 division: $27.49 per month\n• 2 divisions: $37.49 per month\n• 3 divisions: $47.49 per month\n\nSelect your desired number of divisions."}
     </Text>
 
     <TouchableOpacity
@@ -5024,7 +5047,6 @@ style={{
       'Fabricant d’armoires de cuisine',
       'Ferblanterie',
       'Fissure de béton',
-      'Fondation',
       'Fournisseur d’asphalte',
       'Fournisseur de béton',
       'Fournisseur de marbre et de quartz',
@@ -5097,7 +5119,7 @@ style={{
             width: '100%',
             marginBottom: 10,
           },
-          rbqCategories.includes(category) && {
+          (rbqCategories.includes(category) || (category === 'Coffrage' && rbqCategories.includes('Fondation'))) && {
             borderColor: COLORS.gold,
             borderWidth: 2,
           },
@@ -5105,10 +5127,8 @@ style={{
         onPress={() => toggleRbqCategory(category)}
       >
         <Text style={styles.categoryText}>
-          {rbqCategories.includes(category) ? '✓ ' : ''}
-          {language === 'fr'
-  ? category
-  : (tradeTranslations[category] || category)}
+          {(rbqCategories.includes(category) || (category === 'Coffrage' && rbqCategories.includes('Fondation'))) ? '✓ ' : ''}
+          {displayTradeName(category, language)}
         </Text>
       </TouchableOpacity>
     ))}
@@ -5178,7 +5198,7 @@ style={{
 ) : profileSection === 'Mes favoris' ? (
 <>
 {favorites.length === 0 ? (
-<Text style={styles.infoText}>{language === 'fr' ? '♡ Aucun favori pour le moment.' : '♡ No favorites yet.'}</Text>
+<Text style={styles.readableInfoText}>{language === 'fr' ? '♡ Aucun favori pour le moment.' : '♡ No favorites yet.'}</Text>
     ) : (
       favorites.map((fav) => (
         <View key={fav.id} style={[styles.proCard, { flexDirection: 'column', alignItems: 'stretch', width: '100%' }]}>
@@ -5199,7 +5219,7 @@ style={{
 )}
 
 <Text style={styles.proName}>{fav.name}</Text>
-<Text style={styles.proTrade}>{language === 'fr' ? fav.trade : (tradeTranslations[fav.trade] || fav.trade)}</Text>
+<Text style={styles.proTrade}>{displayTradeName(fav.trade, language)}</Text>
 <Text style={styles.proMeta}>★ {fav.rating} • {fav.city}, QC</Text>
 
 <TouchableOpacity
@@ -5270,14 +5290,14 @@ style={{
     : `Average rating: ${averageRating} / 5`}
 </Text>
 
-<Text style={styles.infoText}>
+<Text style={styles.readableInfoText}>
   {language === 'fr'
     ? `${customerReviews.length} note${customerReviews.length !== 1 ? 's' : ''} client${customerReviews.length !== 1 ? 's' : ''}`
     : `${customerReviews.length} customer rating${customerReviews.length !== 1 ? 's' : ''}`}
 </Text>
 
 {customerReviews.length === 0 ? (
-  <Text style={[styles.infoText, { marginTop: 14 }]}>
+  <Text style={[styles.readableInfoText, { marginTop: 14 }]}>
     {language === 'fr'
   ? 'Aucune note pour le moment.'
   : 'No ratings yet.'}
@@ -5880,7 +5900,7 @@ style={{
     </View>
   </>
 )}
-    <Text style={styles.infoText}>
+    <Text style={styles.readableInfoText}>
   {language === 'fr'
     ? `⭐ Note : ${averageRating} / 5 (${customerReviews.length} notes)`
     : `⭐ Rating: ${averageRating} / 5 (${customerReviews.length} ratings)`}
@@ -6157,9 +6177,7 @@ scrollEnabled={!!selectedPro}
   >
   
               {selectedPro
-      ? `${language === 'fr'
-          ? selectedPro.trade
-          : tradeTranslations[selectedPro.trade] || selectedPro.trade
+      ? `${displayTradeName(selectedPro.trade, language)
         } • ${selectedPro.city}, QC • ⭐ ${
           publicReviews.length > 0
             ? (
@@ -8026,6 +8044,15 @@ const setFavorites = async (update) => {
 const [language, setLanguage] = useState('fr');
 const [userLocation, setUserLocation] = useState(null);
   const [accountType, setAccountType] = useState(null);
+  const [authInitializing, setAuthInitializing] = useState(true);
+
+  useEffect(() => {
+    if (!authInitializing && accountType && tab === 'Login') {
+      setSelectedPro(null);
+      setTab(accountType === 'business' ? 'EntrepriseDemo' : 'Profil');
+    }
+  }, [authInitializing, accountType, tab]);
+
  const [unreadCount, setUnreadCount] = useState(0);
   const [navProfilePhoto, setNavProfilePhoto] = useState(null);
 const [navProfileInitial, setNavProfileInitial] = useState('●');
@@ -8274,6 +8301,8 @@ useEffect(() => {
         error.message
       );
       if (!cancelled) setAccountType(null);
+    } finally {
+      if (!cancelled) setAuthInitializing(false);
     }
   };
 
@@ -8439,18 +8468,25 @@ tab === 'Messages' ? (
       <StatusBar barStyle="light-content" backgroundColor={COLORS.navy} />
       <View style={styles.content}>
   <IPhoneLayout>
-    {content}
+    {authInitializing ? (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <Text style={{ color: COLORS.navy, fontSize: 18, fontWeight: '700' }}>
+          {language === 'fr' ? 'Chargement de votre session…' : 'Loading your session…'}
+        </Text>
+      </View>
+    ) : content}
   </IPhoneLayout>
 </View>
       <View style={styles.nav}>
         {[
   ['Accueil', language === 'fr' ? 'Accueil' : 'Home', '⌂'],
   
-  ['Messages', language === 'fr' ? 'Messages' : 'Messages', '✉'],
+  ['Messages', language === 'fr' ? 'Messages' : 'Messages', '💬'],
   ['Profil', language === 'fr' ? 'Profil' : 'Profile', '●'],
 ].map(([tabName, label, icon]) => (
           <TouchableOpacity
   key={tabName}
+  disabled={authInitializing}
   style={styles.navItem}
   onPress={() =>
     (tabName === 'Profil' || tabName === 'Messages') && !accountType
@@ -8463,9 +8499,9 @@ tab === 'Messages' ? (
     <Image
       source={{ uri: navProfilePhoto }}
       style={{
-        width: 28,
-        height: 28,
-        borderRadius: 14,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         borderWidth: 2,
         borderColor:
           tab === 'Profil' || tab === 'EntrepriseDemo'
@@ -8476,9 +8512,9 @@ tab === 'Messages' ? (
   ) : (
     <View
       style={{
-        width: 28,
-        height: 28,
-        borderRadius: 14,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         backgroundColor: COLORS.gold2,
         alignItems: 'center',
         justifyContent: 'center',
@@ -8488,7 +8524,7 @@ tab === 'Messages' ? (
         style={{
           color: COLORS.navy,
           fontWeight: '900',
-          fontSize: 14,
+          fontSize: 18,
         }}
       >
         {navProfileInitial}
@@ -8642,6 +8678,7 @@ categoryText: {
   infoCard: { flexDirection: 'row', gap: 5, alignItems: 'center', backgroundColor: COLORS.card, padding: 6, borderRadius: 9, marginBottom: 4, borderWidth: 1, borderColor: COLORS.line },
   infoIcon: { color: COLORS.gold, fontWeight: '900', fontSize: 15, width: 20, textAlign: 'center' },
   infoTitle: { color: COLORS.text, fontWeight: '800', fontSize: 12 },
+  readableInfoText: { color: COLORS.navy, fontSize: 16, lineHeight: 24, fontWeight: '600', marginTop: 6, flexShrink: 1 },
   infoText: { color: COLORS.muted, fontSize: 10, lineHeight: 13, marginTop: 1 },
   screenTitle: { color: COLORS.navy, fontWeight: '900', fontSize: 27, marginBottom: 12 },
   helper: { color: COLORS.muted, lineHeight: 20, marginBottom: 14 },
@@ -8710,13 +8747,13 @@ navItem: {
 
 navIcon: {
   color: '#AFB9C8',
-  fontSize: 22,
+  fontSize: 32,
   fontWeight: '800',
 },
 
 navText: {
   color: '#AFB9C8',
-  fontSize: 11,
+  fontSize: 13,
   fontWeight: '700',
   marginTop: 4,
 },
