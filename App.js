@@ -746,7 +746,7 @@ return (
   },
 ]}
   keyboardShouldPersistTaps="handled"
-      scrollEnabled={false}
+            scrollEnabled={true}
 >
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
     <View
@@ -3779,7 +3779,7 @@ try {
   return (
     <ScrollView
   contentContainerStyle={styles.page}
-  scrollEnabled={profileSection !== 'Profil client'}
+    scrollEnabled={true}
   showsVerticalScrollIndicator={false}
 >
       <AppHeader language={language} setLanguage={setLanguage} />
@@ -5998,7 +5998,7 @@ return (
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 >
   <ScrollView
-scrollEnabled={!!selectedPro}
+scrollEnabled={true}
   contentContainerStyle={[styles.page, { paddingTop: 0, paddingBottom: 16 }]}
   keyboardShouldPersistTaps="handled"
   keyboardDismissMode="on-drag"
