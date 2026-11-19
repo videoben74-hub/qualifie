@@ -41,7 +41,8 @@
         {
           "photosPermission": "QualiBoom utilise les photos que vous sélectionnez pour ajouter des images à votre profil d’entreprise ou envoyer une photo dans la messagerie. / QualiBoom uses the photos you select to add images to your business profile or send a photo in messaging."
         }
-      ]
+      ],
+      "./plugins/withOptionalPortrait"
     ],
     "extra": {
       "eas": {
