@@ -781,7 +781,7 @@ const useCurrentLocation = async () => {
   
 
 return (
-    <ScrollView
+        <ScrollView style={{ flex: 1 }}
   contentContainerStyle={[
   styles.page,
   {
@@ -790,7 +790,7 @@ return (
   },
 ]}
   keyboardShouldPersistTaps="handled"
-      scrollEnabled={false}
+            scrollEnabled={true}
 >
       <AppHeader language={language} setLanguage={setLanguage} onNavigate={onNavigate} />
     <View
@@ -1456,7 +1456,7 @@ const response = await fetch(
 }, [query, city, initialFilters, realPros]);
 
   return (
-  <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
     <AppHeader language={language} setLanguage={setLanguage} />
 
     <TouchableOpacity
@@ -1584,7 +1584,7 @@ class MessagesDiagnostic extends React.Component {
   render() {
     if (this.state.error) {
       return (
-        <ScrollView contentContainerStyle={{ padding: 24 }}>
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 24 }}>
           <Text style={{ color: COLORS.navy, fontSize: 20 }}>
             Erreur Messages
           </Text>
@@ -2632,7 +2632,7 @@ onFocus={() =>
   );
 }
   return (
-  <ScrollView contentContainerStyle={[styles.page, { paddingTop: 0 }]}>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.page, { paddingTop: 0 }]}>
     <AppHeader language={language} setLanguage={setLanguage} />
 
     <TouchableOpacity
@@ -2998,7 +2998,7 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
             } else {
         setSubscriptionStatus(verification.status);
 
-        if (verification.status === 'active') {
+                if (verification.status === 'active') {
           setSelectedDivisionCount(verification.division_count);
 
           const { data: refreshedProfile, error: profileError } = await supabase
@@ -3088,7 +3088,7 @@ setSubscriptionStatus(data.subscription_status || 'inactive');
             } else {
         setSubscriptionStatus(verification.status);
 
-        if (verification.status === 'active') {
+                if (verification.status === 'active') {
           setSelectedDivisionCount(verification.division_count);
 
           const { data: refreshedProfile, error: profileError } = await supabase
@@ -3805,9 +3805,9 @@ try {
   );
 };
   return (
-    <ScrollView
+        <ScrollView style={{ flex: 1 }}
   contentContainerStyle={styles.page}
-  scrollEnabled={profileSection !== 'Profil client'}
+    scrollEnabled={true}
   showsVerticalScrollIndicator={false}
 >
       <AppHeader language={language} setLanguage={setLanguage} />
@@ -6048,8 +6048,8 @@ return (
   style={{ flex: 1 }}
   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 >
-  <ScrollView
-scrollEnabled={!!selectedPro}
+    <ScrollView style={{ flex: 1 }}
+scrollEnabled={true}
   contentContainerStyle={[styles.page, { paddingTop: 0, paddingBottom: 16 }]}
   keyboardShouldPersistTaps="handled"
   keyboardDismissMode="on-drag"
@@ -6610,7 +6610,7 @@ scrollEnabled={!!selectedPro}
 }
  function EntrepriseDemo({ onNavigate, language, setLanguage }) {
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.page}>
       <AppHeader
         language={language}
         setLanguage={setLanguage}
@@ -6790,7 +6790,7 @@ scrollEnabled={!!selectedPro}
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.page}>
       <AppHeader
         language={language}
         setLanguage={setLanguage}
@@ -6983,7 +6983,7 @@ setSent(true);
 };
 
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.page}>
       <AppHeader
         language={language}
         setLanguage={setLanguage}
@@ -7278,7 +7278,7 @@ onAccountTypeChange(profile.account_type);
   onNavigate('Profil');
 };
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.page}>
       <AppHeader
         language={language}
         setLanguage={setLanguage}
@@ -7393,7 +7393,7 @@ const [confirmPassword, setConfirmPassword] = useState('');
 const [accountType, setAccountType] = useState('client');
    const [termsAccepted, setTermsAccepted] = useState(false);
   return (
-    <ScrollView contentContainerStyle={styles.page}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.page}>
       <AppHeader
   language={language}
   setLanguage={setLanguage}
@@ -7746,7 +7746,7 @@ function PasswordRecovery({ status, userId, language, onClose }) {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <ScrollView
+                <ScrollView style={{ flex: 1 }}
           contentContainerStyle={{ padding: 24, flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
         >
@@ -8462,6 +8462,7 @@ tab === 'Messages' ? (
   language={language}
   setLanguage={setLanguage}
   accountType={accountType}
+  onAccountTypeChange={setAccountType}
   onProfilePhotoChange={setNavProfilePhoto}
     onLogout={handleLogout}
 />
